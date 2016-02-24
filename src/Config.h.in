@@ -1,0 +1,8 @@
+#ifndef __SURGE_CONFIG_H__
+
+#define SURGE_NAME        "SURGE"
+#define SURGE_VERSION     "@SURGE_VERSION_STRING@"
+#define SURGE_BUILDER     "@SURGE_BUILDER@"
+#define SURGE_BUILD_DATE  "@SURGE_BUILD_DATE@"
+
+#endif //__SURGE_CONFIG_H__

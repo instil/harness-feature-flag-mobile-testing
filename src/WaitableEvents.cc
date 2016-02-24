@@ -1,0 +1,125 @@
+// Standard C++ Headers
+#include <algorithm>
+  using std::any_of;
+  using std::max;
+#include <cerrno>
+#include <sstream>
+  using std::ostringstream;
+#include <stdexcept>
+  using std::runtime_error;
+
+// System Headers
+#include <sys/select.h>
+
+#include "WaitableEvent.h"
+  using SurgeUtil::WaitableEvent;
+  using SurgeUtil::WaitableEvents::WatchForType;
+  using std::vector;
+  using std::initializer_list;
+
+vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(
+    initializer_list<const WaitableEvent*> events,
+    const long timeout_milliseconds)
+{
+    int max_fd {0};    // Will hold maximum file descriptor.
+
+    fd_set read_fds;   // Will hold file descriptors waiting to become readable.
+    fd_set write_fds;  // Will hold file descriptors waiting to become writable.
+    fd_set exception_fds; // Will hold file descriptors waiting for "exception".
+
+    FD_ZERO(&read_fds);
+    FD_ZERO(&write_fds);
+    FD_ZERO(&exception_fds);
+
+    for (const WaitableEvent *event: events)
+    {
+        max_fd = max(max_fd, event->FD());
+
+        switch(event->WatchFor())
+        {
+          case WatchForType::readable:
+            FD_SET(event->FD(), &read_fds);
+            break;
+
+          case WatchForType::writable:
+            FD_SET(event->FD(), &write_fds);
+            break;
+
+          case WatchForType::exception:
+            FD_SET(event->FD(), &exception_fds);
+            break;
+        }
+    }
+
+    struct timeval timeout;
+    timeout.tv_sec = timeout_milliseconds / 1000;
+    timeout.tv_usec = (timeout_milliseconds % 1000) * 1000;
+
+    int fired_count = -1;
+    // this looks wierd but we want to always retry on EINTR
+    do {
+        fired_count = select(max_fd + 1,
+                             &read_fds,
+                             &write_fds,
+                             &exception_fds,
+                             &timeout);
+    } while (fired_count == -1 && errno == EINTR);
+
+    // If 'select()' did not fail then 'fired_count' is
+    // the number of events that have "fired".
+    // Otherwise 'fired_count' is -1.
+
+    // Ignore select error #4 (EINTR) which seems to be prevalent on Android devices
+    if (fired_count == -1)
+    {
+        ostringstream message;
+        message << "WaitableEvents::Waitfor(): select failed: "
+                << "errno = " << errno;
+        throw runtime_error{message.str()};
+    }
+
+    vector<const WaitableEvent*> results;
+    if (1 <= fired_count)
+    {
+        // Add to 'results' all events that have been determined 
+        // by 'select()' to have fired.
+        for (const WaitableEvent *event: events)
+        {
+            switch(event->WatchFor())
+            {
+              case WatchForType::readable:
+                if (FD_ISSET(event->FD(), &read_fds))
+                {
+                    results.push_back(event);
+                }
+                break;
+
+              case WatchForType::writable:
+                if (FD_ISSET(event->FD(), &write_fds))
+                {
+                    results.push_back(event);
+                }
+                break;
+
+              case WatchForType::exception:
+                if (FD_ISSET(event->FD(), &exception_fds))
+                {
+                    results.push_back(event);
+                }
+                break;
+            }
+        }
+    }
+
+    return results;
+}
+
+bool SurgeUtil::WaitableEvents::IsContainedIn(
+    const std::vector<const WaitableEvent*>& list,
+    const WaitableEvent& event)
+{
+    return any_of(list.cbegin(),
+                  list.cend(),
+                  [&] (const WaitableEvent* e) { return e == &event; });
+}
+

@@ -28,10 +28,36 @@ if(BUILD_JAR)
   add_jar(VideoEdgeRtsp ${source})
 endif()
 
+file(GLOB SURGE_UTIL_SRCS
+  BaseWaitableEvent.h
+  BasicFDEvent.h
+  DateTime.cc
+  DateTime.h
+  FireableEvent.cc
+  FireableEvent.h
+  Logging.h
+  Mutex.cc
+  Mutex.h
+  MutexLocker.h
+  Sleep.cc
+  Sleep.h
+  StoppableThread.h
+  Thread.cc
+  Thread.h
+  WaitableEvent.h
+  WaitableEvents.cc
+  Base64.cc
+  Base64.h
+  )
+
 if(BUILD_JAR STREQUAL OFF)
   add_library(surge ${LIBRARY_TYPE}
-    ./Surge.cc
-    ./Surge.h
+
+    RtspClient.h
+    RtspClient.cc
+    
+    # surge util
+    ${SURGE_UTIL_SRCS}
 
     # Jni
     ${JNI_SRCS}

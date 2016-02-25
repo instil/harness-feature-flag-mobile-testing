@@ -82,16 +82,13 @@ namespace SurgeUtil {
         *
         * @throws None
         */
-        const TycoUtility::WaitableEvent& StopRequested() const
-        {
-            return m_stopRequested;
-        }
+        const SurgeUtil::WaitableEvent& StopRequested() const { return m_stopRequested; }
 
       private:
        /**
         * Firing this event requests the thread to stop.
         */
-        TycoUtility::FireableEvent m_stopRequested;
+        SurgeUtil::FireableEvent m_stopRequested;
     };
 }
 

@@ -48,6 +48,7 @@ file(GLOB SURGE_UTIL_SRCS
   WaitableEvents.cc
   Base64.cc
   Base64.h
+  Url.h
   )
 
 if(BUILD_JAR STREQUAL OFF)
@@ -55,6 +56,9 @@ if(BUILD_JAR STREQUAL OFF)
 
     RtspClient.h
     RtspClient.cc
+
+    SocketHandler.h
+    SocketHandler.cc
     
     # surge util
     ${SURGE_UTIL_SRCS}

@@ -9,8 +9,14 @@ Surge::RtspClient::~RtspClient() {
     
 }
 
-int Surge::RtspClient::Describe(const std::string url) {
+int Surge::RtspClient::Describe(const std::string url,
+                                bool requires_auth,
+                                const std::string user,
+                                const std::string password) {
     INFO("DESCRIBE: " << url);
+
+    
+    
     return 0;
 }
 

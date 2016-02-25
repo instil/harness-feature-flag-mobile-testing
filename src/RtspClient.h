@@ -8,11 +8,15 @@ namespace Surge {
 
     class RtspClient {
 
+    public:
         RtspClient();
 
         ~RtspClient();
 
-        int Describe(const std::string url);
+        int Describe(const std::string url,
+                     bool requires_auth,
+                     const std::string user,
+                     const std::string password);
 
         void StopClient();
     };

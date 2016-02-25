@@ -3,13 +3,15 @@
 #define __LOGGING_H__
 
 // Standard C++ Headers
+#include <cstdlib>
+#include <cstring>
 #include <sstream>
 #include <string>
 #include <typeinfo>
 
 namespace SurgeUtil {
 
-    enum class LogLevel { Trace, Debug, Info, Warning, Error, Fatal };
+    enum class LogLevel { Trace = 0, Debug, Info, Warning, Error, Fatal };
 
     typedef void (*LOG_FUNCTION)(LogLevel level, const char *message);
     struct LoggingHooks {
@@ -31,13 +33,17 @@ namespace SurgeUtil {
 
         void SetLevel(LogLevel level) { m_level = level; }
 
-        void SetLoggingHooks(LoggingHooks hooks) { m_loggingHooks = hooks; }
+        void SetLoggingHooks(LoggingHooks hooks) { m_loggingHooks = std::move(hooks); }
         
         void Log(const LogLevel a_level,
                  const std::ostringstream& a_message,
                  const char* a_file,
                  const char* a_functon,
                  const int a_line) {
+            
+            if (!IsLogLevelEnabled(a_level)) {
+                return;
+            }
 
             std::ostringstream stream;
             stream << a_file << ":" << a_line << " -> " << a_message.str();
@@ -85,7 +91,9 @@ namespace SurgeUtil {
         }
 
     private:
-        Logger(): m_level(LogLevel::Debug) { }; // Empty CTOR
+        Logger(): m_level(LogLevel::Debug) {
+            memset(&m_loggingHooks, 0, sizeof(m_loggingHooks));
+        }
 
         bool IsLogLevelEnabled(LogLevel level) {
             return level >= m_level;
@@ -94,7 +102,7 @@ namespace SurgeUtil {
         LogLevel m_level;
         struct LoggingHooks m_loggingHooks;
     };
-        
+
 }
 
 // This will remove the very long FILEPATH to the __FILE__ making logging too big

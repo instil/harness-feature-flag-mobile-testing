@@ -56,6 +56,11 @@ include_directories(
 
 add_executable(testrunner
   testrunner.cc
+
+  ScratchTest.cc
+
+  TestUtil.cc
+  TestUtil.h
 )
 target_link_libraries(testrunner
   surge

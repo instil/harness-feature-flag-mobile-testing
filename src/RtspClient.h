@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include "SocketHandler.h"
+
 namespace Surge {
 
     class RtspClient {
@@ -19,6 +21,10 @@ namespace Surge {
                      const std::string password);
 
         void StopClient();
+
+    private:
+
+        Surge::SocketHandler m_socketHandler;
     };
     
 }

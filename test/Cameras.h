@@ -3,7 +3,7 @@
 #define __CAMERAS_H__
 
 // Local lan camera in our office.
-#define LAN_CAMERA_DESK_URL     "rtsp://192.168.1.40/media/4/video/1?commport=80&Warped=False"
+#define LAN_CAMERA_DESK_URL     "rtsp://192.168.1.40:554/media/4/video/1?commport=80&Warped=False"
 #define LAN_CAMERA_DESK_USER    "admin"
 #define LAN_CAMERA_DESK_PASS    "admin"
 

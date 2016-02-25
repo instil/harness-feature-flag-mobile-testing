@@ -1,11 +1,14 @@
 // Standard C++ Headers
 #include <cstdint>
 
-#include "Base64Encoding.h"
+#include "Base64.h"
   using std::string;         // from included <string>
 
 #define LOBYTE(w) ((BYTE)((w) & 0xff))
 #define LOWORD(a) ((WORD)(a))
+
+typedef unsigned char BYTE;
+typedef std::uint32_t UINT;
 
 string _64("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 

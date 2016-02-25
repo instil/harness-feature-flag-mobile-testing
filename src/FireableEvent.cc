@@ -14,8 +14,8 @@
 // SurgeUtil Headers
 #include "FireableEvent.h"
   using SurgeUtil::FireableEvent;
-#include "Mutex_locker.h"
-  using SurgeUtil::Mutex_locker;
+#include "MutexLocker.h"
+  using SurgeUtil::MutexLocker;
 
 FireableEvent::FireableEvent()
 {
@@ -45,7 +45,7 @@ void FireableEvent::Fire()
     // and firing it (because we do not wish to have multiple
     // bytes in the pipe).
 
-    Mutex_locker lock{m_pipeMutex};
+    MutexLocker lock{m_pipeMutex};
 
     if (!IsFired())
     {
@@ -66,7 +66,7 @@ void FireableEvent::Reset()
     // and unfiring it (because we do not wish to block due
     // to reading an empty pipe).
 
-    Mutex_locker lock{m_pipeMutex};
+    MutexLocker lock{m_pipeMutex};
 
     if (IsFired())
     {

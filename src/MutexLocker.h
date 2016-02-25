@@ -9,7 +9,7 @@ namespace SurgeUtil {
    /**
     * RAII mutex-locker.
     */
-    class Mutex_locker
+    class MutexLocker
     {
       public:
        /**
@@ -18,14 +18,14 @@ namespace SurgeUtil {
         * @throws std::runtime_error
         *         if there has been a failure.
         */
-        Mutex_locker(Mutex& a_mutex): m_mutex(a_mutex) { m_mutex.Lock(); }
+        MutexLocker(Mutex& a_mutex): m_mutex(a_mutex) { m_mutex.Lock(); }
 
        /**
         * Destruct, unlocking associated mutex.
         *
         * @throws None
         */
-        ~Mutex_locker()
+        ~MutexLocker()
         {
             try
             {

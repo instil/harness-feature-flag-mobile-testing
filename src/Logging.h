@@ -13,24 +13,25 @@ namespace SurgeUtil {
 
     typedef void (*LOG_FUNCTION)(LogLevel level, const char *message);
     struct LoggingHooks {
-        LOG_FUNCTION trace = 0;
-        LOG_FUNCTION debug = 1;
-        LOG_FUNCTION info = 2;
-        LOG_FUNCTION warn = 3;
-        LOG_FUNCTION error = 4;
-        LOG_FUNCTION fatal = 5;
+        LOG_FUNCTION trace;
+        LOG_FUNCTION debug;
+        LOG_FUNCTION info;
+        LOG_FUNCTION warn;
+        LOG_FUNCTION error;
+        LOG_FUNCTION fatal;
     };
-
-    static struct LoggingHooks LoggingHooks;
 
     class Logger {
     public:
-        static Logger& getInstance() {
+        
+        static Logger& GetInstance() {
             static Logger instance;
             return instance;
         }
 
         void SetLevel(LogLevel level) { m_level = level; }
+
+        void SetLoggingHooks(LoggingHooks hooks) { m_loggingHooks = hooks; }
         
         void Log(const LogLevel a_level,
                  const std::ostringstream& a_message,
@@ -46,62 +47,64 @@ namespace SurgeUtil {
             switch (a_level)
             {
             case LogLevel::Trace:
-                if (LoggingHooks.trace) {
-                    LoggingHooks.trace(Trace, message);
+                if (m_loggingHooks.trace) {
+                    m_loggingHooks.trace(LogLevel::Trace, message);
                 }
                 break;
 
             case LogLevel::Debug:
-                if (LoggingHooks.debug) {
-                    LoggingHooks.debug(Debug, message);
+                if (m_loggingHooks.debug) {
+                    m_loggingHooks.debug(LogLevel::Debug, message);
                 }
                 break;
 
             case LogLevel::Info:
-                if (LoggingHooks.info) {
-                    LoggingHooks.info(Info, message);
+                if (m_loggingHooks.info) {
+                    m_loggingHooks.info(LogLevel::Info, message);
                 }
                 break;
 
             case LogLevel::Warning:
-                if (LoggingHooks.warn) {
-                    LoggingHooks.warn(Warning, message);
+                if (m_loggingHooks.warn) {
+                    m_loggingHooks.warn(LogLevel::Warning, message);
                 }
                 break;
 
             case LogLevel::Error:
-                if (LoggingHooks.error) {
-                    LoggingHooks.error(Error, message);
+                if (m_loggingHooks.error) {
+                    m_loggingHooks.error(LogLevel::Error, message);
                 }
                 break;
 
             case LogLevel::Fatal:
-                if (LoggingHooks.fatal) {
-                    LoggingHooks.fatal(Fatal, message);
+                if (m_loggingHooks.fatal) {
+                    m_loggingHooks.fatal(LogLevel::Fatal, message);
                 }
                 break;
             }
         }
 
     private:
-        Logger(): m_level(LogLevel.Debug) { }; // Empty CTOR
+        Logger(): m_level(LogLevel::Debug) { }; // Empty CTOR
 
         bool IsLogLevelEnabled(LogLevel level) {
             return level >= m_level;
         }
 
         LogLevel m_level;
+        struct LoggingHooks m_loggingHooks;
     };
         
 }
 
 // This will remove the very long FILEPATH to the __FILE__ making logging too big
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-#define _LOG(level, message)                                            \
+#define LOG(level, message)                                             \
     do {                                                                \
         {                                                               \
             std::ostringstream stream;                                  \
             stream << message;                                          \
+            SurgeUtil::Logger logger = SurgeUtil::Logger::GetInstance(); \
             logger.Log(level, stream, __FILENAME__, __FUNCTION__, __LINE__); \
         }} while (false)
 

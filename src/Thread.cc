@@ -1,4 +1,3 @@
-
 // Standard C++ Headers
 #include <sstream>
   using std::ostringstream;
@@ -9,10 +8,9 @@
 #include <utility>
   using std::move;
 
-// TycoUtility headers
 #include "Thread.h"
-  using TycoUtility::Runnable;
-  using TycoUtility::Thread;
+  using SurgeUtil::Runnable;
+  using SurgeUtil::Thread;
   using std::thread;         // from included <thread>
 
 Thread::~Thread()

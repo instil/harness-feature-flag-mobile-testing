@@ -61,7 +61,6 @@ if(BUILD_JAR STREQUAL OFF)
     SocketHandler.cc
 
     RtspCommand.h
-    RtspCommand.cc
     RtspCommandFactory.h
     Describe.h
     

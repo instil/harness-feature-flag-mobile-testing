@@ -16,18 +16,17 @@ int Surge::RtspClient::Describe(const std::string url,
                                 const std::string password) {
     INFO("DESCRIBE: " << url);
     
-    SurgeUtil::Url urlModel(url);
+    SurgeUtil::Url url_model(url);
 
-    std::string host = urlModel.GetHost();
-    int port = urlModel.GetPort();
-    std::string scheme = urlModel.GetScheme();
-    std::string path = urlModel.GetPath();
-    auto params = urlModel.GetQueryParameters();
+    std::string host = url_model.GetHost();
+    int port = url_model.GetPort();
 
-    INFO("HOST: [" << host << "]");
-    INFO("PORT: [" << port << "]");
-    INFO("SCHEME: [" << scheme << "]");
-    INFO("PATH: [" << path << "]");
+    int retval = m_socketHandler.RtspTcpOpen(host, port);
+    if (retval != 0) {
+        ERROR("Failed to open [rtsp://" << host << ":" << port << "]");
+        return -1;
+    }
+    
     
     return 0;
 }

@@ -2,7 +2,6 @@
 #ifndef __FIREABLE_EVENT_H__
 #define __FIREABLE_EVENT_H__
 
-// TycoUtility Headers
 #include "BaseWaitableEvent.h"
 #include "Mutex.h"
 

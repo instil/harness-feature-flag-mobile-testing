@@ -59,6 +59,11 @@ if(BUILD_JAR STREQUAL OFF)
 
     SocketHandler.h
     SocketHandler.cc
+
+    RtspCommand.h
+    RtspCommand.cc
+    RtspCommandFactory.h
+    Describe.h
     
     # surge util
     ${SURGE_UTIL_SRCS}

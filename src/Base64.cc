@@ -12,10 +12,9 @@ typedef std::uint32_t UINT;
 
 string _64("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 
-int base64Encode(string& coded, const void* plain, std::uint32_t dwLength);
-int base64Decode(const string& coded, void* plain, std::uint32_t dwLength);
+static int base64Encode(string& coded, const void* plain, std::uint32_t dwLength);
 
-string SurgeUtil::base64Encoded(const string& plain)
+string SurgeUtil::Base64Encode(const string& plain)
 {
 	string coded;
 	// ignore possible error return code!
@@ -23,16 +22,7 @@ string SurgeUtil::base64Encoded(const string& plain)
 	return coded;
 }
 
-string SurgeUtil::base64Decoded(const string& coded)
-{
-	string plain;
-	std::uint32_t dwLen = static_cast<std::uint32_t>((coded.size() * 3) / 4);
-	plain.resize(dwLen);
-	// ignore possible error return code!
-	base64Decode(coded, (void*)&plain[0], dwLen);
-	return plain;
-}
-
+static
 int base64Encode(string& coded, const void* plain, std::uint32_t dwLength)
 {
 	// safety net
@@ -100,67 +90,4 @@ int base64Encode(string& coded, const void* plain, std::uint32_t dwLength)
   }
 
   return (int)coded.size();
-}
-
-int base64Decode(const string& coded, void* plain, std::uint32_t dwLength)
-{
-	// 2002-07-15 - Actually, spec allows for zero length string
-	//	so, soften safety net to allow for zero length input and return.
-	//
-	if (NULL == plain)
-		return -1;
-	if (0 < dwLength)
-		*((char*)plain) = '\0';	// in case of ASCIZ string
-
-	if (0 == coded.size())
-		return 0;
-
-	std::uint32_t dwExpected = ((std::uint32_t)coded.size() * 3) / 4;
-	if (dwLength < dwExpected)
-	{
-		// return error code if buffer not large enough!
-		//
-		return (-1*(int)dwExpected);
-	}
-
-
-  std::uint32_t dw;
-  unsigned char* szClear = (unsigned char*)plain;
-  size_t bufSize = coded.size();
-
-  for(size_t i=0; i<bufSize; i+=4)
-  {
-    dw = 0;
-
-    if ( (i<(bufSize-2)) && coded[i+2] == '=')
-    {
-      dw = (std::uint32_t)(_64.find( coded[i+0] ) << 18)
-         | (std::uint32_t)(_64.find( coded[i+1] ) << 12);
-      *szClear++ = LOBYTE(dw >> 16);
-    }
-    else if ( (i<(bufSize-3)) && coded[i+3] == '=')
-    {
-      dw = (std::uint32_t)(_64.find( coded[i+0] ) << 18)
-         | (std::uint32_t)(_64.find( coded[i+1] ) << 12)
-         | (std::uint32_t)(_64.find( coded[i+2] ) <<  6);
-      *szClear++ = LOBYTE(dw >> 16);
-      *szClear++ = LOBYTE(dw >>  8);
-    }
-    else
-    {
-      dw = (std::uint32_t)(_64.find( coded[i] ) << 18);
-      dw |= (i<(bufSize-1)) ? (std::uint32_t)(_64.find( coded[i+1] ) << 12) : 0;
-      dw |= (i<(bufSize-2)) ? (std::uint32_t)(_64.find( coded[i+2] ) <<  6) : 0;
-      dw |= (i<(bufSize-3)) ? (std::uint32_t)_64.find( coded[i+3] ) : 0;
-      *szClear++ = LOBYTE(dw >> 16);
-      *szClear++ = LOBYTE(dw >>  8);
-      *szClear++ = LOBYTE(dw      );
-    }
-  }
-  std::uint32_t dwActual = (std::uint32_t)(szClear - (unsigned char*)plain);
-
-  if (dwActual < dwLength)
-    *szClear = '\0';	// in case it is an ASCIZ string
-
-  return dwActual;
 }

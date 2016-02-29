@@ -58,6 +58,7 @@ add_executable(testrunner
   testrunner.cc
 
   ScratchTest.cc
+  UrlTests.cc
 
   Cameras.h
   TestUtil.cc

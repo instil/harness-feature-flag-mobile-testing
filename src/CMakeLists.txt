@@ -49,6 +49,8 @@ file(GLOB SURGE_UTIL_SRCS
   Base64.cc
   Base64.h
   Url.h
+  Helpers.h
+  Helpers.cc
   )
 
 if(BUILD_JAR STREQUAL OFF)

@@ -1,4 +1,5 @@
 #include "RtspClient.h"
+// #include "RtspCommandFactory.h"
 #include "Logging.h"
 #include "Url.h"
 
@@ -26,7 +27,12 @@ int Surge::RtspClient::Describe(const std::string url,
         ERROR("Failed to open [rtsp://" << host << ":" << port << "]");
         return -1;
     }
-    
+
+    if (requires_auth) {
+        
+    }
+    //Surge::RtspCommand& describe = Surge::RtspCommandFactory::DescribeRequest(url, 0, true);
+    //delete describe;
     
     return 0;
 }

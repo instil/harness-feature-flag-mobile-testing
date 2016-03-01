@@ -32,7 +32,7 @@ namespace Surge {
     private:
         void Run() override;
 
-        SurgeUtil::DataEventQueue<RtspCommand*> m_rtspInputQueue;
+        SurgeUtil::DataEventQueue<const RtspCommand*> m_rtspInputQueue;
         SurgeUtil::DataEventQueue<Response*> m_rtspOutputQueue;
 
         SurgeUtil::Mutex m_mutex;

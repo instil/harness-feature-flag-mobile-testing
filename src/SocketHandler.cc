@@ -102,14 +102,18 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
 
 Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
     
-    // SurgeUtil::MutexLocker lock(m_mutex);
-    // Surge::Response* resp = new Surge::Response(NULL, 0, false);
+    Surge::Response* resp = nullptr;
+    m_rtspInputQueue.AddItem(command);
 
+    if (waitForResponse) {
+        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&(m_rtspOutputQueue.GetNonEmptyEvent())},
+                                                              m_timeoutMs);
 
-    
-    
-    
-    return nullptr;
+        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
+            resp = m_rtspOutputQueue.RemoveItem();
+        }
+    }
+    return resp;
 }
 
 void Surge::SocketHandler::Run() {
@@ -120,6 +124,7 @@ void Surge::SocketHandler::Run() {
     while (true) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
                       &m_thread.StopRequested()
+                          
                     },
             m_timeoutMs);
 

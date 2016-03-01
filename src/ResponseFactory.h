@@ -4,9 +4,9 @@
 
 namespace Surge {
 
-    class ResponseFactory {
+    namespace ResponseFactory {
         
-    }
+    };
     
 };
 

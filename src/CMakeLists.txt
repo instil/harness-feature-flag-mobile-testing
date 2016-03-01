@@ -68,6 +68,8 @@ if(BUILD_JAR STREQUAL OFF)
     Describe.h
 
     Response.h
+    RtspResponse.h
+    DescribeResponse.h
     
     # surge util
     ${SURGE_UTIL_SRCS}

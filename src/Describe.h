@@ -34,9 +34,6 @@ namespace Surge {
             }
             // range delimiter
             packet += "\r\n";
-            
-            packet += "Scale: 1\r\n";
-            packet += "Speed: 1\r\n";
 
             // TODO Auth headers
             if (!authHeader.empty()) {

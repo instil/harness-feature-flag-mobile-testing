@@ -14,7 +14,16 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     INFO("READY TO STREAM");
 
     Surge::RtspClient client;
-    int return_code = client.Describe(CAMERA_URL, true, CAMERA_USER, CAMERA_PASS);
+    
+    // auto resp = client.Describe(CAMERA_URL, true, CAMERA_USER, CAMERA_PASS);
+    // auto resp = client.Describe("http://localhost:8888/live.h264", false, "", "");
+    
+    Surge::DescribeResponse *resp = client.Describe("rtsp://localhost:8554/test.264",
+                                                    false, "", "");
+    delete resp;
+    
+    // OptionsResponse* resp = client.Options();
+
 
     client.StopClient();
 }

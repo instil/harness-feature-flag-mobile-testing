@@ -5,6 +5,8 @@
 #include <string>
 #include <map>
 
+#include "Helpers.h"
+
 namespace SurgeUtil {
     
     class Url {
@@ -70,7 +72,7 @@ namespace SurgeUtil {
             size_t pos = full_path.find('?');
             if (pos != std::string::npos) {
                 std::string parameters_string = full_path.substr(pos + 1, full_path.length());
-                std::vector<std::string> param_tokens = split(parameters_string, '&');
+                std::vector<std::string> param_tokens = StringSplit(parameters_string, '&');
 
                 for (auto it = param_tokens.begin(); it != param_tokens.end(); ++it) {
                     std::string raw_param = *it;
@@ -84,18 +86,7 @@ namespace SurgeUtil {
             return parameters;
         }
 
-    private:
-        std::vector<std::string> split(const std::string &text, char sep) {
-            std::vector<std::string> tokens;
-            std::size_t start = 0, end = 0;
-            while ((end = text.find(sep, start)) != std::string::npos) {
-                tokens.push_back(text.substr(start, end - start));
-                start = end + 1;
-            }
-            tokens.push_back(text.substr(start));
-            return tokens;
-        }
-        
+    private:        
         std::string m_rawUrl;
     };
 }

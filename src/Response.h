@@ -4,6 +4,8 @@
 
 #include <cstdlib>
 
+#include <string>
+
 namespace Surge {
 
     class Response {
@@ -28,6 +30,19 @@ namespace Surge {
         const unsigned char *BytesPointer() const { return m_buffer; }
         
         const size_t PointerLength() const { return m_length; }
+
+        std::string StringDump() const {
+            size_t length = PointerLength();
+            char *dump = (char*)malloc(length + 1);
+            
+            memset((void*)dump, 0, length + 1);
+            memcpy((void*)dump, (const void *)BytesPointer(), length);
+
+            std::string repr = std::string(dump);
+            free(dump);
+            
+            return repr;
+        }
 
     private:
         unsigned char *m_buffer;

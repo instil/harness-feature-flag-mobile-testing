@@ -114,23 +114,19 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
 Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
     
     Surge::Response* resp = nullptr;
-
-    INFO("RTSP TRANSACTION 1");
     m_rtspInputQueue.AddItem(command);
 
+    INFO("TRANSACTION: " << command->StringDump());
+
     if (waitForResponse) {
-        INFO("RTSP TRANSACTION 2");
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
                                                               m_timeoutMs);
 
-        INFO("RTSP TRANSACTION 3");
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
-            INFO("RTSP TRANSACTION 4");
             resp = m_rtspOutputQueue.RemoveItem();
         }
     }
 
-    INFO("RTSP TRANSACTION 5");
     return resp;
 }
 

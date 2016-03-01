@@ -11,9 +11,9 @@ namespace Surge {
 
         virtual ~RtspCommand() { };
 
-        virtual const unsigned char * BytesPointer() = 0;
+        virtual const unsigned char * BytesPointer() const = 0;
  
-        virtual size_t PointerLength() = 0;
+        virtual size_t PointerLength() const = 0;
     };
     
 }

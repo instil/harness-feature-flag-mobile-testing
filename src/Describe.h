@@ -52,11 +52,11 @@ namespace Surge {
             free(m_buffer);
         }
         
-        const unsigned char * BytesPointer() override {
+        const unsigned char * BytesPointer() const override {
             return m_buffer;
         }
 
-        size_t PointerLength() override {
+        size_t PointerLength() const override {
             return m_length;
         }
 

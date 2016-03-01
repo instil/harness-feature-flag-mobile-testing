@@ -14,6 +14,9 @@
 #include <netinet/tcp.h>
 #include <unistd.h>
 
+#include <vector>
+
+#define READ_BUFFER_SIZE 256 * 1024
 #define DEFAULT_SOCKET_HANDLER_TIMEOUT_MS 5000
 
 Surge::SocketHandler::SocketHandler():
@@ -28,6 +31,14 @@ Surge::SocketHandler::SocketHandler():
 
 Surge::SocketHandler::~SocketHandler() {
     
+}
+
+void Surge::SocketHandler::StartRunning() {
+    if (IsRunning()) {
+        return;
+    }
+
+    m_thread.Execute(*this);
 }
 
 void Surge::SocketHandler::StopRunning() {
@@ -103,23 +114,32 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
 Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
     
     Surge::Response* resp = nullptr;
+
+    INFO("RTSP TRANSACTION 1");
     m_rtspInputQueue.AddItem(command);
 
     if (waitForResponse) {
-        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&(m_rtspOutputQueue.GetNonEmptyEvent())},
+        INFO("RTSP TRANSACTION 2");
+        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
                                                               m_timeoutMs);
 
+        INFO("RTSP TRANSACTION 3");
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
+            INFO("RTSP TRANSACTION 4");
             resp = m_rtspOutputQueue.RemoveItem();
         }
     }
+
+    INFO("RTSP TRANSACTION 5");
     return resp;
 }
 
 void Surge::SocketHandler::Run() {
 
     SurgeUtil::BasicFDEvent rtsp_socket_data_available {
-        m_rtspSocketFD, SurgeUtil::WaitableEvents::WatchForType::readable };
+            m_rtspSocketFD,
+            SurgeUtil::WaitableEvents::WatchForType::readable
+    };
     
     while (true) {
         
@@ -137,17 +157,51 @@ void Surge::SocketHandler::Run() {
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspInputQueue.GetNonEmptyEvent())) {
             INFO("Rtsp send available");
-            
             const RtspCommand* command = m_rtspInputQueue.RemoveItem();
-            
-            // process rtsp send..
+            ProcessSend(m_rtspSocketFD, command->BytesPointer(), command->PointerLength());
         }
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, rtsp_socket_data_available)) {
             INFO("Rtsp socket data available...");
-            // Respone* resp = ReceiveResponse();
+            Response* resp = ReceiveResponse(rtsp_socket_data_available);
+            if (resp != nullptr) {
+                m_rtspOutputQueue.AddItem(resp);
+            }
         }
         
     }
     INFO("SocketHandler thread finished...");
+}
+
+bool Surge::SocketHandler::ProcessSend(const int fd, const unsigned char *bytes, size_t length) {
+    return send(fd, bytes, length, 0) != -1;
+}
+
+Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::WaitableEvent& event) {
+    std::vector<unsigned char> response;
+    response.reserve(READ_BUFFER_SIZE);
+    
+    unsigned char *buffer = (unsigned char *) malloc(READ_BUFFER_SIZE);
+    do {
+        memset((void*)buffer, 0, READ_BUFFER_SIZE);
+        
+        size_t received = recv(event.FD(), buffer, READ_BUFFER_SIZE, 0);
+        if (received == -1) {
+            ERROR("Failed to recv errno: " << errno);
+            free(buffer);
+            return nullptr;
+        }
+        else if (received > 0) {
+            // Append received data to 'response'.
+            size_t old_size = response.size();
+            response.resize(old_size + received);
+            copy(buffer,
+                 buffer + received,
+                 response.begin() + old_size);
+        }        
+    } while (event.IsFired());
+    
+    free(buffer);
+    
+    return new Surge::Response(&(response[0]), response.size(), true);
 }

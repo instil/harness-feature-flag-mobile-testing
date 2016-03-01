@@ -19,6 +19,8 @@ namespace Surge {
 
         ~SocketHandler();
 
+        void StartRunning();
+        
         void StopRunning();
 
         bool IsRunning() { return m_thread.IsRunning(); }
@@ -28,6 +30,10 @@ namespace Surge {
         int RtspTcpOpen(const std::string host, int port);
 
         Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true);
+
+        bool ProcessSend(const int fd, const unsigned char *bytes, size_t length);
+
+        Response* ReceiveResponse(const SurgeUtil::WaitableEvent& event);
 
     private:
         void Run() override;

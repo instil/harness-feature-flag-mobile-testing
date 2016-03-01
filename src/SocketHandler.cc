@@ -118,22 +118,35 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
 
 void Surge::SocketHandler::Run() {
 
-    SurgeUtil::BasicFDEvent socketDataReceivable {
+    SurgeUtil::BasicFDEvent rtsp_socket_data_available {
         m_rtspSocketFD, SurgeUtil::WaitableEvents::WatchForType::readable };
     
     while (true) {
+        
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
-                      &m_thread.StopRequested()
-                          
-                    },
+                    &m_thread.StopRequested(),
+                    &m_rtspInputQueue.GetNonEmptyEvent(),
+                    &rtsp_socket_data_available
+            },
             m_timeoutMs);
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_thread.StopRequested())) {
+            DEBUG("SocketHandler - Stop Requested.");
             break;
         }
 
-        // ....
+        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspInputQueue.GetNonEmptyEvent())) {
+            INFO("Rtsp send available");
+            
+            const RtspCommand* command = m_rtspInputQueue.RemoveItem();
+            
+            // process rtsp send..
+        }
 
+        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, rtsp_socket_data_available)) {
+            INFO("Rtsp socket data available...");
+            // Respone* resp = ReceiveResponse();
+        }
         
     }
     INFO("SocketHandler thread finished...");

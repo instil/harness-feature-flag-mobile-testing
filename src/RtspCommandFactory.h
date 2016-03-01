@@ -2,8 +2,9 @@
 #ifndef __RTSP_COMMAND_FACTORY_H__
 #define __RTSP_COMMAND_FACTORY_H__
 
-#include "RtspCommand.h"
 #include "Describe.h"
+
+#include "Base64.h"
 
 namespace Surge {
 
@@ -17,34 +18,36 @@ namespace Surge {
         TEARDOWN
     };
 
-    class RtspCommandFactory {
-    public:
-
-        static void SetBasicAuthCredentials(const char *user,
-                                            const char *password) {
-            m_basicAuthString = "Authorization: Basic " +
+    namespace RtspCommandFactory {
+        
+        static std::string __rtspCommandFactoryBasicAuthString;
+        
+        void SetBasicAuthCredentials(const char *user,
+                                            const char *password)
+        {
+            __rtspCommandFactoryBasicAuthString = "Authorization: Basic " +
                 SurgeUtil::Base64Encode(
                     std::string(user) + ":" + std::string(password)
                 )
                 + "\r\n";
         }
 
-        static bool IsBasicAuthHeaderAvailable() {
-            return !m_basicAuthString.empty();
+        bool IsBasicAuthHeaderAvailable() {
+            return !__rtspCommandFactoryBasicAuthString.empty();
         }
         
-        static const std::string GetBasicAuthHeader() {
-            return m_basicAuthString;
+        const std::string GetBasicAuthHeader() {
+            return __rtspCommandFactoryBasicAuthString;
         }
 
-        static void ResetSession() {
-            m_basicAuthString.clear();
+        void ResetSession() {
+            __rtspCommandFactoryBasicAuthString.clear();
         }
-
-        static RtspCommand& DescribeRequest(const std::string url,
-                                            int nextSequenceNumber,
-                                            bool isLive) {
-            return DescribeRequest(url, nextSequenceNumber, isLive);
+        
+        RtspCommand* DescribeRequest(const std::string url,
+                                           int nextSequenceNumber,
+                                           bool isLive) {
+            return new class DescribeRequest(url, nextSequenceNumber, isLive, GetBasicAuthHeader());
         }
 
         /*static RtspCommand& SetupRequest() {
@@ -70,9 +73,6 @@ namespace Surge {
         static RtspCommand& TeardownRequest() {
             
         }*/
-
-    private:
-        static std::string m_basicAuthString;
     };
     
 }

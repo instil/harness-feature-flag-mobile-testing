@@ -3,6 +3,7 @@
 #define __DESCRIBE_H__
 
 #include "RtspCommand.h"
+#include "Describe.h"
 
 #include <cstdlib>
 #include <string>
@@ -11,13 +12,13 @@ namespace Surge {
 
     class DescribeRequest: public RtspCommand {
     public:
-        Describe(const std::string url,
-                 int nextSequenceNumber,
-                 bool isLive) : m_url(url),
-                                m_sequenceNumber(nextSequenceNumber),
-                                m_isLive(isLive) {
-            
-            string packet = "DESCRIBE " + url + " RTSP/1.0\r\n";
+        DescribeRequest(const std::string url,
+                        int nextSequenceNumber,
+                        bool isLive,
+                        std::string authHeader) : m_url(url),
+                                                  m_sequenceNumber(nextSequenceNumber),
+                                                  m_isLive(isLive) {
+            std::string packet = "DESCRIBE " + url + " RTSP/1.0\r\n";
             char headerField[1024];
             snprintf(headerField, sizeof(headerField),
                      "CSeq: %d\r\n", nextSequenceNumber);
@@ -30,8 +31,6 @@ namespace Surge {
                 packet += "Range: npt=now-";
             } else {
                 // TODO...
-                
-                
             }
             // range delimiter
             packet += "\r\n";
@@ -39,8 +38,9 @@ namespace Surge {
             packet += "Scale: 1\r\n";
             packet += "Speed: 1\r\n";
 
-            if (RtspCommandFactory::IsBasicAuthHeaderAvailable()) {
-                packet += RtspCommandFactory::GetBasicAuthHeader();
+            // TODO Auth headers
+            if (!authHeader.empty()) {
+                packet += authHeader;
             }
             packet += "\r\n";
 
@@ -48,15 +48,15 @@ namespace Surge {
             m_length = packet.copy((char *)m_buffer, packet.length(), 0);
         }
 
-        ~Describe() {
+        ~DescribeRequest() {
             free(m_buffer);
         }
         
-        const unsigned char * BytesPointer() const override {
+        const unsigned char * BytesPointer() override {
             return m_buffer;
         }
 
-        size_t PointerLength() const override {
+        size_t PointerLength() override {
             return m_length;
         }
 
@@ -68,8 +68,8 @@ namespace Surge {
         
         unsigned char *m_buffer;
         size_t m_length;
-    }
+    };
     
-};
+}
 
 #endif //__DESCRIBE_H__

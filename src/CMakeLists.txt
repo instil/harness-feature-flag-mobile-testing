@@ -51,6 +51,7 @@ file(GLOB SURGE_UTIL_SRCS
   Url.h
   Helpers.h
   Helpers.cc
+  DataEventQueue.h
   )
 
 if(BUILD_JAR STREQUAL OFF)
@@ -65,6 +66,8 @@ if(BUILD_JAR STREQUAL OFF)
     RtspCommand.h
     RtspCommandFactory.h
     Describe.h
+
+    Response.h
     
     # surge util
     ${SURGE_UTIL_SRCS}

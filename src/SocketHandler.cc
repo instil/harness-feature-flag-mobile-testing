@@ -3,6 +3,7 @@
 #include "WaitableEvent.h"
 #include "Logging.h"
 #include "Helpers.h"
+#include "MutexLocker.h"
 
 #include <fcntl.h>
 #include <string.h>
@@ -16,6 +17,9 @@
 #define DEFAULT_SOCKET_HANDLER_TIMEOUT_MS 5000
 
 Surge::SocketHandler::SocketHandler():
+    m_rtspInputQueue(),
+    m_rtspOutputQueue(),
+    m_mutex(),
     m_rtspSocketFD(-1),
     m_timeoutMs(DEFAULT_SOCKET_HANDLER_TIMEOUT_MS)
 {
@@ -60,9 +64,10 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
 
     if (connect(m_rtspSocketFD, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         
-        SurgeUtil::BasicFDEvent attemptCompleted{m_rtspSocketFD,
+        SurgeUtil::BasicFDEvent attemptCompleted {
+                m_rtspSocketFD,
                 SurgeUtil::WaitableEvents::WatchForType::writable
-                };
+        };
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&attemptCompleted}, m_timeoutMs);
 
         if (firedEvents.empty()) {
@@ -89,9 +94,22 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
             }
         }
     }
+    
     INFO("Connection to: " << host << ":" << port << " - Open");
     
     return 0;
+}
+
+Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
+    
+    // SurgeUtil::MutexLocker lock(m_mutex);
+    // Surge::Response* resp = new Surge::Response(NULL, 0, false);
+
+
+    
+    
+    
+    return nullptr;
 }
 
 void Surge::SocketHandler::Run() {
@@ -100,7 +118,6 @@ void Surge::SocketHandler::Run() {
         m_rtspSocketFD, SurgeUtil::WaitableEvents::WatchForType::readable };
     
     while (true) {
-        
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
                       &m_thread.StopRequested()
                     },
@@ -111,6 +128,7 @@ void Surge::SocketHandler::Run() {
         }
 
         // ....
+
         
     }
     INFO("SocketHandler thread finished...");

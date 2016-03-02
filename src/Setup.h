@@ -1,6 +1,6 @@
 // -*-c++-*-
-#ifndef __DESCRIBE_H__
-#define __DESCRIBE_H__
+#ifndef __SETUP_H__
+#define __SETUP_H__
 
 #include "RtspCommand.h"
 
@@ -9,29 +9,20 @@
 
 namespace Surge {
 
-    class DescribeRequest: public RtspCommand {
+    class SetupRequest: public RtspCommand {
     public:
-        DescribeRequest(const std::string url,
-                        int nextSequenceNumber,
-                        bool isLive,
-                        std::string authHeader) {
+        SetupRequest(const std::string url,
+                     const int nextSequenceNumber,
+                     const std::string authHeader) {
             
-            std::string packet = "DESCRIBE " + url + " RTSP/1.0\r\n";
+            std::string packet = "SETUP " + url + " RTSP/1.0\r\n";
             
             char headerField[1024];
             snprintf(headerField, sizeof(headerField),
                      "CSeq: %d\r\n", nextSequenceNumber);
-            
             packet += std::string(headerField);
-            packet += "Accept: application/sdp\r\n";
 
-            if (isLive) {
-                packet += "Range: npt=now-";
-            } else {
-                // TODO...
-            }
-            // range delimiter
-            packet += "\r\n";
+            packet += "Transport: RTP/AVP/TCP;unicast;interleaved=0-1\r\n";
 
             if (!authHeader.empty()) {
                 packet += authHeader;
@@ -42,10 +33,10 @@ namespace Surge {
             m_length = packet.copy((char *)m_buffer, packet.length(), 0);
         }
 
-        ~DescribeRequest() {
+        ~SetupRequest() {
             free(m_buffer);
         }
-        
+
         const unsigned char * BytesPointer() const override {
             return m_buffer;
         }
@@ -54,11 +45,11 @@ namespace Surge {
             return m_length;
         }
 
-    private:        
+    private:       
         unsigned char *m_buffer;
         size_t m_length;
     };
     
-}
+};
 
-#endif //__DESCRIBE_H__
+#endif //__SETUP_H__

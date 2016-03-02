@@ -2,11 +2,11 @@
 #ifndef __WAITABLE_EVENT_H__
 #define __WAITABLE_EVENT_H__
 
-// Standard C++ Headers
 #include <initializer_list>
 #include <vector>
 
 namespace SurgeUtil {
+    
    /*
     * Namespace to hold definitions associated with
     * the WaitableEvent class.

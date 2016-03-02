@@ -3,6 +3,8 @@
 #define __RTSP_COMMAND_FACTORY_H__
 
 #include "Describe.h"
+#include "Setup.h"
+#include "Options.h"
 
 #include "Base64.h"
 
@@ -21,9 +23,9 @@ namespace Surge {
     namespace RtspCommandFactory {
         
         static std::string __rtspCommandFactoryBasicAuthString;
-        
+
         void SetBasicAuthCredentials(const char *user,
-                                            const char *password)
+                                     const char *password)
         {
             __rtspCommandFactoryBasicAuthString = "Authorization: Basic " +
                 SurgeUtil::Base64Encode(
@@ -45,32 +47,35 @@ namespace Surge {
         }
         
         RtspCommand* DescribeRequest(const std::string url,
-                                           int nextSequenceNumber,
-                                           bool isLive) {
+                                     int nextSequenceNumber,
+                                     bool isLive) {
             return new class DescribeRequest(url, nextSequenceNumber, isLive, GetBasicAuthHeader());
         }
 
-        /*static RtspCommand& SetupRequest() {
+        static RtspCommand* SetupRequest(const std::string url,
+                                         int nextSequenceNumber) {
+            return new class SetupRequest(url, nextSequenceNumber, GetBasicAuthHeader());
+        }
+
+        /*static RtspCommand* PlayRequest() {
             
         }
 
-        static RtspCommand& PlayRequest() {
+        static RtspCommand* PauseRequest() {
             
         }
 
-        static RtspCommand& PauseRequest() {
+        static RtspCommand* KeepAliveRequest() {
             
+        }*/
+
+        static RtspCommand* OptionsRequest(const std::string url,
+                                           const std::string session,
+                                           int nextSequenceNumber) {
+            return new class OptionsRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        static RtspCommand& KeepAliveRequest() {
-            
-        }
-
-        static RtspCommand& OptionsRequest() {
-            
-        }
-
-        static RtspCommand& TeardownRequest() {
+        /*static RtspCommand* TeardownRequest() {
             
         }*/
     };

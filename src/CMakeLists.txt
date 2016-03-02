@@ -66,10 +66,17 @@ if(BUILD_JAR STREQUAL OFF)
     RtspCommand.h
     RtspCommandFactory.h
     Describe.h
+    Setup.h
+    Options.h
 
     Response.h
     RtspResponse.h
     DescribeResponse.h
+    SetupResponse.h
+
+    SessionDescription.h
+    SessionDescriptionFactory.h
+    SessionDescriptionFactory.cc
     
     # surge util
     ${SURGE_UTIL_SRCS}

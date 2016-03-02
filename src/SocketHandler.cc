@@ -124,6 +124,7 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
             resp = m_rtspOutputQueue.RemoveItem();
+            INFO("TRANSACTION RESPONSE: " << resp->StringDump());
         }
     }
 
@@ -152,13 +153,16 @@ void Surge::SocketHandler::Run() {
         }
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspInputQueue.GetNonEmptyEvent())) {
-            INFO("Rtsp send available");
+            DEBUG("Rtsp send available");
             const RtspCommand* command = m_rtspInputQueue.RemoveItem();
-            ProcessSend(m_rtspSocketFD, command->BytesPointer(), command->PointerLength());
+            bool ok = ProcessSend(m_rtspSocketFD, command->BytesPointer(), command->PointerLength());
+            if (!ok) {
+                ERROR("Failed to send RTSP command.");
+            }
         }
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, rtsp_socket_data_available)) {
-            INFO("Rtsp socket data available...");
+            DEBUG("Rtsp socket data available...");
             Response* resp = ReceiveResponse(rtsp_socket_data_available);
             if (resp != nullptr) {
                 m_rtspOutputQueue.AddItem(resp);
@@ -191,9 +195,7 @@ Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::Waitable
             // Append received data to 'response'.
             size_t old_size = response.size();
             response.resize(old_size + received);
-            copy(buffer,
-                 buffer + received,
-                 response.begin() + old_size);
+            copy(buffer, buffer + received, response.begin() + old_size);
         }        
     } while (event.IsFired());
     

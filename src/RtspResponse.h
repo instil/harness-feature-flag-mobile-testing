@@ -10,33 +10,43 @@
 #include <string>
 #include <map>
 
+#include <sstream>
+  using std::ostringstream;
+
+#include <stdexcept>
+  using std::runtime_error;
+
 namespace Surge {
 
     class RtspResponse {
     public:
-        RtspResponse(const Response* resp) {
+        RtspResponse(const Response* resp) : m_code(500), m_body(), m_headers() {
             const std::string buffer = resp->StringDump();
             std::vector<std::string> lines = SurgeUtil::StringSplit(buffer, "\r\n");
 
             if (lines.size() < 1) {
-                ERROR("Invalid RTSP Response: " << buffer);
-                return;
+                ostringstream message;
+                message << "Invalid RTSP Response";
+                throw runtime_error{ message.str() };
             }
 
             const std::string status_line = lines[0];
             std::vector<std::string> status_line_tokens = SurgeUtil::StringSplit(status_line, ' ');
             
             if (status_line_tokens.size() < 3) {
-                ERROR("Invalid RTSP Response: " << buffer);
-                return;
+                ostringstream message;
+                message << "Invalid RTSP Response";
+                throw runtime_error{ message.str() };
             }
             
             if (status_line_tokens[0].compare("RTSP/1.0") != 0) {
-                ERROR("Invalid RTSP Response: " << buffer);
-                return;
+                ostringstream message;
+                message << "Invalid RTSP Response";
+                throw runtime_error{ message.str() };
             }
 
-            m_code = std::stoi(status_line_tokens[1], nullptr);
+            int numerical_base = 10;
+            m_code = std::stoi(status_line_tokens[1], nullptr, numerical_base);
             
             bool is_body = false;
             for (auto it = lines.begin() + 1; it != lines.end(); ++it) {       
@@ -47,10 +57,10 @@ namespace Surge {
                     continue;
                 }
 
-                if (is_body) {
-                    m_body += current_line;
+                if (is_body && !current_line.empty()) {
+                    m_body += current_line + "\r\n";
                 }
-                else {
+                else if (!is_body && !current_line.empty()) {
                     size_t pos = current_line.find(':');
                     std::string key = current_line.substr(0, pos);
                     std::string value = current_line.substr(pos + 2, current_line.length());
@@ -60,13 +70,27 @@ namespace Surge {
             }
         }
 
+        virtual ~RtspResponse() { }
+
         const int GetCode() const { return m_code; }
 
-        const std::string GetBody() const { return m_body; }
+        const std::string GetBodyString() const { return m_body; }
+
+        const unsigned char *GetBody() const { return (unsigned char*)m_body.c_str(); }
+
+        size_t GetBodyLength() const { return GetBodyString().length(); }
 
         const std::map<std::string, std::string> GetHeaders() const { return m_headers; }
 
         const bool Ok() const { return GetCode() == 200; }
+
+        const std::string HeaderValueForKey(const std::string key) {
+            std::string header_value;
+
+            
+            
+            return header_value;
+        }
         
     private:
         int m_code;

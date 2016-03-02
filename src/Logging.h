@@ -7,7 +7,6 @@
 #include <cstring>
 #include <sstream>
 #include <string>
-#include <typeinfo>
 
 namespace SurgeUtil {
 

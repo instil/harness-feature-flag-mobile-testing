@@ -4,6 +4,7 @@
 
 #include "SocketHandler.h"
 #include "DescribeResponse.h"
+#include "SetupResponse.h"
 
 #include <string>
 
@@ -21,9 +22,20 @@ namespace Surge {
                                    const std::string user,
                                    const std::string password);
 
+        SetupResponse* Setup();
+
+        RtspResponse* Options();
+        
         void StopClient();
 
     private:
+
+        int GetNextSequenceNumber() { return m_sequenceNumber++; }
+
+        int m_keeepAliveIntervalInSeconds;
+        int m_sequenceNumber;
+        std::string m_url;
+        std::string m_session;        
         Surge::SocketHandler m_socketHandler;
     };
     

@@ -3,6 +3,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include <vector>
+#include <string>
+
 
 int SurgeUtil::SetNonBlocking(const int fd)
 {

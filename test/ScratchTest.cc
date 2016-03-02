@@ -18,11 +18,17 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     // auto resp = client.Describe(CAMERA_URL, true, CAMERA_USER, CAMERA_PASS);
     // auto resp = client.Describe("http://localhost:8888/live.h264", false, "", "");
     
-    Surge::DescribeResponse *resp = client.Describe("rtsp://localhost:8554/test.264",
-                                                    false, "", "");
-    delete resp;
+    // Surge::DescribeResponse *describe_response = client.Describe(CAMERA_URL, true, CAMERA_USER, CAMERA_PASS);
+    Surge::DescribeResponse *describe_response = client.Describe("rtsp://localhost:8554/test.264",
+                                                                 false, "", "");
+
+    delete describe_response;
     
-    // OptionsResponse* resp = client.Options();
+    Surge::RtspResponse *options_response = client.Options();
+    delete options_response;
+
+    Surge::RtspResponse* setup_response = client.Setup();
+    delete setup_response;
 
 
     client.StopClient();

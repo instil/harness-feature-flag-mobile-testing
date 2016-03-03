@@ -4,6 +4,7 @@
 
 #include "Describe.h"
 #include "Setup.h"
+#include "Play.h"
 #include "Options.h"
 
 #include "Base64.h"
@@ -57,11 +58,13 @@ namespace Surge {
             return new class SetupRequest(url, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        /*static RtspCommand* PlayRequest() {
-            
+        static RtspCommand* PlayRequest(const std::string url,
+                                        const std::string session,
+                                        int nextSequenceNumber) {
+            return new class PlayRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        static RtspCommand* PauseRequest() {
+        /*static RtspCommand* PauseRequest() {
             
         }
 

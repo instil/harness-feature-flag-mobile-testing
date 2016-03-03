@@ -2,16 +2,16 @@
 #ifndef __SESSION_DESCRIPTION_FACTORY_H__
 #define __SESSION_DESCRIPTION_FACTORY_H__
 
-#include <SessionDescription.h>
+#include "SessionDescription.h"
 
 #include <vector>
-#include <cstdlib>
+#include <string>
 
 namespace Surge {
 
     namespace SessionDescriptionFactory {
 
-        std::vector<SessionDescription> ParseSessionDescriptionsFromBuffer(const unsigned char *buffer, size_t length);
+        std::vector<SessionDescription> ParseSessionDescriptionsFromBuffer(const std::string body);
         
     };
     

@@ -87,7 +87,12 @@ namespace Surge {
         const std::string HeaderValueForKey(const std::string key) {
             std::string header_value;
 
+            auto headers = GetHeaders();
+            auto search = headers.find(key);
             
+            if (search != headers.end()) {
+                header_value = search->second;
+            }
             
             return header_value;
         }

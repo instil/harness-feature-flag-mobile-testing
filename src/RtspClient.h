@@ -3,6 +3,8 @@
 #define __RTSP_CLIENT_H__
 
 #include "SocketHandler.h"
+#include "SessionDescription.h"
+
 #include "DescribeResponse.h"
 #include "SetupResponse.h"
 
@@ -22,7 +24,9 @@ namespace Surge {
                                    const std::string user,
                                    const std::string password);
 
-        SetupResponse* Setup();
+        SetupResponse* Setup(const SessionDescription sessionDescription);
+
+        RtspResponse* Play();
 
         RtspResponse* Options();
         
@@ -32,6 +36,8 @@ namespace Surge {
 
         int GetNextSequenceNumber() { return m_sequenceNumber++; }
 
+        SessionDescription m_currentPalette;
+        
         int m_keeepAliveIntervalInSeconds;
         int m_sequenceNumber;
         std::string m_url;

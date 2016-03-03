@@ -19,9 +19,12 @@
 #define READ_BUFFER_SIZE 256 * 1024
 #define DEFAULT_SOCKET_HANDLER_TIMEOUT_MS 5000
 
+#define INTERLEAVED_RTP_PACKET_CHANNEL_NUMBER 0
+
 Surge::SocketHandler::SocketHandler():
     m_rtspInputQueue(),
     m_rtspOutputQueue(),
+    m_rtpOutputQueue(),
     m_mutex(),
     m_rtspSocketFD(-1),
     m_timeoutMs(DEFAULT_SOCKET_HANDLER_TIMEOUT_MS)
@@ -116,8 +119,7 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
     Surge::Response* resp = nullptr;
     m_rtspInputQueue.AddItem(command);
 
-    INFO("TRANSACTION: " << command->StringDump());
-
+    INFO("Command: " << command->StringDump());
     if (waitForResponse) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
                                                               m_timeoutMs);
@@ -164,8 +166,23 @@ void Surge::SocketHandler::Run() {
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, rtsp_socket_data_available)) {
             DEBUG("Rtsp socket data available...");
             Response* resp = ReceiveResponse(rtsp_socket_data_available);
+            
             if (resp != nullptr) {
-                m_rtspOutputQueue.AddItem(resp);
+                if (resp->IsInterleavedPacket())
+                {
+                    if (resp->GetInterleavedPacketChannelNumber() == INTERLEAVED_RTP_PACKET_CHANNEL_NUMBER) {
+                        RtpPacket *packet = resp->GetRawRtpPacketFromInterleaved();
+                        if (packet == nullptr) {
+                            INFO("NULL RTP PACKET");
+                        } else {
+                            m_rtpOutputQueue.AddItem(packet);
+                        }
+                    }
+                    delete resp;
+                }
+                else {
+                    m_rtspOutputQueue.AddItem(resp);
+                }
             }
         }
         
@@ -201,5 +218,5 @@ Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::Waitable
     
     free(buffer);
     
-    return new Surge::Response(&(response[0]), response.size(), true);
+    return new Surge::Response(&(response[0]), response.size());
 }

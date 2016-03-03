@@ -5,6 +5,7 @@
 #include "StoppableThread.h"
 #include "RtspCommand.h"
 #include "Response.h"
+#include "RtpPacket.h"
 
 #include "Mutex.h"
 #include "DataEventQueue.h"
@@ -35,11 +36,14 @@ namespace Surge {
 
         Response* ReceiveResponse(const SurgeUtil::WaitableEvent& event);
 
+        SurgeUtil::DataEventQueue<RtpPacket*>* GetRtpPacketQueue() { return &m_rtpOutputQueue; }
+
     private:
         void Run() override;
 
         SurgeUtil::DataEventQueue<const RtspCommand*> m_rtspInputQueue;
         SurgeUtil::DataEventQueue<Response*> m_rtspOutputQueue;
+        SurgeUtil::DataEventQueue<RtpPacket*> m_rtpOutputQueue;
 
         SurgeUtil::Mutex m_mutex;
         int m_rtspSocketFD;

@@ -17,17 +17,26 @@ namespace Surge {
             
             const std::string session_header = HeaderValueForKey("Session");
             
-            if (!session_header.empty()) {
-                INFO("SETUP VALUE: " << session_header);
+            if (session_header.empty()) {
+                ostringstream message;
+                message << "Invalid Setup RTSP Response";
+                throw runtime_error{ message.str() };
+            }
+            else {
                 std::vector<std::string> values = SurgeUtil::StringSplit(session_header, ';');
                 
                 if (values.size() > 1) {
                     // we probably have session;timeout=
-                    
+                    m_session = values[0];
+                    values = SurgeUtil::StringSplit(values[1], "=");
+
+                    if (values.size() > 1) {
+                        int numerical_base = 10;
+                        m_timeout = std::stoi(values[1], nullptr, numerical_base);
+                    }
                 } else {
                     // simply just session
-
-                    
+                    m_session = values[0];
                 }
             }
         }

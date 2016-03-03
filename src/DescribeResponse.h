@@ -14,8 +14,7 @@ namespace Surge {
     public:
         DescribeResponse(const Response* resp)
             : RtspResponse(resp),
-              m_palettes(SessionDescriptionFactory::ParseSessionDescriptionsFromBuffer(GetBody(),
-                                                                                       GetBodyLength()))
+              m_palettes(SessionDescriptionFactory::ParseSessionDescriptionsFromBuffer(GetBodyString()))
             { }
 
         const std::vector<SessionDescription> GetPalettes() const { return m_palettes; }

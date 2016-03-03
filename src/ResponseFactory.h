@@ -5,6 +5,8 @@
 namespace Surge {
 
     namespace ResponseFactory {
+
+        void ParseDescribeResponse(const Response* response);
         
     };
     

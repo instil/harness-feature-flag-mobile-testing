@@ -1,19 +1,19 @@
 #include "RtspClient.h"
 #include "RtspCommandFactory.h"
 #include "Logging.h"
+#include "Datetime.h"
 #include "Url.h"
 
-Surge::RtspClient::RtspClient() : m_keeepAliveIntervalInSeconds(60),
+Surge::RtspClient::RtspClient() : m_processedFirstPayload(false),
+                                  m_lastKeepAliveMs(0),
+                                  m_keeepAliveIntervalInSeconds(60),
                                   m_sequenceNumber(1),
                                   m_url(""),
                                   m_session(""),
-                                  m_socketHandler()
-{
-    
-}
+                                  m_socketHandler() { }
 
 Surge::RtspClient::~RtspClient() {
-    m_socketHandler.StopRunning();
+    StopClient();
 }
 
 Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string url,
@@ -58,7 +58,15 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionD
     std::string setup_url = (sessionDescription.IsControlUrlComplete()) ?
         sessionDescription.GetControl():
         m_url + "/" + sessionDescription.GetControl();
+
+    // this is the new url we need to use for all requests now
     m_url = setup_url;
+
+    // set current palette
+    m_currentPalette = sessionDescription;
+
+    // new session = no processed payloads
+    m_processedFirstPayload = false;
     
     RtspCommand* setup = RtspCommandFactory::SetupRequest(m_url, GetNextSequenceNumber());
     Response* raw_resp = m_socketHandler.RtspTransaction(setup, true);
@@ -73,10 +81,15 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionD
     SetupResponse* resp = new SetupResponse(raw_resp);
     delete raw_resp;
 
-    m_keeepAliveIntervalInSeconds = resp->GetTimeout();
-    m_session = resp->GetSession();
-    DEBUG("RtspClient KeepAlive Interval set to: " << m_keeepAliveIntervalInSeconds);
-    DEBUG("RtspClient Session set to: " << m_session);
+    if (resp->Ok()) {
+        m_lastKeepAliveMs = SurgeUtil::CurrentTimeMilliseconds();
+        m_keeepAliveIntervalInSeconds = resp->GetTimeout();
+        m_session = resp->GetSession();
+        DEBUG("RtspClient Session set to: " << m_session);
+        DEBUG("RtspClient KeepAlive Interval set to: " << m_keeepAliveIntervalInSeconds);
+        
+        StartSession();
+    }
     
     return resp;
 }
@@ -89,6 +102,23 @@ Surge::RtspResponse* Surge::RtspClient::Play() {
     bool received_response = raw_resp != nullptr;
     if (!received_response) {
         ERROR("Failed to get response to PLAY!");
+        return nullptr;
+    }
+
+    RtspResponse* resp = new RtspResponse(raw_resp);
+    delete raw_resp;
+    
+    return resp;
+}
+
+Surge::RtspResponse* Surge::RtspClient::Pause() {
+    RtspCommand* pause = RtspCommandFactory::PauseRequest(m_url, m_session, GetNextSequenceNumber());
+    Response* raw_resp = m_socketHandler.RtspTransaction(pause, true);
+    delete pause;
+
+    bool received_response = raw_resp != nullptr;
+    if (!received_response) {
+        ERROR("Failed to get response to PAUSE!");
         return nullptr;
     }
 
@@ -115,9 +145,131 @@ Surge::RtspResponse* Surge::RtspClient::Options() {
     return resp;
 }
 
-void Surge::RtspClient::StopClient() {
+Surge::RtspResponse* Surge::RtspClient::Teardown() {
+    RtspCommand* teardown = RtspCommandFactory::TeardownRequest(m_url, m_session, GetNextSequenceNumber());
+    Response* raw_resp = m_socketHandler.RtspTransaction(teardown, true);
+    delete teardown;
+
+    bool received_response = raw_resp != nullptr;
+    if (!received_response) {
+        ERROR("Failed to get response to TEARDOWN!");
+        return nullptr;
+    }
+
+    RtspResponse* resp = new RtspResponse(raw_resp);
+    delete raw_resp;
     
-    m_socketHandler.StopRunning();
-    
+    return resp;
 }
 
+Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
+    RtspCommand* keep_alive = RtspCommandFactory::KeepAliveRequest(m_url, m_session, GetNextSequenceNumber());
+    Response* raw_resp = m_socketHandler.RtspTransaction(keep_alive, true);
+    delete keep_alive;
+
+    bool received_response = raw_resp != nullptr;
+    if (!received_response) {
+        ERROR("Failed to get response to Keep-Alive!");
+        return nullptr;
+    }
+
+    RtspResponse* resp = new RtspResponse(raw_resp);
+    delete raw_resp;
+    
+    return resp;
+}
+
+void Surge::RtspClient::StopClient() {
+    if (m_socketHandler.IsRunning()) {
+        m_socketHandler.StopRunning();
+    }
+    if (m_thread.IsRunning()) {
+        m_thread.Stop();
+    }
+}
+
+void Surge::RtspClient::StartSession() {
+    if (m_thread.IsRunning()) {
+        return;
+    }
+
+    m_thread.Execute(*this);
+}
+
+void Surge::RtspClient::Run() {
+    
+    while (true) {
+
+        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
+                &m_thread.StopRequested(),
+                &m_socketHandler.GetRtpPacketQueue()->GetNonEmptyEvent()
+            },
+            1000);
+
+        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_thread.StopRequested())) {
+            DEBUG("RtspClient - Stop Requested.");
+            break;
+        }
+
+        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents,
+                                                     m_socketHandler.GetRtpPacketQueue()->GetNonEmptyEvent()))
+        {
+            // handle new rtp data here...
+            RtpPacket* packet = m_socketHandler.GetRtpPacketQueue()->RemoveItem();
+            ProcessRtpPacket(packet);
+            delete packet;
+        }
+
+        uint64_t current_time_ms = SurgeUtil::CurrentTimeMilliseconds();
+        int64_t delta = current_time_ms - m_lastKeepAliveMs;
+        int64_t delta_seconds = delta / 1000;
+        
+        bool need_keep_alive = delta_seconds >= static_cast<int64_t>(m_keeepAliveIntervalInSeconds * 0.9);
+        if (need_keep_alive) {
+            DEBUG("Sending Keep Alive for session: " << m_url);
+
+            RtspResponse* resp = KeepAlive();
+            if (resp == nullptr) {
+                // notify delegate via error dispatcher
+                ERROR("Failed to get response to keep alive");
+
+                // TODO
+                
+            } else if (!resp->Ok()) {
+                ERROR("Failed Keep-Alive request: " << resp->GetCode());
+                delete resp;
+            } else {
+                m_lastKeepAliveMs = SurgeUtil::CurrentTimeMilliseconds();
+                delete resp;
+            }
+        }
+        
+    }
+    INFO("Rtsp Client is Finished");
+}
+
+void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
+
+    if (m_currentPalette.GetType() != RtspSessionType::H264) {
+        ERROR("Unhandled session type: " << m_currentPalette.GetType());
+        return;
+    }
+
+    std::vector<unsigned char> payload;
+    payload.reserve(packet->PayloadLength());
+    
+    if (IsFirstPayload()) {
+        std::string config = m_currentPalette.GetFmtpH264ConfigParameters();
+
+        // put in the params for the first payload
+        
+
+        m_processedFirstPayload = true;
+    }
+
+    
+    
+
+    // notify delegate of new payload
+    
+}

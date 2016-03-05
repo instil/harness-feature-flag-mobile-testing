@@ -1,31 +1,25 @@
 // -*-c++-*-
-#ifndef __OPTIONS_H__
-#define __OPTIONS_H__
+#ifndef __TEARDOWN_H__
+#define __TEARDOWN_H__
 
 #include "RtspCommand.h"
 
-#include <cstdlib>
-#include <string>
-
 namespace Surge {
 
-    class OptionsRequest: public RtspCommand {
+    class TeardownRequest: public RtspCommand {
     public:
-        OptionsRequest(const std::string url,
-                       const std::string session,
-                       const int nextSequenceNumber,
-                       const std::string authHeader) {
-            
-            std::string packet = "OPTIONS " + url + " RTSP/1.0\r\n";
+        TeardownRequest(const std::string url,
+                        const std::string session,
+                        const int nextSequenceNumber,
+                        const std::string authHeader) {
+            std::string packet = "TEARDOWN " + url + " RTSP/1.0\r\n";
             
             char headerField[1024];
             snprintf(headerField, sizeof(headerField),
                      "CSeq: %d\r\n", nextSequenceNumber);
             packet += std::string(headerField);
 
-            if (!session.empty()) {
-                packet += "Session: " + session + "\r\n";
-            }
+            packet += "Session: " + session + "\r\n";
 
             if (!authHeader.empty()) {
                 packet += authHeader;
@@ -36,7 +30,7 @@ namespace Surge {
             m_length = packet.copy((char *)m_buffer, packet.length(), 0);
         }
 
-        ~OptionsRequest() {
+        ~TeardownRequest() {
             free(m_buffer);
         }
 
@@ -48,11 +42,11 @@ namespace Surge {
             return m_length;
         }
 
-    private:        
+    private:
         unsigned char *m_buffer;
         size_t m_length;
     };
     
 };
 
-#endif //__OPTIONS_H__
+#endif //__TEARDOWN_H__

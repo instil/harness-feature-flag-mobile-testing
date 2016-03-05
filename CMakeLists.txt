@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 2.6.3)
 project(Surge)
 
+include(TestBigEndian)
+test_big_endian(TEST_ENDIAN)
+message(STATUS "ENDIAN: ${TEST_ENDIAN}")
+set(SURGE_IS_BIG_ENDIAN ${TEST_ENDIAN})
+
 set(LIBRARY_TYPE STATIC)
 
 option(FOR_IOS "Enable iOS specific extensions" OFF)

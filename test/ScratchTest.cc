@@ -33,5 +33,7 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     Surge::RtspResponse* play_response = client.Play();
     delete play_response;
 
+    // sleep
+    
     client.StopClient();
 }

@@ -32,20 +32,19 @@ namespace Surge {
 
         Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true);
 
-        bool ProcessSend(const int fd, const unsigned char *bytes, size_t length);
-
-        Response* ReceiveResponse(const SurgeUtil::WaitableEvent& event);
-
         SurgeUtil::DataEventQueue<RtpPacket*>* GetRtpPacketQueue() { return &m_rtpOutputQueue; }
 
     private:
+        bool ProcessSend(const int fd, const unsigned char *bytes, size_t length);
+
+        Response* ReceiveResponse(const SurgeUtil::WaitableEvent& event);
+        
         void Run() override;
 
         SurgeUtil::DataEventQueue<const RtspCommand*> m_rtspInputQueue;
         SurgeUtil::DataEventQueue<Response*> m_rtspOutputQueue;
         SurgeUtil::DataEventQueue<RtpPacket*> m_rtpOutputQueue;
 
-        SurgeUtil::Mutex m_mutex;
         int m_rtspSocketFD;
         long m_timeoutMs;
         SurgeUtil::StoppableThread m_thread;

@@ -10,8 +10,6 @@
 #include <string>
 
 namespace Surge {
-
-    static int packet_index = 0;
     
     class Response {
     public:
@@ -46,27 +44,15 @@ namespace Surge {
             return repr;
         }
 
-        const std::string GetNewFile() {
-            return "/tmp/rtp_packet." + std::to_string(packet_index++) + ".dat";
-        }
 
         RtpPacket *GetRawRtpPacketFromInterleaved() {
             if (!IsInterleavedPacket()) {
                 return nullptr;
             }
-
-            const char *file = GetNewFile().c_str();
-            INFO("TMP FILE: " << file);
-            FILE *fd = fopen(file, "w");
-            fwrite(m_buffer, 1, m_length, fd);
-            fclose(fd);
             
             uint16_t packet_length_network_order;
             memcpy(&packet_length_network_order, m_buffer + 2, 2);
             uint16_t packet_length = ntohs(packet_length_network_order);
-
-            INFO("TOTAL: " << m_length << " - RTP: " << packet_length);
-            
             return new RtpPacket(m_buffer + 4, packet_length);
         }
 

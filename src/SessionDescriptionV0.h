@@ -5,6 +5,7 @@
 #include "SessionDescription.h"
 #include "MimeTypes.h"
 #include "Helpers.h"
+#include "Logging.h"
 
 #include <string>
 
@@ -35,7 +36,10 @@ namespace Surge {
                     m_control = current_line.substr(10, current_line.length());
                 }
             }
-            
+        }
+
+        SessionDescription* DeepCopy() const {
+            return nullptr;
         }
 
     };

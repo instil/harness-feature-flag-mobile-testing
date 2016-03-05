@@ -5,7 +5,9 @@
 #include "Describe.h"
 #include "Setup.h"
 #include "Play.h"
+#include "Pause.h"
 #include "Options.h"
+#include "Teardown.h"
 
 #include "Base64.h"
 
@@ -25,8 +27,7 @@ namespace Surge {
         
         static std::string __rtspCommandFactoryBasicAuthString;
 
-        void SetBasicAuthCredentials(const char *user,
-                                     const char *password)
+        void SetBasicAuthCredentials(const char *user, const char *password)
         {
             __rtspCommandFactoryBasicAuthString = "Authorization: Basic " +
                 SurgeUtil::Base64Encode(
@@ -53,34 +54,40 @@ namespace Surge {
             return new class DescribeRequest(url, nextSequenceNumber, isLive, GetBasicAuthHeader());
         }
 
-        static RtspCommand* SetupRequest(const std::string url,
-                                         int nextSequenceNumber) {
+        RtspCommand* SetupRequest(const std::string url,
+                                  int nextSequenceNumber) {
             return new class SetupRequest(url, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        static RtspCommand* PlayRequest(const std::string url,
-                                        const std::string session,
-                                        int nextSequenceNumber) {
+        RtspCommand* PlayRequest(const std::string url,
+                                 const std::string session,
+                                 int nextSequenceNumber) {
             return new class PlayRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        /*static RtspCommand* PauseRequest() {
-            
+        RtspCommand* PauseRequest(const std::string url,
+                                  const std::string session,
+                                  int nextSequenceNumber) {
+            return new class PauseRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        static RtspCommand* KeepAliveRequest() {
-            
-        }*/
-
-        static RtspCommand* OptionsRequest(const std::string url,
-                                           const std::string session,
-                                           int nextSequenceNumber) {
+        RtspCommand* KeepAliveRequest(const std::string url,
+                                      const std::string session,
+                                      int nextSequenceNumber) {
             return new class OptionsRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        /*static RtspCommand* TeardownRequest() {
-            
-        }*/
+        RtspCommand* OptionsRequest(const std::string url,
+                                    const std::string session,
+                                    int nextSequenceNumber) {
+            return new class OptionsRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
+        }
+
+        RtspCommand* TeardownRequest(const std::string url,
+                                     const std::string session,
+                                     int nextSequenceNumber) {
+            return new class TeardownRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
+        }
     };
     
 }

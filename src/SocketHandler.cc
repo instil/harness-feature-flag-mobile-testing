@@ -3,7 +3,6 @@
 #include "WaitableEvent.h"
 #include "Logging.h"
 #include "Helpers.h"
-#include "MutexLocker.h"
 
 #include <fcntl.h>
 #include <string.h>
@@ -25,7 +24,6 @@ Surge::SocketHandler::SocketHandler():
     m_rtspInputQueue(),
     m_rtspOutputQueue(),
     m_rtpOutputQueue(),
-    m_mutex(),
     m_rtspSocketFD(-1),
     m_timeoutMs(DEFAULT_SOCKET_HANDLER_TIMEOUT_MS)
 {
@@ -33,7 +31,15 @@ Surge::SocketHandler::SocketHandler():
 }
 
 Surge::SocketHandler::~SocketHandler() {
+    StopRunning();
     
+    m_rtspOutputQueue.Flush([&] (Response* resp) {
+            delete resp;
+        });
+    
+    m_rtpOutputQueue.Flush([&] (RtpPacket* pack) {
+            delete pack;
+        });
 }
 
 void Surge::SocketHandler::StartRunning() {

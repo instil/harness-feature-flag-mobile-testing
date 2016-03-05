@@ -39,8 +39,6 @@ file(GLOB SURGE_UTIL_SRCS
   Mutex.cc
   Mutex.h
   MutexLocker.h
-  Sleep.cc
-  Sleep.h
   StoppableThread.h
   Thread.cc
   Thread.h

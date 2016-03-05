@@ -3,6 +3,7 @@
 #define __SESSION_DESCRIPTION_H__
 
 #include "MimeTypes.h"
+#include "Logging.h"
 
 #include <string>
 
@@ -11,6 +12,8 @@ namespace Surge {
 
     class SessionDescription {
     public:
+
+        virtual ~SessionDescription() { }
 
         RtspSessionType GetType() const { return m_type; }
 
@@ -22,8 +25,25 @@ namespace Surge {
 
         const std::string GetFmtp() const { return m_fmtp; }
 
-    protected:
-        
+        const std::string GetFmtpH264ConfigParameters() const {
+            if (m_type != RtspSessionType::H264) {
+                return std::string();
+            }
+            
+            size_t pos = m_fmtp.find("sprop-parameter-sets=");
+            if (pos == std::string::npos) {
+                return std::string();
+            }
+
+            size_t end = m_fmtp.find(";", pos);
+            if (end == std::string::npos) {
+                end = m_fmtp.length();
+            }
+            
+            return m_fmtp.substr(pos + 21, end);
+        }
+
+    protected:        
         bool m_controlUrlIsComplete;
         RtspSessionType m_type;
         std::string m_control;

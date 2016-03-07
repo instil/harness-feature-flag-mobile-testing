@@ -2,9 +2,11 @@
 #ifndef __RTSP_CLIENT_H__
 #define __RTSP_CLIENT_H__
 
+#include "DelegateInterface.h"
 #include "StoppableThread.h"
 #include "SocketHandler.h"
 #include "SessionDescription.h"
+#include "ErrorDispatcher.h"
 
 #include "DescribeResponse.h"
 #include "SetupResponse.h"
@@ -15,7 +17,7 @@ namespace Surge {
 
     class RtspClient : private SurgeUtil::Runnable {
     public:
-        RtspClient();
+        RtspClient(RtspClientDelegate *delegate);
 
         ~RtspClient();
 
@@ -26,17 +28,19 @@ namespace Surge {
 
         SetupResponse* Setup(const SessionDescription sessionDescription);
 
-        RtspResponse* Play();
+        RtspResponse* Play(bool waitForResponse = true);
 
         RtspResponse* Pause();
 
         RtspResponse* Options();
 
-        RtspResponse* Teardown();
+        RtspResponse* Teardown(bool waitForResponse = false);
 
         RtspResponse* KeepAlive();
 
         void StopClient();
+
+        RtspClientDelegate* GetDelegate() const { return m_delegate; }
 
     private:
         void Run() override;
@@ -47,10 +51,23 @@ namespace Surge {
         
         int GetNextSequenceNumber() { return m_sequenceNumber++; }
 
-        bool IsFirstPayload() const { return m_processedFirstPayload; }
+        bool IsFirstPayload() const { return !m_processedFirstPayload; }
+
+        void NotifyDelegatePayload(const unsigned char *buffer, size_t length) {
+            if (m_delegate != nullptr) {
+                m_delegate->Payload(buffer, length);
+            }
+        }
+
+        void NotifyDelegateTimeout() {
+            if (m_delegate != nullptr) {
+                // TODO
+            }
+        }
 
         SessionDescription m_currentPalette;
 
+        RtspClientDelegate *m_delegate;
         bool m_processedFirstPayload;
         std::uint64_t m_lastKeepAliveMs;
         int m_keeepAliveIntervalInSeconds;

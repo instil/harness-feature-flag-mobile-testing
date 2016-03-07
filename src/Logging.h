@@ -2,11 +2,11 @@
 #ifndef __LOGGING_H__
 #define __LOGGING_H__
 
-// Standard C++ Headers
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
 #include <string>
+
 
 namespace SurgeUtil {
 
@@ -103,6 +103,9 @@ namespace SurgeUtil {
     };
 
 }
+
+// iOS defines DEBUG...
+#undef DEBUG
 
 // This will remove the very long FILEPATH to the __FILE__ making logging too big
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)

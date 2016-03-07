@@ -4,16 +4,24 @@
 #include "Datetime.h"
 #include "Url.h"
 
-Surge::RtspClient::RtspClient() : m_processedFirstPayload(false),
-                                  m_lastKeepAliveMs(0),
-                                  m_keeepAliveIntervalInSeconds(60),
-                                  m_sequenceNumber(1),
-                                  m_url(""),
-                                  m_session(""),
-                                  m_socketHandler() { }
+#include "H264Depacetizer.h"
+
+Surge::RtspClient::RtspClient(Surge::RtspClientDelegate *delegate) : m_delegate(delegate),
+                                                                     m_processedFirstPayload(false),
+                                                                     m_lastKeepAliveMs(0),
+                                                                     m_keeepAliveIntervalInSeconds(60),
+                                                                     m_sequenceNumber(1),
+                                                                     m_url(""),
+                                                                     m_session(""),
+                                                                     m_socketHandler() { }
 
 Surge::RtspClient::~RtspClient() {
-    StopClient();
+    if (m_socketHandler.IsRunning()) {
+        m_socketHandler.StopRunning();
+    }
+    if (m_thread.IsRunning()) {
+        m_thread.Stop();
+    }
 }
 
 Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string url,
@@ -94,19 +102,24 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionD
     return resp;
 }
 
-Surge::RtspResponse* Surge::RtspClient::Play() {
+Surge::RtspResponse* Surge::RtspClient::Play(bool waitForResponse) {
     RtspCommand* play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber());
     Response* raw_resp = m_socketHandler.RtspTransaction(play, true);
     delete play;
 
     bool received_response = raw_resp != nullptr;
-    if (!received_response) {
+    if (!received_response && waitForResponse) {
         ERROR("Failed to get response to PLAY!");
         return nullptr;
     }
 
-    RtspResponse* resp = new RtspResponse(raw_resp);
-    delete raw_resp;
+    RtspResponse* resp = nullptr;
+    if (waitForResponse) {
+        resp = new RtspResponse(raw_resp);
+        delete raw_resp;
+    } else {
+        resp = new RtspResponse(200, "");
+    }
     
     return resp;
 }
@@ -145,19 +158,24 @@ Surge::RtspResponse* Surge::RtspClient::Options() {
     return resp;
 }
 
-Surge::RtspResponse* Surge::RtspClient::Teardown() {
+Surge::RtspResponse* Surge::RtspClient::Teardown(bool waitForResponse) {
     RtspCommand* teardown = RtspCommandFactory::TeardownRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_socketHandler.RtspTransaction(teardown, true);
+    Response* raw_resp = m_socketHandler.RtspTransaction(teardown, waitForResponse);
     delete teardown;
 
     bool received_response = raw_resp != nullptr;
-    if (!received_response) {
+    if (!received_response && waitForResponse) {
         ERROR("Failed to get response to TEARDOWN!");
         return nullptr;
     }
-
-    RtspResponse* resp = new RtspResponse(raw_resp);
-    delete raw_resp;
+    
+    RtspResponse* resp = nullptr;
+    if (waitForResponse) {
+        resp = new RtspResponse(raw_resp);
+        delete raw_resp;
+    } else {
+        resp = new RtspResponse(200, "");
+    }
     
     return resp;
 }
@@ -180,6 +198,9 @@ Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
 }
 
 void Surge::RtspClient::StopClient() {
+    RtspResponse* teardown_response = Teardown(false);
+    delete teardown_response;
+    
     if (m_socketHandler.IsRunning()) {
         m_socketHandler.StopRunning();
     }
@@ -232,18 +253,16 @@ void Surge::RtspClient::Run() {
             if (resp == nullptr) {
                 // notify delegate via error dispatcher
                 ERROR("Failed to get response to keep alive");
-
-                // TODO
-                
+                NotifyDelegateTimeout();
             } else if (!resp->Ok()) {
                 ERROR("Failed Keep-Alive request: " << resp->GetCode());
                 delete resp;
+                NotifyDelegateTimeout();
             } else {
                 m_lastKeepAliveMs = SurgeUtil::CurrentTimeMilliseconds();
                 delete resp;
             }
         }
-        
     }
     INFO("Rtsp Client is Finished");
 }
@@ -254,22 +273,10 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
         ERROR("Unhandled session type: " << m_currentPalette.GetType());
         return;
     }
-
-    std::vector<unsigned char> payload;
-    payload.reserve(packet->PayloadLength());
     
-    if (IsFirstPayload()) {
-        std::string config = m_currentPalette.GetFmtpH264ConfigParameters();
-
-        // put in the params for the first payload
-        
-
-        m_processedFirstPayload = true;
-    }
-
-    
-    
+    H264Depacketizer depacketizer(&m_currentPalette, packet, IsFirstPayload());
+    m_processedFirstPayload = true;
 
     // notify delegate of new payload
-    
+    NotifyDelegatePayload(depacketizer.PayloadBytes(), depacketizer.PayloadLength());
 }

@@ -6,6 +6,7 @@
 #include "Logging.h"
 
 #include <string>
+#include <vector>
 
 
 namespace Surge {

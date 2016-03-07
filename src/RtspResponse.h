@@ -70,6 +70,8 @@ namespace Surge {
             }
         }
 
+        RtspResponse(int code, std::string body): m_code(code), m_body(body), m_headers() {}
+
         virtual ~RtspResponse() { }
 
         const int GetCode() const { return m_code; }

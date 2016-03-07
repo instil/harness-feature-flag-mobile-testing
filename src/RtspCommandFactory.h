@@ -29,10 +29,9 @@ namespace Surge {
 
         void SetBasicAuthCredentials(const char *user, const char *password)
         {
+            std::string auth = std::string(user) + ":" + std::string(password);
             __rtspCommandFactoryBasicAuthString = "Authorization: Basic " +
-                SurgeUtil::Base64Encode(
-                    std::string(user) + ":" + std::string(password)
-                )
+                SurgeUtil::Base64Encode((const unsigned char *)auth.c_str(), auth.length())
                 + "\r\n";
         }
 

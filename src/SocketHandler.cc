@@ -172,12 +172,25 @@ void Surge::SocketHandler::Run() {
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, rtsp_socket_data_available)) {
             DEBUG("Rtsp socket data available...");
             Response* resp = ReceiveResponse(rtsp_socket_data_available);
-            
+
             if (resp != nullptr) {
+
+                INFO("RAW RESPONSE = " << resp->StringDump());
+                
                 if (resp->IsInterleavedPacket())
                 {
                     if (resp->GetInterleavedPacketChannelNumber() == INTERLEAVED_RTP_PACKET_CHANNEL_NUMBER) {
-                        RtpPacket *packet = resp->GetRawRtpPacketFromInterleaved();
+                        
+                        RtpPacket *packet = nullptr;
+
+                        // can fail live 555 seems to be a bit crappy
+                        try {
+                            packet = resp->GetRawRtpPacketFromInterleaved();
+                        }
+                        catch (...) {
+                            packet = nullptr;
+                        }
+                        
                         if (packet == nullptr) {
                             INFO("NULL RTP PACKET");
                         } else {
@@ -202,6 +215,7 @@ bool Surge::SocketHandler::ProcessSend(const int fd, const unsigned char *bytes,
 
 Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::WaitableEvent& event) {
     std::vector<unsigned char> response;
+    response.clear();
     response.reserve(READ_BUFFER_SIZE);
     
     unsigned char *buffer = (unsigned char *) malloc(READ_BUFFER_SIZE);
@@ -217,8 +231,12 @@ Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::Waitable
         else if (received > 0) {
             // Append received data to 'response'.
             size_t old_size = response.size();
-            response.resize(old_size + received);
-            copy(buffer, buffer + received, response.begin() + old_size);
+            if (old_size < (old_size + received)) {
+                response.resize(old_size + received);
+            }
+            copy(buffer,
+                 buffer + received,
+                 response.begin() + old_size);
         }        
     } while (event.IsFired());
     

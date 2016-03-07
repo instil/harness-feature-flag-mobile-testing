@@ -50,11 +50,16 @@ file(GLOB SURGE_UTIL_SRCS
   Helpers.h
   Helpers.cc
   DataEventQueue.h
+  ErrorDispatcher.h
+  ErrorDispatcher.cc
   )
 
 if(BUILD_JAR STREQUAL OFF)
   add_library(surge ${LIBRARY_TYPE}
 
+    Surge.h
+    Surge.cc
+    
     RtspClient.h
     RtspClient.cc
 
@@ -75,6 +80,12 @@ if(BUILD_JAR STREQUAL OFF)
     SessionDescription.h
     SessionDescriptionFactory.h
     SessionDescriptionFactory.cc
+
+    RtpPacket.h
+    RtpPacket.cc
+
+    H264Depacetizer.h
+    H264Depacetizer.cc
     
     # surge util
     ${SURGE_UTIL_SRCS}

@@ -1,93 +1,124 @@
-// Standard C++ Headers
-#include <cstdint>
+/* 
+   base64.cpp and base64.h
+
+   Copyright (C) 2004-2008 René Nyffenegger
+
+   This source code is provided 'as-is', without any express or implied
+   warranty. In no event will the author be held liable for any damages
+   arising from the use of this software.
+
+   Permission is granted to anyone to use this software for any purpose,
+   including commercial applications, and to alter it and redistribute it
+   freely, subject to the following restrictions:
+
+   1. The origin of this source code must not be misrepresented; you must not
+      claim that you wrote the original source code. If you use this source code
+      in a product, an acknowledgment in the product documentation would be
+      appreciated but is not required.
+
+   2. Altered source versions must be plainly marked as such, and must not be
+      misrepresented as being the original source code.
+
+   3. This notice may not be removed or altered from any source distribution.
+
+   René Nyffenegger rene.nyffenegger@adp-gmbh.ch
+
+*/
 
 #include "Base64.h"
-  using std::string;         // from included <string>
+#include <cstdlib>
 
-#define LOBYTE(w) ((BYTE)((w) & 0xff))
-#define LOWORD(a) ((WORD)(a))
+static const std::string base64_chars = 
+             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+             "abcdefghijklmnopqrstuvwxyz"
+             "0123456789+/";
 
-typedef unsigned char BYTE;
-typedef std::uint32_t UINT;
 
-string _64("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
-
-static int base64Encode(string& coded, const void* plain, std::uint32_t dwLength);
-
-string SurgeUtil::Base64Encode(const string& plain)
-{
-	string coded;
-	// ignore possible error return code!
-	base64Encode(coded, plain.c_str(), static_cast<std::uint32_t>(plain.size()));
-	return coded;
+static inline bool is_base64(unsigned char c) {
+  return (isalnum(c) || (c == '+') || (c == '/'));
 }
 
-static
-int base64Encode(string& coded, const void* plain, std::uint32_t dwLength)
-{
-	// safety net
-	//
-	coded = "";
-	if (NULL == plain)
-		return -1;
+std::string SurgeUtil::Base64Encode(const unsigned char * bytes_to_encode, unsigned int in_len) {
+  std::string ret;
+  int i = 0;
+  int j = 0;
+  unsigned char char_array_3[3];
+  unsigned char char_array_4[4];
 
-// 2002-07-15 - Spec actually says auth string is required
-//		but doesn't say it can't be zero length.
-//		Therefore, allow zero length!
-//
-	if (0 == dwLength)
-		return 0;
+  while (in_len--) {
+    char_array_3[i++] = *(bytes_to_encode++);
+    if (i == 3) {
+      char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+      char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+      char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+      char_array_4[3] = char_array_3[2] & 0x3f;
 
-  // Rules:
-  //  0.	treat data as a bit stream.
-  //  1.	take three octets to produce four code characters.
-  //  1.1	if not enough octets, pad with zero bits to fill.
-  //  1.2	msb of 1st octet is msb of 1st code
-  //  2.	codes 0..63 map to  [A-Za-z0-9+/]
-  //  3.	last code group comes from:
-  //  3.1	three octets == normal encoding
-  //  3.2	two octets   == three normal codes and one "=" pad character
-  //  3.3	one octet    == two normal codes and two "=" pad characters.
-  //
-  // Example:	"A"						=>  "QQ=="
-  // Example:	"AA"					=>  "QUE="
-  // Example:	"AAA"					=>  "QUFB"
-  // Example:	"Aladdin:open sesame"	=>  "QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
-  //
-
-  std::uint32_t dw;
-  const unsigned char* szClear = (const unsigned char*)plain;
-
-  for(UINT i=0; i<dwLength; i+=3)
-  {
-    dw = 0;
-
-    switch (dwLength - i)
-    {
-    default:
-    case 3:
-      dw = (szClear[i] << 16) | (szClear[i+1] << 8) | (szClear[i+2]);
-      coded += _64[ (dw >> 18) & 0x3F ];
-      coded += _64[ (dw >> 12) & 0x3F ];
-      coded += _64[ (dw >>  6) & 0x3F ];
-      coded += _64[ (dw      ) & 0x3F ];
-      break;
-    case 2:
-      dw = (szClear[i] << 16) | (szClear[i+1] << 8) | 0;
-      coded += _64[ (dw >> 18) & 0x3F ];
-      coded += _64[ (dw >> 12) & 0x3F ];
-      coded += _64[ (dw >>  6) & 0x3F ];
-      coded += "=";
-      break;
-    case 1:
-      dw = (szClear[i] << 16) | 0 | 0;
-      coded += _64[ (dw >> 18) & 0x3F ];
-      coded += _64[ (dw >> 12) & 0x3F ];
-      coded += "=";
-      coded += "=";
-      break;
+      for(i = 0; (i <4) ; i++)
+        ret += base64_chars[char_array_4[i]];
+      i = 0;
     }
   }
 
-  return (int)coded.size();
+  if (i)
+  {
+    for(j = i; j < 3; j++)
+      char_array_3[j] = '\0';
+
+    char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+    char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+    char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+    char_array_4[3] = char_array_3[2] & 0x3f;
+
+    for (j = 0; (j < i + 1); j++)
+      ret += base64_chars[char_array_4[j]];
+
+    while((i++ < 3))
+      ret += '=';
+
+  }
+
+  return ret;
 }
+
+
+std::string SurgeUtil::Base64Decode(std::string const& encoded_string) {
+  int in_len = encoded_string.size();
+  int i = 0;
+  int j = 0;
+  int in_ = 0;
+  unsigned char char_array_4[4], char_array_3[3];
+  std::string ret;
+
+  while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
+    char_array_4[i++] = encoded_string[in_]; in_++;
+    if (i ==4) {
+      for (i = 0; i <4; i++)
+        char_array_4[i] = base64_chars.find(char_array_4[i]);
+
+      char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+      char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+      char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+
+      for (i = 0; (i < 3); i++)
+        ret += char_array_3[i];
+      i = 0;
+    }
+  }
+
+  if (i) {
+    for (j = i; j <4; j++)
+      char_array_4[j] = 0;
+
+    for (j = 0; j <4; j++)
+      char_array_4[j] = base64_chars.find(char_array_4[j]);
+
+    char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+    char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+    char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+
+    for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
+  }
+
+  return ret;
+}
+

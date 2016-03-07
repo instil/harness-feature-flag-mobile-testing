@@ -44,7 +44,6 @@ namespace Surge {
             return repr;
         }
 
-
         RtpPacket *GetRawRtpPacketFromInterleaved() {
             if (!IsInterleavedPacket()) {
                 return nullptr;
@@ -63,6 +62,16 @@ namespace Surge {
 
             unsigned char channel_number = m_buffer[1];
             return static_cast<int>(channel_number);
+        }
+
+        std::string StringDump() {
+            char *buffer = (char *)malloc(PointerLength() + 1);
+            memset(buffer, 0, PointerLength() + 1);
+            memcpy(buffer, m_buffer, m_length);
+            
+            std::string dump = std::string("[") + std::string(buffer) + std::string("]");
+            free(buffer);
+            return dump;
         }
 
     private:

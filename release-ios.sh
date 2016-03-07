@@ -52,8 +52,8 @@ rm -rf _xcode
 pushd librtsp-ios
 touch $GENERATED_FILE_IOS
 
-echo "# RTSP iOS" >> $GENERATED_FILE_IOS
-echo "librtsp version: $VERSION" >> $GENERATED_FILE_IOS
+echo "# Surge RTSP iOS" >> $GENERATED_FILE_IOS
+echo "libsurge version: $VERSION" >> $GENERATED_FILE_IOS
 echo "Builder: $BUILDER - $CURRENT_TIME" >> $GENERATED_FILE_IOS
 echo "" >> $GENERATED_FILE_IOS
 echo "Supported systems:" >> $GENERATED_FILE_IOS

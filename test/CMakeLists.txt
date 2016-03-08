@@ -64,6 +64,8 @@ add_executable(testrunner
   Cameras.h
   TestUtil.cc
   TestUtil.h
+
+  NaluParser.h
 )
 target_link_libraries(testrunner
   surge

@@ -277,6 +277,31 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
     H264Depacketizer depacketizer(&m_currentPalette, packet, IsFirstPayload());
     m_processedFirstPayload = true;
 
+    const unsigned char *payload = depacketizer.PayloadBytes();
+    size_t payload_size = depacketizer.PayloadLength();
+
+    AppendPayloadToCurrentFrame(payload, payload_size);
+    
+    if (!packet->IsMarked()) {
+        return;
+    }
+
+    // add padding
+#define PADDING_SIZE 32
+
+    size_t current_frame_size = GetCurrentFrameSize();
+    const unsigned char *current_frame = GetCurrentFrame();
+    
+    size_t padded_payload_size = current_frame_size + PADDING_SIZE;
+    unsigned char *padded_payload = (unsigned char*)malloc(padded_payload_size);
+    memset(padded_payload, 0, padded_payload_size);
+    memcpy(padded_payload, current_frame, current_frame_size);
+
     // notify delegate of new payload
-    NotifyDelegatePayload(depacketizer.PayloadBytes(), depacketizer.PayloadLength());
+    NotifyDelegatePayload(padded_payload, padded_payload_size);
+
+    free(padded_payload);
+
+    // reset
+    ResetCurrentPayload();
 }

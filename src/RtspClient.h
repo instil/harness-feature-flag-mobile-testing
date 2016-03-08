@@ -12,6 +12,7 @@
 #include "SetupResponse.h"
 
 #include <string>
+#include <vector>
 
 namespace Surge {
 
@@ -65,6 +66,22 @@ namespace Surge {
             }
         }
 
+        void AppendPayloadToCurrentFrame(const unsigned char *buffer, size_t length) {
+            size_t i;
+            for (i = 0; i < length; ++i) {
+                m_currentFrame.push_back(buffer[i]);
+            }
+        }
+
+        void ResetCurrentPayload() {
+            m_currentFrame.clear();
+        }
+
+        const unsigned char * GetCurrentFrame() const { return &(m_currentFrame[0]); }
+
+        size_t GetCurrentFrameSize() const { return m_currentFrame.size(); }
+
+        std::vector<unsigned char> m_currentFrame;
         SessionDescription m_currentPalette;
 
         RtspClientDelegate *m_delegate;

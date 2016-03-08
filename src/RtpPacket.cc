@@ -59,6 +59,7 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
 
     size_t padding_bytes = 0;
     if (header.padding) {
+        INFO("RTP PACKET HAS PADDING");
         padding_bytes = static_cast<int>(buffer[length - 1]);
         if (padding_bytes <= 0) {
             ostringstream message;
@@ -92,7 +93,18 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
     m_timestmap = ntohl(header.timestamp);
             
     m_payloadLength = length - padding_bytes - payload_offset;
+    
     m_payload = (unsigned char *)malloc(m_payloadLength);
-    memset(m_payload, 0, m_payloadLength);
     memcpy(m_payload, buffer + payload_offset, m_payloadLength);
+
+    /*INFO("Version: " << m_version <<
+         " - Sequence: " << m_sequenceNumber <<
+         " - Type: " << m_type <<
+         " - Marker: " << m_marker <<
+         " - Timestamp: " << m_timestmap <<
+         " - Padding: " << padding_bytes <<
+         " - Extension: " << has_extension <<
+         " - Payload Offset: " << payload_offset <<
+         " - Payload Length: " << m_payloadLength <<
+         " - Total Packet Length: " << length);*/
 }

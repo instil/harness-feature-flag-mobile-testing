@@ -5,13 +5,13 @@
 #include "Logging.h"
 #include "RtspClient.h"
 #include "DelegateInterface.h"
+#include "NaluParser.h"
 #include <thread>
 #include <chrono>
 
 #include "Cameras.h"
 
 #include <cstdio>
-
 
 class Delegate: public Surge::RtspClientDelegate {
 public:
@@ -21,7 +21,8 @@ public:
     }
 
     void Payload(const unsigned char* buffer, size_t length) {
-        INFO("PAYLOAD: " << length);
+        // print out nalus
+        SurgeTestUtil::PrintOutAllNaluTypes(buffer, length);
     }
     
 };

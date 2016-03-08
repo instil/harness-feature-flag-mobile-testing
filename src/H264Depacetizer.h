@@ -30,8 +30,13 @@ namespace Surge {
             }
         }
 
-        void PushNaluHeaderToCurrentPayload() {
+        void Push4ByteNaluHeaderToCurrentPayload() {
             unsigned char nalu_header[] = { 0x00, 0x00, 0x00, 0x01 };
+            PushBytesToCurrentPayload(nalu_header, sizeof(nalu_header));
+        }
+
+        void Push3ByteNaluHeaderToCurrentPayload() {
+            unsigned char nalu_header[] = { 0x00, 0x00, 0x01 };
             PushBytesToCurrentPayload(nalu_header, sizeof(nalu_header));
         }
         

@@ -21,11 +21,11 @@ Surge::H264Depacketizer::H264Depacketizer(const SessionDescription* palette,
         std::string first_nalu_decoded = SurgeUtil::Base64Decode(first_nalu);
         std::string second_nalu_decoded = SurgeUtil::Base64Decode(second_nalu);
         
-        PushNaluHeaderToCurrentPayload();
+        Push4ByteNaluHeaderToCurrentPayload();
         PushBytesToCurrentPayload((const unsigned char *)first_nalu_decoded.c_str(),
                                   first_nalu_decoded.length());
 
-        PushNaluHeaderToCurrentPayload();
+        Push4ByteNaluHeaderToCurrentPayload();
         PushBytesToCurrentPayload((const unsigned char *)second_nalu_decoded.c_str(),
                                   second_nalu_decoded.length());
     }
@@ -39,19 +39,19 @@ Surge::H264Depacketizer::H264Depacketizer(const SessionDescription* palette,
 
     case 7:
     case 8:
-        PushNaluHeaderToCurrentPayload();
+        Push3ByteNaluHeaderToCurrentPayload();
         PushBytesToCurrentPayload(rtp_packet_payload, rtp_packet_payload_length);
         break;
         
     case 24:
-        PushNaluHeaderToCurrentPayload();
+        Push3ByteNaluHeaderToCurrentPayload();
         PushBytesToCurrentPayload(rtp_packet_payload + 1, rtp_packet_payload_length - 1);
         break;
 
     case 25:
     case 26:
     case 27:
-        PushNaluHeaderToCurrentPayload();
+        Push3ByteNaluHeaderToCurrentPayload();
         PushBytesToCurrentPayload(rtp_packet_payload + 3, rtp_packet_payload_length - 3);
         break;
 
@@ -65,7 +65,7 @@ Surge::H264Depacketizer::H264Depacketizer(const SessionDescription* palette,
             unsigned char header = (rtp_packet_payload[0] & 0xE0) + (rtp_packet_payload[1] & 0x1F);
             temp_payload[0] = header;
             
-            PushNaluHeaderToCurrentPayload();
+            Push3ByteNaluHeaderToCurrentPayload();
             PushBytesToCurrentPayload(temp_payload, rtp_packet_payload_length - 1);
             
             free(temp_payload);
@@ -76,8 +76,9 @@ Surge::H264Depacketizer::H264Depacketizer(const SessionDescription* palette,
         break;
         
     default:
-        PushNaluHeaderToCurrentPayload();
+        Push3ByteNaluHeaderToCurrentPayload();
         PushBytesToCurrentPayload(rtp_packet_payload, rtp_packet_payload_length);
         break;
     }
+    
 }

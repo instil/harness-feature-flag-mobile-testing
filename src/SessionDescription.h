@@ -44,6 +44,8 @@ namespace Surge {
             return m_fmtp.substr(pos + 21, end);
         }
 
+        virtual int GetPacketizationMode() const { return 1; }
+
     protected:        
         bool m_controlUrlIsComplete;
         RtspSessionType m_type;

@@ -1,6 +1,7 @@
 #include "SocketHandler.h"
 #include "BasicFDEvent.h"
 #include "WaitableEvent.h"
+#include "MutexLocker.h"
 #include "Logging.h"
 #include "Helpers.h"
 
@@ -121,10 +122,18 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
 }
 
 Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
+    SurgeUtil::MutexLocker lock(m_mutex);
+
+    m_receivedSendEvent.Reset();
+    m_rtspOutputQueue.Flush([&] (Response* resp) {
+            delete resp;
+        });
     
     Surge::Response* resp = nullptr;
     m_rtspInputQueue.AddItem(command);
 
+    WaitForSendEventToBeHandled();
+    
     INFO("Command: " << command->StringDump());
     if (waitForResponse) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
@@ -137,6 +146,10 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
     }
 
     return resp;
+}
+
+void Surge::SocketHandler::WaitForSendEventToBeHandled() {
+    SurgeUtil::WaitableEvents::WaitFor({&m_receivedSendEvent}, m_timeoutMs);
 }
 
 void Surge::SocketHandler::Run() {
@@ -161,41 +174,35 @@ void Surge::SocketHandler::Run() {
         }
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspInputQueue.GetNonEmptyEvent())) {
-            DEBUG("Rtsp send available");
             const RtspCommand* command = m_rtspInputQueue.RemoveItem();
             bool ok = ProcessSend(m_rtspSocketFD, command->BytesPointer(), command->PointerLength());
+            
+            m_receivedSendEvent.Fire();
+            
             if (!ok) {
                 ERROR("Failed to send RTSP command.");
             }
         }
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, rtsp_socket_data_available)) {
-            DEBUG("Rtsp socket data available...");
             Response* resp = ReceiveResponse(rtsp_socket_data_available);
 
             if (resp != nullptr) {
-
-                INFO("RAW RESPONSE = " << resp->StringDump());
                 
                 if (resp->IsInterleavedPacket())
                 {
                     if (resp->GetInterleavedPacketChannelNumber() == INTERLEAVED_RTP_PACKET_CHANNEL_NUMBER) {
                         
-                        RtpPacket *packet = nullptr;
-
-                        // can fail live 555 seems to be a bit crappy
                         try {
-                            packet = resp->GetRawRtpPacketFromInterleaved();
+                            std::vector<RtpPacket*> packets = resp->GetRtpPackets();
+                            for (auto it = packets.begin(); it != packets.end(); ++it) {
+                                m_rtpOutputQueue.AddItem(*it);
+                            }
                         }
-                        catch (...) {
-                            packet = nullptr;
+                        catch (const std::exception &exc) {
+                            ERROR("ERROR PARSING RTP PACKET: " << exc.what());
                         }
                         
-                        if (packet == nullptr) {
-                            INFO("NULL RTP PACKET");
-                        } else {
-                            m_rtpOutputQueue.AddItem(packet);
-                        }
                     }
                     delete resp;
                 }

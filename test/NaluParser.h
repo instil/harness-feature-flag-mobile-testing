@@ -13,7 +13,7 @@ namespace SurgeTestUtil {
 
                 int nalu_type = (buffer[i + 3] & 0x1F);
                 
-                INFO("NALU TYPE: " << nalu_type);
+                INFO("NALU FOUND TYPE: " << nalu_type);
             }
         }
     }

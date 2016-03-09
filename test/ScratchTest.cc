@@ -22,20 +22,16 @@ public:
 
     void Payload(const unsigned char* buffer, size_t length) {
         // print out nalus
-        INFO("PAYLOAD");
         SurgeTestUtil::PrintOutAllNaluTypes(buffer, length);
-        INFO("END PAYLOAD");
     }
     
 };
 
 
 TEST(SCRATCH, SIMPLE_SCRATCH) {
-
+    
     Surge::StartErrorDispatcher();
     SurgeTestUtil::SetupTestLogger();
-    
-    INFO("READY TO STREAM");
 
     Delegate delegate;
     Surge::RtspClient client(&delegate);
@@ -55,9 +51,6 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     Surge::SessionDescription palette = describe_response->GetPalettes()[0];
 
     delete describe_response;
-    
-    Surge::RtspResponse *options_response = client.Options();
-    delete options_response;
 
     Surge::RtspResponse* setup_response = client.Setup(palette);
     delete setup_response;
@@ -66,13 +59,11 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     delete play_response;
 
     // sleep
-    INFO("SLEEPING");
     std::this_thread::sleep_for (std::chrono::seconds(5));
-    INFO("DONE SLEEPING");
 
-    INFO("STOPPING CLIENT");
+    // stop
     client.StopClient();
-    INFO("DONE STOPPING CLIENT");
 
+    // close up
     Surge::CloseErrorDispatcher();
 }

@@ -159,7 +159,7 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
 }
 
 void Surge::SocketHandler::WaitForSendEventToBeHandled() {
-    SurgeUtil::WaitableEvents::WaitFor({&m_receivedSendEvent}, m_timeoutMs);
+    SurgeUtil::WaitableEvents::WaitFor({&m_receivedSendEvent}, m_transactionTimeoutMs);
 }
 
 void Surge::SocketHandler::Run() {

@@ -1,4 +1,6 @@
 #include "ErrorDispatcher.h"
+#include "RtspClient.h"
+#include "DelegateInterface.h"
 #include "Logging.h"
 
 #include "FireableEvent.h"

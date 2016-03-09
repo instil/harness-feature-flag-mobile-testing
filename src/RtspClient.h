@@ -2,11 +2,12 @@
 #ifndef __RTSP_CLIENT_H__
 #define __RTSP_CLIENT_H__
 
+#include "Surge.h"
+#include "ErrorDispatcher.h"
 #include "DelegateInterface.h"
 #include "StoppableThread.h"
 #include "SocketHandler.h"
 #include "SessionDescription.h"
-#include "ErrorDispatcher.h"
 
 #include "DescribeResponse.h"
 #include "SetupResponse.h"
@@ -61,8 +62,9 @@ namespace Surge {
         }
 
         void NotifyDelegateTimeout() {
+            ErrorDispatcher *dispatcher = GetDispatcher();
             if (m_delegate != nullptr) {
-                // TODO
+                dispatcher->FailureForClient(this, ERROR_TYPE::LOST_CONNECTION);
             }
         }
 

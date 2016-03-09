@@ -1,5 +1,4 @@
 #include "Surge.h"
-#include "ErrorDispatcher.h"
 
 namespace Surge {
 
@@ -12,6 +11,10 @@ namespace Surge {
         if (__dispatcher != nullptr) {
             __dispatcher->StopRunning();
         }
+    }
+
+    ErrorDispatcher* GetDispatcher() {
+        return __dispatcher;
     }
     
 }

@@ -2,7 +2,6 @@
 #ifndef __ERROR_DISPATCHER_H__
 #define __ERROR_DISPATCHER_H__
 
-#include "RtspClient.h"
 #include "Mutex.h"
 #include "StoppableThread.h"
 

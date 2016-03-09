@@ -50,7 +50,7 @@ namespace Surge {
             size_t packet_offset = 0;
             bool has_more_packets = false;
 
-            do {
+            do {                
                 uint16_t packet_length_network_order;
                 memcpy(&packet_length_network_order, m_buffer + packet_offset + 2, 2);
                 uint16_t packet_length = ntohs(packet_length_network_order);
@@ -60,7 +60,7 @@ namespace Surge {
 
                 packet_offset += 4 + packet_length;
                 has_more_packets = packet_offset < m_length;
-            } while(has_more_packets);
+            } while (has_more_packets);
 
             return packets;
         }

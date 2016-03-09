@@ -50,28 +50,19 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
     m_sequenceNumber = ntohs(header.sequencenumber);
     m_type = static_cast<int>(header.payloadtype);
     m_marker = static_cast<bool>(header.marker);
+    m_timestmap = ntohl(header.timestamp);
 
-    size_t padding_bytes = 0;
-    if (header.padding) {
-        padding_bytes = static_cast<int>(buffer[length - 1]);
-        INFO("RTP PACKET HAS PADDING: " << padding_bytes);
-        if (padding_bytes <= 0) {
-            ostringstream message;
-            message << "Unhandled RTP Packet Padding: " << header.padding;
-            throw runtime_error{ message.str() };
-        }
-    }
-            
-    size_t payload_offset = sizeof(struct _RTPHeader) + (header.csrccount * sizeof(uint32_t));
-            
-    bool has_extension = (bool)header.extension;
+    size_t payload_offset = sizeof(struct _RTPHeader) + ((size_t)(header.csrccount * sizeof(uint32_t)));
+
+    bool has_extension = (header.extension == 0) ? false : true;
     if (has_extension) {
         size_t extension_header_offset = payload_offset;
-        const struct _RTPExtensionHeader* extension_header = (struct _RTPExtensionHeader*)
-            buffer + extension_header_offset;
+        struct _RTPExtensionHeader extension_header;
+        memset(&extension_header, 0, sizeof(struct _RTPExtensionHeader));
+        memcpy(&extension_header, buffer + extension_header_offset, sizeof(struct _RTPExtensionHeader));
         
-        m_extensionID = static_cast<int>(ntohs(extension_header->extid));
-        m_extensionLength = static_cast<size_t>(ntohs(extension_header->length));
+        m_extensionID = static_cast<int>(ntohs(extension_header.extid));
+        m_extensionLength = (sizeof(uint32_t) * static_cast<size_t>(ntohs(extension_header.length)));
 
         m_extension = (unsigned char*)malloc(m_extensionLength);
         memset(m_extension, 0, m_extensionLength);
@@ -81,24 +72,17 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
             + sizeof(struct _RTPExtensionHeader);
         memcpy(m_extension, extension_data_pointer, m_extensionLength);
         
-        payload_offset += sizeof(struct _RTPExtensionHeader) + m_extensionLength;
+        payload_offset += sizeof(struct _RTPExtensionHeader) + (sizeof(uint32_t) * m_extensionLength);
     }
-
-    m_timestmap = ntohl(header.timestamp);
-            
-    m_payloadLength = length - padding_bytes - payload_offset;
+    
+    m_payloadLength = length - payload_offset;
+    
+    /*INFO("SEQ NUM: " << m_sequenceNumber <<
+         " - VERSION: " << m_version <<
+         " - PAYLOAD_LENGTH: " << m_payloadLength <<
+         " - OFFSET: " << payload_offset <<
+         " - TOTAL: " << length);*/
     
     m_payload = (unsigned char *)malloc(m_payloadLength);
     memcpy(m_payload, buffer + payload_offset, m_payloadLength);
-
-    /*INFO("Version: " << m_version <<
-         " - Sequence: " << m_sequenceNumber <<
-         " - Type: " << m_type <<
-         " - Marker: " << m_marker <<
-         " - Timestamp: " << m_timestmap <<
-         " - Padding: " << padding_bytes <<
-         " - Extension: " << has_extension <<
-         " - Payload Offset: " << payload_offset <<
-         " - Payload Length: " << m_payloadLength <<
-         " - Total Packet Length: " << length);*/
 }

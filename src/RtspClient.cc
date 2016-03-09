@@ -93,8 +93,17 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionD
         m_lastKeepAliveMs = SurgeUtil::CurrentTimeMilliseconds();
         m_keeepAliveIntervalInSeconds = resp->GetTimeout();
         m_session = resp->GetSession();
+
         DEBUG("RtspClient Session set to: " << m_session);
         DEBUG("RtspClient KeepAlive Interval set to: " << m_keeepAliveIntervalInSeconds);
+
+        if (resp->IsInterleaved()) {
+            m_socketHandler.SetRtpInterleavedChannel(resp->GetRtpInterleavedChannel());
+            m_socketHandler.SetRtcpInterleavedChannel(resp->GetRtcpInterleavedChannel());
+
+            DEBUG("Rtp Interleaved Channel set to: " << resp->GetRtpInterleavedChannel());
+            DEBUG("Rtcp Interleaved Channel set to: " << resp->GetRtcpInterleavedChannel());
+        }
         
         StartSession();
     }

@@ -45,3 +45,14 @@ std::vector<std::string> SurgeUtil::StringSplit(const std::string input, std::st
     
     return output;
 }
+
+std::string SurgeUtil::FindKeyAndValuePair(const std::vector<std::string>* values, const std::string key)
+{
+    for (auto it = values->begin(); it != values->end(); ++it) {
+        std::string value = *it;
+        if (value.find(key) != std::string::npos) {
+            return value;
+        }
+    }
+    return std::string();
+}

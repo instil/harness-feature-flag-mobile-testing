@@ -4,6 +4,7 @@
 #include "MutexLocker.h"
 #include "Logging.h"
 #include "Helpers.h"
+#include "Constants.h"
 
 #include <fcntl.h>
 #include <string.h>
@@ -16,16 +17,25 @@
 
 #include <vector>
 
-#define READ_BUFFER_SIZE 256 * 1024
-#define DEFAULT_SOCKET_HANDLER_TIMEOUT_MS 5000
+using SurgeUtil::Constants::DEFAULT_SOCKET_HANDLER_TIMEOUT_MS;
+using SurgeUtil::Constants::DEFAULT_RTP_INTERLEAVED_CHANNEL;
+using SurgeUtil::Constants::DEFAULT_RTCP_INTERLEAVED_CHANNEL;
+using SurgeUtil::Constants::DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE;
+using SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
+using SurgeUtil::Constants::DEFAULT_CONNECT_TIMEOUT_MS;
+using SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
 
-#define INTERLEAVED_RTP_PACKET_CHANNEL_NUMBER 0
 
 Surge::SocketHandler::SocketHandler():
+    m_rtpInterleavedChannel(DEFAULT_RTP_INTERLEAVED_CHANNEL),
+    m_rtcpInterleavedChannel(DEFAULT_RTCP_INTERLEAVED_CHANNEL),
     m_rtspInputQueue(),
     m_rtspOutputQueue(),
     m_rtpOutputQueue(),
     m_rtspSocketFD(-1),
+    m_readBufferSize(DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE),
+    m_connectTimeoutMs(DEFAULT_CONNECT_TIMEOUT_MS),
+    m_transactionTimeoutMs(DEFAULT_TRANSACTION_TIMEOUT_MS),
     m_timeoutMs(DEFAULT_SOCKET_HANDLER_TIMEOUT_MS)
 {
     
@@ -89,7 +99,7 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
                 m_rtspSocketFD,
                 SurgeUtil::WaitableEvents::WatchForType::writable
         };
-        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&attemptCompleted}, m_timeoutMs);
+        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&attemptCompleted}, m_connectTimeoutMs);
 
         if (firedEvents.empty()) {
             ERROR("socket connection attempt timed out");
@@ -137,7 +147,7 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
     INFO("Command: " << command->StringDump());
     if (waitForResponse) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
-                                                              m_timeoutMs);
+                                                              m_transactionTimeoutMs);
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
             resp = m_rtspOutputQueue.RemoveItem();
@@ -191,7 +201,7 @@ void Surge::SocketHandler::Run() {
                 
                 if (resp->IsInterleavedPacket())
                 {
-                    if (resp->GetInterleavedPacketChannelNumber() == INTERLEAVED_RTP_PACKET_CHANNEL_NUMBER) {
+                    if (resp->GetInterleavedPacketChannelNumber() == m_rtpInterleavedChannel) {
                         
                         try {
                             std::vector<RtpPacket*> packets = resp->GetRtpPackets();
@@ -223,13 +233,13 @@ bool Surge::SocketHandler::ProcessSend(const int fd, const unsigned char *bytes,
 Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::WaitableEvent& event) {
     std::vector<unsigned char> response;
     response.clear();
-    response.reserve(READ_BUFFER_SIZE);
+    response.reserve(m_readBufferSize);
     
-    unsigned char *buffer = (unsigned char *) malloc(READ_BUFFER_SIZE);
+    unsigned char *buffer = (unsigned char *) malloc(m_readBufferSize);
     do {
-        memset((void*)buffer, 0, READ_BUFFER_SIZE);
+        memset((void*)buffer, 0, m_readBufferSize);
         
-        size_t received = recv(event.FD(), buffer, READ_BUFFER_SIZE, 0);
+        size_t received = recv(event.FD(), buffer, m_readBufferSize, 0);
         if (received == -1) {
             ERROR("Failed to recv errno: " << errno);
             free(buffer);

@@ -51,16 +51,10 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
     m_type = static_cast<int>(header.payloadtype);
     m_marker = static_cast<bool>(header.marker);
 
-    if (m_version != 2) {
-        ostringstream message;
-        message << "Invalid RTP Packet Version: " << m_version;
-        throw runtime_error{ message.str() };
-    }
-
     size_t padding_bytes = 0;
     if (header.padding) {
-        INFO("RTP PACKET HAS PADDING");
         padding_bytes = static_cast<int>(buffer[length - 1]);
+        INFO("RTP PACKET HAS PADDING: " << padding_bytes);
         if (padding_bytes <= 0) {
             ostringstream message;
             message << "Unhandled RTP Packet Padding: " << header.padding;

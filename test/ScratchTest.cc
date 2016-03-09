@@ -67,7 +67,7 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
 
     // sleep
     INFO("SLEEPING");
-    std::this_thread::sleep_for (std::chrono::seconds(60));
+    std::this_thread::sleep_for (std::chrono::seconds(5));
     INFO("DONE SLEEPING");
 
     INFO("STOPPING CLIENT");

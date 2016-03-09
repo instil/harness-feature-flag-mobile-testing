@@ -12,9 +12,9 @@ ARCHS=("armeabi-v7a"
 
 pushd src
 echo "Generating swig jni wrapper"
-rm -f jni/*.java
-rm -f jni/interface_wrap.*
-swig -c++ -java -cppext cpp -package com.tyco.rtsp.android -Wall jni/interface.i
+rm -f wrappers/java/*.java
+rm -f wrappers/java/interface_wrap.*
+swig -c++ -java -cppext cc -package co.instil.surge.rtsp -Wall wrappers/java/interface.i
 popd
 
 # Build JNI Bindings Jar

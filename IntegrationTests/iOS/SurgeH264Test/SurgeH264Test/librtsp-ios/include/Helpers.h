@@ -12,6 +12,9 @@ namespace SurgeUtil {
     std::vector<std::string> StringSplit(const std::string text, char sep);
 
     std::vector<std::string> StringSplit(const std::string data, std::string token);
+
+    std::string FindKeyAndValuePair(const std::vector<std::string>* values, const std::string key);
+    
 };
 
 #endif //__HELPERS_H__

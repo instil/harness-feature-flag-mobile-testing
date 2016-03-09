@@ -47,30 +47,21 @@ namespace Surge {
         std::vector<RtpPacket*> GetRtpPackets() {
             std::vector<RtpPacket*> packets;
 
-            uint16_t packet_length_network_order;
-            memcpy(&packet_length_network_order, m_buffer + 2, 2);
-            uint16_t packet_length = ntohs(packet_length_network_order);
-            bool has_more_packets = (packet_length + 4) < m_length;
-
             size_t packet_offset = 0;
-            if (has_more_packets) {
-                do {                    
-                    memcpy(&packet_length_network_order, m_buffer + packet_offset + 2, 2);
-                    packet_length = ntohs(packet_length_network_order);
+            bool has_more_packets = false;
 
-                    INFO("PACKET OFFSET = " << packet_offset << " - Total: " << m_length);
-                    RtpPacket *pack =  new RtpPacket(m_buffer + packet_offset + 4, packet_length);
-                    packets.push_back(pack);
+            do {                
+                uint16_t packet_length_network_order;
+                memcpy(&packet_length_network_order, m_buffer + packet_offset + 2, 2);
+                uint16_t packet_length = ntohs(packet_length_network_order);
 
-                    packet_offset += 4 + packet_length;
-
-                    has_more_packets = packet_offset < m_length;
-                } while (has_more_packets);
-            } else {
-                RtpPacket *pack =  new RtpPacket(m_buffer + 4, packet_length);
+                RtpPacket *pack =  new RtpPacket(m_buffer + packet_offset + 4, packet_length);
                 packets.push_back(pack);
-            }
-            
+
+                packet_offset += 4 + packet_length;
+                has_more_packets = packet_offset < m_length;
+            } while (has_more_packets);
+
             return packets;
         }
 

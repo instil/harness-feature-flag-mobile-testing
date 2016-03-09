@@ -34,6 +34,10 @@ namespace Surge {
 
         SurgeUtil::DataEventQueue<RtpPacket*>* GetRtpPacketQueue() { return &m_rtpOutputQueue; }
 
+        void SetRtpInterleavedChannel(int channel) { m_rtpInterleavedChannel = channel; }
+
+        void SetRtcpInterleavedChannel(int channel) { m_rtcpInterleavedChannel = channel; }
+
     private:
         bool ProcessSend(const int fd, const unsigned char *bytes, size_t length);
 
@@ -43,6 +47,9 @@ namespace Surge {
         
         void Run() override;
 
+        int m_rtpInterleavedChannel;
+        int m_rtcpInterleavedChannel;
+        
         SurgeUtil::Mutex m_mutex;
         SurgeUtil::FireableEvent m_receivedSendEvent;
         SurgeUtil::DataEventQueue<const RtspCommand*> m_rtspInputQueue;
@@ -50,6 +57,9 @@ namespace Surge {
         SurgeUtil::DataEventQueue<RtpPacket*> m_rtpOutputQueue;
 
         int m_rtspSocketFD;
+        size_t m_readBufferSize;
+        long m_connectTimeoutMs;
+        long m_transactionTimeoutMs;
         long m_timeoutMs;
         SurgeUtil::StoppableThread m_thread;
     };

@@ -17,12 +17,12 @@ class Delegate: public Surge::RtspClientDelegate {
 public:
 
     void ClientDidTimeout() {
-        
+        ERROR("TIMEOUT");
     }
 
-    void Payload(const unsigned char* buffer, size_t length) {
+    void Payload(const char* buffer, size_t length) {
         // print out nalus
-        SurgeTestUtil::PrintOutAllNaluTypes(buffer, length);
+        SurgeTestUtil::PrintOutAllNaluTypes((const unsigned char*)buffer, length);
     }
     
 };
@@ -49,7 +49,6 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     }
     
     Surge::SessionDescription palette = describe_response->GetPalettes()[0];
-
     delete describe_response;
 
     Surge::RtspResponse* setup_response = client.Setup(palette);
@@ -59,7 +58,7 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     delete play_response;
 
     // sleep
-    std::this_thread::sleep_for (std::chrono::seconds(5));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // stop
     client.StopClient();

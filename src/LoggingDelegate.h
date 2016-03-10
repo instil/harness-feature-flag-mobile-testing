@@ -7,6 +7,8 @@ namespace SurgeUtil {
     class LoggingDelegate {
     public:
 
+        virtual ~LoggingDelegate() { }
+
         virtual void info(const char *message) const { }
 
         virtual void error(const char *message) const { }

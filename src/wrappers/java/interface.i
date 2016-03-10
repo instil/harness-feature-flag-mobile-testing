@@ -19,12 +19,27 @@
 %apply (char *STRING, int LENGTH) { (const char *frameBuffer, size_t length) };
 
 %{
+
+#include "DelegateInterface.h"
+#include "ErrorDispatcher.h"
+#include "DescribeResponse.h"
+#include "SetupResponse.h"
+#include "SessionDescription.h"
+#include "SessionDescriptionV0.h"
+
 #include "Surge.h"
 #include "RtspClient.h"
-#include "DelegateInterface.h"
+
+using namespace Surge;
+using namespace SurgeUtil;
 %}
 
+%include "ErrorDispatcher.h"
+%include "DelegateInterface.h"
 %include "Surge.h"
 %include "RtspClient.h"
-%include "DelegateInterface.h"
+%include "DescribeResponse.h"
+%include "SetupResponse.h"
+%include "SessionDescription.h"
+%include "SessionDescriptionV0.h"
 

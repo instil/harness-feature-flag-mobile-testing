@@ -3,7 +3,7 @@ if(FOR_ANDROID)
   
   if(BUILD_JNI_WRAPPER)
     set(JNI_SRCS
-      ./wrappers/java/interface_wrap.cpp
+      ./wrappers/java/interface_wrap.cc
       ./wrappers/java/interface_wrap.h
       )
   endif()

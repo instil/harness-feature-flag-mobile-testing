@@ -17,7 +17,7 @@ rm -f wrappers/java/interface_wrap.*
 swig -c++ -java -cppext cc -package co.instil.surge.rtsp -Wall wrappers/java/interface.i
 popd
 
-# Build JNI Bindings Jar
+# Build JNI Bindings JarD
 rm -rf _android_bindings
 mkdir _android_bindings
 pushd _android_bindings
@@ -52,18 +52,18 @@ rm -rf librtsp-android librtsp-android.tar.gz
 mkdir librtsp-android
 mkdir -p librtsp-android/lib
 
-cp -v _android_bindings/src/VideoEdgeRtsp.jar librtsp-android/
+cp -v _android_bindings/src/Surge.jar librtsp-android/
 rm -rf _android_bindings
 for arch in "${ARCHS[@]}"; do
     mkdir librtsp-android/lib/$arch
-    cp -v "_android_$arch/src/libVideoEdgeRtsp.so" "librtsp-android/lib/$arch/"
+    cp -v "_android_$arch/src/libsurge.so" "librtsp-android/lib/$arch/"
     rm -rf "_android_$arch"
 done
 
 pushd librtsp-android
 touch $GENERATED_FILE_ANDROID
 
-echo "# RTSP Android" >> $GENERATED_FILE_ANDROID
+echo "# Surge RTSP Android" >> $GENERATED_FILE_ANDROID
 echo "librtsp version: $VERSION" >> $GENERATED_FILE_ANDROID
 echo "Builder: $BUILDER - $CURRENT_TIME" >> $GENERATED_FILE_ANDROID
 echo "" >> $GENERATED_FILE_ANDROID

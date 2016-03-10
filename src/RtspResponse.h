@@ -7,6 +7,7 @@
 #include "Logging.h"
 #include "Helpers.h"
 
+#include <cstdlib>
 #include <string>
 #include <map>
 
@@ -45,8 +46,7 @@ namespace Surge {
                 throw runtime_error{ message.str() };
             }
 
-            int numerical_base = 10;
-            m_code = std::stoi(status_line_tokens[1], nullptr, numerical_base);
+            m_code = atoi(status_line_tokens[1].c_str());
             
             bool is_body = false;
             for (auto it = lines.begin() + 1; it != lines.end(); ++it) {       

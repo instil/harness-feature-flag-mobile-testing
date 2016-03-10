@@ -9,6 +9,9 @@
 #include <cstdlib>
 #include <string>
 
+// ntohs..
+#include <arpa/inet.h>
+
 namespace Surge {
     
     class Response {

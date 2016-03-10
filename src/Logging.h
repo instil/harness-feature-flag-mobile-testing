@@ -7,20 +7,11 @@
 #include <sstream>
 #include <string>
 
+#include "LoggingDelegate.h"
 
 namespace SurgeUtil {
 
     enum class LogLevel { Trace = 0, Debug, Info, Warning, Error, Fatal };
-
-    typedef void (*LOG_FUNCTION)(LogLevel level, const char *message);
-    struct LoggingHooks {
-        LOG_FUNCTION trace;
-        LOG_FUNCTION debug;
-        LOG_FUNCTION info;
-        LOG_FUNCTION warn;
-        LOG_FUNCTION error;
-        LOG_FUNCTION fatal;
-    };
 
     class Logger {
     public:
@@ -32,7 +23,7 @@ namespace SurgeUtil {
 
         void SetLevel(LogLevel level) { m_level = level; }
 
-        void SetLoggingHooks(LoggingHooks hooks) { m_loggingHooks = std::move(hooks); }
+        void SetLoggingDelegate(const LoggingDelegate *delegate) { m_delegate = delegate;  }
         
         void Log(const LogLevel a_level,
                  const std::ostringstream& a_message,
@@ -44,6 +35,10 @@ namespace SurgeUtil {
                 return;
             }
 
+            if (m_delegate == nullptr) {
+                return;
+            }
+
             std::ostringstream stream;
             stream << a_file << ":" << a_line << " -> " << a_message.str();
             std::string cppMessage = stream.str();
@@ -52,54 +47,40 @@ namespace SurgeUtil {
             switch (a_level)
             {
             case LogLevel::Trace:
-                if (m_loggingHooks.trace) {
-                    m_loggingHooks.trace(LogLevel::Trace, message);
-                }
+                m_delegate->trace(message);
                 break;
 
             case LogLevel::Debug:
-                if (m_loggingHooks.debug) {
-                    m_loggingHooks.debug(LogLevel::Debug, message);
-                }
+                m_delegate->debug(message);
                 break;
 
             case LogLevel::Info:
-                if (m_loggingHooks.info) {
-                    m_loggingHooks.info(LogLevel::Info, message);
-                }
+                m_delegate->info(message);
                 break;
 
             case LogLevel::Warning:
-                if (m_loggingHooks.warn) {
-                    m_loggingHooks.warn(LogLevel::Warning, message);
-                }
+                m_delegate->warn(message);
                 break;
 
             case LogLevel::Error:
-                if (m_loggingHooks.error) {
-                    m_loggingHooks.error(LogLevel::Error, message);
-                }
+                m_delegate->error(message);
                 break;
 
             case LogLevel::Fatal:
-                if (m_loggingHooks.fatal) {
-                    m_loggingHooks.fatal(LogLevel::Fatal, message);
-                }
+                m_delegate->fatal(message);
                 break;
             }
         }
 
     private:
-        Logger(): m_level(LogLevel::Debug) {
-            memset(&m_loggingHooks, 0, sizeof(m_loggingHooks));
-        }
+        Logger(): m_level(LogLevel::Debug), m_delegate(nullptr) { }
 
         bool IsLogLevelEnabled(LogLevel level) {
             return level >= m_level;
         }
 
         LogLevel m_level;
-        struct LoggingHooks m_loggingHooks;
+        const LoggingDelegate *m_delegate;
     };
 
 }

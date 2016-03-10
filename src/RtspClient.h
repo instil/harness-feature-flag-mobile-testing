@@ -57,7 +57,8 @@ namespace Surge {
 
         void NotifyDelegatePayload(const unsigned char *buffer, size_t length) {
             if (m_delegate != nullptr) {
-                m_delegate->Payload(buffer, length);
+                // casting to char * so swig can see this as a byte[] for jni bindings
+                m_delegate->Payload((const char *)buffer, length);
             }
         }
 

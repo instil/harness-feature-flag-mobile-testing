@@ -36,7 +36,10 @@ if(BUILD_JAR STREQUAL OFF)
     RtspCommandFactory.h
     Describe.h
     Setup.h
+    Pause.h
+    Play.h
     Options.h
+    Teardown.h
 
     Response.h
     RtspResponse.h
@@ -44,8 +47,11 @@ if(BUILD_JAR STREQUAL OFF)
     SetupResponse.h
 
     SessionDescription.h
+    SessionDescriptionV0.h
     SessionDescriptionFactory.h
     SessionDescriptionFactory.cc
+
+    ResponseFactory.h
 
     RtpPacket.h
     RtpPacket.cc
@@ -53,6 +59,10 @@ if(BUILD_JAR STREQUAL OFF)
     H264Depacetizer.h
     H264Depacetizer.cc
 
+    MimeTypes.h
+    LoggingDelegate.h
+    DelegateInterface.h
+    Constants.h
     BaseWaitableEvent.h
     BasicFDEvent.h
     DateTime.cc

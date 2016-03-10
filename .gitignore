@@ -14,7 +14,7 @@ cppcheck.xml
 
 Test-AndroidStudio.iml
 
-src/jni/*.java
-src/jni/interface_wrap.*
+src/wrappers/java/*.java
+src/wrappers/java/interface_wrap.*
 
 *.userprefs

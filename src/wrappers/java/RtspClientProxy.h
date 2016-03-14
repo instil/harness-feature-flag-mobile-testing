@@ -27,10 +27,10 @@ namespace SurgeJava {
         struct RtspPalette {
             Surge::SessionDescription palette;
         };
-
+        
         struct RtspSessionDescriptions {
             size_t length;
-            struct RtspPalette* palettes;
+            struct RtspPalette *palettes;
         };
 
         struct RtspClientWrapper* CreateNewRtspClient(Surge::RtspClientDelegate *delegate);
@@ -39,7 +39,7 @@ namespace SurgeJava {
                      const char *url, bool requires_auth, const char *user, const char *pass,
                      struct RtspSessionDescriptions* const palettes);
 
-        int Setup(struct RtspClientWrapper* const client, const RtspPalette* palette);
+        int Setup(struct RtspClientWrapper* const client, const RtspPalette *palette);
 
         int Play(struct RtspClientWrapper* const client);
 

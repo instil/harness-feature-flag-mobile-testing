@@ -39,13 +39,15 @@ namespace SurgeJava {
             }
 
             const std::vector<Surge::SessionDescription> descriptions = response->GetPalettes();
-            palettes->length = descriptions.size();
-            palettes->palettes = (struct RtspPalette*)malloc(palettes->length * sizeof(struct RtspPalette));
+            size_t descriptions_length = descriptions.size();
+            
+            palettes->length = descriptions_length;
+            palettes->palettes = new RtspPalette[descriptions_length];
 
             size_t offs = 0;
             for (auto it = descriptions.begin(); it != descriptions.end(); ++it) {
-                Surge::SessionDescription description = *it;
-                (palettes->palettes + offs)->palette = description;
+                struct RtspPalette * pointer = palettes->palettes + offs;
+                pointer->palette = *it;
                 offs++;
             }
 
@@ -54,8 +56,9 @@ namespace SurgeJava {
             return 0;
         }
 
-        int Setup(struct RtspClientWrapper* const client, const RtspPalette *palette) {
-            Surge::SetupResponse* response = client->client->Setup(palette->palette);
+        int Setup(struct RtspClientWrapper* const client, const RtspPalette* palette) {
+            Surge::SessionDescription description = palette->palette;
+            Surge::SetupResponse* response = client->client->Setup(description);
 
             if (response == nullptr) {
                 return -1;
@@ -103,7 +106,7 @@ namespace SurgeJava {
         }
 
         void ReleaseRtspPaletteDescriptions(struct RtspSessionDescriptions* palettes) {
-            free(palettes->palettes);
+            delete [] palettes->palettes;
             free(palettes);
         }
         

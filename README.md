@@ -47,6 +47,8 @@ CLion automatically supports CMake projects out of the box. Other IDE support av
 $ cmake --help
 ```
 
+Unittesting will work from clion!
+
 ## Debugging
 
 ScratchTest.cc is a test file for playing with usage of the library and i run:
@@ -74,7 +76,15 @@ $ ./release-ios.sh
 
 ## Android
 
-TODO
+To compile on android i use the android-cmake toolchain. It is already in the project with some modifications. Namely the -fstrict-aliasing needed to be
+removed as this generates bad code for SWIG Directors which will crash.
+
+You also need the Android-NDK to be installed.
+
+```bash
+$ export ANDROID_NDK=~/android-ndk-r10e
+$ ./release-android.sh
+```
 
 ## Python
 

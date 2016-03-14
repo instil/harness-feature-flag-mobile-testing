@@ -1,4 +1,7 @@
-#include "Config.h"
+#ifndef CYTHON
+# include "Config.h"
+#endif
+
 #include "RtpPacket.h"
 #include "Logging.h"
 

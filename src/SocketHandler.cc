@@ -93,6 +93,9 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
         return -1;
     } 
 
+    int socketSize  = (1 * 1024 * 1024); // 1Mb; 
+    setsockopt(m_rtspSocketFD, SOL_SOCKET, SO_RCVBUF, &socketSize, sizeof(socketSize));
+    
     if (connect(m_rtspSocketFD, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         
         SurgeUtil::BasicFDEvent attemptCompleted {
@@ -144,14 +147,14 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
 
     WaitForSendEventToBeHandled();
     
-    INFO("Command: " << command->StringDump());
+    TRACE("Command: " << command->StringDump());
     if (waitForResponse) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
                                                               m_transactionTimeoutMs);
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
             resp = m_rtspOutputQueue.RemoveItem();
-            INFO("TRANSACTION RESPONSE: " << resp->StringDump());
+            TRACE("TRANSACTION RESPONSE: " << resp->StringDump());
         }
     }
 
@@ -232,8 +235,6 @@ bool Surge::SocketHandler::ProcessSend(const int fd, const unsigned char *bytes,
 
 Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::WaitableEvent& event) {
     std::vector<unsigned char> response;
-    response.clear();
-    response.reserve(m_readBufferSize);
     
     unsigned char *buffer = (unsigned char *) malloc(m_readBufferSize);
     do {

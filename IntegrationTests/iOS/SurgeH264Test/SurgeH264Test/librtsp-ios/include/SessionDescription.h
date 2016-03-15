@@ -14,6 +14,31 @@ namespace Surge {
     class SessionDescription {
     public:
 
+        SessionDescription(): m_type(UNKNOWN),
+                              m_controlUrlIsComplete(false),
+                              m_control(""),
+                              m_rtpMap(""),
+                              m_fmtp(""),
+                              m_frameRate(-1),
+                              m_resolutionWidth(-1),
+                              m_resolutionHeight(-1) { }
+        
+        SessionDescription(RtspSessionType type,
+                           bool completeControlUrl,
+                           std::string control,
+                           std::string rtpMap,
+                           std::string fmtp,
+                           int frameRate,
+                           int width,
+                           int height): m_type(type),
+                                        m_controlUrlIsComplete(completeControlUrl),
+                                        m_control(control),
+                                        m_rtpMap(rtpMap),
+                                        m_fmtp(fmtp),
+                                        m_frameRate(frameRate),
+                                        m_resolutionWidth(width),
+                                        m_resolutionHeight(height) { }
+
         virtual ~SessionDescription() { }
 
         RtspSessionType GetType() const { return m_type; }
@@ -44,14 +69,21 @@ namespace Surge {
             return m_fmtp.substr(pos + 21, end);
         }
 
-        virtual int GetPacketizationMode() const { return 1; }
+        int GetFrameRate() const { return m_frameRate; }
 
-    protected:        
-        bool m_controlUrlIsComplete;
+        int GetResolutionWidth() const { return m_resolutionWidth; }
+
+        int GetResolutionHeight() const { return m_resolutionHeight; }
+
+    protected:
         RtspSessionType m_type;
+        bool m_controlUrlIsComplete;
         std::string m_control;
         std::string m_rtpMap;
         std::string m_fmtp;
+        int m_frameRate;
+        int m_resolutionWidth;
+        int m_resolutionHeight;
     };
     
 }

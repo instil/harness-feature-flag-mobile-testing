@@ -2,7 +2,6 @@
 #ifndef __STOPPABLE_THREAD_H__
 #define __STOPPABLE_THREAD_H__
 
-// TycoUtility Headers
 #include "FireableEvent.h"
 #include "Thread.h"
 

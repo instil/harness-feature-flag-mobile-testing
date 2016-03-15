@@ -2,7 +2,6 @@
 #ifndef __MUTEX_LOCKER_H__
 #define __MUTEX_LOCKER_H__
 
-// TycoUtility Headers
 #include "Mutex.h"
 
 namespace SurgeUtil {

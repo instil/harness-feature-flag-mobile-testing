@@ -6,6 +6,8 @@
 #include "Helpers.h"
 #include "Constants.h"
 
+#include <cstdlib>
+
 using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_MS;
 
 namespace Surge {
@@ -35,8 +37,7 @@ namespace Surge {
                 values = SurgeUtil::StringSplit(values[1], "=");
                 
                 if (values.size() > 1) {
-                    int numerical_base = 10;
-                    m_timeout = std::stoi(values[1], nullptr, numerical_base);
+                    m_timeout = atoi(values[1].c_str());
                 }
             } else {
                 // simply just session
@@ -51,9 +52,8 @@ namespace Surge {
                 values = SurgeUtil::StringSplit(value, '=');
                 values = SurgeUtil::StringSplit(values[1], '-');
                 
-                int numerical_base = 10;
-                m_rtpInterleavedChannel = std::stoi(values[0], nullptr, numerical_base);
-                m_rtcpInterleavedChannel = std::stoi(values[1], nullptr, numerical_base);
+                m_rtpInterleavedChannel = atoi(values[0].c_str());
+                m_rtcpInterleavedChannel = atoi(values[1].c_str());
             }
         }
 

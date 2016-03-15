@@ -20,8 +20,8 @@ public:
         [m_delegate Timeout];
     }
     
-    void Payload(const unsigned char* buffer, size_t length) {
-        [m_delegate Payload:buffer withSize:length];
+    void Payload(const char* buffer, size_t length) {
+        [m_delegate Payload:(const unsigned char *)buffer withSize:length];
     }
     
 private:

@@ -19,6 +19,8 @@ namespace Surge {
 
         const std::vector<SessionDescription> GetPalettes() const { return m_palettes; }
 
+        const bool Ok() const override { return GetCode() == 200 && m_palettes.size() > 0; }
+
     private:
         std::vector<SessionDescription> m_palettes;
     };

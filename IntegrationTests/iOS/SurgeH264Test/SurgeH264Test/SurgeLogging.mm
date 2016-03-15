@@ -9,25 +9,36 @@
 #import "SurgeLogging.h"
 
 #include "Logging.h"
+#include "LoggingDelegate.h"
 
-void LogFunction(SurgeUtil::LogLevel level, const char *message) {
-    NSLog(@"LOG: %s", message);
-}
+class RtspLoggingDelegate: public SurgeUtil::LoggingDelegate {
+public:
+    
+    void info(const char *message) const override {
+        NSLog(@"INFO: %s", message);
+    }
+    
+    void error(const char *message) const override {
+        NSLog(@"ERROR: %s", message);
+    }
+    
+    void fatal(const char *message) const override {
+        NSLog(@"FATAL: %s", message);
+    }
+    
+    void warn(const char *message) const override {
+        NSLog(@"WARN: %s", message);
+    }
+    
+};
 
 @implementation SurgeLogging
 
 + (void)ConfigureLogging {
-    struct SurgeUtil::LoggingHooks hooks;
-    
-    hooks.info = &LogFunction;
-    hooks.debug = &LogFunction;
-    hooks.error = &LogFunction;
-    hooks.fatal = &LogFunction;
-    hooks.trace = &LogFunction;
-    hooks.warn = &LogFunction;
+    static RtspLoggingDelegate *delegate = new RtspLoggingDelegate();
     
     SurgeUtil::Logger& logger = SurgeUtil::Logger::GetInstance();
-    logger.SetLoggingHooks(hooks);
+    logger.SetLoggingDelegate(delegate);
 }
 
 @end

@@ -13,7 +13,7 @@ namespace Surge {
         
         virtual void ClientDidTimeout() = 0;
 
-        virtual void Payload(const unsigned char* buffer, size_t length) = 0;
+        virtual void Payload(const char* frameBuffer, size_t length) = 0;
 
     };
     

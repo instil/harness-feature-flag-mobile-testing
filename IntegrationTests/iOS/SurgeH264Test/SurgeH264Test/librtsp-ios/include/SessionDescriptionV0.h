@@ -38,10 +38,6 @@ namespace Surge {
             }
         }
 
-        SessionDescription* DeepCopy() const {
-            return nullptr;
-        }
-
     };
     
 }

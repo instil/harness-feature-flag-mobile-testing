@@ -6,7 +6,11 @@ namespace Surge {
 
     typedef enum {
         
-        H264
+        H264,
+        
+        JPEG,
+
+        UNKNOWN
         
     } RtspSessionType;
     

@@ -69,11 +69,11 @@ namespace Surge {
             return m_fmtp.substr(pos + 21, end);
         }
 
-        int GetFrameRate() const { m_frameRate; }
+        int GetFrameRate() const { return m_frameRate; }
 
-        int GetResolutionWidth() const { m_resolutionWidth; }
+        int GetResolutionWidth() const { return m_resolutionWidth; }
 
-        int GetResolutionHeight() const { m_resolutionHeight; }
+        int GetResolutionHeight() const { return m_resolutionHeight; }
 
     protected:
         RtspSessionType m_type;

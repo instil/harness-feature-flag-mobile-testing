@@ -78,7 +78,7 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
             + sizeof(struct _RTPExtensionHeader);
         memcpy(m_extension, extension_data_pointer, m_extensionLength);
         
-        payload_offset += sizeof(struct _RTPExtensionHeader) + (sizeof(uint32_t) * m_extensionLength);
+        payload_offset += sizeof(struct _RTPExtensionHeader) + m_extensionLength;
     }
     
     m_payloadLength = length - payload_offset;

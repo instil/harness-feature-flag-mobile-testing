@@ -6,7 +6,6 @@
 #include <system_error>
   using std::system_error;
 
-// TycoUtility headers
 #include "Mutex.h"
   using SurgeUtil::Mutex;
 

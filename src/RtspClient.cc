@@ -5,6 +5,7 @@
 #include "Url.h"
 
 #include "H264Depacetizer.h"
+#include "MP4VDepacketizer.h"
 
 Surge::RtspClient::RtspClient(Surge::RtspClientDelegate *delegate) : m_delegate(delegate),
                                                                      m_processedFirstPayload(false),
@@ -291,7 +292,7 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
         ProcessMP4VPacket(packet);
         break;
         
-    case UNKNOWN:
+    default:
         ERROR("Unhandled session type: " << m_currentPalette.GetType());
         return;
     }
@@ -331,10 +332,15 @@ void Surge::RtspClient::ProcessH264Packet(const RtpPacket* packet) {
     AppendPayloadToCurrentFrame(payload, payload_size);
 }
 
-void Surge::RtspClient::ProcessJPEGPacket(const RtpPacket* packet) {
-    
+void Surge::RtspClient::ProcessMP4VPacket(const RtpPacket* packet) {
+    MP4VDepacketizer depacketizer(&m_currentPalette, packet, IsFirstPayload());
+
+    const unsigned char *payload = depacketizer.PayloadBytes();
+    size_t payload_size = depacketizer.PayloadLength();
+
+    AppendPayloadToCurrentFrame(payload, payload_size);
 }
 
-void Surge::RtspClient::ProcessMP4VPacket(const RtpPacket* packet) {
+void Surge::RtspClient::ProcessJPEGPacket(const RtpPacket* packet) {
     
 }

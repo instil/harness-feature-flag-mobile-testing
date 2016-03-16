@@ -66,7 +66,21 @@ namespace Surge {
                 end = m_fmtp.length();
             }
             
-            return m_fmtp.substr(pos + 21, end);
+            return m_fmtp.substr(pos + 21, end - pos);
+        }
+
+        const std::string GetFmtpConfigParameters() const {
+            size_t pos = m_fmtp.find("config=");
+            if (pos == std::string::npos) {
+                return std::string();
+            }
+
+            size_t end = m_fmtp.find(";", pos);
+            if (end == std::string::npos) {
+                end = m_fmtp.length();
+            }
+            
+            return m_fmtp.substr(pos + 7, end - pos);
         }
 
         int GetFrameRate() const { return m_frameRate; }

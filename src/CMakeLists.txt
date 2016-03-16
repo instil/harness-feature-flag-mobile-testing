@@ -61,6 +61,9 @@ if(BUILD_JAR STREQUAL OFF)
     H264Depacetizer.h
     H264Depacetizer.cc
 
+    MP4VDepacketizer.h
+    MP4VDepacketizer.cc
+
     MimeTypes.h
     LoggingDelegate.h
     DelegateInterface.h

@@ -284,10 +284,6 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
         ProcessH264Packet(packet);
         break;
 
-    case JPEG:
-        ProcessJPEGPacket(packet);
-        break;
-
     case MP4V:
         ProcessMP4VPacket(packet);
         break;
@@ -341,6 +337,3 @@ void Surge::RtspClient::ProcessMP4VPacket(const RtpPacket* packet) {
     AppendPayloadToCurrentFrame(payload, payload_size);
 }
 
-void Surge::RtspClient::ProcessJPEGPacket(const RtpPacket* packet) {
-    
-}

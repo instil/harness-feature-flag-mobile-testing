@@ -86,8 +86,6 @@ namespace Surge {
 
         void ProcessH264Packet(const RtpPacket* packet);
 
-        void ProcessJPEGPacket(const RtpPacket* packet);
-
         void ProcessMP4VPacket(const RtpPacket* packet);
 
         std::vector<unsigned char> m_currentFrame;

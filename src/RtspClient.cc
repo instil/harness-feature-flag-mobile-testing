@@ -278,18 +278,25 @@ void Surge::RtspClient::Run() {
 
 void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 
-    if (m_currentPalette.GetType() != RtspSessionType::H264) {
+    switch (m_currentPalette.GetType()) {
+    case H264:
+        ProcessH264Packet(packet);
+        break;
+
+    case JPEG:
+        ProcessJPEGPacket(packet);
+        break;
+
+    case MP4V:
+        ProcessMP4VPacket(packet);
+        break;
+        
+    case UNKNOWN:
         ERROR("Unhandled session type: " << m_currentPalette.GetType());
         return;
     }
-    
-    H264Depacketizer depacketizer(&m_currentPalette, packet, IsFirstPayload());
+
     m_processedFirstPayload = true;
-
-    const unsigned char *payload = depacketizer.PayloadBytes();
-    size_t payload_size = depacketizer.PayloadLength();
-
-    AppendPayloadToCurrentFrame(payload, payload_size);
     
     if (!packet->IsMarked()) {
         return;
@@ -313,4 +320,21 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 
     // reset
     ResetCurrentPayload();
+}
+
+void Surge::RtspClient::ProcessH264Packet(const RtpPacket* packet) {
+    H264Depacketizer depacketizer(&m_currentPalette, packet, IsFirstPayload());
+
+    const unsigned char *payload = depacketizer.PayloadBytes();
+    size_t payload_size = depacketizer.PayloadLength();
+
+    AppendPayloadToCurrentFrame(payload, payload_size);
+}
+
+void Surge::RtspClient::ProcessJPEGPacket(const RtpPacket* packet) {
+    
+}
+
+void Surge::RtspClient::ProcessMP4VPacket(const RtpPacket* packet) {
+    
 }

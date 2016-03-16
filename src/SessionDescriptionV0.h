@@ -16,7 +16,6 @@ namespace Surge {
     public:
         SessionDescriptionV0(const std::string rawSessionDescription) {
             m_controlUrlIsComplete = false;
-            m_type = RtspSessionType::H264;
 
             std::vector<std::string> lines = SurgeUtil::StringSplit(rawSessionDescription, "\r\n");
             for (auto it = lines.begin(); it != lines.end(); ++it) {
@@ -25,15 +24,22 @@ namespace Surge {
                 bool is_rtpmap = current_line.find("a=rtpmap") != std::string::npos;
                 bool is_fmtp = current_line.find("a=fmtp") != std::string::npos;
                 bool is_control = current_line.find("a=control") != std::string::npos;
+                bool is_mime = is_rtpmap;
 
                 if (is_rtpmap) {
                     m_rtpMap = current_line;
                 }
-                else if (is_fmtp) {
+                
+                if (is_fmtp) {
                     m_fmtp = current_line;
                 }
-                else if (is_control) {
+                
+                if (is_control) {
                     m_control = current_line.substr(10, current_line.length());
+                }
+                
+                if (is_mime) {    
+                    m_type = GetTypeFromMime(current_line);
                 }
             }
         }

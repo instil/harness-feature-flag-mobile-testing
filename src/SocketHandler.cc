@@ -93,8 +93,8 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
         return -1;
     } 
 
-    int socketSize  = (1 * 1024 * 1024); // 1Mb; 
-    setsockopt(m_rtspSocketFD, SOL_SOCKET, SO_RCVBUF, &socketSize, sizeof(socketSize));
+    int new_socket_buffer_size  = (1 * 1024 * 1024); // 1Mb; 
+    setsockopt(m_rtspSocketFD, SOL_SOCKET, SO_RCVBUF, &new_socket_buffer_size, sizeof(new_socket_buffer_size));
     
     if (connect(m_rtspSocketFD, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         
@@ -120,6 +120,7 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
                 close(m_rtspSocketFD);
                 return -1;
             }
+            
             if (error_code != 0)
             {
                 ERROR("socket connection attempt failed: error code =  " << error_code);
@@ -201,7 +202,6 @@ void Surge::SocketHandler::Run() {
             Response* resp = ReceiveResponse(rtsp_socket_data_available);
 
             if (resp != nullptr) {
-                
                 if (resp->IsInterleavedPacket())
                 {
                     if (resp->GetInterleavedPacketChannelNumber() == m_rtpInterleavedChannel) {
@@ -255,10 +255,9 @@ Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::Waitable
             copy(buffer,
                  buffer + received,
                  response.begin() + old_size);
-        }        
+        }
     } while (event.IsFired());
     
     free(buffer);
-    
     return new Surge::Response(&(response[0]), response.size());
 }

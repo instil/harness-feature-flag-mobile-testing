@@ -36,7 +36,7 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     Delegate delegate;
     Surge::RtspClient client(&delegate);
     
-    Surge::DescribeResponse *describe_response = client.Describe("rtsp://localhost:8554/test.264", false, "", "");
+    Surge::DescribeResponse *describe_response = client.Describe("rtsp://192.168.1.104:5454/camera.sdp", false, "", "");
     if (describe_response == nullptr) {
         ERROR("Server is unreachable!");
         return;

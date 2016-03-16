@@ -75,6 +75,19 @@ namespace Surge {
 
         int GetResolutionHeight() const { return m_resolutionHeight; }
 
+        static RtspSessionType GetTypeFromMime(const std::string raw_mime) {
+            if (raw_mime.find("H264") != std::string::npos) {
+                return H264;
+            }
+            else if (raw_mime.find("JPEG") != std::string::npos) {
+                return JPEG;
+            }
+            else if (raw_mime.find("MP4V-ES") != std::string::npos) {
+                return MP4V;
+            }
+            return UNKNOWN;
+        }
+
     protected:
         RtspSessionType m_type;
         bool m_controlUrlIsComplete;

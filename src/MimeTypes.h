@@ -10,6 +10,8 @@ namespace Surge {
         
         JPEG,
 
+        MP4V,
+
         UNKNOWN
         
     } RtspSessionType;

@@ -22,7 +22,7 @@ namespace Surge {
                      "CSeq: %d\r\n", nextSequenceNumber);
             packet += std::string(headerField);
 
-            packet += "Transport: RTP/AVP/TCP;unicast;interleaved=0-1\r\n";
+            packet += "Transport: RTP/AVP/TCP;interleaved=0-1\r\n";
 
             if (!authHeader.empty()) {
                 packet += authHeader;

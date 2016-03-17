@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <functional>
 
 // ntohs..
 #include <arpa/inet.h>
@@ -66,6 +67,24 @@ namespace Surge {
             } while (has_more_packets);
 
             return packets;
+        }
+
+        void ParseRtpPackets(std::function<void (RtpPacket *)> handler) {
+            size_t packet_offset = 0;
+            bool has_more_packets = false;
+
+            do {                
+                uint16_t packet_length_network_order;
+                memcpy(&packet_length_network_order, m_buffer + packet_offset + 2, 2);
+                uint16_t packet_length = ntohs(packet_length_network_order);
+
+                RtpPacket *pack =  new RtpPacket(m_buffer + packet_offset + 4, packet_length);
+
+                handler(pack);
+
+                packet_offset += 4 + packet_length;
+                has_more_packets = packet_offset < m_length;
+            } while (has_more_packets);
         }
 
         int GetInterleavedPacketChannelNumber() {

@@ -155,7 +155,7 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
             resp = m_rtspOutputQueue.RemoveItem();
-            TRACE("TRANSACTION RESPONSE: " << resp->StringDump());
+            INFO("TRANSACTION RESPONSE: " << resp->StringDump());
         }
     }
 
@@ -205,16 +205,10 @@ void Surge::SocketHandler::Run() {
                 if (resp->IsInterleavedPacket())
                 {
                     if (resp->GetInterleavedPacketChannelNumber() == m_rtpInterleavedChannel) {
-                        
-                        try {
-                            std::vector<RtpPacket*> packets = resp->GetRtpPackets();
-                            for (auto it = packets.begin(); it != packets.end(); ++it) {
-                                m_rtpOutputQueue.AddItem(*it);
-                            }
-                        }
-                        catch (const std::exception &exc) {
-                            ERROR("ERROR PARSING RTP PACKET: " << exc.what());
-                        }
+
+                        resp->ParseRtpPackets([&] (RtpPacket* pack) {
+                                m_rtpOutputQueue.AddItem(pack);
+                            });
                         
                     }
                     delete resp;

@@ -151,8 +151,25 @@ Surge::RtspResponse* Surge::RtspClient::Pause() {
     return resp;
 }
 
-Surge::RtspResponse* Surge::RtspClient::Options() {    
+Surge::RtspResponse* Surge::RtspClient::Options() {
     RtspCommand* options = RtspCommandFactory::OptionsRequest(m_url, m_session, GetNextSequenceNumber());
+    Response* raw_resp = m_socketHandler.RtspTransaction(options, true);
+    delete options;
+
+    bool received_response = raw_resp != nullptr;
+    if (!received_response) {
+        ERROR("Failed to get response to OPTIONS!");
+        return nullptr;
+    }
+
+    RtspResponse* resp = new RtspResponse(raw_resp);
+    delete raw_resp;
+
+    return resp;
+}
+
+Surge::RtspResponse* Surge::RtspClient::Options(const std::string url) {
+    RtspCommand* options = RtspCommandFactory::OptionsRequest(url, m_session, GetNextSequenceNumber());
     Response* raw_resp = m_socketHandler.RtspTransaction(options, true);
     delete options;
 

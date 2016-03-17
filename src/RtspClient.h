@@ -36,6 +36,8 @@ namespace Surge {
 
         RtspResponse* Options();
 
+        RtspResponse* Options(const std::string url);
+
         RtspResponse* Teardown(bool waitForResponse = false);
 
         RtspResponse* KeepAlive();

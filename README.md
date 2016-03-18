@@ -1,4 +1,4 @@
-# Surge W.I.P
+# Surge
 
 RTSP implementation from scratch.
 
@@ -86,6 +86,29 @@ $ export ANDROID_NDK=~/android-ndk-r10e
 $ ./release-android.sh
 ```
 
-## Python
+## Python Bindings
 
-TODO
+Python bindings are available:
+
+```bash
+$ python ./setup.py build
+$ sudo python ./setup.py install
+```
+
+# Raspberry Pi - Real-Time Camera
+
+The raspberry pi is a beast of a wee machine. To view video in real time the server _must_ use the hardware h264 encoder provided by OMX framework.
+
+Unfortunatly ffmpeg does not use OMX and falls back to using software encoding which is too slow to be in realtime. Tests on raspberry pi shown that it couldn't do much better than 0.2 speed so it eventually gets incredibly out of sync.
+
+```bash
+$ sudo apt-get install gstreamer1.0 gstreamer1.0-tools gstreamer1.0-omx libgstreamer1.0-dev 
+$ wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.4.4.tar.xz
+$ tar xvf gst-rtsp-server-1.4.4
+$ cd gst-rtsp-server
+$ ./configure --prefix=/opt/gst-rtsp
+$ make
+$ sudo modprobe bcm2835-v4l2
+$ cd examples
+$ ./test-launch "( v4l2src device=/dev/video0 ! omxh264enc ! video/x-h264,width=720,height=480,framerate=10/1,profile=high,target-bitrate=5000000 ! h264parse ! rtph264pay name=pay0 config-interval=1 pt=96 )"
+```

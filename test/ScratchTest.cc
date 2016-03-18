@@ -22,6 +22,7 @@ public:
 
     void Payload(const char* buffer, size_t length) {
         // print out nalus
+        INFO("PAYLOAD");
         SurgeTestUtil::PrintOutAllNaluTypes((const unsigned char*)buffer, length);
     }
     
@@ -35,8 +36,13 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
 
     Delegate delegate;
     Surge::RtspClient client(&delegate);
+
+    Surge::RtspResponse *options_response = client.Options("rtsp://192.168.1.105:8554/test");
+    delete options_response;
     
-    Surge::DescribeResponse *describe_response = client.Describe("rtsp://192.168.1.104:5454/camera.sdp", false, "", "");
+    Surge::DescribeResponse *describe_response = client.Describe("rtsp://192.168.1.105:8554/test",
+                                                                 false, "", "");
+    
     if (describe_response == nullptr) {
         ERROR("Server is unreachable!");
         return;
@@ -58,7 +64,7 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     delete play_response;
 
     // sleep
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    std::this_thread::sleep_for(std::chrono::seconds(50));
 
     // stop
     client.StopClient();

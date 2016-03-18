@@ -56,15 +56,22 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string url,
     return resp;
 }
 
-Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionDescription) {
+Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionDescription, bool serverAllowsAggregate) {
     
     // control url is where we put any more requests to
     std::string setup_url = (sessionDescription.IsControlUrlComplete()) ?
         sessionDescription.GetControl():
         m_url + "/" + sessionDescription.GetControl();
 
-    // this is the new url we need to use for all requests now
-    // m_url = setup_url;
+    // Gstreamer doesnt like using the control url for subsequent rtsp requests post setup
+    // only applicable in non complete control url's.
+    if (serverAllowsAggregate && !sessionDescription.IsControlUrlComplete()) {
+        // this is the new url we need to use for all requests now
+        m_url = setup_url;
+    }
+    else if (sessionDescription.IsControlUrlComplete()) {
+        m_url = setup_url;
+    }
 
     // set current palette
     m_currentPalette = sessionDescription;

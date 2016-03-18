@@ -13,8 +13,14 @@ namespace SurgeTestUtil {
         size_t i;
         for (i = 0; i < length - 4; ++i) {
             if (buffer[i] == 0x00 && buffer[i+1] == 0x00 && buffer[i+2] == 0x01) {
-                int nalu_type = (buffer[i + 3] & 0x1F);
-                nalus += "[" + std::to_string(nalu_type) + "] ";
+
+                if (i > 0 && buffer[i - 1] == 0x00) {
+                    int nalu_type = (buffer[i + 3] & 0x1F);
+                    nalus += "[" + std::to_string(nalu_type) + "] ";
+                } else {
+                    int nalu_type = (buffer[i + 3] & 0x1F);
+                    nalus += "[" + std::to_string(nalu_type) + "] ";
+                }
             }
         }
 

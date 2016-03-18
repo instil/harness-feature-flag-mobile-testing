@@ -55,7 +55,7 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
     m_version = static_cast<int>(header.version);
     m_sequenceNumber = ntohs(header.sequencenumber);
     m_type = static_cast<int>(header.payloadtype);
-    m_marker = static_cast<bool>(header.marker);
+    m_marker = header.marker == 0 ? false : true;
     m_timestmap = ntohl(header.timestamp);
 
     size_t payload_offset = sizeof(struct _RTPHeader) + ((size_t)(header.csrccount * sizeof(uint32_t)));

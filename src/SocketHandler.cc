@@ -93,8 +93,8 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
         return -1;
     } 
 
-    int new_socket_buffer_size  = (1 * 1024 * 1024); // 1Mb; 
-    setsockopt(m_rtspSocketFD, SOL_SOCKET, SO_RCVBUF, &new_socket_buffer_size, sizeof(new_socket_buffer_size));
+    /*int new_socket_buffer_size  = (1 * 1024 * 1024); // 1Mb; 
+      setsockopt(m_rtspSocketFD, SOL_SOCKET, SO_RCVBUF, &new_socket_buffer_size, sizeof(new_socket_buffer_size));*/
     
     if (connect(m_rtspSocketFD, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         
@@ -148,7 +148,7 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
 
     WaitForSendEventToBeHandled();
     
-    TRACE("Command: " << command->StringDump());
+    INFO("Command: " << command->StringDump());
     if (waitForResponse) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
                                                               m_transactionTimeoutMs);
@@ -207,6 +207,7 @@ void Surge::SocketHandler::Run() {
                     if (resp->GetInterleavedPacketChannelNumber() == m_rtpInterleavedChannel) {
 
                         resp->ParseRtpPackets([&] (RtpPacket* pack) {
+                                INFO("ADD PACKET - marked = " << pack->IsMarked());
                                 m_rtpOutputQueue.AddItem(pack);
                             });
                         

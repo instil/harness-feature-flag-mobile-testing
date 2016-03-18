@@ -11,7 +11,7 @@ Surge::RtspClient::RtspClient(Surge::RtspClientDelegate *delegate) : m_delegate(
                                                                      m_processedFirstPayload(false),
                                                                      m_lastKeepAliveMs(0),
                                                                      m_keeepAliveIntervalInSeconds(60),
-                                                                     m_sequenceNumber(1),
+                                                                     m_sequenceNumber(2),
                                                                      m_url(""),
                                                                      m_session(""),
                                                                      m_socketHandler() { }
@@ -30,17 +30,12 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string url,
                                                      const std::string user,
                                                      const std::string password) {
     m_url = url;
-    SurgeUtil::Url url_model(url);
-    
-    std::string host = url_model.GetHost();
-    int port = url_model.GetPort();
-    int retval = m_socketHandler.RtspTcpOpen(host, port);
+
+    int retval = SetupRtspConnection(url);
     if (retval != 0) {
-        ERROR("Failed to open [rtsp://" << host << ":" << port << "]");
         return nullptr;
     }
-
-    m_socketHandler.StartRunning();
+    
     if (requires_auth) {
         RtspCommandFactory::SetBasicAuthCredentials(user.c_str(), password.c_str());
     }
@@ -69,7 +64,7 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionD
         m_url + "/" + sessionDescription.GetControl();
 
     // this is the new url we need to use for all requests now
-    m_url = setup_url;
+    // m_url = setup_url;
 
     // set current palette
     m_currentPalette = sessionDescription;
@@ -77,7 +72,7 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionD
     // new session = no processed payloads
     m_processedFirstPayload = false;
     
-    RtspCommand* setup = RtspCommandFactory::SetupRequest(m_url, GetNextSequenceNumber());
+    RtspCommand* setup = RtspCommandFactory::SetupRequest(setup_url, GetNextSequenceNumber());
     Response* raw_resp = m_socketHandler.RtspTransaction(setup, true);
     delete setup;
 
@@ -169,6 +164,11 @@ Surge::RtspResponse* Surge::RtspClient::Options() {
 }
 
 Surge::RtspResponse* Surge::RtspClient::Options(const std::string url) {
+    int retval = SetupRtspConnection(url);
+    if (retval != 0) {
+        return nullptr;
+    }
+    
     RtspCommand* options = RtspCommandFactory::OptionsRequest(url, m_session, GetNextSequenceNumber());
     Response* raw_resp = m_socketHandler.RtspTransaction(options, true);
     delete options;
@@ -354,3 +354,20 @@ void Surge::RtspClient::ProcessMP4VPacket(const RtpPacket* packet) {
     AppendPayloadToCurrentFrame(payload, payload_size);
 }
 
+int Surge::RtspClient::SetupRtspConnection(const std::string url) {
+    if (m_socketHandler.IsRunning()) {
+        return 0;
+    }
+    
+    SurgeUtil::Url url_model(url);
+    
+    std::string host = url_model.GetHost();
+    int port = url_model.GetPort();
+    int retval = m_socketHandler.RtspTcpOpen(host, port);
+
+    if (retval == 0) {
+        m_socketHandler.StartRunning();
+    }
+    
+    return retval;
+}

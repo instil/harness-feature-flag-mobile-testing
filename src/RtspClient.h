@@ -82,6 +82,8 @@ namespace Surge {
             m_currentFrame.clear();
         }
 
+        int SetupRtspConnection(const std::string url);
+
         const unsigned char * GetCurrentFrame() const { return &(m_currentFrame[0]); }
 
         size_t GetCurrentFrameSize() const { return m_currentFrame.size(); }

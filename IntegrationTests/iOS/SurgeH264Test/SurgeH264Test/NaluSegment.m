@@ -51,11 +51,6 @@
 
 // makes a copy
 - (void)setBuffer:(const unsigned char*)buffer withLength:(size_t)length {
-    if (length < 6) {
-        @throw [NSException exceptionWithName:@"NaluSegmentException"
-                                       reason:@"Nalu segment length is too small to be valid"
-                                     userInfo:nil];
-    }
     
     if ((byte)buffer[0] == ZERO_BYTE && (byte)buffer[1] == ZERO_BYTE && (byte)buffer[2] == MAGIC_BYTE) {
         self.buffer = malloc(length+1);

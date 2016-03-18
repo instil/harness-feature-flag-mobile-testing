@@ -36,7 +36,7 @@ public class Decoder implements Runnable {
      */
     public void decodeFrameBuffer(byte[] buffer) {
         // Get the NAL unit segments from the buffer.
-        List<NaluSegment> segments = null;
+        /*List<NaluSegment> segments = null;
         try {
             // parse raw nalus
             segments = NaluParser.parseNaluSegments(buffer);
@@ -58,18 +58,20 @@ public class Decoder implements Runnable {
                 }
 
             }
-        }
+        }*/
 
-        synchronized (this) {
+        //synchronized (this) {
             if (!running) {
                 return;
             }
 
-            int index = mediaCodec.dequeueInputBuffer(50);
+            int index = mediaCodec.dequeueInputBuffer(600);
             if (index >= 0) {
                 codecInputBufferAvailable(buffer, buffer.length, mediaCodec, index);
+            } else {
+                Log.i("DECODER", "input timeout!");
             }
-        }
+        //}
     }
 
     /**
@@ -84,7 +86,7 @@ public class Decoder implements Runnable {
         synchronized (this) {
 
             try {
-                mediaCodec = MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_VIDEO_AVC);
+                mediaCodec = MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_VIDEO_MPEG4);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
@@ -92,12 +94,10 @@ public class Decoder implements Runnable {
 
             // check if media codec is null handles the mocked android unit-tests case.
             if (mediaCodec != null) {
-                mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, 0, 0);
-                mediaFormat.setInteger(MediaFormat.KEY_MAX_WIDTH, 1920);
-                mediaFormat.setInteger(MediaFormat.KEY_MAX_HEIGHT, 1080);
+                mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_MPEG4, 1280, 720);
 
                 // try and set the media format directly from old parameters
-                configureH264ParameterSetsFromLastParameterSet();
+                // configureH264ParameterSetsFromLastParameterSet();
 
                 // configure decoder with target surface
                 mediaCodec.configure(mediaFormat, targetSurface, null, 0);
@@ -160,19 +160,20 @@ public class Decoder implements Runnable {
     @Override
     public void run() {
         // mediaCodec input + output dequeue timeouts
-        long kOutputBufferTimeoutMs = 50;
+        long kOutputBufferTimeoutMs = 500;
 
         while (running) {
             // output any video frames
-            synchronized (this) {
+            //synchronized (this) {
                 MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
                 // always check if output is available.
                 int outputBufferIndex = mediaCodec.dequeueOutputBuffer(info, kOutputBufferTimeoutMs);
                 if (outputBufferIndex >= 0) {
                     // Try and render first
+                    Log.i("DECODER", "OUTPUT AVAILABLE");
                     codecOuputBufferAvailable(mediaCodec, outputBufferIndex, info);
                 }
-            }
+            //}
         }
     }
 
@@ -182,7 +183,7 @@ public class Decoder implements Runnable {
         ByteBuffer buffer = buffers[index];
         buffer.clear();
         buffer.put(videoBuffer);
-        codec.queueInputBuffer(index, 0, length, 40, 0);
+        codec.queueInputBuffer(index, 0, length, 0, 0);
     }
 
     // CODEC OUTPUT

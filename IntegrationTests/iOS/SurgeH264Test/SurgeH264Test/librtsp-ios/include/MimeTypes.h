@@ -7,8 +7,8 @@ namespace Surge {
     typedef enum {
         
         H264,
-        
-        JPEG,
+
+        MP4V,
 
         UNKNOWN
         

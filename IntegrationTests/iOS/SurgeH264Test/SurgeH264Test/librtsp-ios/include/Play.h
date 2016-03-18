@@ -25,6 +25,8 @@ namespace Surge {
 
             packet += "Session: " + session + "\r\n";
 
+            packet += "Range: npt=0.000-\r\n";
+
             if (!authHeader.empty()) {
                 packet += authHeader;
             }

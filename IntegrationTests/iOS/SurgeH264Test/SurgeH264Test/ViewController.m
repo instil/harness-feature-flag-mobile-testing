@@ -27,7 +27,7 @@
     self.decoder = [[H264DecoderWrapper alloc] initWithDelegate:self];
     [self.decoder startDecoder];
     
-    self.client = [[RtspClientWrapper alloc] initWithUrl:@"rtsp://localhost:8554/test.264"
+    self.client = [[RtspClientWrapper alloc] initWithUrl:@"rtsp://192.168.1.105:8554/test"
                                              andDelegate:self];
     [self.client playStream];
 }

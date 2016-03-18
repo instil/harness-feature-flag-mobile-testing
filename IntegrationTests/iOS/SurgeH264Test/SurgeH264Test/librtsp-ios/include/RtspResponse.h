@@ -27,7 +27,7 @@ namespace Surge {
 
             if (lines.size() < 1) {
                 ostringstream message;
-                message << "Invalid RTSP Response";
+                message << "Invalid RTSP Response no headers";
                 throw runtime_error{ message.str() };
             }
 
@@ -36,13 +36,13 @@ namespace Surge {
             
             if (status_line_tokens.size() < 3) {
                 ostringstream message;
-                message << "Invalid RTSP Response";
+                message << "Invalid RTSP Response - not enough status tokens";
                 throw runtime_error{ message.str() };
             }
             
             if (status_line_tokens[0].compare("RTSP/1.0") != 0) {
                 ostringstream message;
-                message << "Invalid RTSP Response";
+                message << "Invalid RTSP Response - invalid protocol for rtsp response";
                 throw runtime_error{ message.str() };
             }
 

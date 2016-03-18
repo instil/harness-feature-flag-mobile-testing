@@ -41,6 +41,7 @@ namespace Surge {
                 }
             } else {
                 // simply just session
+                INFO("SESSION = [" << values[0] << "]");
                 m_session = values[0];
             }
 

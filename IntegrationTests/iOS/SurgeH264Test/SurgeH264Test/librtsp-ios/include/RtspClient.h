@@ -36,6 +36,8 @@ namespace Surge {
 
         RtspResponse* Options();
 
+        RtspResponse* Options(const std::string url);
+
         RtspResponse* Teardown(bool waitForResponse = false);
 
         RtspResponse* KeepAlive();
@@ -80,9 +82,15 @@ namespace Surge {
             m_currentFrame.clear();
         }
 
+        int SetupRtspConnection(const std::string url);
+
         const unsigned char * GetCurrentFrame() const { return &(m_currentFrame[0]); }
 
         size_t GetCurrentFrameSize() const { return m_currentFrame.size(); }
+
+        void ProcessH264Packet(const RtpPacket* packet);
+
+        void ProcessMP4VPacket(const RtpPacket* packet);
 
         std::vector<unsigned char> m_currentFrame;
         SessionDescription m_currentPalette;

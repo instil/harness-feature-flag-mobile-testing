@@ -31,9 +31,9 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
         ((TextureView) findViewById(R.id.textureView)).setSurfaceTextureListener(this);
 
+        //this.client = new RtspClient(this, "rtsp://192.168.1.36:8554/test.264");
+        this.client = new RtspClient(this, "rtsp://192.168.1.105:5454/camera.sdp");
 
-        this.client = new RtspClient(this, "rtsp://192.168.1.36:8554/test.264");
-        this.client.PlayAsync();
     }
 
     @Override
@@ -62,6 +62,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
         this.decoder.startDecoder(new Surface(surfaceTexture));
+        this.client.PlayAsync();
     }
 
     @Override
@@ -92,6 +93,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
     @Override
     public void Payload(byte[] payload) {
+        Log.i("TEST", "PAYLOAD");
         this.decoder.decodeFrameBuffer(payload);
     }
 }

@@ -37,10 +37,10 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     Delegate delegate;
     Surge::RtspClient client(&delegate);
 
-    Surge::RtspResponse *options_response = client.Options("rtsp://192.168.1.105:8554/test");
+    Surge::RtspResponse *options_response = client.Options("rtsp://192.168.1.108:8554/test");
     delete options_response;
     
-    Surge::DescribeResponse *describe_response = client.Describe("rtsp://192.168.1.105:8554/test",
+    Surge::DescribeResponse *describe_response = client.Describe("rtsp://192.168.1.108:8554/test",
                                                                  false, "", "");
     
     if (describe_response == nullptr) {
@@ -57,7 +57,7 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     Surge::SessionDescription palette = describe_response->GetPalettes()[0];
     delete describe_response;
 
-    Surge::RtspResponse* setup_response = client.Setup(palette);
+    Surge::RtspResponse* setup_response = client.Setup(palette, false);
     delete setup_response;
 
     Surge::RtspResponse* play_response = client.Play(false);

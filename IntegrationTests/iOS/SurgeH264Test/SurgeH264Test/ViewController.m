@@ -27,7 +27,7 @@
     self.decoder = [[H264DecoderWrapper alloc] initWithDelegate:self];
     [self.decoder startDecoder];
     
-    self.client = [[RtspClientWrapper alloc] initWithUrl:@"rtsp://192.168.1.105:8554/test"
+    self.client = [[RtspClientWrapper alloc] initWithUrl:@"rtsp://192.168.1.93:8554/test"
                                              andDelegate:self];
     [self.client playStream];
 }
@@ -62,7 +62,7 @@
 }
 
 - (void)framesPerSecond:(int)fps {
-    
+    NSLog(@"FPS: %i", fps);
 }
 
 @end

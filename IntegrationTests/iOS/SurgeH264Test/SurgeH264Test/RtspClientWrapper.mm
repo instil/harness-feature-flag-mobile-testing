@@ -58,7 +58,7 @@ private:
     Surge::SessionDescription palette = describe_resp->GetPalettes()[0];
     delete describe_resp;
     
-    Surge::RtspResponse *setup_resp = self.client->Setup(palette);
+    Surge::RtspResponse *setup_resp = self.client->Setup(palette, false);
     delete setup_resp;
     
     Surge::RtspResponse *play_resp = self.client->Play(false);

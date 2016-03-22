@@ -50,6 +50,7 @@ if(BUILD_JAR STREQUAL OFF)
 
     SessionDescription.h
     SessionDescriptionV0.h
+    SessionDescriptionV0.cc
     SessionDescriptionFactory.h
     SessionDescriptionFactory.cc
 

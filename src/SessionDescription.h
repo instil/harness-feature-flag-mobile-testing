@@ -96,6 +96,9 @@ namespace Surge {
             else if (raw_mime.find("MP4V-ES") != std::string::npos) {
                 return MP4V;
             }
+            else if (raw_mime.find("JPEG") != std::string::npos) {
+                return MJPEG;
+            }
             return UNKNOWN;
         }
 

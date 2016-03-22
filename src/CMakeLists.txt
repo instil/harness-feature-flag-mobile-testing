@@ -63,6 +63,9 @@ if(BUILD_JAR STREQUAL OFF)
 
     MP4VDepacketizer.h
     MP4VDepacketizer.cc
+    
+    MJPEGDepacketizer.h
+    MJPEGDepacketizer.cc
 
     MimeTypes.h
     LoggingDelegate.h

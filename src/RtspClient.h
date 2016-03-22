@@ -80,6 +80,7 @@ namespace Surge {
 
         void ResetCurrentPayload() {
             m_currentFrame.clear();
+            m_currentFrame.resize(0);
         }
 
         int SetupRtspConnection(const std::string url);
@@ -91,6 +92,8 @@ namespace Surge {
         void ProcessH264Packet(const RtpPacket* packet);
 
         void ProcessMP4VPacket(const RtpPacket* packet);
+
+        void ProcessMJPEGPacket(const RtpPacket* packet);
 
         std::vector<unsigned char> m_currentFrame;
         SessionDescription m_currentPalette;

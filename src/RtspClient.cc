@@ -6,6 +6,8 @@
 
 #include "H264Depacetizer.h"
 #include "MP4VDepacketizer.h"
+#include "MJPEGDepacketizer.h"
+
 
 Surge::RtspClient::RtspClient(Surge::RtspClientDelegate *delegate) : m_delegate(delegate),
                                                                      m_processedFirstPayload(false),
@@ -311,6 +313,10 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
     case MP4V:
         ProcessMP4VPacket(packet);
         break;
+
+    case MJPEG:
+        ProcessMJPEGPacket(packet);
+        break;
         
     default:
         ERROR("Unhandled session type: " << m_currentPalette.GetType());
@@ -336,7 +342,6 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 
     // notify delegate of new payload
     NotifyDelegatePayload(padded_payload, padded_payload_size);
-
     free(padded_payload);
 
     // reset
@@ -359,6 +364,12 @@ void Surge::RtspClient::ProcessMP4VPacket(const RtpPacket* packet) {
     size_t payload_size = depacketizer.PayloadLength();
 
     AppendPayloadToCurrentFrame(payload, payload_size);
+}
+
+void Surge::RtspClient::ProcessMJPEGPacket(const RtpPacket* packet) {
+    MJPEGDepacketizer depacketizer(&m_currentPalette, packet, IsFirstPayload());
+
+    depacketizer.AddToFrame(&m_currentFrame);
 }
 
 int Surge::RtspClient::SetupRtspConnection(const std::string url) {

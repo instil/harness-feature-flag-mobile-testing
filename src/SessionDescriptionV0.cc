@@ -1,9 +1,7 @@
 #include "SessionDescriptionV0.h"
 
-Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string rawSessionDescription)
+Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string rawSessionDescription): SessionDescription()
 {
-    m_controlUrlIsComplete = false;
-
     std::vector<std::string> lines = SurgeUtil::StringSplit(rawSessionDescription, "\r\n");
     for (auto it = lines.begin(); it != lines.end(); ++it) {
         const std::string current_line = *it;

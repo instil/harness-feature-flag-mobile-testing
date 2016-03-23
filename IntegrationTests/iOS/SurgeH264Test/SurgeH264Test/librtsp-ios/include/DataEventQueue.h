@@ -27,15 +27,17 @@ namespace SurgeUtil {
             m_Queue.clear();
         }
 
-        int Size() const { return m_Queue.size(); }
+        size_t Size() const { return m_Queue.size(); }
     
-        bool IsEmpty() const { return Size() <= 0; }
+        bool IsEmpty() const { return Size() == 0; }
     
         const FireableEvent& GetNonEmptyEvent() const { return m_NonEmpty; };
 
         void AddItem(T item) {
             MutexLocker lock(m_Mutex);
 
+            bool wasEmpty = IsEmpty();
+            
             if (IsAtSizeLimit()) {
                 T item = m_Queue[0];
                 m_Queue.pop_front();
@@ -44,9 +46,9 @@ namespace SurgeUtil {
                     m_elementDeallocator(item);
                 }
             }
-            
-            bool wasEmpty = IsEmpty();
+                       
             m_Queue.push_back(item);
+            m_NonEmpty.Fire();
 
             if (wasEmpty) {
                 m_NonEmpty.Fire();

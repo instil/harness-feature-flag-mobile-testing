@@ -36,11 +36,8 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
 
     Delegate delegate;
     Surge::RtspClient client(&delegate);
-
-    Surge::RtspResponse *options_response = client.Options("rtsp://192.168.1.108:8554/test");
-    delete options_response;
     
-    Surge::DescribeResponse *describe_response = client.Describe("rtsp://192.168.1.108:8554/test",
+    Surge::DescribeResponse *describe_response = client.Describe("rtsp://localhost:8554/test.264",
                                                                  false, "", "");
     
     if (describe_response == nullptr) {
@@ -64,7 +61,7 @@ TEST(SCRATCH, SIMPLE_SCRATCH) {
     delete play_response;
 
     // sleep
-    std::this_thread::sleep_for(std::chrono::seconds(50));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // stop
     client.StopClient();

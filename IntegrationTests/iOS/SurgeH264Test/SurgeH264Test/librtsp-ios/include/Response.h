@@ -17,8 +17,8 @@ namespace Surge {
     
     class Response {
     public:
-        Response(unsigned char *buffer, size_t length): m_buffer(buffer),
-                                                        m_length(length) {
+        Response(const unsigned char *buffer, size_t length): m_buffer(nullptr),
+                                                              m_length(length) {
             
             unsigned char *copy = (unsigned char*)malloc(length);
             memcpy((void*)copy, (const void *)buffer, length);
@@ -48,45 +48,6 @@ namespace Surge {
             return repr;
         }
 
-        std::vector<RtpPacket*> GetRtpPackets() {
-            std::vector<RtpPacket*> packets;
-
-            size_t packet_offset = 0;
-            bool has_more_packets = false;
-
-            do {                
-                uint16_t packet_length_network_order;
-                memcpy(&packet_length_network_order, m_buffer + packet_offset + 2, 2);
-                uint16_t packet_length = ntohs(packet_length_network_order);
-
-                RtpPacket *pack =  new RtpPacket(m_buffer + packet_offset + 4, packet_length);
-                packets.push_back(pack);
-
-                packet_offset += 4 + packet_length;
-                has_more_packets = packet_offset < m_length;
-            } while (has_more_packets);
-
-            return packets;
-        }
-
-        void ParseRtpPackets(std::function<void (RtpPacket *)> handler) {
-            size_t packet_offset = 0;
-            bool has_more_packets = false;
-
-            do {                
-                uint16_t packet_length_network_order;
-                memcpy(&packet_length_network_order, m_buffer + packet_offset + 2, 2);
-                uint16_t packet_length = ntohs(packet_length_network_order);
-
-                RtpPacket *pack =  new RtpPacket(m_buffer + packet_offset + 4, packet_length);
-
-                handler(pack);
-
-                packet_offset += 4 + packet_length;
-                has_more_packets = packet_offset < m_length;
-            } while (has_more_packets);
-        }
-
         int GetInterleavedPacketChannelNumber() {
             if (!IsInterleavedPacket()) {
                 return -1;
@@ -106,8 +67,7 @@ namespace Surge {
             return dump;
         }
 
-    private:
-       
+    private:       
         unsigned char *m_buffer;
         size_t m_length;
     };  

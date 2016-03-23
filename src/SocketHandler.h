@@ -41,7 +41,7 @@ namespace Surge {
     private:
         bool ProcessSend(const int fd, const unsigned char *bytes, size_t length);
 
-        Response* ReceiveResponse(const SurgeUtil::WaitableEvent& event);
+        void HandleReceive(const SurgeUtil::WaitableEvent& event);
 
         void WaitForSendEventToBeHandled();
         
@@ -49,6 +49,8 @@ namespace Surge {
 
         int m_rtpInterleavedChannel;
         int m_rtcpInterleavedChannel;
+
+        std::vector<unsigned char> m_receivedBuffer;
         
         SurgeUtil::Mutex m_mutex;
         SurgeUtil::FireableEvent m_receivedSendEvent;

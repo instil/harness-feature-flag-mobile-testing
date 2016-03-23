@@ -72,10 +72,9 @@ namespace Surge {
         }
 
         void AppendPayloadToCurrentFrame(const unsigned char *buffer, size_t length) {
-            size_t i;
-            for (i = 0; i < length; ++i) {
-                m_currentFrame.push_back(buffer[i]);
-            }
+            size_t old_size = m_currentFrame.size();
+            m_currentFrame.resize(old_size + length);
+            std::copy(buffer, buffer + length, m_currentFrame.begin() + old_size);
         }
 
         void ResetCurrentPayload() {

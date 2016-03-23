@@ -50,6 +50,8 @@
     dispatch_sync(dispatch_get_main_queue(), ^{
         NSLog(@"DECODED FRAME");
         self.videoView.image = [[UIImage alloc] initWithCGImage:imageBuffer];
+        
+        // [NSThread sleepForTimeInterval:0.04];
     });
 }
 

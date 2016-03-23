@@ -148,14 +148,14 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
 
     WaitForSendEventToBeHandled();
     
-    INFO("Command: " << command->StringDump());
+    DEBUG("Command: " << command->StringDump());
     if (waitForResponse) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
                                                               m_transactionTimeoutMs);
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
             resp = m_rtspOutputQueue.RemoveItem();
-            INFO("TRANSACTION RESPONSE: " << resp->StringDump());
+            DEBUG("TRANSACTION RESPONSE: " << resp->StringDump());
         }
     }
 
@@ -202,7 +202,7 @@ void Surge::SocketHandler::Run() {
             HandleReceive(rtsp_socket_data_available);
         }
     }
-    INFO("SocketHandler thread finished...");
+    DEBUG("SocketHandler thread finished...");
 }
 
 bool Surge::SocketHandler::ProcessSend(const int fd, const unsigned char *bytes, size_t length) {
@@ -283,8 +283,12 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
                 
                 m_rtspOutputQueue.AddItem(new Response(rtsp_buffer, rtsp_buffer_length));
                 offs += rtsp_buffer_length;
-            }           
+            } else {
+                size_t trailing_length = total_buffer_size - offs;
+                m_receivedBuffer.resize(trailing_length);
+                std::copy(response.begin() + offs, response.end(), m_receivedBuffer.begin());
+                break;
+            }
         }
     } while (offs < total_buffer_size);
-    
 }

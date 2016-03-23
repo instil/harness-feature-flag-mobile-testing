@@ -7,11 +7,14 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 
+# iOS/XCode
 .DS_Store
 .idea
 UserInterfaceState.xcuserstate
 cppcheck.xml
+xcuserdata/
 
+# Android/IntelliJ
 Test-AndroidStudio.iml
 
 src/wrappers/java/*.java

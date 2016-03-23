@@ -199,27 +199,8 @@ void Surge::SocketHandler::Run() {
         }
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, rtsp_socket_data_available)) {
-            Response* resp = ReceiveResponse(rtsp_socket_data_available);
-
-            if (resp != nullptr) {
-                if (resp->IsInterleavedPacket())
-                {
-                    if (resp->GetInterleavedPacketChannelNumber() == m_rtpInterleavedChannel) {
-
-                        resp->ParseRtpPackets([&] (RtpPacket* pack) {
-                                INFO("ADD PACKET - marked = " << pack->IsMarked());
-                                m_rtpOutputQueue.AddItem(pack);
-                            });
-                        
-                    }
-                    delete resp;
-                }
-                else {
-                    m_rtspOutputQueue.AddItem(resp);
-                }
-            }
+            HandleReceive(rtsp_socket_data_available);
         }
-        
     }
     INFO("SocketHandler thread finished...");
 }
@@ -228,9 +209,17 @@ bool Surge::SocketHandler::ProcessSend(const int fd, const unsigned char *bytes,
     return send(fd, bytes, length, 0) != -1;
 }
 
-Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::WaitableEvent& event) {
+void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) {
     std::vector<unsigned char> response;
     
+    if (m_receivedBuffer.size() > 0) {
+        // copy trailing data into response
+        response.resize(m_receivedBuffer.size());
+        response = m_receivedBuffer;
+        m_receivedBuffer.clear();
+    }
+
+    size_t total_buffer_size = response.size();
     unsigned char *buffer = (unsigned char *) malloc(m_readBufferSize);
     do {
         memset((void*)buffer, 0, m_readBufferSize);
@@ -239,7 +228,6 @@ Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::Waitable
         if (received == -1) {
             ERROR("Failed to recv errno: " << errno);
             free(buffer);
-            return nullptr;
         }
         else if (received > 0) {
             // Append received data to 'response'.
@@ -251,8 +239,52 @@ Surge::Response* Surge::SocketHandler::ReceiveResponse(const SurgeUtil::Waitable
                  buffer + received,
                  response.begin() + old_size);
         }
+        total_buffer_size += received;
     } while (event.IsFired());
-    
     free(buffer);
-    return new Surge::Response(&(response[0]), response.size());
+    
+    size_t offs = 0;
+    do {
+        bool is_rtp = response[offs] == '$';
+        bool is_rtsp = strncmp((char*)&(response[offs]), "RTSP/1.0", 8) == 0;
+
+        if (is_rtp) {
+            int channel = static_cast<int>(response[offs + 1]);
+
+            uint16_t network_order_packet_length = 0;
+            memcpy(&network_order_packet_length, &(response[offs + 2]), 2);
+            uint16_t packet_length = ntohs(network_order_packet_length);
+
+            bool have_whole_packet = (total_buffer_size - (offs + 4)) >= packet_length;
+
+            if (have_whole_packet && channel == m_rtpInterleavedChannel) {
+                m_rtpOutputQueue.AddItem(new RtpPacket(&(response[offs + 4]), packet_length));
+            } else if (!have_whole_packet) {
+                // copy into received buffer
+                size_t trailing_length = total_buffer_size - offs;
+                m_receivedBuffer.resize(trailing_length);
+                std::copy(response.begin() + offs, response.end(), m_receivedBuffer.begin());
+                break;
+            }
+            offs += packet_length + 4;
+        } else if (is_rtsp) {
+            std::string string_response;
+            string_response.resize(total_buffer_size - offs);
+            std::copy(response.begin() + offs, response.end(), string_response.begin());
+
+            size_t body_pos; 
+            if ((body_pos = string_response.find("\r\n\r\n")) != std::string::npos) {
+                size_t pos = string_response.find("Content-Length:");
+                size_t content_length = static_cast<size_t>(atoi(&string_response[pos + 16]));
+                size_t headers_length = body_pos;
+                
+                const unsigned char *rtsp_buffer = &(response[offs]);
+                size_t rtsp_buffer_length = content_length + 4 + headers_length;
+                
+                m_rtspOutputQueue.AddItem(new Response(rtsp_buffer, rtsp_buffer_length));
+                offs += rtsp_buffer_length;
+            }           
+        }
+    } while (offs < total_buffer_size);
+    
 }

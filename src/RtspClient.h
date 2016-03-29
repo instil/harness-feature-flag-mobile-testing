@@ -51,6 +51,10 @@ namespace Surge {
 
         void StartSession();
 
+        void Abort() {
+            m_abortWait.Fire();
+        }
+
         void ProcessRtpPacket(const RtpPacket* packet);
         
         int GetNextSequenceNumber() { return m_sequenceNumber++; }
@@ -90,6 +94,8 @@ namespace Surge {
         void ProcessMP4VPacket(const RtpPacket* packet);
 
         void ProcessMJPEGPacket(const RtpPacket* packet);
+
+        SurgeUtil::FireableEvent m_abortWait;
 
         std::vector<unsigned char> m_currentFrame;
         SessionDescription m_currentPalette;

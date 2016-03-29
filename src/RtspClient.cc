@@ -22,6 +22,7 @@ Surge::RtspClient::~RtspClient() {
     if (m_socketHandler.IsRunning()) {
         m_socketHandler.StopRunning();
     }
+    
     if (m_thread.IsRunning()) {
         m_thread.Stop();
     }
@@ -234,6 +235,8 @@ Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
 }
 
 void Surge::RtspClient::StopClient() {
+    Abort();
+    
     if (m_socketHandler.IsRunning()) {
 
         // non empty session token we should teardown
@@ -381,12 +384,14 @@ int Surge::RtspClient::SetupRtspConnection(const std::string url) {
     if (m_socketHandler.IsRunning()) {
         return 0;
     }
+
+    m_abortWait.Reset();
     
     SurgeUtil::Url url_model(url);
     
     std::string host = url_model.GetHost();
     int port = url_model.GetPort();
-    int retval = m_socketHandler.RtspTcpOpen(host, port);
+    int retval = m_socketHandler.RtspTcpOpen(host, port, m_abortWait);
 
     if (retval == 0) {
         m_socketHandler.StartRunning();

@@ -74,7 +74,7 @@ void Surge::SocketHandler::StopRunning() {
     m_thread.Stop();
 }
 
-int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
+int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port, const SurgeUtil::FireableEvent& abort) {
     m_rtspSocketFD = socket(AF_INET, SOCK_STREAM, 0);
     if (m_rtspSocketFD == -1) {
         ERROR("failed to create socket: error code = " << errno);
@@ -93,13 +93,10 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
     if (inet_pton(AF_INET, host.c_str(), &serv_addr.sin_addr) == -1) {
-        ERROR("inet_pton");
+        ERROR("inet_pton failed to handle host: " << host);
         close(m_rtspSocketFD);
         return -1;
-    } 
-
-    /*int new_socket_buffer_size  = (1 * 1024 * 1024); // 1Mb; 
-      setsockopt(m_rtspSocketFD, SOL_SOCKET, SO_RCVBUF, &new_socket_buffer_size, sizeof(new_socket_buffer_size));*/
+    }
     
     if (connect(m_rtspSocketFD, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         
@@ -107,10 +104,20 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port) {
                 m_rtspSocketFD,
                 SurgeUtil::WaitableEvents::WatchForType::writable
         };
-        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&attemptCompleted}, m_connectTimeoutMs);
+        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
+                &attemptCompleted,
+                &abort
+            },
+            m_connectTimeoutMs);
 
         if (firedEvents.empty()) {
             ERROR("socket connection attempt timed out");
+            close(m_rtspSocketFD);
+            return -1;
+        }
+
+        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, abort)) {
+            INFO("socket connection attempt aborted");
             close(m_rtspSocketFD);
             return -1;
         }
@@ -207,6 +214,9 @@ void Surge::SocketHandler::Run() {
             HandleReceive(rtsp_socket_data_available);
         }
     }
+
+    close(m_rtspSocketFD);
+    
     DEBUG("SocketHandler thread finished...");
 }
 

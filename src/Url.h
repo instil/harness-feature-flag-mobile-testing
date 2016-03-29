@@ -40,6 +40,12 @@ namespace SurgeUtil {
             pos = url_no_scheme.find('/');
 
             std::string raw_host = url_no_scheme.substr(0, pos);
+
+            pos = raw_host.find('@');
+            if (pos != std::string::npos) {
+                raw_host = raw_host.substr(pos + 1);
+            }
+            
             return raw_host;
         }
 

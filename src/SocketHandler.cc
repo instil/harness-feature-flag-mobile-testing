@@ -280,6 +280,13 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
                 
                 const unsigned char *rtsp_buffer = &(response[offs]);
                 size_t rtsp_buffer_length = content_length + 4 + headers_length;
+
+                if ((total_buffer_size - offs) < rtsp_buffer_length) {
+                    size_t trailing_length = total_buffer_size - offs;
+                    m_receivedBuffer.resize(trailing_length);
+                    std::copy(response.begin() + offs, response.end(), m_receivedBuffer.begin());
+                    break;
+                } 
                 
                 m_rtspOutputQueue.AddItem(new Response(rtsp_buffer, rtsp_buffer_length));
                 offs += rtsp_buffer_length;

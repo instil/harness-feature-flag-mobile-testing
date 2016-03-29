@@ -12,6 +12,13 @@
 		42EE5C2F1CA35C8100204F31 /* SurgeTvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EE5C2E1CA35C8100204F31 /* SurgeTvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42EE5C371CA35D1C00204F31 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EE5C361CA35D1C00204F31 /* AVKit.framework */; };
 		42EE5C391CA35D2E00204F31 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EE5C381CA35D2E00204F31 /* AVKit.framework */; };
+		42EFF7871CAADB330056B9F3 /* RtspPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF7851CAADB330056B9F3 /* RtspPlayer.h */; };
+		42EFF7881CAADB330056B9F3 /* RtspPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF7851CAADB330056B9F3 /* RtspPlayer.h */; };
+		42EFF7891CAADB330056B9F3 /* RtspPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 42EFF7861CAADB330056B9F3 /* RtspPlayer.mm */; };
+		42EFF78A1CAADB330056B9F3 /* RtspPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 42EFF7861CAADB330056B9F3 /* RtspPlayer.mm */; };
+		42EFF7BE1CAADE780056B9F3 /* libsurge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EFF7BB1CAADDB90056B9F3 /* libsurge.a */; };
+		42EFF7BF1CAADE790056B9F3 /* libsurge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EFF7BB1CAADDB90056B9F3 /* libsurge.a */; };
+		42EFF7C01CAADE7A0056B9F3 /* libsurge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EFF7BB1CAADDB90056B9F3 /* libsurge.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +33,54 @@
 		42EE5C301CA35C8100204F31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42EE5C361CA35D1C00204F31 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS9.2.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		42EE5C381CA35D2E00204F31 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
+		42EFF7851CAADB330056B9F3 /* RtspPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtspPlayer.h; sourceTree = "<group>"; };
+		42EFF7861CAADB330056B9F3 /* RtspPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RtspPlayer.mm; sourceTree = "<group>"; };
+		42EFF78E1CAADDB90056B9F3 /* Base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
+		42EFF78F1CAADDB90056B9F3 /* BaseWaitableEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseWaitableEvent.h; sourceTree = "<group>"; };
+		42EFF7901CAADDB90056B9F3 /* BasicFDEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicFDEvent.h; sourceTree = "<group>"; };
+		42EFF7911CAADDB90056B9F3 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		42EFF7921CAADDB90056B9F3 /* DataEventQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataEventQueue.h; sourceTree = "<group>"; };
+		42EFF7931CAADDB90056B9F3 /* DateTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateTime.h; sourceTree = "<group>"; };
+		42EFF7941CAADDB90056B9F3 /* DelegateInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DelegateInterface.h; sourceTree = "<group>"; };
+		42EFF7951CAADDB90056B9F3 /* Describe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Describe.h; sourceTree = "<group>"; };
+		42EFF7961CAADDB90056B9F3 /* DescribeResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DescribeResponse.h; sourceTree = "<group>"; };
+		42EFF7971CAADDB90056B9F3 /* ErrorDispatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorDispatcher.h; sourceTree = "<group>"; };
+		42EFF7981CAADDB90056B9F3 /* FireableEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FireableEvent.h; sourceTree = "<group>"; };
+		42EFF7991CAADDB90056B9F3 /* H264Depacetizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = H264Depacetizer.h; sourceTree = "<group>"; };
+		42EFF79A1CAADDB90056B9F3 /* Helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
+		42EFF79B1CAADDB90056B9F3 /* interface_wrap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = interface_wrap.h; sourceTree = "<group>"; };
+		42EFF79C1CAADDB90056B9F3 /* Logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logging.h; sourceTree = "<group>"; };
+		42EFF79D1CAADDB90056B9F3 /* LoggingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoggingDelegate.h; sourceTree = "<group>"; };
+		42EFF79E1CAADDB90056B9F3 /* MimeTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MimeTypes.h; sourceTree = "<group>"; };
+		42EFF79F1CAADDB90056B9F3 /* MJPEGDepacketizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MJPEGDepacketizer.h; sourceTree = "<group>"; };
+		42EFF7A01CAADDB90056B9F3 /* MP4VDepacketizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MP4VDepacketizer.h; sourceTree = "<group>"; };
+		42EFF7A11CAADDB90056B9F3 /* Mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
+		42EFF7A21CAADDB90056B9F3 /* MutexLocker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MutexLocker.h; sourceTree = "<group>"; };
+		42EFF7A31CAADDB90056B9F3 /* Options.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Options.h; sourceTree = "<group>"; };
+		42EFF7A41CAADDB90056B9F3 /* Pause.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pause.h; sourceTree = "<group>"; };
+		42EFF7A51CAADDB90056B9F3 /* Play.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Play.h; sourceTree = "<group>"; };
+		42EFF7A61CAADDB90056B9F3 /* Response.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Response.h; sourceTree = "<group>"; };
+		42EFF7A71CAADDB90056B9F3 /* ResponseFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResponseFactory.h; sourceTree = "<group>"; };
+		42EFF7A81CAADDB90056B9F3 /* RtpPacket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtpPacket.h; sourceTree = "<group>"; };
+		42EFF7A91CAADDB90056B9F3 /* RtspClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspClient.h; sourceTree = "<group>"; };
+		42EFF7AA1CAADDB90056B9F3 /* RtspClientProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspClientProxy.h; sourceTree = "<group>"; };
+		42EFF7AB1CAADDB90056B9F3 /* RtspCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspCommand.h; sourceTree = "<group>"; };
+		42EFF7AC1CAADDB90056B9F3 /* RtspCommandFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspCommandFactory.h; sourceTree = "<group>"; };
+		42EFF7AD1CAADDB90056B9F3 /* RtspResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspResponse.h; sourceTree = "<group>"; };
+		42EFF7AE1CAADDB90056B9F3 /* SessionDescription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SessionDescription.h; sourceTree = "<group>"; };
+		42EFF7AF1CAADDB90056B9F3 /* SessionDescriptionFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SessionDescriptionFactory.h; sourceTree = "<group>"; };
+		42EFF7B01CAADDB90056B9F3 /* SessionDescriptionV0.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SessionDescriptionV0.h; sourceTree = "<group>"; };
+		42EFF7B11CAADDB90056B9F3 /* Setup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Setup.h; sourceTree = "<group>"; };
+		42EFF7B21CAADDB90056B9F3 /* SetupResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetupResponse.h; sourceTree = "<group>"; };
+		42EFF7B31CAADDB90056B9F3 /* SocketHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketHandler.h; sourceTree = "<group>"; };
+		42EFF7B41CAADDB90056B9F3 /* StoppableThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoppableThread.h; sourceTree = "<group>"; };
+		42EFF7B51CAADDB90056B9F3 /* Surge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Surge.h; sourceTree = "<group>"; };
+		42EFF7B61CAADDB90056B9F3 /* Teardown.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Teardown.h; sourceTree = "<group>"; };
+		42EFF7B71CAADDB90056B9F3 /* Thread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Thread.h; sourceTree = "<group>"; };
+		42EFF7B81CAADDB90056B9F3 /* Url.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Url.h; sourceTree = "<group>"; };
+		42EFF7B91CAADDB90056B9F3 /* WaitableEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaitableEvent.h; sourceTree = "<group>"; };
+		42EFF7BB1CAADDB90056B9F3 /* libsurge.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsurge.a; sourceTree = "<group>"; };
+		42EFF7BC1CAADDB90056B9F3 /* SURGE-iOS-1.0.0.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "SURGE-iOS-1.0.0.md"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42EFF7BE1CAADE780056B9F3 /* libsurge.a in Frameworks */,
 				42EE5C391CA35D2E00204F31 /* AVKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -41,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42EFF7BF1CAADE790056B9F3 /* libsurge.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42EFF7C01CAADE7A0056B9F3 /* libsurge.a in Frameworks */,
 				42EE5C371CA35D1C00204F31 /* AVKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -82,6 +140,83 @@
 			path = SurgeTvOS;
 			sourceTree = "<group>";
 		};
+		42EFF78B1CAADDB90056B9F3 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				42EFF78C1CAADDB90056B9F3 /* librtsp-ios */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		42EFF78C1CAADDB90056B9F3 /* librtsp-ios */ = {
+			isa = PBXGroup;
+			children = (
+				42EFF78D1CAADDB90056B9F3 /* include */,
+				42EFF7BA1CAADDB90056B9F3 /* lib */,
+				42EFF7BC1CAADDB90056B9F3 /* SURGE-iOS-1.0.0.md */,
+			);
+			path = "librtsp-ios";
+			sourceTree = "<group>";
+		};
+		42EFF78D1CAADDB90056B9F3 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				42EFF78E1CAADDB90056B9F3 /* Base64.h */,
+				42EFF78F1CAADDB90056B9F3 /* BaseWaitableEvent.h */,
+				42EFF7901CAADDB90056B9F3 /* BasicFDEvent.h */,
+				42EFF7911CAADDB90056B9F3 /* Constants.h */,
+				42EFF7921CAADDB90056B9F3 /* DataEventQueue.h */,
+				42EFF7931CAADDB90056B9F3 /* DateTime.h */,
+				42EFF7941CAADDB90056B9F3 /* DelegateInterface.h */,
+				42EFF7951CAADDB90056B9F3 /* Describe.h */,
+				42EFF7961CAADDB90056B9F3 /* DescribeResponse.h */,
+				42EFF7971CAADDB90056B9F3 /* ErrorDispatcher.h */,
+				42EFF7981CAADDB90056B9F3 /* FireableEvent.h */,
+				42EFF7991CAADDB90056B9F3 /* H264Depacetizer.h */,
+				42EFF79A1CAADDB90056B9F3 /* Helpers.h */,
+				42EFF79B1CAADDB90056B9F3 /* interface_wrap.h */,
+				42EFF79C1CAADDB90056B9F3 /* Logging.h */,
+				42EFF79D1CAADDB90056B9F3 /* LoggingDelegate.h */,
+				42EFF79E1CAADDB90056B9F3 /* MimeTypes.h */,
+				42EFF79F1CAADDB90056B9F3 /* MJPEGDepacketizer.h */,
+				42EFF7A01CAADDB90056B9F3 /* MP4VDepacketizer.h */,
+				42EFF7A11CAADDB90056B9F3 /* Mutex.h */,
+				42EFF7A21CAADDB90056B9F3 /* MutexLocker.h */,
+				42EFF7A31CAADDB90056B9F3 /* Options.h */,
+				42EFF7A41CAADDB90056B9F3 /* Pause.h */,
+				42EFF7A51CAADDB90056B9F3 /* Play.h */,
+				42EFF7A61CAADDB90056B9F3 /* Response.h */,
+				42EFF7A71CAADDB90056B9F3 /* ResponseFactory.h */,
+				42EFF7A81CAADDB90056B9F3 /* RtpPacket.h */,
+				42EFF7A91CAADDB90056B9F3 /* RtspClient.h */,
+				42EFF7AA1CAADDB90056B9F3 /* RtspClientProxy.h */,
+				42EFF7AB1CAADDB90056B9F3 /* RtspCommand.h */,
+				42EFF7AC1CAADDB90056B9F3 /* RtspCommandFactory.h */,
+				42EFF7AD1CAADDB90056B9F3 /* RtspResponse.h */,
+				42EFF7AE1CAADDB90056B9F3 /* SessionDescription.h */,
+				42EFF7AF1CAADDB90056B9F3 /* SessionDescriptionFactory.h */,
+				42EFF7B01CAADDB90056B9F3 /* SessionDescriptionV0.h */,
+				42EFF7B11CAADDB90056B9F3 /* Setup.h */,
+				42EFF7B21CAADDB90056B9F3 /* SetupResponse.h */,
+				42EFF7B31CAADDB90056B9F3 /* SocketHandler.h */,
+				42EFF7B41CAADDB90056B9F3 /* StoppableThread.h */,
+				42EFF7B51CAADDB90056B9F3 /* Surge.h */,
+				42EFF7B61CAADDB90056B9F3 /* Teardown.h */,
+				42EFF7B71CAADDB90056B9F3 /* Thread.h */,
+				42EFF7B81CAADDB90056B9F3 /* Url.h */,
+				42EFF7B91CAADDB90056B9F3 /* WaitableEvent.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		42EFF7BA1CAADDB90056B9F3 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				42EFF7BB1CAADDB90056B9F3 /* libsurge.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 		42F5777D1CA34FA100112E27 = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +242,9 @@
 		42F577921CA3526800112E27 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				42EFF78B1CAADDB90056B9F3 /* Libraries */,
+				42EFF7851CAADB330056B9F3 /* RtspPlayer.h */,
+				42EFF7861CAADB330056B9F3 /* RtspPlayer.mm */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -127,6 +265,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42EFF7871CAADB330056B9F3 /* RtspPlayer.h in Headers */,
 				42EE5C151CA35C4D00204F31 /* SurgeiOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,6 +282,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42EFF7881CAADB330056B9F3 /* RtspPlayer.h in Headers */,
 				42EE5C2F1CA35C8100204F31 /* SurgeTvOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,6 +411,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42EFF7891CAADB330056B9F3 /* RtspPlayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +426,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42EFF78A1CAADB330056B9F3 /* RtspPlayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,10 +475,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/include";
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/lib";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOS;
@@ -385,10 +529,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/include";
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/lib";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -443,9 +589,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/include";
 				INFOPLIST_FILE = SurgeWatchOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/lib",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeWatchOS;
@@ -495,9 +646,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/include";
 				INFOPLIST_FILE = SurgeWatchOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/lib",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeWatchOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -552,9 +708,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/include";
 				INFOPLIST_FILE = SurgeTvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/lib",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeTvOS;
@@ -603,9 +764,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/include";
 				INFOPLIST_FILE = SurgeTvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Shared/Libraries/librtsp-ios/lib",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeTvOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -641,6 +807,7 @@
 				42EE5C191CA35C4D00204F31 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		42EE5C241CA35C6E00204F31 /* Build configuration list for PBXNativeTarget "SurgeWatchOS" */ = {
 			isa = XCConfigurationList;
@@ -649,6 +816,7 @@
 				42EE5C261CA35C6E00204F31 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		42EE5C311CA35C8100204F31 /* Build configuration list for PBXNativeTarget "SurgeTvOS" */ = {
 			isa = XCConfigurationList;
@@ -657,6 +825,7 @@
 				42EE5C331CA35C8100204F31 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		42F577811CA34FA100112E27 /* Build configuration list for PBXProject "Surge" */ = {
 			isa = XCConfigurationList;

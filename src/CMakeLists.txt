@@ -36,6 +36,7 @@ if(BUILD_JAR STREQUAL OFF)
 
     RtspCommand.h
     RtspCommandFactory.h
+    RtspCommandFactory.cc
     Describe.h
     Setup.h
     Pause.h

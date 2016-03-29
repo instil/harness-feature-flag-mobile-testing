@@ -89,6 +89,17 @@ namespace Surge {
 
         int GetResolutionHeight() const { return m_resolutionHeight; }
 
+        SessionDescription* DeepCopy() const {
+            return new SessionDescription(m_type,
+                                          m_controlUrlIsComplete,
+                                          m_control,
+                                          m_rtpMap,
+                                          m_fmtp,
+                                          m_frameRate,
+                                          m_resolutionWidth,
+                                          m_resolutionHeight);
+        }
+
         static RtspSessionType GetTypeFromMime(const std::string raw_mime) {
             if (raw_mime.find("H264") != std::string::npos) {
                 return H264;

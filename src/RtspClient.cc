@@ -234,12 +234,17 @@ Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
 }
 
 void Surge::RtspClient::StopClient() {
-    RtspResponse* teardown_response = Teardown(false);
-    delete teardown_response;
-    
     if (m_socketHandler.IsRunning()) {
+
+        // non empty session token we should teardown
+        if (!m_session.empty()) {
+            RtspResponse* teardown_response = Teardown(false);
+            delete teardown_response;
+        }
+        
         m_socketHandler.StopRunning();
     }
+    
     if (m_thread.IsRunning()) {
         m_thread.Stop();
     }

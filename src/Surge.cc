@@ -3,18 +3,15 @@
 namespace Surge {
 
     void StartErrorDispatcher() {
-        __dispatcher = new ErrorDispatcher();
-        __dispatcher->StartRunning();
+        ErrorDispatcher::GetInstance().StartRunning();
     }
 
     void CloseErrorDispatcher() {
-        if (__dispatcher != nullptr) {
-            __dispatcher->StopRunning();
-        }
+        ErrorDispatcher::GetInstance().StopRunning();
     }
 
-    ErrorDispatcher* GetDispatcher() {
-        return __dispatcher;
+    ErrorDispatcher& GetDispatcher() {
+        return ErrorDispatcher::GetInstance();
     }
     
 }

@@ -21,6 +21,11 @@ namespace Surge {
         ErrorDispatcher();
         
         ~ErrorDispatcher() { StopRunning(); }
+
+        static ErrorDispatcher& GetInstance() {
+            static ErrorDispatcher dispatcher;
+            return dispatcher;
+        }
     
         void FailureForClient(const RtspClient * client, ERROR_TYPE type);
 
@@ -38,8 +43,7 @@ namespace Surge {
             }
         }
 
-    private:
-               
+    private:       
         void WaitForErrorReceived(const long timeout_milliseconds);
         void Run() override;
         
@@ -49,8 +53,6 @@ namespace Surge {
         SurgeUtil::FireableEvent m_receivedStopEvent;
         SurgeUtil::StoppableThread m_thread;
     };
-
-    static ErrorDispatcher *__dispatcher = nullptr;
 }
 
 #endif //__ERROR_DISPATCHER_H__

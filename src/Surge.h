@@ -10,7 +10,7 @@ namespace Surge {
 
     void CloseErrorDispatcher();
 
-    ErrorDispatcher* GetDispatcher();
+    ErrorDispatcher& GetDispatcher();
     
 }
 

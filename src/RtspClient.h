@@ -65,10 +65,7 @@ namespace Surge {
         }
 
         void NotifyDelegateTimeout() {
-            ErrorDispatcher *dispatcher = GetDispatcher();
-            if (m_delegate != nullptr) {
-                dispatcher->FailureForClient(this, ERROR_TYPE::LOST_CONNECTION);
-            }
+            GetDispatcher().FailureForClient(this, ERROR_TYPE::LOST_CONNECTION);
         }
 
         void AppendPayloadToCurrentFrame(const unsigned char *buffer, size_t length) {

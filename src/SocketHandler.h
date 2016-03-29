@@ -58,6 +58,8 @@ namespace Surge {
         SurgeUtil::DataEventQueue<Response*> m_rtspOutputQueue;
         SurgeUtil::DataEventQueue<RtpPacket*> m_rtpOutputQueue;
 
+        std::atomic<bool> m_running;
+        
         int m_rtspSocketFD;
         size_t m_readBufferSize;
         long m_connectTimeoutMs;

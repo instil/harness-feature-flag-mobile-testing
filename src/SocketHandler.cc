@@ -32,6 +32,7 @@ Surge::SocketHandler::SocketHandler():
     m_rtspInputQueue(),
     m_rtspOutputQueue(),
     m_rtpOutputQueue(),
+    m_running(false),
     m_rtspSocketFD(-1),
     m_readBufferSize(DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE),
     m_connectTimeoutMs(DEFAULT_CONNECT_TIMEOUT_MS),
@@ -58,6 +59,8 @@ void Surge::SocketHandler::StartRunning() {
         return;
     }
 
+    m_running = true;
+
     m_thread.Execute(*this);
 }
 
@@ -65,6 +68,8 @@ void Surge::SocketHandler::StopRunning() {
     if (!IsRunning()) {
         return;
     }
+
+    m_running = false;
 
     m_thread.Stop();
 }
@@ -173,7 +178,7 @@ void Surge::SocketHandler::Run() {
             SurgeUtil::WaitableEvents::WatchForType::readable
     };
     
-    while (true) {
+    while (m_running) {
         
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
                     &m_thread.StopRequested(),
@@ -240,8 +245,12 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
                  response.begin() + old_size);
         }
         total_buffer_size += received;
-    } while (event.IsFired());
+    } while (event.IsFired() && m_running);
     free(buffer);
+
+    if (!m_running) {
+        return;
+    }
     
     size_t offs = 0;
     do {
@@ -297,5 +306,5 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
                 break;
             }
         }
-    } while (offs < total_buffer_size);
+    } while (offs < total_buffer_size && m_running);
 }

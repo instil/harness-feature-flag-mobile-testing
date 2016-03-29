@@ -13,7 +13,7 @@ Surge::RtspClient::RtspClient(Surge::RtspClientDelegate *delegate) : m_delegate(
                                                                      m_processedFirstPayload(false),
                                                                      m_lastKeepAliveMs(0),
                                                                      m_keeepAliveIntervalInSeconds(60),
-                                                                     m_sequenceNumber(2),
+                                                                     m_sequenceNumber(1),
                                                                      m_url(""),
                                                                      m_session(""),
                                                                      m_socketHandler() { }

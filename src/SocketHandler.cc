@@ -224,6 +224,14 @@ bool Surge::SocketHandler::ProcessSend(const int fd, const unsigned char *bytes,
     return send(fd, bytes, length, 0) != -1;
 }
 
+/**
+ * Interleaved data is annoying.
+ *
+ *  XXXYYYYYYYXXXXYZZZZZZZ
+ * | read-size |
+ *
+ * Because we read in chunks trailing packet data must be held onto to ensure RTP/RTSP/RTCP consistency.
+ **/
 void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) {
     std::vector<unsigned char> response;
     

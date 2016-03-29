@@ -32,8 +32,6 @@ if(BUILD_JAR)
 endif()
 
 option(BUILD_JNI_WRAPPER "Build JNI Wrapper" OFF)
-option(BUILD_XAMARIN_IOS_WRAPPER "Build xamarin iOS Wrapper" OFF)
-option(BUILD_XAMARIN_ANDROID_WRAPPER "Build xamarin Android Wrapper" OFF)
 
 Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 

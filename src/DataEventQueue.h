@@ -13,42 +13,15 @@ namespace SurgeUtil {
     
     template<class T> class DataEventQueue {
     public:
-        DataEventQueue(): m_maxSize(-1), m_elementDeallocator(0) { }
-
-        DataEventQueue(int maxSize, std::function<void (T)> deallocator):
-            m_maxSize(maxSize),
-            m_elementDeallocator(deallocator)
-            {}
-
-        ~DataEventQueue() {
-            if (m_elementDeallocator != 0) {
-                Flush(m_elementDeallocator);
-            }
-            m_Queue.clear();
-        }
-
-        size_t Size() const { return m_Queue.size(); }
-    
-        bool IsEmpty() const { return Size() == 0; }
+        DataEventQueue() { }
     
         const FireableEvent& GetNonEmptyEvent() const { return m_NonEmpty; };
 
         void AddItem(T item) {
             MutexLocker lock(m_Mutex);
 
-            bool wasEmpty = IsEmpty();
-            
-            if (IsAtSizeLimit()) {
-                T item = m_Queue[0];
-                m_Queue.pop_front();
-
-                if (m_elementDeallocator != 0) {
-                    m_elementDeallocator(item);
-                }
-            }
-                       
+            bool wasEmpty = m_Queue.empty();
             m_Queue.push_back(item);
-            m_NonEmpty.Fire();
 
             if (wasEmpty) {
                 m_NonEmpty.Fire();
@@ -61,7 +34,7 @@ namespace SurgeUtil {
             T item = m_Queue[0];
             m_Queue.pop_front();
 
-            if (IsEmpty()) {
+            if (m_Queue.empty()) {
                 m_NonEmpty.Reset();
             }
 
@@ -78,23 +51,7 @@ namespace SurgeUtil {
             m_Queue.clear();
         }
 
-        void Flush() {
-            if (m_elementDeallocator != 0) {
-                Flush(m_elementDeallocator);
-            }
-        }
-
     private:
-
-        bool IsAtSizeLimit() const {
-            if (m_maxSize <= 0) {
-                return false;
-            }
-            return Size() >= m_maxSize;
-        }
-        
-        int m_maxSize;
-        std::function<void (T)> m_elementDeallocator;
         std::deque<T> m_Queue;
         Mutex m_Mutex;
         FireableEvent m_NonEmpty;

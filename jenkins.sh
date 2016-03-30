@@ -12,7 +12,7 @@ lcov --zerocounters --directory ../
 lcov --capture --initial --directory ../ --output-file app
 
 # run the tests
-./test/testrunner --gtest_output=xml:gtestresults.xml
+valgrind --leak-check=full --track-origins=yes --trace-children=yes --xml=yes --xml-file=./valgrind.result -- ./test/testrunner --gtest_output=xml:gtestresults.xml
 
 lcov --no-checksum --directory . --capture --output-file app.info
 python ../tools/lcov_cobertura.py app.info

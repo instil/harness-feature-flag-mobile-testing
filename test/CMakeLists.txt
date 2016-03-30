@@ -60,10 +60,10 @@ add_executable(testrunner
   ScratchTest.cc
   UrlTests.cc
   RtspResponseTests.cc
+  SessionDescriptionV0Tests.cc
 
   TestUtil.cc
   TestUtil.h
-
   NaluParser.h
 )
 target_link_libraries(testrunner

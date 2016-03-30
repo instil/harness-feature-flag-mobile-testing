@@ -20,7 +20,8 @@ Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string rawSessionDe
         }
                 
         if (is_control) {
-            m_control = current_line.substr(10, current_line.length());
+            size_t end_position = current_line.find(';');
+            m_control = current_line.substr(10, end_position - 10);
         }
                 
         if (is_mime) {    

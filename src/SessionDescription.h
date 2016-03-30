@@ -15,7 +15,6 @@ namespace Surge {
     public:
 
         SessionDescription(): m_type(UNKNOWN),
-                              m_controlUrlIsComplete(false),
                               m_control(""),
                               m_rtpMap(""),
                               m_fmtp(""),
@@ -24,14 +23,12 @@ namespace Surge {
                               m_resolutionHeight(-1) { }
         
         SessionDescription(RtspSessionType type,
-                           bool completeControlUrl,
                            std::string control,
                            std::string rtpMap,
                            std::string fmtp,
                            int frameRate,
                            int width,
                            int height): m_type(type),
-                                        m_controlUrlIsComplete(completeControlUrl),
                                         m_control(control),
                                         m_rtpMap(rtpMap),
                                         m_fmtp(fmtp),
@@ -43,7 +40,7 @@ namespace Surge {
 
         RtspSessionType GetType() const { return m_type; }
 
-        bool IsControlUrlComplete() const { return m_controlUrlIsComplete; }
+        bool IsControlUrlComplete() const { return m_control.find("://") != std::string::npos; }
 
         const std::string GetControl() const { return m_control; }
 
@@ -62,11 +59,7 @@ namespace Surge {
             }
 
             size_t end = m_fmtp.find(";", pos);
-            if (end == std::string::npos) {
-                end = m_fmtp.length();
-            }
-            
-            return m_fmtp.substr(pos + 21, end - pos);
+            return m_fmtp.substr(pos + 21, end - pos - 21);
         }
 
         const std::string GetFmtpConfigParameters() const {
@@ -91,7 +84,6 @@ namespace Surge {
 
         SessionDescription* DeepCopy() const {
             return new SessionDescription(m_type,
-                                          m_controlUrlIsComplete,
                                           m_control,
                                           m_rtpMap,
                                           m_fmtp,
@@ -115,7 +107,6 @@ namespace Surge {
 
     protected:
         RtspSessionType m_type;
-        bool m_controlUrlIsComplete;
         std::string m_control;
         std::string m_rtpMap;
         std::string m_fmtp;

@@ -97,6 +97,9 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port, const Su
         close(m_rtspSocketFD);
         return -1;
     }
+
+    int socketSize  = (1 * 1024 * 1024); // 1Mb; 
+    setsockopt(m_rtspSocketFD, SOL_SOCKET, SO_RCVBUF, &socketSize, sizeof(socketSize));
     
     if (connect(m_rtspSocketFD, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         
@@ -160,14 +163,14 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
 
     WaitForSendEventToBeHandled();
     
-    DEBUG("Command: " << command->StringDump());
+    TRACE("Command: " << command->StringDump());
     if (waitForResponse) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
                                                               m_transactionTimeoutMs);
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
             resp = m_rtspOutputQueue.RemoveItem();
-            DEBUG("TRANSACTION RESPONSE: " << resp->StringDump());
+            TRACE("TRANSACTION RESPONSE: " << resp->StringDump());
         }
     }
 

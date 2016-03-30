@@ -7,13 +7,13 @@ pushd _build
 cmake -DCODE_COVERAGE=ON -DDEBUG_SYMBOLS=ON -DUNIT_TESTS=ON ../
 make VERBOSE=1
 
-lcov --zerocounters --directory .
-lcov --capture --initial --directory . --output-file app
+lcov --zerocounters --directory ../
+lcov --capture --initial --directory ../ --output-file app
 
 # run the tests
 ./test/testrunner --gtest_output=xml:gtestresults.xml
 
-lcov --no-checksum --directory . --capture --output-file app.info
+lcov --no-checksum --directory ../ --capture --output-file app.info
 python ../tools/lcov_cobertura.py app.info
 
 popd

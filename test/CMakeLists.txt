@@ -61,7 +61,6 @@ add_executable(testrunner
   UrlTests.cc
   RtspResponseTests.cc
 
-  Cameras.h
   TestUtil.cc
   TestUtil.h
 

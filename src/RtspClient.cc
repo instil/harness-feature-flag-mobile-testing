@@ -52,8 +52,17 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string url,
         ERROR("Failed to get response to DESCRIBE!");
         return nullptr;
     }
+
     
-    DescribeResponse *resp = new DescribeResponse(raw_resp);
+    DescribeResponse *resp = nullptr;
+    try {
+        resp = new DescribeResponse(raw_resp);
+    }
+    catch (const std::exception& e) {
+        ERROR("Invalid DescribeResponse: " << e.what());
+        resp = nullptr;
+    }
+    
     delete raw_resp;
 
     return resp;
@@ -92,10 +101,18 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionD
         return nullptr;
     }
 
-    SetupResponse* resp = new SetupResponse(raw_resp);
+    SetupResponse* resp = nullptr;
+    try {
+        resp = new SetupResponse(raw_resp);
+    }
+    catch (const std::exception& e) {
+        ERROR("Invalid SetupResponse: " << e.what());
+        resp = nullptr;
+    }
+    
     delete raw_resp;
 
-    if (resp->Ok()) {
+    if (resp != nullptr && resp->Ok()) {
         m_lastKeepAliveMs = SurgeUtil::CurrentTimeMilliseconds();
         m_keeepAliveIntervalInSeconds = resp->GetTimeout();
         m_session = resp->GetSession();
@@ -130,7 +147,13 @@ Surge::RtspResponse* Surge::RtspClient::Play(bool waitForResponse) {
 
     RtspResponse* resp = nullptr;
     if (waitForResponse) {
-        resp = new RtspResponse(raw_resp);
+        try {
+            resp = new RtspResponse(raw_resp);
+        }
+        catch (const std::exception& e) {
+            ERROR("Invalid PlayResponse: " << e.what());
+            resp = nullptr;
+        }
         delete raw_resp;
     } else {
         resp = new RtspResponse(200, "");
@@ -150,7 +173,14 @@ Surge::RtspResponse* Surge::RtspClient::Pause() {
         return nullptr;
     }
 
-    RtspResponse* resp = new RtspResponse(raw_resp);
+    RtspResponse* resp = nullptr;
+    try {
+        resp = new RtspResponse(raw_resp);
+    }
+    catch (const std::exception& e) {
+        ERROR("Invalid PauseResponse: " << e.what());
+        resp = nullptr;
+    }
     delete raw_resp;
     
     return resp;
@@ -167,7 +197,14 @@ Surge::RtspResponse* Surge::RtspClient::Options() {
         return nullptr;
     }
 
-    RtspResponse* resp = new RtspResponse(raw_resp);
+    RtspResponse* resp = nullptr;
+    try {
+        resp = new RtspResponse(raw_resp);
+    }
+    catch (const std::exception& e) {
+        ERROR("Invalid OptionsResponse: " << e.what());
+        resp = nullptr;
+    }
     delete raw_resp;
 
     return resp;
@@ -189,7 +226,14 @@ Surge::RtspResponse* Surge::RtspClient::Options(const std::string url) {
         return nullptr;
     }
 
-    RtspResponse* resp = new RtspResponse(raw_resp);
+    RtspResponse* resp = nullptr;
+    try {
+        resp = new RtspResponse(raw_resp);
+    }
+    catch (const std::exception& e) {
+        ERROR("Invalid OptionsResponse: " << e.what());
+        resp = nullptr;
+    }
     delete raw_resp;
 
     return resp;
@@ -208,7 +252,13 @@ Surge::RtspResponse* Surge::RtspClient::Teardown(bool waitForResponse) {
     
     RtspResponse* resp = nullptr;
     if (waitForResponse) {
-        resp = new RtspResponse(raw_resp);
+        try {
+            resp = new RtspResponse(raw_resp);
+        }
+        catch (const std::exception& e) {
+            ERROR("Invalid TeardownResponse: " << e.what());
+            resp = nullptr;
+        }
         delete raw_resp;
     } else {
         resp = new RtspResponse(200, "");
@@ -228,7 +278,14 @@ Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
         return nullptr;
     }
 
-    RtspResponse* resp = new RtspResponse(raw_resp);
+    RtspResponse* resp = nullptr;
+    try {
+        resp = new RtspResponse(raw_resp);
+    } catch (const std::exception& e) {
+        ERROR("Invalid KeepaliveResponse: " << e.what());
+        resp = nullptr;
+    }
+    
     delete raw_resp;
     
     return resp;

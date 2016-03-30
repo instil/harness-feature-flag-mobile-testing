@@ -9,8 +9,6 @@
 #include <thread>
 #include <chrono>
 
-#include "Cameras.h"
-
 #include <cstdio>
 
 class Delegate: public Surge::RtspClientDelegate {

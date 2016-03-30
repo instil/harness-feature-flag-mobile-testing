@@ -29,7 +29,7 @@ public:
 };
 
 
-TEST(SCRATCH, SIMPLE_SCRATCH) {
+TEST(SCRATCH, DISABLED_SIMPLE_SCRATCH) {
     
     Surge::StartErrorDispatcher();
     SurgeTestUtil::SetupTestLogger();

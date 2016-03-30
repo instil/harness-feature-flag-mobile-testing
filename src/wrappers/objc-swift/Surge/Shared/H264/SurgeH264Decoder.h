@@ -18,12 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#import "SurgeDecoder.h"
 
-//! Project version number for SurgeTvOS.
-FOUNDATION_EXPORT double SurgeTvOSVersionNumber;
+@interface SurgeH264Decoder : SurgeDecoder
 
-//! Project version string for SurgeTvOS.
-FOUNDATION_EXPORT const unsigned char SurgeTvOSVersionString[];
+- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate;
 
-#import <SurgeTvOS/SurgeRtspPlayer.h>
+@end

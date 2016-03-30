@@ -20,10 +20,12 @@
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for SurgeTvOS.
-FOUNDATION_EXPORT double SurgeTvOSVersionNumber;
+#ifdef DEBUG
+#define SurgeLogDebug(...) NSLog(@"DEBUG: " __VA_ARGS__)
+#else
+#define SurgeLogDebug(...)
+#endif
 
-//! Project version string for SurgeTvOS.
-FOUNDATION_EXPORT const unsigned char SurgeTvOSVersionString[];
-
-#import <SurgeTvOS/SurgeRtspPlayer.h>
+#define SurgeLogInfo(...) NSLog(@"INFO: " __VA_ARGS__)
+#define SurgeLogWarn(...) NSLog(@"WARN: " __VA_ARGS__)
+#define SurgeLogError(...) NSLog(@"ERROR: " __VA_ARGS__)

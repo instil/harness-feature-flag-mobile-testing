@@ -19,11 +19,23 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import "NaluSegmentTypes.h"
 
-//! Project version number for SurgeTvOS.
-FOUNDATION_EXPORT double SurgeTvOSVersionNumber;
+@interface NaluSegment : NSObject
 
-//! Project version string for SurgeTvOS.
-FOUNDATION_EXPORT const unsigned char SurgeTvOSVersionString[];
+@property (nonatomic, assign) size_t headerSize;
+@property (nonatomic, assign) size_t offset;
+@property (nonatomic, assign) NaluSegmentType type;
+@property (nonatomic, assign) size_t length;
 
-#import <SurgeTvOS/SurgeRtspPlayer.h>
+- (id)initWithType:(NaluSegmentType)type atOffset:(size_t)offset withHeaderSize:(size_t)headerSize;
+
+- (void)setBuffer:(const unsigned char *)buffer withLength:(size_t)length;
+
+- (void*)annexBBuffer;
+
+- (void*)bufferWithoutHeader;
+
+- (void)cleanup;
+
+@end

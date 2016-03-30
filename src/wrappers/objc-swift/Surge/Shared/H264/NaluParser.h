@@ -20,10 +20,12 @@
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for SurgeTvOS.
-FOUNDATION_EXPORT double SurgeTvOSVersionNumber;
+@interface NaluParser : NSObject
 
-//! Project version string for SurgeTvOS.
-FOUNDATION_EXPORT const unsigned char SurgeTvOSVersionString[];
++ (BOOL)segmentList:(NSArray*)nalus containsNalu:(NSInteger)type;
 
-#import <SurgeTvOS/SurgeRtspPlayer.h>
++ (NSArray*)findNalusOfType:(NSInteger)type inArray:(NSArray*)nalus;
+
++ (NSArray*)parseOutNalusFromFrameBuffer:(const unsigned char *)frameBuffer ofLength:(size_t)frameSize;
+
+@end

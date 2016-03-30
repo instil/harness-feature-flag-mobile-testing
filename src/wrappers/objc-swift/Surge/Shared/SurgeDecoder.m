@@ -18,12 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#import "SurgeDecoder.h"
 
-//! Project version number for SurgeTvOS.
-FOUNDATION_EXPORT double SurgeTvOSVersionNumber;
+@implementation SurgeDecoder
 
-//! Project version string for SurgeTvOS.
-FOUNDATION_EXPORT const unsigned char SurgeTvOSVersionString[];
+- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
+                   ofSize:(size_t)size
+        withFrameDuration:(int)frameDuration
+      andPresentationTime:(unsigned int)presentationTimeInterval {
+    
+    @throw [NSException exceptionWithName:@"Not implemented" reason:@"Method must be overridden" userInfo:nil];
+}
 
-#import <SurgeTvOS/SurgeRtspPlayer.h>
+@end

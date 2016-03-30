@@ -19,11 +19,29 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import <CoreImage/CoreImage.h>
 
-//! Project version number for SurgeTvOS.
-FOUNDATION_EXPORT double SurgeTvOSVersionNumber;
+@protocol SurgeDecoderDelegate <NSObject>
 
-//! Project version string for SurgeTvOS.
-FOUNDATION_EXPORT const unsigned char SurgeTvOSVersionString[];
+- (void)decoderFrameAvailable:(CGImageRef)imageBuffer withTimeStamp:(NSTimeInterval)timestamp;
 
-#import <SurgeTvOS/SurgeRtspPlayer.h>
+@optional
+
+- (void)decoderDidBeginBuffering;
+
+- (void)decoderDidStopBuffering;
+
+@end
+
+@interface SurgeDecoder : NSObject
+
+- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
+                   ofSize:(size_t)size
+        withFrameDuration:(int)frameDuration
+      andPresentationTime:(unsigned int)presentationTimeInterval;
+
+@property (nonatomic, weak) id<SurgeDecoderDelegate> delegate;
+
+@property (nonatomic, assign) NSUInteger framesPerSecond;
+
+@end

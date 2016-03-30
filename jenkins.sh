@@ -19,4 +19,5 @@ python ../tools/lcov_cobertura.py app.info
 popd
 
 rm -f ./cppcheck.xml
+rm -f ./src/wrappers/java/interface_wrap.* # don't scan the swig stuff nothing i can do about those issues.
 cppcheck --std=c++11 --xml --xml-version=2 --enable=warning,performance,portability,information ./src/ 2> cppcheck.xml

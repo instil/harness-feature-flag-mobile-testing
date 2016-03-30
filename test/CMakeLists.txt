@@ -61,6 +61,7 @@ add_executable(testrunner
   UrlTests.cc
   RtspResponseTests.cc
   SessionDescriptionV0Tests.cc
+  SetupResponseTests.cc
 
   TestUtil.cc
   TestUtil.h

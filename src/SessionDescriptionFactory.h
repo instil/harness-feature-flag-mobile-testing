@@ -11,7 +11,7 @@ namespace Surge {
 
     namespace SessionDescriptionFactory {
 
-        std::vector<SessionDescription> ParseSessionDescriptionsFromBuffer(const std::string body);
+        std::vector<SessionDescription> ParseSessionDescriptionsFromBuffer(const std::string& body);
         
     };
     

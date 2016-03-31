@@ -86,7 +86,7 @@ namespace Surge {
 
         virtual const bool Ok() const { return GetCode() == 200; }
 
-        const std::string HeaderValueForKey(const std::string key) {
+        const std::string HeaderValueForKey(const std::string& key) {
             std::string header_value;
 
             const std::map<std::string, std::string> headers = GetHeaders();

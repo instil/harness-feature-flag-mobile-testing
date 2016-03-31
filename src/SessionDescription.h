@@ -92,7 +92,7 @@ namespace Surge {
                                           m_resolutionHeight);
         }
 
-        static RtspSessionType GetTypeFromMime(const std::string raw_mime) {
+        static RtspSessionType GetTypeFromMime(const std::string& raw_mime) {
             if (raw_mime.find("H264") != std::string::npos) {
                 return H264;
             }

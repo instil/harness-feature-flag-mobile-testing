@@ -74,7 +74,7 @@ void Surge::SocketHandler::StopRunning() {
     m_thread.Stop();
 }
 
-int Surge::SocketHandler::RtspTcpOpen(const std::string host, int port, const SurgeUtil::FireableEvent& abort) {
+int Surge::SocketHandler::RtspTcpOpen(const std::string& host, int port, const SurgeUtil::FireableEvent& abort) {
     m_rtspSocketFD = socket(AF_INET, SOCK_STREAM, 0);
     if (m_rtspSocketFD == -1) {
         ERROR("failed to create socket: error code = " << errno);
@@ -254,6 +254,9 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
         if (received == -1) {
             ERROR("Failed to recv errno: " << errno);
             free(buffer);
+            // Notify Delegate of Socket Failure...
+            // TODO...
+            return;
         }
         else if (received > 0) {
             // Append received data to 'response'.

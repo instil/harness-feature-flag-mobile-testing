@@ -28,7 +28,7 @@ namespace Surge {
 
         void SetTimeout(long timeout) { m_timeoutMs = timeout; }
 
-        int RtspTcpOpen(const std::string host, int port, const SurgeUtil::FireableEvent& abort);
+        int RtspTcpOpen(const std::string& host, int port, const SurgeUtil::FireableEvent& abort);
 
         Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true);
 

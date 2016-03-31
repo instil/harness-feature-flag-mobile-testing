@@ -23,10 +23,10 @@ namespace Surge {
 
         ~RtspClient();
 
-        DescribeResponse* Describe(const std::string url,
+        DescribeResponse* Describe(const std::string& url,
                                    bool requires_auth,
-                                   const std::string user,
-                                   const std::string password);
+                                   const std::string& user,
+                                   const std::string& password);
 
         SetupResponse* Setup(const SessionDescription sessionDescription, bool serverAllowsAggregate = true);
 
@@ -36,7 +36,7 @@ namespace Surge {
 
         RtspResponse* Options();
 
-        RtspResponse* Options(const std::string url);
+        RtspResponse* Options(const std::string& url);
 
         RtspResponse* Teardown(bool waitForResponse = false);
 

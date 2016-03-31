@@ -28,10 +28,10 @@ Surge::RtspClient::~RtspClient() {
     }
 }
 
-Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string url,
+Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
                                                      bool requires_auth,
-                                                     const std::string user,
-                                                     const std::string password) {
+                                                     const std::string& user,
+                                                     const std::string& password) {
     m_url = url;
 
     int retval = SetupRtspConnection(url);
@@ -210,7 +210,7 @@ Surge::RtspResponse* Surge::RtspClient::Options() {
     return resp;
 }
 
-Surge::RtspResponse* Surge::RtspClient::Options(const std::string url) {
+Surge::RtspResponse* Surge::RtspClient::Options(const std::string& url) {
     int retval = SetupRtspConnection(url);
     if (retval != 0) {
         return nullptr;

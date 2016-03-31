@@ -9,7 +9,7 @@ namespace Surge {
 
     namespace SessionDescriptionFactory {
     
-        std::vector<SessionDescription> ParseSessionDescriptionsFromBuffer(const std::string body) {
+        std::vector<SessionDescription> ParseSessionDescriptionsFromBuffer(const std::string& body) {
             std::vector<SessionDescription> palettes;
 
             std::vector<std::string> lines = SurgeUtil::StringSplit(body, "\n");

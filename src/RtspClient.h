@@ -29,7 +29,7 @@ namespace Surge {
                                    const std::string& user,
                                    const std::string& password);
 
-        SetupResponse* Setup(const SessionDescription sessionDescription, bool serverAllowsAggregate = true);
+        SetupResponse* Setup(const SessionDescription& sessionDescription, bool serverAllowsAggregate = true);
 
         RtspResponse* Play(bool waitForResponse = true);
 

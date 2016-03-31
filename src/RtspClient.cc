@@ -68,7 +68,7 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
     return resp;
 }
 
-Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription sessionDescription, bool serverAllowsAggregate) {
+Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& sessionDescription, bool serverAllowsAggregate) {
     
     // control url is where we put any more requests to
     std::string setup_url = (sessionDescription.IsControlUrlComplete()) ?

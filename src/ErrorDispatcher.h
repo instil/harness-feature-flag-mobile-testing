@@ -3,6 +3,7 @@
 #define __ERROR_DISPATCHER_H__
 
 #include "Mutex.h"
+#include "MutexLocker.h"
 #include "StoppableThread.h"
 
 namespace Surge {
@@ -32,12 +33,16 @@ namespace Surge {
         bool IsRunning() { return m_thread.IsRunning(); }
 
         void StartRunning() {
+            SurgeUtil::MutexLocker lock(m_Mutex);
+            
             if (!IsRunning()) {
                 m_thread.Execute(*this);
             }
         }
 
         void StopRunning() {
+            SurgeUtil::MutexLocker lock(m_Mutex);
+            
             if (IsRunning()) {
                 m_thread.Stop();
             }
@@ -48,6 +53,7 @@ namespace Surge {
         void Run() override;
         
         long m_timeout;
+        SurgeUtil::Mutex m_Mutex;
         SurgeUtil::Mutex m_firedEventLock;
         SurgeUtil::FireableEvent m_clientStopEvent;
         SurgeUtil::FireableEvent m_receivedStopEvent;

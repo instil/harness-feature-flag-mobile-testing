@@ -20,8 +20,11 @@ namespace Surge {
                     SessionDescriptionV0 session(body);
                     palettes.push_back(session);
                 }
-                else {
+                else if (!version_line.empty()) {
                     ERROR("Unhandled Session Description version: [" << version_line << "]");
+                }
+                else {
+                    ERROR("No Session Description available");
                 }
             }
             

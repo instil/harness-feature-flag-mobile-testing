@@ -1,6 +1,6 @@
 #include "SessionDescriptionV0.h"
 
-Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string rawSessionDescription): SessionDescription()
+Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string& rawSessionDescription): SessionDescription()
 {
     std::vector<std::string> lines = SurgeUtil::StringSplit(rawSessionDescription, "\r\n");
     for (auto it = lines.begin(); it != lines.end(); ++it) {

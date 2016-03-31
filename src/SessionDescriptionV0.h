@@ -14,7 +14,7 @@ namespace Surge {
 
     class SessionDescriptionV0: public SessionDescription {
     public:
-        SessionDescriptionV0(const std::string rawSessionDescription);
+        SessionDescriptionV0(const std::string& rawSessionDescription);
     };
     
 }

@@ -439,7 +439,7 @@ void Surge::RtspClient::ProcessMJPEGPacket(const RtpPacket* packet) {
     depacketizer.AddToFrame(&m_currentFrame);
 }
 
-int Surge::RtspClient::SetupRtspConnection(const std::string url) {
+int Surge::RtspClient::SetupRtspConnection(const std::string& url) {
     if (m_socketHandler.IsRunning()) {
         return 0;
     }

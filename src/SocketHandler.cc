@@ -26,7 +26,8 @@ using SurgeUtil::Constants::DEFAULT_CONNECT_TIMEOUT_MS;
 using SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
 
 
-Surge::SocketHandler::SocketHandler():
+Surge::SocketHandler::SocketHandler(SocketHandlerDelegate * delegate):
+    m_delegate(delegate),
     m_rtpInterleavedChannel(DEFAULT_RTP_INTERLEAVED_CHANNEL),
     m_rtcpInterleavedChannel(DEFAULT_RTCP_INTERLEAVED_CHANNEL),
     m_rtspInputQueue(),
@@ -255,7 +256,7 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
             ERROR("Failed to recv errno: " << errno);
             free(buffer);
             // Notify Delegate of Socket Failure...
-            // TODO...
+            NotifyDelegateOfReadFailure();
             return;
         }
         else if (received > 0) {

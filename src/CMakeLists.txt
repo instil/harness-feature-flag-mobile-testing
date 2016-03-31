@@ -33,6 +33,7 @@ if(BUILD_JAR STREQUAL OFF)
 
     SocketHandler.h
     SocketHandler.cc
+    SocketHandlerDelegate.h
 
     RtspCommand.h
     RtspCommandFactory.h

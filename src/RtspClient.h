@@ -8,6 +8,7 @@
 #include "StoppableThread.h"
 #include "SocketHandler.h"
 #include "SessionDescription.h"
+#include "SocketHandlerDelegate.h"
 
 #include "DescribeResponse.h"
 #include "SetupResponse.h"
@@ -17,7 +18,7 @@
 
 namespace Surge {
 
-    class RtspClient : private SurgeUtil::Runnable {
+    class RtspClient : public SocketHandlerDelegate, private SurgeUtil::Runnable {
     public:
         RtspClient(RtspClientDelegate *delegate);
 
@@ -45,6 +46,10 @@ namespace Surge {
         void StopClient();
 
         RtspClientDelegate* GetDelegate() const { return m_delegate; }
+
+        void SocketReadFailed() override {
+            NotifyDelegateTimeout();
+        }
 
     private:
         void Run() override;

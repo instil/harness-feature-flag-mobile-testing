@@ -16,7 +16,7 @@ Surge::RtspClient::RtspClient(Surge::RtspClientDelegate *delegate) : m_delegate(
                                                                      m_sequenceNumber(1),
                                                                      m_url(""),
                                                                      m_session(""),
-                                                                     m_socketHandler() { }
+                                                                     m_socketHandler(this) { }
 
 Surge::RtspClient::~RtspClient() {
     if (m_socketHandler.IsRunning()) {

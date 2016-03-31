@@ -2,6 +2,7 @@
 #ifndef __SOCKET_HANDLER_H__
 #define __SOCKET_HANDLER_H__
 
+#include "SocketHandlerDelegate.h"
 #include "StoppableThread.h"
 #include "RtspCommand.h"
 #include "Response.h"
@@ -16,7 +17,7 @@ namespace Surge {
     
     class SocketHandler : private SurgeUtil::Runnable {
     public:
-        SocketHandler();
+        SocketHandler(SocketHandlerDelegate * delegate);
 
         ~SocketHandler();
 
@@ -39,6 +40,13 @@ namespace Surge {
         void SetRtcpInterleavedChannel(int channel) { m_rtcpInterleavedChannel = channel; }
 
     private:
+        
+        void NotifyDelegateOfReadFailure() {
+            if (m_delegate != nullptr) {
+                m_delegate->SocketReadFailed();
+            }
+        }
+        
         bool ProcessSend(const int fd, const unsigned char *bytes, size_t length);
 
         void HandleReceive(const SurgeUtil::WaitableEvent& event);
@@ -47,6 +55,8 @@ namespace Surge {
         
         void Run() override;
 
+        SocketHandlerDelegate *m_delegate;
+        
         int m_rtpInterleavedChannel;
         int m_rtcpInterleavedChannel;
 

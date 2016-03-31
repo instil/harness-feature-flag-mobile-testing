@@ -11,9 +11,9 @@ namespace Surge {
 
     class SetupRequest: public RtspCommand {
     public:
-        SetupRequest(const std::string url,
+        SetupRequest(const std::string& url,
                      const int nextSequenceNumber,
-                     const std::string authHeader) {
+                     const std::string& authHeader) {
             
             std::string packet = "SETUP " + url + " RTSP/1.0\r\n";
             

@@ -11,10 +11,10 @@ namespace Surge {
 
     class PlayRequest: public RtspCommand {
     public:
-        PlayRequest(const std::string url,
-                    const std::string session,
+        PlayRequest(const std::string& url,
+                    const std::string& session,
                     const int nextSequenceNumber,
-                    const std::string authHeader) {
+                    const std::string& authHeader) {
 
             std::string packet = "PLAY " + url + " RTSP/1.0\r\n";
             

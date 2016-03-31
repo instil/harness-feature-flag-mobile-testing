@@ -8,10 +8,10 @@ namespace Surge {
 
     class PauseRequest: public RtspCommand {
     public:
-        PauseRequest(const std::string url,
-                     const std::string session,
+        PauseRequest(const std::string& url,
+                     const std::string& session,
                      const int nextSequenceNumber,
-                     const std::string authHeader) {
+                     const std::string& authHeader) {
             std::string packet = "PAUSE " + url + " RTSP/1.0\r\n";
             
             char headerField[1024];

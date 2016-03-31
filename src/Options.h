@@ -11,10 +11,10 @@ namespace Surge {
 
     class OptionsRequest: public RtspCommand {
     public:
-        OptionsRequest(const std::string url,
-                       const std::string session,
+        OptionsRequest(const std::string& url,
+                       const std::string& session,
                        const int nextSequenceNumber,
-                       const std::string authHeader) {
+                       const std::string& authHeader) {
             
             std::string packet = "OPTIONS " + url + " RTSP/1.0\r\n";
             

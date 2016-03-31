@@ -8,10 +8,10 @@ namespace Surge {
 
     class TeardownRequest: public RtspCommand {
     public:
-        TeardownRequest(const std::string url,
-                        const std::string session,
+        TeardownRequest(const std::string& url,
+                        const std::string& session,
                         const int nextSequenceNumber,
-                        const std::string authHeader) {
+                        const std::string& authHeader) {
             std::string packet = "TEARDOWN " + url + " RTSP/1.0\r\n";
             
             char headerField[1024];

@@ -29,35 +29,35 @@ namespace Surge {
 
         bool IsBasicAuthHeaderAvailable();
         
-        const std::string GetBasicAuthHeader();
+        const std::string& GetBasicAuthHeader();
 
         void ResetSession();
         
-        RtspCommand* DescribeRequest(const std::string url,
+        RtspCommand* DescribeRequest(const std::string& url,
                                      int nextSequenceNumber,
                                      bool isLive);
 
-        RtspCommand* SetupRequest(const std::string url,
+        RtspCommand* SetupRequest(const std::string& url,
                                   int nextSequenceNumber);
 
-        RtspCommand* PlayRequest(const std::string url,
-                                 const std::string session,
+        RtspCommand* PlayRequest(const std::string& url,
+                                 const std::string& session,
                                  int nextSequenceNumber);
 
-        RtspCommand* PauseRequest(const std::string url,
-                                  const std::string session,
+        RtspCommand* PauseRequest(const std::string& url,
+                                  const std::string& session,
                                   int nextSequenceNumber);
 
-        RtspCommand* KeepAliveRequest(const std::string url,
-                                      const std::string session,
+        RtspCommand* KeepAliveRequest(const std::string& url,
+                                      const std::string& session,
                                       int nextSequenceNumber);
 
-        RtspCommand* OptionsRequest(const std::string url,
-                                    const std::string session,
+        RtspCommand* OptionsRequest(const std::string& url,
+                                    const std::string& session,
                                     int nextSequenceNumber);
 
-        RtspCommand* TeardownRequest(const std::string url,
-                                     const std::string session,
+        RtspCommand* TeardownRequest(const std::string& url,
+                                     const std::string& session,
                                      int nextSequenceNumber);
     };
     

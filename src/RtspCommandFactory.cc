@@ -18,7 +18,7 @@ namespace Surge {
             return !__rtspCommandFactoryBasicAuthString.empty();
         }
         
-        const std::string GetBasicAuthHeader() {
+        const std::string& GetBasicAuthHeader() {
             return __rtspCommandFactoryBasicAuthString;
         }
 
@@ -26,43 +26,43 @@ namespace Surge {
             __rtspCommandFactoryBasicAuthString.clear();
         }
         
-        RtspCommand* DescribeRequest(const std::string url,
+        RtspCommand* DescribeRequest(const std::string& url,
                                      int nextSequenceNumber,
                                      bool isLive) {
             return new class DescribeRequest(url, nextSequenceNumber, isLive, GetBasicAuthHeader());
         }
 
-        RtspCommand* SetupRequest(const std::string url,
+        RtspCommand* SetupRequest(const std::string& url,
                                   int nextSequenceNumber) {
             return new class SetupRequest(url, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        RtspCommand* PlayRequest(const std::string url,
-                                 const std::string session,
+        RtspCommand* PlayRequest(const std::string& url,
+                                 const std::string& session,
                                  int nextSequenceNumber) {
             return new class PlayRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        RtspCommand* PauseRequest(const std::string url,
-                                  const std::string session,
+        RtspCommand* PauseRequest(const std::string& url,
+                                  const std::string& session,
                                   int nextSequenceNumber) {
             return new class PauseRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        RtspCommand* KeepAliveRequest(const std::string url,
-                                      const std::string session,
+        RtspCommand* KeepAliveRequest(const std::string& url,
+                                      const std::string& session,
                                       int nextSequenceNumber) {
             return new class OptionsRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        RtspCommand* OptionsRequest(const std::string url,
-                                    const std::string session,
+        RtspCommand* OptionsRequest(const std::string& url,
+                                    const std::string& session,
                                     int nextSequenceNumber) {
             return new class OptionsRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
 
-        RtspCommand* TeardownRequest(const std::string url,
-                                     const std::string session,
+        RtspCommand* TeardownRequest(const std::string& url,
+                                     const std::string& session,
                                      int nextSequenceNumber) {
             return new class TeardownRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }

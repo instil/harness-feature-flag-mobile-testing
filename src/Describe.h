@@ -11,10 +11,10 @@ namespace Surge {
 
     class DescribeRequest: public RtspCommand {
     public:
-        DescribeRequest(const std::string url,
+        DescribeRequest(const std::string& url,
                         int nextSequenceNumber,
                         bool isLive,
-                        std::string authHeader) {
+                        const std::string& authHeader) {
             
             std::string packet = "DESCRIBE " + url + " RTSP/1.0\r\n";
             

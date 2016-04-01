@@ -18,6 +18,10 @@ public:
         ERROR("TIMEOUT");
     }
 
+    void StreamConfigChanged(bool wasRedirect) {
+        
+    }
+
     void Payload(const char* buffer, size_t length) {
         // print out nalus
         INFO("PAYLOAD");

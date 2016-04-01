@@ -281,8 +281,16 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
     do {
         bool is_rtp = response[offs] == '$';
         bool is_rtsp = strncmp((char*)&(response[offs]), "RTSP/1.0", 8) == 0;
+        bool is_announce = strncmp((char*)&(response[offs]), "ANNOUNCE", 8) == 0;
+        bool is_redirect = strncmp((char*)&(response[offs]), "REDIRECT", 8) == 0;
 
-        if (is_rtp) {
+        if (is_announce) {
+            NotifyDelegateOfAnnounce();
+        }
+        else if (is_redirect) {
+            NotifyDelegateOfRedirect();
+        }
+        else if (is_rtp) {
             int channel = static_cast<int>(response[offs + 1]);
 
             uint16_t network_order_packet_length = 0;
@@ -301,7 +309,8 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
                 break;
             }
             offs += packet_length + 4;
-        } else if (is_rtsp) {
+        }
+        else if (is_rtsp) {
             std::string string_response;
             string_response.resize(total_buffer_size - offs);
             std::copy(response.begin() + offs, response.end(), string_response.begin());

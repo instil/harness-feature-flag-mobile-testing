@@ -10,7 +10,11 @@ namespace Surge {
 
     typedef enum {
         
-        LOST_CONNECTION
+        LOST_CONNECTION,
+
+        REDIRECT,
+
+        ANNOUNCE,
         
     } ERROR_TYPE;    
 

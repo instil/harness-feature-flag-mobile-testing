@@ -50,6 +50,18 @@ namespace Surge {
                 m_delegate->SocketReadFailed();
             }
         }
+
+        void NotifyDelegateOfAnnounce() {
+            if (m_delegate != nullptr) {
+                m_delegate->AnnounceReceived();
+            }
+        }
+
+        void NotifyDelegateOfRedirect() {
+            if (m_delegate != nullptr) {
+                m_delegate->RedirectReceived();
+            }
+        }
         
         bool ProcessSend(const int fd, const unsigned char *bytes, size_t length);
 

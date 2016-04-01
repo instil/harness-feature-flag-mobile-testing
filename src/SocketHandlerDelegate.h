@@ -8,6 +8,10 @@ namespace Surge {
     public:
 
         virtual void SocketReadFailed() = 0;
+
+        virtual void AnnounceReceived() = 0;
+
+        virtual void RedirectReceived() = 0;
         
     };
     

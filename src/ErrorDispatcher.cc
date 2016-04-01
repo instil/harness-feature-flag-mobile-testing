@@ -67,6 +67,14 @@ namespace Surge {
                     delegate->ClientDidTimeout();
                     break;
 
+                case ANNOUNCE:
+                    delegate->StreamConfigChanged(false);
+                    break;
+
+                case REDIRECT:
+                    delegate->StreamConfigChanged(true);
+                    break;
+
                 default:
                     FATAL("Unhandled error event for client");
                     break;

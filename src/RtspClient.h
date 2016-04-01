@@ -51,6 +51,14 @@ namespace Surge {
             NotifyDelegateTimeout();
         }
 
+        void AnnounceReceived() override {
+            NotifyDelegateAnnounce();
+        }
+
+        void RedirectReceived() override {
+            NotifyDelgateRedirect();
+        }
+
         void SetNoPacketTimeout(long timeout) {
             m_noPacketTimeout = timeout;
         }
@@ -87,6 +95,14 @@ namespace Surge {
 
         void NotifyDelegateTimeout() {
             GetDispatcher().FailureForClient(this, ERROR_TYPE::LOST_CONNECTION);
+        }
+
+        void NotifyDelgateRedirect() {
+            GetDispatcher().FailureForClient(this, ERROR_TYPE::REDIRECT);
+        }
+
+        void NotifyDelegateAnnounce() {
+            GetDispatcher().FailureForClient(this, ERROR_TYPE::ANNOUNCE);
         }
 
         void AppendPayloadToCurrentFrame(const unsigned char *buffer, size_t length) {

@@ -10,9 +10,14 @@ namespace Surge {
     public:
 
         virtual ~RtspClientDelegate() { };
-        
+
+        // TIMEOUT
         virtual void ClientDidTimeout() = 0;
 
+        // ANNOUNCE / REDIRECT
+        virtual void StreamConfigChanged(bool wasRedirect) = 0;
+
+        // VIDEO
         virtual void Payload(const char* frameBuffer, size_t length) = 0;
 
     };

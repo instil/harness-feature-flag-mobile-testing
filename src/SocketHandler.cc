@@ -279,10 +279,10 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
     
     size_t offs = 0;
     do {
-        bool is_rtp = response[offs] == '$';
-        bool is_rtsp = strncmp((char*)&(response[offs]), "RTSP/1.0", 8) == 0;
-        bool is_announce = strncmp((char*)&(response[offs]), "ANNOUNCE", 8) == 0;
-        bool is_redirect = strncmp((char*)&(response[offs]), "REDIRECT", 8) == 0;
+        bool is_rtp = response.size() >= 4 && response[offs] == '$';
+        bool is_rtsp = response.size() >= 8 && strncmp((char*)&(response[offs]), "RTSP/1.0", 8) == 0;
+        bool is_announce = response.size() >= 8 && strncmp((char*)&(response[offs]), "ANNOUNCE", 8) == 0;
+        bool is_redirect = response.size() >= 8 && strncmp((char*)&(response[offs]), "REDIRECT", 8) == 0;
 
         if (is_announce) {
             NotifyDelegateOfAnnounce();

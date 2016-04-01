@@ -51,6 +51,18 @@ namespace Surge {
             NotifyDelegateTimeout();
         }
 
+        void SetNoPacketTimeout(long timeout) {
+            m_noPacketTimeout = timeout;
+        }
+
+        void SetTransactionTimeout(long timeout) {
+            m_socketHandler.SetTransactionTimeout(timeout);
+        }
+
+        void SetConnectTimeout(long timeout) {
+            m_socketHandler.SetConnectTimeout(timeout);
+        }
+
     private:
         void Run() override;
 
@@ -100,12 +112,14 @@ namespace Surge {
 
         void ProcessMJPEGPacket(const RtpPacket* packet);
 
+        bool m_isPlaying;
         SurgeUtil::FireableEvent m_abortWait;
 
         std::vector<unsigned char> m_currentFrame;
         SessionDescription m_currentPalette;
 
-        RtspClientDelegate *m_delegate;
+        RtspClientDelegate * const m_delegate;
+        long m_noPacketTimeout;
         bool m_processedFirstPayload;
         std::uint64_t m_lastKeepAliveMs;
         int m_keeepAliveIntervalInSeconds;

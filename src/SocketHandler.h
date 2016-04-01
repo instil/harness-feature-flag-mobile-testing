@@ -39,6 +39,10 @@ namespace Surge {
 
         void SetRtcpInterleavedChannel(int channel) { m_rtcpInterleavedChannel = channel; }
 
+        void SetConnectTimeout(long timeout) { m_connectTimeoutMs = timeout; }
+
+        void SetTransactionTimeout(long timeout) { m_connectTimeoutMs = timeout; }
+
     private:
         
         void NotifyDelegateOfReadFailure() {

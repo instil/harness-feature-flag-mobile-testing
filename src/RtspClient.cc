@@ -9,14 +9,15 @@
 #include "MJPEGDepacketizer.h"
 
 
-Surge::RtspClient::RtspClient(Surge::RtspClientDelegate *delegate) : m_delegate(delegate),
-                                                                     m_processedFirstPayload(false),
-                                                                     m_lastKeepAliveMs(0),
-                                                                     m_keeepAliveIntervalInSeconds(60),
-                                                                     m_sequenceNumber(1),
-                                                                     m_url(""),
-                                                                     m_session(""),
-                                                                     m_socketHandler(this) { }
+Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate) : m_delegate(delegate),
+                                                                            m_noPacketTimeout(5000),
+                                                                            m_processedFirstPayload(false),
+                                                                            m_lastKeepAliveMs(0),
+                                                                            m_keeepAliveIntervalInSeconds(60),
+                                                                            m_sequenceNumber(1),
+                                                                            m_url(""),
+                                                                            m_session(""),
+                                                                            m_socketHandler(this) { }
 
 Surge::RtspClient::~RtspClient() {
     if (m_socketHandler.IsRunning()) {
@@ -33,6 +34,7 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
                                                      const std::string& user,
                                                      const std::string& password) {
     m_url = url;
+    m_isPlaying = false;
 
     int retval = SetupRtspConnection(url);
     if (retval != 0) {
@@ -158,6 +160,8 @@ Surge::RtspResponse* Surge::RtspClient::Play(bool waitForResponse) {
     } else {
         resp = new RtspResponse(200, "");
     }
+
+    m_isPlaying = resp != nullptr && resp->Ok();
     
     return resp;
 }
@@ -182,6 +186,8 @@ Surge::RtspResponse* Surge::RtspClient::Pause() {
         resp = nullptr;
     }
     delete raw_resp;
+
+    m_isPlaying = false;
     
     return resp;
 }
@@ -321,20 +327,22 @@ void Surge::RtspClient::StartSession() {
 }
 
 void Surge::RtspClient::Run() {
+
+    uint64_t time_last_packet_was_processed = 0;
     
     while (true) {
-
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
                 &m_thread.StopRequested(),
                 &m_socketHandler.GetRtpPacketQueue()->GetNonEmptyEvent()
-            },
-            1000);
+            }, 1000);
 
+        // STOP
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_thread.StopRequested())) {
             DEBUG("RtspClient - Stop Requested.");
             break;
         }
 
+        // RTP PACKET
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents,
                                                      m_socketHandler.GetRtpPacketQueue()->GetNonEmptyEvent()))
         {
@@ -342,12 +350,22 @@ void Surge::RtspClient::Run() {
             RtpPacket* packet = m_socketHandler.GetRtpPacketQueue()->RemoveItem();
             ProcessRtpPacket(packet);
             delete packet;
+
+            time_last_packet_was_processed = SurgeUtil::CurrentTimeMilliseconds();
         }
 
-        uint64_t current_time_ms = SurgeUtil::CurrentTimeMilliseconds();
-        int64_t delta = current_time_ms - m_lastKeepAliveMs;
+        // TIMEOUT
+        int64_t timeout_delta_ms = SurgeUtil::CurrentTimeMilliseconds() - time_last_packet_was_processed;
+        bool client_did_timeout = m_isPlaying && timeout_delta_ms >= m_noPacketTimeout;
+        if (client_did_timeout) {
+            ERROR("No processed packets in the last 5 seconds. Issueing timeout signal.");
+            NotifyDelegateTimeout();
+            break;
+        }
+
+        // KEEP ALIVE        
+        int64_t delta = SurgeUtil::CurrentTimeMilliseconds() - m_lastKeepAliveMs;
         int64_t delta_seconds = delta / 1000;
-        
         bool need_keep_alive = delta_seconds >= static_cast<int64_t>(m_keeepAliveIntervalInSeconds * 0.9);
         if (need_keep_alive) {
             DEBUG("Sending Keep Alive for session: " << m_url);
@@ -357,10 +375,12 @@ void Surge::RtspClient::Run() {
                 // notify delegate via error dispatcher
                 ERROR("Failed to get response to keep alive");
                 NotifyDelegateTimeout();
+                break;
             } else if (!resp->Ok()) {
                 ERROR("Failed Keep-Alive request: " << resp->GetCode());
                 delete resp;
                 NotifyDelegateTimeout();
+                break;
             } else {
                 m_lastKeepAliveMs = SurgeUtil::CurrentTimeMilliseconds();
                 delete resp;

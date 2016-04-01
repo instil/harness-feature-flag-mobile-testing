@@ -358,7 +358,7 @@ void Surge::RtspClient::Run() {
         int64_t timeout_delta_ms = SurgeUtil::CurrentTimeMilliseconds() - time_last_packet_was_processed;
         bool client_did_timeout = m_isPlaying && timeout_delta_ms >= m_noPacketTimeout;
         if (client_did_timeout) {
-            ERROR("No processed packets in the last 5 seconds. Issueing timeout signal.");
+            ERROR("No processed packets in the last " << timeout_delta_ms << "(ms). Issueing timeout signal.");
             NotifyDelegateTimeout();
             break;
         }

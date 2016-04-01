@@ -244,6 +244,7 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
         response.resize(m_receivedBuffer.size());
         response = m_receivedBuffer;
         m_receivedBuffer.clear();
+        m_receivedBuffer.resize(0);
     }
 
     size_t total_buffer_size = response.size();
@@ -257,7 +258,8 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
             free(buffer);
             // Notify Delegate of Socket Failure...
             NotifyDelegateOfReadFailure();
-            return;
+            m_running = false;
+            break;
         }
         else if (received > 0) {
             // Append received data to 'response'.
@@ -265,11 +267,9 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
             if (old_size < (old_size + received)) {
                 response.resize(old_size + received);
             }
-            copy(buffer,
-                 buffer + received,
-                 response.begin() + old_size);
+            copy(buffer, buffer + received, response.begin() + old_size);
+            total_buffer_size += received;
         }
-        total_buffer_size += received;
     } while (event.IsFired() && m_running);
     free(buffer);
 

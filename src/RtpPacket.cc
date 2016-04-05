@@ -90,5 +90,8 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
          " - TOTAL: " << length);*/
     
     m_payload = (unsigned char *)malloc(m_payloadLength);
+    if (!m_payload) {
+        FATAL("Unable to allocate rtp-packet payload.");
+    }
     memcpy(m_payload, buffer + payload_offset, m_payloadLength);
 }

@@ -286,9 +286,11 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
 
         if (is_announce) {
             NotifyDelegateOfAnnounce();
+            break;
         }
         else if (is_redirect) {
             NotifyDelegateOfRedirect();
+            break;
         }
         else if (is_rtp) {
             int channel = static_cast<int>(response[offs + 1]);
@@ -342,6 +344,12 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
                 std::copy(response.begin() + offs, response.end(), m_receivedBuffer.begin());
                 break;
             }
+        }
+        else {
+            size_t trailing_length = total_buffer_size - offs;
+            m_receivedBuffer.resize(trailing_length);
+            std::copy(response.begin() + offs, response.end(), m_receivedBuffer.begin());
+            break;
         }
     } while (offs < total_buffer_size && m_running);
 }

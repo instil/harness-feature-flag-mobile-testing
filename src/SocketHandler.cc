@@ -101,6 +101,9 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string& host, int port, const S
 
     int socketSize  = (1 * 1024 * 1024); // 1Mb; 
     setsockopt(m_rtspSocketFD, SOL_SOCKET, SO_RCVBUF, &socketSize, sizeof(socketSize));
+
+    int flag = 1;
+    setsockopt(sockFD, IPPROTO_TCP, TCP_NODELAY, (char *)&flag, sizeof(int));
     
     if (connect(m_rtspSocketFD, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         

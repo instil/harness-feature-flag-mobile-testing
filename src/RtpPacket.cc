@@ -58,6 +58,12 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, uint16_t length): m_tim
     m_marker = header.marker == 0 ? false : true;
     m_timestmap = ntohl(header.timestamp);
 
+    if (m_version != 2) {
+        ostringstream message;
+        message << "Invalid RTP packet version: " << m_version;
+        throw runtime_error{ message.str() };
+    }
+
     uint16_t payload_offset = sizeof(struct _RTPHeader) + (header.csrccount * sizeof(uint32_t));
 
     bool has_extension = (header.extension == 0) ? false : true;

@@ -305,7 +305,11 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
             bool have_whole_packet = (total_buffer_size - (offs + 4)) >= packet_length;
 
             if (have_whole_packet && channel == m_rtpInterleavedChannel) {
-                m_rtpOutputQueue.AddItem(new RtpPacket(&(response[offs + 4]), packet_length));
+                try {
+                    m_rtpOutputQueue.AddItem(new RtpPacket(&(response[offs + 4]), packet_length));
+                } catch (const std::exception& e) {
+                    ERROR("Invalid Rtp Packet: " << e.what());
+                }
             } else if (!have_whole_packet) {
                 // copy into received buffer
                 size_t trailing_length = total_buffer_size - offs;

@@ -416,20 +416,11 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
         return;
     }
 
-    // add padding
-#define PADDING_SIZE 32
-
     size_t current_frame_size = GetCurrentFrameSize();
     const unsigned char *current_frame = GetCurrentFrame();
-    
-    size_t padded_payload_size = current_frame_size + PADDING_SIZE;
-    unsigned char *padded_payload = (unsigned char*)malloc(padded_payload_size);
-    memset(padded_payload, 0, padded_payload_size);
-    memcpy(padded_payload, current_frame, current_frame_size);
 
     // notify delegate of new payload
-    NotifyDelegatePayload(padded_payload, padded_payload_size);
-    free(padded_payload);
+    NotifyDelegatePayload(current_frame, current_frame_size);
 
     // reset
     ResetCurrentPayload();

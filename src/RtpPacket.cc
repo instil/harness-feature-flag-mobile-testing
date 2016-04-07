@@ -43,12 +43,12 @@ struct _RTPExtensionHeader {
     uint16_t length;
 } __attribute__((packed)) ;
 
-Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_timestmap(0),
-                                                                         m_extensionID(-1),
-                                                                         m_extension(nullptr),
-                                                                         m_extensionLength(0),
-                                                                         m_payload(nullptr),
-                                                                         m_payloadLength(0) {
+Surge::RtpPacket::RtpPacket(const unsigned char *buffer, uint16_t length): m_timestmap(0),
+                                                                           m_extensionID(-1),
+                                                                           m_extension(nullptr),
+                                                                           m_extensionLength(0),
+                                                                           m_payload(nullptr),
+                                                                           m_payloadLength(0) {
     struct _RTPHeader header;
     memcpy(&header, buffer, sizeof(struct _RTPHeader));
 
@@ -58,7 +58,7 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
     m_marker = header.marker == 0 ? false : true;
     m_timestmap = ntohl(header.timestamp);
 
-    size_t payload_offset = sizeof(struct _RTPHeader) + ((size_t)(header.csrccount * sizeof(uint32_t)));
+    uint16_t payload_offset = sizeof(struct _RTPHeader) + (header.csrccount * sizeof(uint32_t));
 
     bool has_extension = (header.extension == 0) ? false : true;
     if (has_extension) {
@@ -67,8 +67,8 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
         memset(&extension_header, 0, sizeof(struct _RTPExtensionHeader));
         memcpy(&extension_header, buffer + extension_header_offset, sizeof(struct _RTPExtensionHeader));
         
-        m_extensionID = static_cast<int>(ntohs(extension_header.extid));
-        m_extensionLength = (sizeof(uint32_t) * static_cast<size_t>(ntohs(extension_header.length)));
+        m_extensionID = ntohs(extension_header.extid);
+        m_extensionLength = (sizeof(uint32_t) * ntohs(extension_header.length));
 
         m_extension = (unsigned char*)malloc(m_extensionLength);
         memset(m_extension, 0, m_extensionLength);
@@ -83,15 +83,14 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, size_t length): m_times
     
     m_payloadLength = length - payload_offset;
     
-    /*INFO("SEQ NUM: " << m_sequenceNumber <<
-         " - VERSION: " << m_version <<
-         " - PAYLOAD_LENGTH: " << m_payloadLength <<
-         " - OFFSET: " << payload_offset <<
-         " - TOTAL: " << length);*/
-    
     m_payload = (unsigned char *)malloc(m_payloadLength);
     if (!m_payload) {
         FATAL("Unable to allocate rtp-packet payload.");
+        ERROR("SEQ NUM: " << m_sequenceNumber <<
+              " - VERSION: " << m_version <<
+              " - PAYLOAD_LENGTH: " << m_payloadLength <<
+              " - OFFSET: " << payload_offset <<
+              " - TOTAL: " << length);
     }
     memcpy(m_payload, buffer + payload_offset, m_payloadLength);
 }

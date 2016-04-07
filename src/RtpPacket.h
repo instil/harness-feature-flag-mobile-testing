@@ -8,7 +8,7 @@ namespace Surge {
 
     class RtpPacket {
     public:
-        RtpPacket(const unsigned char *buffer, size_t length);
+        RtpPacket(const unsigned char *buffer, uint16_t length);
 
         ~RtpPacket() {
             if (HasExtension()) {

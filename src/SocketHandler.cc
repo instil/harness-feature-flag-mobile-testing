@@ -302,7 +302,7 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
             memcpy(&network_order_packet_length, &(response[offs + 2]), 2);
             uint16_t packet_length = ntohs(network_order_packet_length);
 
-            bool have_whole_packet = (total_buffer_size - (offs + 4)) >= packet_length;
+            bool have_whole_packet = (total_buffer_size - (offs + 4)) >= (packet_length - 1);
 
             if (have_whole_packet && channel == m_rtpInterleavedChannel) {
                 m_rtpOutputQueue.AddItem(new RtpPacket(&(response[offs + 4]), packet_length));

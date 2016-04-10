@@ -1,0 +1,89 @@
+// Copyright (c) 2016 Instil Software.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+@protocol SurgeRtspPlayerDelegate <NSObject>
+
+@optional
+
+/**
+ * Called when the player begins or resumes playback of a stream.
+ */
+- (void)rtspPlayerDidBeginPlayback;
+
+/**
+ * Called when the player enters the buffering state.
+ */
+- (void)rtspPlayerDidBeginBuffering;
+
+/**
+ * Called when the player exits the buffering state.
+ */
+- (void)rtspPlayerDidStopBuffering;
+
+/**
+ * Called when the player times out.
+ */
+- (void)rtspPlayerDidTimeout;
+
+/**
+ * Guaranteed to be call at most once per second with the current player frame rate.
+ */
+- (void)rtspPlayerDidObservePlaybackFrameRate:(NSUInteger)frameRate;
+
+@end
+
+
+@interface SurgeRtspPlayer : NSObject
+
+/**
+ * Initiate playback of the RTSP stream - this will issue the required 
+ * describe, setup and play RTSP requests.
+ */
+- (void)initiatePlaybackOf:(NSURL*)url;
+
+/**
+ * Begin/resume playback of the stream.
+ */
+- (void)play;
+
+/**
+ * Pause playback of the stream.
+ */
+- (void)pause;
+
+/**
+ * Stop playback of the stream.
+ */
+- (void)stop;
+
+/**
+ * The basic player view without controls.
+ */
+@property (nonatomic, strong, readonly) UIImageView *playerView;
+
+/**
+ * Optional delegate used to receive notification of player events.
+ */
+@property (nonatomic, weak) id<SurgeRtspPlayerDelegate> delegate;
+
+@end

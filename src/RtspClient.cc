@@ -298,7 +298,6 @@ Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
 }
 
 void Surge::RtspClient::StopClient() {
-    INFO("STOP MUTHA FUCKA");
     Abort();
     
     if (m_socketHandler.IsRunning()) {

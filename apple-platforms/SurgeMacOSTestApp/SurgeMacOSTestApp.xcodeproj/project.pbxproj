@@ -1,0 +1,317 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		422E8E501CBB1FF90092FFB3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 422E8E4F1CBB1FF90092FFB3 /* CoreVideo.framework */; };
+		422E8E521CBB1FFF0092FFB3 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 422E8E511CBB1FFF0092FFB3 /* VideoToolbox.framework */; };
+		4241D5061CBB029E0087BAAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4241D5051CBB029E0087BAAF /* AppDelegate.m */; };
+		4241D5091CBB029E0087BAAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4241D5081CBB029E0087BAAF /* main.m */; };
+		4241D50C1CBB029E0087BAAF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4241D50B1CBB029E0087BAAF /* ViewController.m */; };
+		4241D50E1CBB029E0087BAAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4241D50D1CBB029E0087BAAF /* Assets.xcassets */; };
+		4241D5111CBB029E0087BAAF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4241D50F1CBB029E0087BAAF /* Main.storyboard */; };
+		4241D5221CBB08910087BAAF /* SurgeMacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4241D5211CBB08910087BAAF /* SurgeMacOS.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		422E8E4F1CBB1FF90092FFB3 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		422E8E511CBB1FFF0092FFB3 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		4241D5011CBB029E0087BAAF /* SurgeMacOSTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurgeMacOSTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4241D5041CBB029E0087BAAF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		4241D5051CBB029E0087BAAF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		4241D5081CBB029E0087BAAF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		4241D50A1CBB029E0087BAAF /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		4241D50B1CBB029E0087BAAF /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		4241D50D1CBB029E0087BAAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4241D5101CBB029E0087BAAF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		4241D5121CBB029E0087BAAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4241D5211CBB08910087BAAF /* SurgeMacOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SurgeMacOS.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Surge-ecglvfmqgwcjizcpxbkexnbinxvc/Build/Products/Debug/SurgeMacOS.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4241D4FE1CBB029E0087BAAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				422E8E521CBB1FFF0092FFB3 /* VideoToolbox.framework in Frameworks */,
+				422E8E501CBB1FF90092FFB3 /* CoreVideo.framework in Frameworks */,
+				4241D5221CBB08910087BAAF /* SurgeMacOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4241D4F81CBB029E0087BAAF = {
+			isa = PBXGroup;
+			children = (
+				4241D5031CBB029E0087BAAF /* SurgeMacOSTestApp */,
+				4241D5231CBB08990087BAAF /* Frameworks */,
+				4241D5021CBB029E0087BAAF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4241D5021CBB029E0087BAAF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4241D5011CBB029E0087BAAF /* SurgeMacOSTestApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4241D5031CBB029E0087BAAF /* SurgeMacOSTestApp */ = {
+			isa = PBXGroup;
+			children = (
+				4241D5041CBB029E0087BAAF /* AppDelegate.h */,
+				4241D5051CBB029E0087BAAF /* AppDelegate.m */,
+				4241D50A1CBB029E0087BAAF /* ViewController.h */,
+				4241D50B1CBB029E0087BAAF /* ViewController.m */,
+				4241D50D1CBB029E0087BAAF /* Assets.xcassets */,
+				4241D50F1CBB029E0087BAAF /* Main.storyboard */,
+				4241D5121CBB029E0087BAAF /* Info.plist */,
+				4241D5071CBB029E0087BAAF /* Supporting Files */,
+			);
+			path = SurgeMacOSTestApp;
+			sourceTree = "<group>";
+		};
+		4241D5071CBB029E0087BAAF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4241D5081CBB029E0087BAAF /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4241D5231CBB08990087BAAF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				422E8E511CBB1FFF0092FFB3 /* VideoToolbox.framework */,
+				422E8E4F1CBB1FF90092FFB3 /* CoreVideo.framework */,
+				4241D5211CBB08910087BAAF /* SurgeMacOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4241D5001CBB029E0087BAAF /* SurgeMacOSTestApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4241D5151CBB029E0087BAAF /* Build configuration list for PBXNativeTarget "SurgeMacOSTestApp" */;
+			buildPhases = (
+				4241D4FD1CBB029E0087BAAF /* Sources */,
+				4241D4FE1CBB029E0087BAAF /* Frameworks */,
+				4241D4FF1CBB029E0087BAAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SurgeMacOSTestApp;
+			productName = SurgeMacOSTestApp;
+			productReference = 4241D5011CBB029E0087BAAF /* SurgeMacOSTestApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4241D4F91CBB029E0087BAAF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Instil;
+				TargetAttributes = {
+					4241D5001CBB029E0087BAAF = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = 4241D4FC1CBB029E0087BAAF /* Build configuration list for PBXProject "SurgeMacOSTestApp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4241D4F81CBB029E0087BAAF;
+			productRefGroup = 4241D5021CBB029E0087BAAF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4241D5001CBB029E0087BAAF /* SurgeMacOSTestApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4241D4FF1CBB029E0087BAAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4241D50E1CBB029E0087BAAF /* Assets.xcassets in Resources */,
+				4241D5111CBB029E0087BAAF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4241D4FD1CBB029E0087BAAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4241D50C1CBB029E0087BAAF /* ViewController.m in Sources */,
+				4241D5091CBB029E0087BAAF /* main.m in Sources */,
+				4241D5061CBB029E0087BAAF /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		4241D50F1CBB029E0087BAAF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4241D5101CBB029E0087BAAF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4241D5131CBB029E0087BAAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4241D5141CBB029E0087BAAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		4241D5161CBB029E0087BAAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SurgeMacOSTestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeMacOSTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4241D5171CBB029E0087BAAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SurgeMacOSTestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeMacOSTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4241D4FC1CBB029E0087BAAF /* Build configuration list for PBXProject "SurgeMacOSTestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4241D5131CBB029E0087BAAF /* Debug */,
+				4241D5141CBB029E0087BAAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4241D5151CBB029E0087BAAF /* Build configuration list for PBXNativeTarget "SurgeMacOSTestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4241D5161CBB029E0087BAAF /* Debug */,
+				4241D5171CBB029E0087BAAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4241D4F91CBB029E0087BAAF /* Project object */;
+}

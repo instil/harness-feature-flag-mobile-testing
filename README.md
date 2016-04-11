@@ -1,24 +1,24 @@
 # Surge
 
-Interleaved RTSP implementation from scratch.
+High performance RTSP implementation with libraries/frameworks/wrappers for iOS, Android, C# and Python. 
 
-RTSP is a real time streaming protocol for many Audio/Video (AV) formats. Currently heavily in surveillance equipment.
-Real-time streaming of video data poses many challenges:
+## Background
 
-- Encoding of the video data in Real-time to be served.
-- Minimizing latency from the source to the client.
-- Decoding of the AV data in realtime on the client.
+RTSP is a real time streaming protocol with support for multiple Audio/Video (AV) formats which is currently used heavily in surveillance equipment.
+Real-time streaming of video data poses multiple challenges:
 
-Surge uses abstract events to run asynchronously and reduce cpu load as much as possible.
-Payloads and events are handled in the client via a Delegate interface.
+- Real-time encoding/decoding.
+- Minimizing client/server latency.
 
-RTP can handle many AV formats and Surge currently supports:
+<!-- Surge seeks to address these issues by executing asynchronously 
+uses abstract events to run asynchronously and reduce cpu load as much as possible.
+Payloads and events are handled in the client via a Delegate interface. -->
+
+RTP can handle many AV formats and Surge currently supports the most common formats below. Where possible Surge will attempt to use hardware accelerated decoding using platform specific APIs.
 
 - H264 RTP Payloads.
 - MP4V-ES RTP Payloads.
 - MJPEG RTP Payloads.
-
-These are the most common video formats used.
 
 ## Compilation
 
@@ -108,11 +108,11 @@ TODO
 
 TODO
 
-# Raspberry Pi - Real-Time Camera
+## Raspberry Pi - Real-Time Camera
 
-The raspberry pi is a beast of a wee machine. To view video in real time the server must use the hardware h264 encoder provided by OMX framework.
+The Raspberry Pi 2+ is capable of hardware accelerated video encoding/decoding through usage of the OpenMAX (OMX) APIs. Broadcom also provide the Multi-Media Abstraction Layer (MMAL) API which is a layer on top of OMX intended to provided a simpler API. 
 
-Unfortunately ffmpeg does not use OMX and falls back to using software encoding which is too slow to be in realtime. Tests on raspberry pi shown that it couldn't do much better than 0.2 speed so it eventually gets incredibly out of sync.
+Unfortunately ffmpeg does not use OMX and falls back to using software encoding which is too slow to be used in real-time processing. Tests on Raspberry Pi shown that it couldn't do much better than 0.2 speed so it eventually gets out of sync. Gstreamer however does allow use of the OMX APIs so we can use that for testing real-time transmission of video from the Raspberry Pi.
 
 To use the gstreamer RTSP server:
 
@@ -128,4 +128,4 @@ $ cd examples
 $ ./test-launch "( v4l2src device=/dev/video0 ! omxh264enc ! video/x-h264,width=720,height=480,framerate=10/1,profile=high,target-bitrate=8000000 ! h264parse ! rtph264pay name=pay0 config-interval=1 pt=96 )"
 ```
 
-Use Surge to connect to: rtsp://raspberry-pi-ip:8554/test
+Connect Surge to: rtsp://raspberry-pi-ip:8554/test

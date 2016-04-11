@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:apple-platforms/build/Surge.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:apple-platforms/SurgeFrameworks/SurgeFrameworks.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:apple-platforms/SurgeiOSTestApp/SurgeiOSTestApp.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:apple-platforms/SurgeMacOSTestApp/SurgeMacOSTestApp.xcodeproj">
+   </FileRef>
+</Workspace>

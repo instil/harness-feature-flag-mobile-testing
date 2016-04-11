@@ -53,6 +53,8 @@ if(CODE_COVERAGE)
   Set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
 endif()
 
+include_directories(./RxCpp/Rx/v2/src/)
+
 EXEC_PROGRAM(./version.sh "${PROJECT_SOURCE_DIR}"
   ARGS --version
   OUTPUT_VARIABLE SURGE_VERSION_STRING

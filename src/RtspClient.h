@@ -144,6 +144,7 @@ namespace Surge {
         std::string m_session;        
         Surge::SocketHandler m_socketHandler;
         SurgeUtil::StoppableThread m_thread;
+        SurgeUtil::Mutex m_mutex;
     };
     
 }

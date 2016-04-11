@@ -17,6 +17,7 @@
 
 #include <vector>
 
+
 using SurgeUtil::Constants::DEFAULT_SOCKET_HANDLER_TIMEOUT_MS;
 using SurgeUtil::Constants::DEFAULT_RTP_INTERLEAVED_CHANNEL;
 using SurgeUtil::Constants::DEFAULT_RTCP_INTERLEAVED_CHANNEL;
@@ -33,6 +34,7 @@ Surge::SocketHandler::SocketHandler(SocketHandlerDelegate * delegate):
     m_rtspInputQueue(),
     m_rtspOutputQueue(),
     m_rtpOutputQueue(),
+    m_rtpPacketSubject(),
     m_running(false),
     m_rtspSocketFD(-1),
     m_readBufferSize(DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE),
@@ -300,7 +302,11 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
 
             if (have_whole_packet && channel == m_rtpInterleavedChannel) {
                 try {
-                    m_rtpOutputQueue.AddItem(new RtpPacket(&(response[offs + 4]), packet_length));
+                    // m_rtpOutputQueue.AddItem(new RtpPacket(&(response[offs + 4]), packet_length));
+
+                    RtpPacket* pack = new RtpPacket(&(response[offs + 4]), packet_length);
+                    m_rtpPacketSubject.get_subscriber().on_next(pack);
+                    
                 } catch (const std::exception& e) {
                     ERROR("Invalid Rtp Packet: " << e.what());
                 }

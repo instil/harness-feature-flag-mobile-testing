@@ -12,6 +12,7 @@
 #include "DataEventQueue.h"
 
 #include <string>
+#include <rxcpp/rx.hpp>
 
 namespace Surge {
     
@@ -42,6 +43,8 @@ namespace Surge {
         void SetConnectTimeout(long timeout) { m_connectTimeoutMs = timeout; }
 
         void SetTransactionTimeout(long timeout) { m_connectTimeoutMs = timeout; }
+
+        rxcpp::observable<RtpPacket*> GetRtpPacketObservable() const { return m_rtpPacketSubject.get_observable(); }
 
     private:
         
@@ -83,6 +86,8 @@ namespace Surge {
         SurgeUtil::DataEventQueue<const RtspCommand*> m_rtspInputQueue;
         SurgeUtil::DataEventQueue<Response*> m_rtspOutputQueue;
         SurgeUtil::DataEventQueue<RtpPacket*> m_rtpOutputQueue;
+
+        rxcpp::subjects::subject<RtpPacket*> m_rtpPacketSubject;
 
         std::atomic<bool> m_running;
         

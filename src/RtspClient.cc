@@ -298,6 +298,7 @@ Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
 }
 
 void Surge::RtspClient::StopClient() {
+    INFO("STOP MUTHA FUCKA");
     Abort();
     
     if (m_socketHandler.IsRunning()) {
@@ -328,30 +329,32 @@ void Surge::RtspClient::StartSession() {
 
 void Surge::RtspClient::Run() {
 
-    uint64_t time_last_packet_was_processed = 0;
+    uint64_t time_last_packet_was_processed = SurgeUtil::CurrentTimeMilliseconds();
+
+    auto rtp_packet_obs = m_socketHandler.GetRtpPacketObservable().subscribe(
+        [&](RtpPacket* packet) {
+            if (packet != nullptr) {
+                ProcessRtpPacket(packet);
+                
+                delete packet;
+                
+                time_last_packet_was_processed = SurgeUtil::CurrentTimeMilliseconds();
+            }
+        },
+        [](std::exception_ptr){
+            // TODO
+        }
+    );
     
     while (true) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
-                &m_thread.StopRequested(),
-                &m_socketHandler.GetRtpPacketQueue()->GetNonEmptyEvent()
-            }, 1000);
+                &m_thread.StopRequested()
+            }, 1000);        
 
         // STOP
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_thread.StopRequested())) {
             DEBUG("RtspClient - Stop Requested.");
             break;
-        }
-
-        // RTP PACKET
-        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents,
-                                                     m_socketHandler.GetRtpPacketQueue()->GetNonEmptyEvent()))
-        {
-            // handle new rtp data here...
-            RtpPacket* packet = m_socketHandler.GetRtpPacketQueue()->RemoveItem();
-            ProcessRtpPacket(packet);
-            delete packet;
-
-            time_last_packet_was_processed = SurgeUtil::CurrentTimeMilliseconds();
         }
 
         // TIMEOUT
@@ -386,12 +389,14 @@ void Surge::RtspClient::Run() {
                 delete resp;
             }
         }
-    }
+    }    
     INFO("Rtsp Client is Finished");
 }
 
 void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 
+    SurgeUtil::MutexLocker lock(m_mutex);
+    
     switch (m_currentPalette.GetType()) {
     case H264:
         ProcessH264Packet(packet);

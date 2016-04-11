@@ -5,7 +5,7 @@ set -e
 : ${ANDROID_NDK:?"Need to set the ANDROID_NDK path envrioment variable"}
 
 ARCHS=("armeabi-v7a"
-       "armeabi" \
+       #"armeabi" \
        "arm64-v8a" \
        "x86" \
        "x86_64")

@@ -21,7 +21,7 @@ popd
 rm -rf _android_bindings
 mkdir _android_bindings
 pushd _android_bindings
-cmake -DBUILD_JAR=ON ../
+cmake -DUNIT_TESTS=OFF -DBUILD_JAR=ON ../
 make VERBOSE=1
 popd
 
@@ -34,14 +34,16 @@ for arch in "${ARCHS[@]}"; do
     echo "Building for [$arch]"
     echo
 
-    cmake -DFOR_ANDROID=ON -DBUILD_JNI_WRAPPER=ON \
+    cmake -DFOR_ANDROID=ON \
+          -DUNIT_TESTS=OFF \
+          -DBUILD_JNI_WRAPPER=ON \
 	  -DCMAKE_TOOLCHAIN_FILE=../android-cmake/android.toolchain.cmake \
 	  -DCMAKE_BUILD_TYPE=Release \
           -DANDROID_STL=gnustl_static \
           -DANDROID_NATIVE_API_LEVEL=android-17 \
 	  -DANDROID_ABI="$arch" \
 	  ../
-    make -j2 VERBOSE=1
+    make VERBOSE=1
     
     popd
 done

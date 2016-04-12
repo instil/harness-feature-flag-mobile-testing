@@ -220,10 +220,6 @@ namespace Surge {
             return send(fd, bytes, length, 0) != -1;
         }
         
-        void WaitForSendEventToBeHandled() {
-            
-        }
-        
         void NotifyDelegateOfReadFailure() {
             if (m_delegate != nullptr) {
                 m_delegate->SocketReadFailed();

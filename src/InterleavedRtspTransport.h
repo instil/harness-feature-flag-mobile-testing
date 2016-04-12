@@ -15,6 +15,10 @@ namespace Surge {
 
         ~InterleavedRtspTransport();
 
+        bool IsInterleavedTransport() override { return true; };
+
+        bool IsRtpTransportTCP() override { return true; };
+
         void SetRtpInterleavedChannel(int channel) { m_rtpInterleavedChannel = channel; }
 
         void SetRtcpInterleavedChannel(int channel) { m_rtcpInterleavedChannel = channel; }

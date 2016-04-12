@@ -21,8 +21,6 @@ Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate,
       m_lastKeepAliveMs(0),
       m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
       m_sequenceNumber(1),
-      m_url(""),
-      m_session(""),
       m_transport(transport)
 {
     m_transport->SetDelegate(this);
@@ -34,11 +32,10 @@ Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate)
       m_processedFirstPayload(false),
       m_lastKeepAliveMs(0),
       m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
-      m_sequenceNumber(1),
-      m_url(""),
-      m_session("")
+      m_sequenceNumber(1)
 {
     // default interleaved is safest to avoid NAT issues.
+    //   NOTE: Can fail when some servers don't support interleaved mode
     m_transport = new InterleavedRtspTransport(this);
 }
 

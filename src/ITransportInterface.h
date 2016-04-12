@@ -16,6 +16,10 @@ namespace Surge {
     public:
 
         virtual ~ITransportInterface() { }
+
+        virtual bool IsInterleavedTransport() = 0;
+
+        virtual bool IsRtpTransportTCP() = 0;
         
         virtual int RtspTcpOpen(const std::string& host, int port, const SurgeUtil::FireableEvent& abort) = 0;
 

@@ -64,8 +64,6 @@ add_executable(testrunner
   DescribeResponseTests.cc
   SetupResponseTests.cc
 
-  RxTest.cpp
-
   TestUtil.cc
   TestUtil.h
   NaluParser.h

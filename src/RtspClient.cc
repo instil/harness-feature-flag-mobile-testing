@@ -3,30 +3,55 @@
 #include "Logging.h"
 #include "Datetime.h"
 #include "Url.h"
+#include "Constants.h"
 
 #include "H264Depacetizer.h"
 #include "MP4VDepacketizer.h"
 #include "MJPEGDepacketizer.h"
 
+using SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
+using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 
-Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate) : m_delegate(delegate),
-                                                                            m_noPacketTimeout(5000),
-                                                                            m_processedFirstPayload(false),
-                                                                            m_lastKeepAliveMs(0),
-                                                                            m_keeepAliveIntervalInSeconds(60),
-                                                                            m_sequenceNumber(1),
-                                                                            m_url(""),
-                                                                            m_session(""),
-                                                                            m_socketHandler(this) { }
+
+Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate,
+                              Surge::Transport * const transport)
+    : m_delegate(delegate),
+      m_noPacketTimeout(DEFAULT_NO_PACKET_TIMEOUT_MS),
+      m_processedFirstPayload(false),
+      m_lastKeepAliveMs(0),
+      m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
+      m_sequenceNumber(1),
+      m_url(""),
+      m_session(""),
+      m_transport(transport)
+{
+    m_transport->SetDelegate(this);
+}
+
+Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate)
+    : m_delegate(delegate),
+      m_noPacketTimeout(DEFAULT_NO_PACKET_TIMEOUT_MS),
+      m_processedFirstPayload(false),
+      m_lastKeepAliveMs(0),
+      m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
+      m_sequenceNumber(1),
+      m_url(""),
+      m_session("")
+{
+    // default interleaved is safest to avoid NAT issues.
+    m_transport = new InterleavedRtspTransport(this);
+}
 
 Surge::RtspClient::~RtspClient() {
-    if (m_socketHandler.IsRunning()) {
-        m_socketHandler.StopRunning();
+    if (m_transport->IsRunning()) {
+        m_transport->StopRunning();
     }
     
     if (m_thread.IsRunning()) {
         m_thread.Stop();
     }
+
+    delete m_transport;
 }
 
 Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
@@ -46,7 +71,7 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
     }
 
     RtspCommand* describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber(), true);
-    Response* raw_resp = m_socketHandler.RtspTransaction(describe, true);
+    Response* raw_resp = m_transport->RtspTransaction(describe, true);
     delete describe;
     
     bool received_response = raw_resp != nullptr;
@@ -94,7 +119,7 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& session
     m_processedFirstPayload = false;
     
     RtspCommand* setup = RtspCommandFactory::SetupRequest(setup_url, GetNextSequenceNumber());
-    Response* raw_resp = m_socketHandler.RtspTransaction(setup, true);
+    Response* raw_resp = m_transport->RtspTransaction(setup, true);
     delete setup;
 
     bool received_response = raw_resp != nullptr;
@@ -116,15 +141,17 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& session
 
     if (resp != nullptr && resp->Ok()) {
         m_lastKeepAliveMs = SurgeUtil::CurrentTimeMilliseconds();
-        m_keeepAliveIntervalInSeconds = resp->GetTimeout();
+        m_keeepAliveIntervalInSeconds = resp->GetTimeoutSeconds();
         m_session = resp->GetSession();
 
         DEBUG("RtspClient Session set to: " << m_session);
         DEBUG("RtspClient KeepAlive Interval set to: " << m_keeepAliveIntervalInSeconds);
 
         if (resp->IsInterleaved()) {
-            m_socketHandler.SetRtpInterleavedChannel(resp->GetRtpInterleavedChannel());
-            m_socketHandler.SetRtcpInterleavedChannel(resp->GetRtcpInterleavedChannel());
+            ((InterleavedRtspTransport*)m_transport)->
+                SetRtpInterleavedChannel(resp->GetRtpInterleavedChannel());
+            ((InterleavedRtspTransport*)m_transport)->
+                SetRtcpInterleavedChannel(resp->GetRtcpInterleavedChannel());
 
             DEBUG("Rtp Interleaved Channel set to: " << resp->GetRtpInterleavedChannel());
             DEBUG("Rtcp Interleaved Channel set to: " << resp->GetRtcpInterleavedChannel());
@@ -138,7 +165,7 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& session
 
 Surge::RtspResponse* Surge::RtspClient::Play(bool waitForResponse) {
     RtspCommand* play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_socketHandler.RtspTransaction(play, true);
+    Response* raw_resp = m_transport->RtspTransaction(play, true);
     delete play;
 
     bool received_response = raw_resp != nullptr;
@@ -168,7 +195,7 @@ Surge::RtspResponse* Surge::RtspClient::Play(bool waitForResponse) {
 
 Surge::RtspResponse* Surge::RtspClient::Pause() {
     RtspCommand* pause = RtspCommandFactory::PauseRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_socketHandler.RtspTransaction(pause, true);
+    Response* raw_resp = m_transport->RtspTransaction(pause, true);
     delete pause;
 
     bool received_response = raw_resp != nullptr;
@@ -194,7 +221,7 @@ Surge::RtspResponse* Surge::RtspClient::Pause() {
 
 Surge::RtspResponse* Surge::RtspClient::Options() {
     RtspCommand* options = RtspCommandFactory::OptionsRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_socketHandler.RtspTransaction(options, true);
+    Response* raw_resp = m_transport->RtspTransaction(options, true);
     delete options;
 
     bool received_response = raw_resp != nullptr;
@@ -223,7 +250,7 @@ Surge::RtspResponse* Surge::RtspClient::Options(const std::string& url) {
     }
     
     RtspCommand* options = RtspCommandFactory::OptionsRequest(url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_socketHandler.RtspTransaction(options, true);
+    Response* raw_resp = m_transport->RtspTransaction(options, true);
     delete options;
 
     bool received_response = raw_resp != nullptr;
@@ -247,7 +274,7 @@ Surge::RtspResponse* Surge::RtspClient::Options(const std::string& url) {
 
 Surge::RtspResponse* Surge::RtspClient::Teardown(bool waitForResponse) {
     RtspCommand* teardown = RtspCommandFactory::TeardownRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_socketHandler.RtspTransaction(teardown, waitForResponse);
+    Response* raw_resp = m_transport->RtspTransaction(teardown, waitForResponse);
     delete teardown;
 
     bool received_response = raw_resp != nullptr;
@@ -275,7 +302,7 @@ Surge::RtspResponse* Surge::RtspClient::Teardown(bool waitForResponse) {
 
 Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
     RtspCommand* keep_alive = RtspCommandFactory::KeepAliveRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_socketHandler.RtspTransaction(keep_alive, true);
+    Response* raw_resp = m_transport->RtspTransaction(keep_alive, true);
     delete keep_alive;
 
     bool received_response = raw_resp != nullptr;
@@ -300,7 +327,7 @@ Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
 void Surge::RtspClient::StopClient() {
     Abort();
     
-    if (m_socketHandler.IsRunning()) {
+    if (m_transport->IsRunning()) {
 
         // non empty session token we should teardown
         if (!m_session.empty()) {
@@ -310,7 +337,7 @@ void Surge::RtspClient::StopClient() {
             }
         }
         
-        m_socketHandler.StopRunning();
+        m_transport->StopRunning();
     }
     
     if (m_thread.IsRunning()) {
@@ -330,7 +357,7 @@ void Surge::RtspClient::Run() {
 
     uint64_t time_last_packet_was_processed = SurgeUtil::CurrentTimeMilliseconds();
 
-    auto rtp_packet_obs = m_socketHandler.GetRtpPacketObservable().subscribe(
+    auto rtp_packet_obs = m_transport->GetRtpPacketObservable().subscribe(
         [&](RtpPacket* packet) {
             if (packet != nullptr) {
                 ProcessRtpPacket(packet);
@@ -455,7 +482,8 @@ void Surge::RtspClient::ProcessMJPEGPacket(const RtpPacket* packet) {
 }
 
 int Surge::RtspClient::SetupRtspConnection(const std::string& url) {
-    if (m_socketHandler.IsRunning()) {
+    if (m_transport->IsRunning()) {
+        WARNING("Trying to setup RTSP connection on already running transport - ignoring request.");
         return 0;
     }
 
@@ -465,10 +493,10 @@ int Surge::RtspClient::SetupRtspConnection(const std::string& url) {
     
     std::string host = url_model.GetHost();
     int port = url_model.GetPort();
-    int retval = m_socketHandler.RtspTcpOpen(host, port, m_abortWait);
+    int retval = m_transport->RtspTcpOpen(host, port, m_abortWait);
 
     if (retval == 0) {
-        m_socketHandler.StartRunning();
+        m_transport->StartRunning();
     }
     
     return retval;

@@ -29,7 +29,7 @@ TEST(SETUP_RESPONSE, TestThatSpecifiedTimeoutIsParsed) {
     Surge::Response wrapped_response((unsigned char *)raw_response.c_str(), raw_response.length());
     Surge::SetupResponse response(&wrapped_response);
 
-    ASSERT_EQ(response.GetTimeout(), 123);
+    ASSERT_EQ(response.GetTimeoutSeconds(), 123);
 }
 
 TEST(SETUP_RESPONSE, TestThatInterleavedChannelsAreParsed) {

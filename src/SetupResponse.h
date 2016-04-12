@@ -8,7 +8,7 @@
 
 #include <cstdlib>
 
-using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_MS;
+using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 
 namespace Surge {
 
@@ -19,7 +19,7 @@ namespace Surge {
                                              m_rtpInterleavedChannel(0),
                                              m_rtcpInterleavedChannel(1),
                                              m_session(),
-                                             m_timeout(DEFAULT_KEEP_ALIVE_INTERVAL_MS) {
+                                             m_timeout(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS) {
             
             const std::string session_header = HeaderValueForKey("Session");
             const std::string transport_header = HeaderValueForKey("Transport");
@@ -63,7 +63,7 @@ namespace Surge {
 
         const std::string GetSession() const { return m_session; }
 
-        int GetTimeout() const { return m_timeout; }
+        int GetTimeoutSeconds() const { return m_timeout; }
 
         bool IsInterleaved() const { return m_isInterleaved; }
 

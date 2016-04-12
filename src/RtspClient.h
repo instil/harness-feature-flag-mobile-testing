@@ -6,7 +6,8 @@
 #include "ErrorDispatcher.h"
 #include "DelegateInterface.h"
 #include "StoppableThread.h"
-#include "SocketHandler.h"
+#include "Transport.h"
+#include "InterleavedRtspTransport.h"
 #include "SessionDescription.h"
 #include "SocketHandlerDelegate.h"
 
@@ -16,11 +17,14 @@
 #include <string>
 #include <vector>
 
+
 namespace Surge {
 
     class RtspClient : public SocketHandlerDelegate, private SurgeUtil::Runnable {
     public:
-        RtspClient(RtspClientDelegate *delegate);
+        RtspClient(RtspClientDelegate * const delegate);
+
+        RtspClient(RtspClientDelegate * const delegate, Transport * const transport);
 
         ~RtspClient();
 
@@ -64,11 +68,11 @@ namespace Surge {
         }
 
         void SetTransactionTimeout(long timeout) {
-            m_socketHandler.SetTransactionTimeout(timeout);
+            m_transport->SetTransactionTimeout(timeout);
         }
 
         void SetConnectTimeout(long timeout) {
-            m_socketHandler.SetConnectTimeout(timeout);
+            m_transport->SetConnectTimeout(timeout);
         }
 
     private:
@@ -141,8 +145,8 @@ namespace Surge {
         int m_keeepAliveIntervalInSeconds;
         int m_sequenceNumber;
         std::string m_url;
-        std::string m_session;        
-        Surge::SocketHandler m_socketHandler;
+        std::string m_session;
+        Surge::Transport *m_transport;
         SurgeUtil::StoppableThread m_thread;
         SurgeUtil::Mutex m_mutex;
     };

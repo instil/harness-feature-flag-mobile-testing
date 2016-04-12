@@ -31,9 +31,11 @@ if(BUILD_JAR STREQUAL OFF)
     RtspClient.h
     RtspClient.cc
 
-    SocketHandler.h
-    SocketHandler.cc
+    InterleavedRtspTransport.h
+    InterleavedRtspTransport.cc
     SocketHandlerDelegate.h
+    Transport.h
+    ITransportInterface.h
 
     RtspCommand.h
     RtspCommandFactory.h
@@ -69,9 +71,6 @@ if(BUILD_JAR STREQUAL OFF)
     
     MJPEGDepacketizer.h
     MJPEGDepacketizer.cc
-
-    Transport.h
-    ITransportInterface.h
 
     MimeTypes.h
     LoggingDelegate.h

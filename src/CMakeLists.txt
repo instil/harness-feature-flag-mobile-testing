@@ -70,6 +70,9 @@ if(BUILD_JAR STREQUAL OFF)
     MJPEGDepacketizer.h
     MJPEGDepacketizer.cc
 
+    Transport.h
+    ITransportInterface.h
+
     MimeTypes.h
     LoggingDelegate.h
     DelegateInterface.h

@@ -2,7 +2,8 @@
 #ifndef __SOCKET_HANDLER_H__
 #define __SOCKET_HANDLER_H__
 
-#include "SocketHandlerDelegate.h"
+#include "Transport.h"
+#include "ITransportInterface.h"
 #include "StoppableThread.h"
 #include "RtspCommand.h"
 #include "Response.h"
@@ -16,65 +17,42 @@
 
 namespace Surge {
     
-    class SocketHandler : private SurgeUtil::Runnable {
+    class SocketHandler : public Transport, public ITransportInterface, private SurgeUtil::Runnable {
     public:
         SocketHandler(SocketHandlerDelegate * delegate);
 
         ~SocketHandler();
 
-        void StartRunning();
+        void StartRunning() override;
         
-        void StopRunning();
+        void StopRunning() override;
 
-        bool IsRunning() { return m_thread.IsRunning(); }
+        bool IsRunning() override { return m_thread.IsRunning(); }
 
-        void SetTimeout(long timeout) { m_timeoutMs = timeout; }
-
-        int RtspTcpOpen(const std::string& host, int port, const SurgeUtil::FireableEvent& abort);
+        int RtspTcpOpen(const std::string& host, int port, const SurgeUtil::FireableEvent& abort) override;
 
         Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true);
 
-        SurgeUtil::DataEventQueue<RtpPacket*>* GetRtpPacketQueue() { return &m_rtpOutputQueue; }
+        rxcpp::observable<RtpPacket*> GetRtpPacketObservable() const override { return m_rtpPacketSubject.get_observable(); }
 
         void SetRtpInterleavedChannel(int channel) { m_rtpInterleavedChannel = channel; }
 
         void SetRtcpInterleavedChannel(int channel) { m_rtcpInterleavedChannel = channel; }
 
-        void SetConnectTimeout(long timeout) { m_connectTimeoutMs = timeout; }
+        void SetTimeout(long timeout) override { m_timeoutMs = timeout; }
+        
+        void SetConnectTimeout(long timeout) override { m_connectTimeoutMs = timeout; }
 
-        void SetTransactionTimeout(long timeout) { m_connectTimeoutMs = timeout; }
-
-        rxcpp::observable<RtpPacket*> GetRtpPacketObservable() const { return m_rtpPacketSubject.get_observable(); }
+        void SetTransactionTimeout(long timeout) override { m_connectTimeoutMs = timeout; }
 
     private:
-        
-        void NotifyDelegateOfReadFailure() {
-            if (m_delegate != nullptr) {
-                m_delegate->SocketReadFailed();
-            }
-        }
-
-        void NotifyDelegateOfAnnounce() {
-            if (m_delegate != nullptr) {
-                m_delegate->AnnounceReceived();
-            }
-        }
-
-        void NotifyDelegateOfRedirect() {
-            if (m_delegate != nullptr) {
-                m_delegate->RedirectReceived();
-            }
-        }
-        
         bool ProcessSend(const int fd, const unsigned char *bytes, size_t length);
 
         void HandleReceive(const SurgeUtil::WaitableEvent& event);
 
         void WaitForSendEventToBeHandled();
         
-        void Run() override;
-
-        SocketHandlerDelegate *m_delegate;
+        void Run() override;        
         
         int m_rtpInterleavedChannel;
         int m_rtcpInterleavedChannel;
@@ -82,11 +60,8 @@ namespace Surge {
         std::vector<unsigned char> m_receivedBuffer;
         
         SurgeUtil::Mutex m_mutex;
-        SurgeUtil::FireableEvent m_receivedSendEvent;
-        SurgeUtil::DataEventQueue<const RtspCommand*> m_rtspInputQueue;
+        
         SurgeUtil::DataEventQueue<Response*> m_rtspOutputQueue;
-        SurgeUtil::DataEventQueue<RtpPacket*> m_rtpOutputQueue;
-
         rxcpp::subjects::subject<RtpPacket*> m_rtpPacketSubject;
 
         std::atomic<bool> m_running;
@@ -96,6 +71,7 @@ namespace Surge {
         long m_connectTimeoutMs;
         long m_transactionTimeoutMs;
         long m_timeoutMs;
+
         SurgeUtil::StoppableThread m_thread;
     };
 }

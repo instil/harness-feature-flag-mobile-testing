@@ -28,12 +28,10 @@ using SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
 
 
 Surge::SocketHandler::SocketHandler(SocketHandlerDelegate * delegate):
-    m_delegate(delegate),
+    Transport(delegate),
     m_rtpInterleavedChannel(DEFAULT_RTP_INTERLEAVED_CHANNEL),
     m_rtcpInterleavedChannel(DEFAULT_RTCP_INTERLEAVED_CHANNEL),
-    m_rtspInputQueue(),
     m_rtspOutputQueue(),
-    m_rtpOutputQueue(),
     m_rtpPacketSubject(),
     m_running(false),
     m_rtspSocketFD(-1),
@@ -50,10 +48,6 @@ Surge::SocketHandler::~SocketHandler() {
     
     m_rtspOutputQueue.Flush([&] (Response* resp) {
             delete resp;
-        });
-    
-    m_rtpOutputQueue.Flush([&] (RtpPacket* pack) {
-            delete pack;
         });
 }
 
@@ -153,15 +147,17 @@ int Surge::SocketHandler::RtspTcpOpen(const std::string& host, int port, const S
 Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
     SurgeUtil::MutexLocker lock(m_mutex);
 
-    m_receivedSendEvent.Reset();
     m_rtspOutputQueue.Flush([&] (Response* resp) {
             delete resp;
         });
+
+    bool ok = ProcessSend(m_rtspSocketFD, command->BytesPointer(), command->PointerLength());        
+    if (!ok) {
+        ERROR("Failed to send RTSP command.");
+        return nullptr;
+    }
     
     Surge::Response* resp = nullptr;
-    m_rtspInputQueue.AddItem(command);
-
-    WaitForSendEventToBeHandled();
     
     TRACE("Command: " << command->StringDump());
     if (waitForResponse) {
@@ -177,10 +173,6 @@ Surge::Response* Surge::SocketHandler::RtspTransaction(const RtspCommand* comman
     return resp;
 }
 
-void Surge::SocketHandler::WaitForSendEventToBeHandled() {
-    SurgeUtil::WaitableEvents::WaitFor({&m_receivedSendEvent}, m_transactionTimeoutMs);
-}
-
 void Surge::SocketHandler::Run() {
 
     SurgeUtil::BasicFDEvent rtsp_socket_data_available {
@@ -192,7 +184,6 @@ void Surge::SocketHandler::Run() {
         
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
                     &m_thread.StopRequested(),
-                    &m_rtspInputQueue.GetNonEmptyEvent(),
                     &rtsp_socket_data_available
             },
             m_timeoutMs);
@@ -200,17 +191,6 @@ void Surge::SocketHandler::Run() {
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_thread.StopRequested())) {
             DEBUG("SocketHandler - Stop Requested.");
             break;
-        }
-
-        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspInputQueue.GetNonEmptyEvent())) {
-            const RtspCommand* command = m_rtspInputQueue.RemoveItem();
-            bool ok = ProcessSend(m_rtspSocketFD, command->BytesPointer(), command->PointerLength());
-            
-            m_receivedSendEvent.Fire();
-            
-            if (!ok) {
-                ERROR("Failed to send RTSP command.");
-            }
         }
 
         if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, rtsp_socket_data_available)) {
@@ -302,11 +282,8 @@ void Surge::SocketHandler::HandleReceive(const SurgeUtil::WaitableEvent& event) 
 
             if (have_whole_packet && channel == m_rtpInterleavedChannel) {
                 try {
-                    // m_rtpOutputQueue.AddItem(new RtpPacket(&(response[offs + 4]), packet_length));
-
                     RtpPacket* pack = new RtpPacket(&(response[offs + 4]), packet_length);
                     m_rtpPacketSubject.get_subscriber().on_next(pack);
-                    
                 } catch (const std::exception& e) {
                     ERROR("Invalid Rtp Packet: " << e.what());
                 }

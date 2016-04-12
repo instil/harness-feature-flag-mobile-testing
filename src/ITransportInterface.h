@@ -3,6 +3,8 @@
 #define __ITRANSPORT_INTERFACE_H__
 
 #include "FireableEvent.h"
+#include "RtspCommand.h"
+#include "Response.h"
 #include "RtpPacket.h"
 
 #include <rxcpp/rx.hpp>
@@ -13,6 +15,8 @@ namespace Surge {
     class ITransportInterface {
     public:
 
+        virtual ~ITransportInterface() { }
+        
         virtual int RtspTcpOpen(const std::string& host, int port, const SurgeUtil::FireableEvent& abort) = 0;
 
         virtual void StartRunning() = 0;
@@ -28,6 +32,10 @@ namespace Surge {
         virtual void SetTransactionTimeout(long timeout) = 0;
 
         virtual rxcpp::observable<RtpPacket*> GetRtpPacketObservable() const = 0;
+
+        virtual Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true) = 0;
+
+        virtual void SetDelegate(SocketHandlerDelegate * const delegate) = 0;
     
     };
     

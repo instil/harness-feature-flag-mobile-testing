@@ -150,7 +150,7 @@ namespace Surge {
             return 0;
         }
 
-        Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true) {
+        Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true) override {
             SurgeUtil::MutexLocker lock(m_mutex);
 
             m_rtspOutputQueue.Flush([&] (Response* resp) {
@@ -182,7 +182,7 @@ namespace Surge {
             return m_rtpPacketSubject.get_observable();
         }
 
-        void SetDelegate(SocketHandlerDelegate * const delegate) { m_delegate = delegate; }
+        void SetDelegate(SocketHandlerDelegate * const delegate) override { m_delegate = delegate; }
         
     protected:
 

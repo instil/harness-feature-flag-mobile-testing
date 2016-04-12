@@ -7,6 +7,7 @@
 #include "DelegateInterface.h"
 #include "StoppableThread.h"
 #include "Transport.h"
+#include "ITransportInterface.h"
 #include "InterleavedRtspTransport.h"
 #include "SessionDescription.h"
 #include "SocketHandlerDelegate.h"
@@ -146,7 +147,7 @@ namespace Surge {
         int m_sequenceNumber;
         std::string m_url;
         std::string m_session;
-        Surge::Transport *m_transport;
+        Surge::ITransportInterface *m_transport;
         SurgeUtil::StoppableThread m_thread;
         SurgeUtil::Mutex m_mutex;
     };

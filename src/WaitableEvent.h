@@ -84,9 +84,11 @@ namespace SurgeUtil {
         * @throws std::runtime_error
         *         if there has been a failure.
         */
-        std::vector<const WaitableEvent*> WaitFor(
-            std::initializer_list<const WaitableEvent*> a_events,
-            const long a_timeout_milliseconds);
+        std::vector<const WaitableEvent*> WaitFor(std::initializer_list<const WaitableEvent*> events,
+                                                  const long timeout_milliseconds);
+
+        std::vector<const WaitableEvent*> WaitFor(std::vector<const WaitableEvent*> events,
+                                                  const long timeout_milliseconds);
 
        /**
         * Is the specified event contained in the specified list?

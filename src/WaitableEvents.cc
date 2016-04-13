@@ -14,12 +14,19 @@
 #include "WaitableEvent.h"
   using SurgeUtil::WaitableEvent;
   using SurgeUtil::WaitableEvents::WatchForType;
-  using std::vector;
-  using std::initializer_list;
 
-vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(
-    initializer_list<const WaitableEvent*> events,
-    const long timeout_milliseconds)
+std::vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(std::initializer_list<const WaitableEvent*> events,
+                                                                     const long timeout_milliseconds)
+{
+    std::vector<const WaitableEvent*> events_vector;
+    for (const WaitableEvent *event: events) {
+        events_vector.push_back(event);
+    }
+    return WaitFor(events_vector, timeout_milliseconds);
+}
+
+std::vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(std::vector<const WaitableEvent*> events,
+                                                                     const long timeout_milliseconds)
 {
     int max_fd {0};    // Will hold maximum file descriptor.
 
@@ -78,7 +85,7 @@ vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(
         throw runtime_error{message.str()};
     }
 
-    vector<const WaitableEvent*> results;
+    std::vector<const WaitableEvent*> results;
     if (1 <= fired_count)
     {
         // Add to 'results' all events that have been determined 

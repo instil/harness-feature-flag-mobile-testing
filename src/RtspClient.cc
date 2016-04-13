@@ -144,7 +144,7 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& session
         DEBUG("RtspClient Session set to: " << m_session);
         DEBUG("RtspClient KeepAlive Interval set to: " << m_keeepAliveIntervalInSeconds);
 
-        if (resp->IsInterleaved()) {
+        if (m_transport->IsInterleavedTransport() && resp->IsInterleaved()) {
             ((InterleavedRtspTransport*)m_transport)->
                 SetRtpInterleavedChannel(resp->GetRtpInterleavedChannel());
             ((InterleavedRtspTransport*)m_transport)->

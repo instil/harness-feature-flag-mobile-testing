@@ -33,8 +33,9 @@ namespace Surge {
         }
 
         RtspCommand* SetupRequest(const std::string& url,
-                                  int nextSequenceNumber) {
-            return new class SetupRequest(url, nextSequenceNumber, GetBasicAuthHeader());
+                                  int nextSequenceNumber,
+                                  const ITransportInterface *transport) {
+            return new class SetupRequest(url, nextSequenceNumber, transport, GetBasicAuthHeader());
         }
 
         RtspCommand* PlayRequest(const std::string& url,

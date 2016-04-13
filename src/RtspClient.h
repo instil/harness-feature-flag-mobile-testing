@@ -25,7 +25,7 @@ namespace Surge {
     public:
         RtspClient(RtspClientDelegate * const delegate);
 
-        RtspClient(RtspClientDelegate * const delegate, Transport * const transport);
+        RtspClient(RtspClientDelegate * const delegate, Surge::ITransportInterface * const transport);
 
         ~RtspClient();
 

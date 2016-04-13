@@ -14,7 +14,7 @@ using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 
 
 Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate,
-                              Surge::Transport * const transport)
+                              Surge::ITransportInterface * const transport)
     : m_delegate(delegate),
       m_noPacketTimeout(DEFAULT_NO_PACKET_TIMEOUT_MS),
       m_processedFirstPayload(false),
@@ -115,7 +115,7 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& session
     // new session = no processed payloads
     m_processedFirstPayload = false;
     
-    RtspCommand* setup = RtspCommandFactory::SetupRequest(setup_url, GetNextSequenceNumber());
+    RtspCommand* setup = RtspCommandFactory::SetupRequest(setup_url, GetNextSequenceNumber(), m_transport);
     Response* raw_resp = m_transport->RtspTransaction(setup, true);
     delete setup;
 

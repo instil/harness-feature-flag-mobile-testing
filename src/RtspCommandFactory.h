@@ -10,6 +10,7 @@
 #include "Teardown.h"
 
 #include "Base64.h"
+#include "ITransportInterface.h"
 
 namespace Surge {
 
@@ -38,7 +39,8 @@ namespace Surge {
                                      bool isLive);
 
         RtspCommand* SetupRequest(const std::string& url,
-                                  int nextSequenceNumber);
+                                  int nextSequenceNumber,
+                                  const ITransportInterface *transport);
 
         RtspCommand* PlayRequest(const std::string& url,
                                  const std::string& session,

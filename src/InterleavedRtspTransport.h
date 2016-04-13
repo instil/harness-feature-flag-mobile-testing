@@ -23,6 +23,10 @@ namespace Surge {
 
         void SetRtcpInterleavedChannel(int channel) { m_rtcpInterleavedChannel = channel; }
 
+        std::string GetTransportHeaderString() const override {
+            return "RTP/AVP/TCP;unicast;interleaved=0-1";
+        }
+
     protected:
 
         void RtspHandleReceive(const SurgeUtil::WaitableEvent& event) override;

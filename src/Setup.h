@@ -3,6 +3,7 @@
 #define __SETUP_H__
 
 #include "RtspCommand.h"
+#include "ITransportInterface.h"
 
 #include <cstdlib>
 #include <string>
@@ -13,6 +14,7 @@ namespace Surge {
     public:
         SetupRequest(const std::string& url,
                      const int nextSequenceNumber,
+                     const ITransportInterface *transport,
                      const std::string& authHeader) {
             
             std::string packet = "SETUP " + url + " RTSP/1.0\r\n";
@@ -22,7 +24,7 @@ namespace Surge {
                      "CSeq: %d\r\n", nextSequenceNumber);
             packet += std::string(headerField);
 
-            packet += "Transport: RTP/AVP/TCP;unicast;interleaved=0-1\r\n";
+            packet += "Transport: " + transport->GetTransportHeaderString() + "\r\n";
 
             if (!authHeader.empty()) {
                 packet += authHeader;

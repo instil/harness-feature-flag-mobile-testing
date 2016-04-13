@@ -25,7 +25,7 @@ std::vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(std::initia
     return WaitFor(events_vector, timeout_milliseconds);
 }
 
-std::vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(std::vector<const WaitableEvent*> events,
+std::vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(std::vector<const WaitableEvent*>& events,
                                                                      const long timeout_milliseconds)
 {
     int max_fd {0};    // Will hold maximum file descriptor.
@@ -121,9 +121,8 @@ std::vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(std::vector
     return results;
 }
 
-bool SurgeUtil::WaitableEvents::IsContainedIn(
-    const std::vector<const WaitableEvent*>& list,
-    const WaitableEvent& event)
+bool SurgeUtil::WaitableEvents::IsContainedIn(const std::vector<const WaitableEvent*>& list,
+                                              const WaitableEvent& event)
 {
     return any_of(list.cbegin(),
                   list.cend(),

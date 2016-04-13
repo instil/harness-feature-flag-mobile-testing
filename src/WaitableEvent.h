@@ -87,7 +87,7 @@ namespace SurgeUtil {
         std::vector<const WaitableEvent*> WaitFor(std::initializer_list<const WaitableEvent*> events,
                                                   const long timeout_milliseconds);
 
-        std::vector<const WaitableEvent*> WaitFor(std::vector<const WaitableEvent*> events,
+        std::vector<const WaitableEvent*> WaitFor(std::vector<const WaitableEvent*>& events,
                                                   const long timeout_milliseconds);
 
        /**

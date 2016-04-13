@@ -100,6 +100,9 @@ if(BUILD_JAR STREQUAL OFF)
     ErrorDispatcher.h
     ErrorDispatcher.cc
 
+    # RxCpp
+    ${RX_CPP_SRCS}
+
     # Jni
     ${JNI_SRCS}
   )

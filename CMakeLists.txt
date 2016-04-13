@@ -54,6 +54,12 @@ if(CODE_COVERAGE)
 endif()
 
 include_directories(./RxCpp/Rx/v2/src/)
+file(GLOB RX_CPP_SRCS
+  ./RxCpp/Rx/v2/src/rxcpp/operators/*.hpp
+  ./RxCpp/Rx/v2/src/rxcpp/schedulers/*.hpp
+  ./RxCpp/Rx/v2/src/rxcpp/sources/*.hpp
+  ./RxCpp/Rx/v2/src/rxcpp/subjects/*.hpp
+)
 
 EXEC_PROGRAM(./version.sh "${PROJECT_SOURCE_DIR}"
   ARGS --version

@@ -166,7 +166,7 @@ namespace Surge {
             }
     
             Surge::Response* resp = nullptr;
-            TRACE("Command: " << command->StringDump());
+            DEBUG("Command: " << command->StringDump());
             if (waitForResponse) {
                 auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
                                                               m_transactionTimeoutMs);
@@ -192,10 +192,7 @@ namespace Surge {
 
         virtual void HandleEvent(const SurgeUtil::WaitableEvent * const event) { };
 
-        virtual std::vector<const SurgeUtil::BasicFDEvent*> GetWaitables() const {
-            std::vector<const SurgeUtil::BasicFDEvent*> events;
-            return events;
-        }
+        virtual std::vector<const SurgeUtil::BasicFDEvent*> GetWaitables() const { return {}; }
 
         void Run() override {
             SurgeUtil::BasicFDEvent rtsp_socket_data_available {

@@ -4,6 +4,7 @@
 
 #include "Transport.h"
 
+#include <cstdlib>
 #include <vector>
 
 
@@ -11,7 +12,7 @@ namespace Surge {
     
     class InterleavedRtspTransport : public Transport {
     public:
-        InterleavedRtspTransport(SocketHandlerDelegate * delegate);
+        InterleavedRtspTransport(SocketHandlerDelegate * const delegate);
 
         ~InterleavedRtspTransport();
 
@@ -24,7 +25,18 @@ namespace Surge {
         void SetRtcpInterleavedChannel(int channel) { m_rtcpInterleavedChannel = channel; }
 
         std::string GetTransportHeaderString() const override {
-            return "RTP/AVP/TCP;unicast;interleaved=0-1";
+            char rtp_channel[12];
+            char rtcp_channel[12];
+
+            memset(rtp_channel, 0, sizeof(rtp_channel));
+            memset(rtcp_channel, 0, sizeof(rtcp_channel));
+            snprintf(rtp_channel, sizeof(rtp_channel), "%d", m_rtpInterleavedChannel);
+            snprintf(rtcp_channel, sizeof(rtcp_channel), "%d", m_rtcpInterleavedChannel);
+            
+            return "RTP/AVP/TCP;unicast;interleaved="
+                + std::string(rtp_channel)
+                + "-"
+                + std::string(rtcp_channel);
         }
 
     protected:

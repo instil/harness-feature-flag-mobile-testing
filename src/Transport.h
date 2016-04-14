@@ -14,6 +14,7 @@
 #include "RtpPacket.h"
 #include "Mutex.h"
 #include "DataEventQueue.h"
+#include "WaitableEvent.h"
 #include "Constants.h"
 
 #include <fcntl.h>
@@ -24,6 +25,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <unistd.h>
+#include <vector>
 
 using SurgeUtil::Constants::DEFAULT_SOCKET_HANDLER_TIMEOUT_MS;
 using SurgeUtil::Constants::DEFAULT_CONNECT_TIMEOUT_MS;
@@ -188,27 +190,44 @@ namespace Surge {
 
         virtual void RtspHandleReceive(const SurgeUtil::WaitableEvent& event) = 0;
 
+        virtual void HandleEvent(const SurgeUtil::WaitableEvent * const event) { };
+
+        virtual std::vector<const SurgeUtil::BasicFDEvent*> GetWaitables() const {
+            std::vector<const SurgeUtil::BasicFDEvent*> events;
+            return events;
+        }
+
         void Run() override {
             SurgeUtil::BasicFDEvent rtsp_socket_data_available {
                 m_rtspSocketFD,
                 SurgeUtil::WaitableEvents::WatchForType::readable
             };
+
+            std::vector<const SurgeUtil::WaitableEvent*> events_vector;
+            events_vector.push_back(&rtsp_socket_data_available);
+            events_vector.push_back(m_thread.StopRequested());
+            for (const SurgeUtil::BasicFDEvent *event: GetWaitables()) {
+                events_vector.push_back(event);
+            }
     
             while (m_running) {
-        
-                auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
-                        &m_thread.StopRequested(),
-                        &rtsp_socket_data_available
-                    },
-                    m_timeoutMs);
+                auto firedEvents = SurgeUtil::WaitableEvents::WaitFor(events_vector, m_timeoutMs);
 
-                if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_thread.StopRequested())) {
+                if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, *(m_thread.StopRequested()))) {
                     DEBUG("Transport - Stop Requested.");
                     break;
                 }
 
                 if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, rtsp_socket_data_available)) {
                     RtspHandleReceive(rtsp_socket_data_available);
+                }
+
+                for (const SurgeUtil::WaitableEvent *event: events_vector) {
+                    if (event == &rtsp_socket_data_available || event == m_thread.StopRequested()) {
+                        continue;
+                    }
+
+                    HandleEvent(event);
                 }
             }
 

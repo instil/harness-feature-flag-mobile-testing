@@ -64,7 +64,7 @@ namespace SurgeUtil {
         {
             m_stopRequested.Fire();
         }
-
+        
         void Reset()
         {
             m_stopRequested.Reset();
@@ -81,7 +81,7 @@ namespace SurgeUtil {
         *
         * @throws None
         */
-        const SurgeUtil::WaitableEvent& StopRequested() const { return m_stopRequested; }
+        const SurgeUtil::WaitableEvent* StopRequested() const { return &m_stopRequested; }
 
       private:
        /**

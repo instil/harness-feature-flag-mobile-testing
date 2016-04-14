@@ -45,11 +45,11 @@ namespace Surge {
         while (true)
         {
             auto firedEvents = WaitFor({
-                    &m_thread.StopRequested(),
-                        &m_clientStopEvent
-                        }, m_timeout);
+                    m_thread.StopRequested(),
+                    &m_clientStopEvent
+                }, m_timeout);
         
-            if (IsContainedIn(firedEvents, m_thread.StopRequested()))
+            if (IsContainedIn(firedEvents, *(m_thread.StopRequested())))
             {
                 break;
             }

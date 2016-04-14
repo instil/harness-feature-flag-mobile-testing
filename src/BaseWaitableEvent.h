@@ -8,8 +8,10 @@ namespace SurgeUtil {
    /**
     * Abstract base class implementing WaitableEvent.
     */
-    struct BaseWaitableEvent: WaitableEvent
+    class BaseWaitableEvent: public WaitableEvent
     {
+    public:
+        
        /**
         * Is this event in the "fired" state.
         */

@@ -30,8 +30,9 @@ namespace SurgeUtil {
     *
     * See Linux "man select_tut" for meaning of "exceptional condition".
     */
-    struct WaitableEvent
+    class WaitableEvent
     {
+    public:
        /**
         * Destructor.
         *

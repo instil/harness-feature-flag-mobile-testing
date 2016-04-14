@@ -370,12 +370,10 @@ void Surge::RtspClient::Run() {
     );
     
     while (true) {
-        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({
-                &m_thread.StopRequested()
-            }, 1000);        
+        auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({m_thread.StopRequested()}, 1000);        
 
         // STOP
-        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_thread.StopRequested())) {
+        if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, *(m_thread.StopRequested()))) {
             DEBUG("RtspClient - Stop Requested.");
             break;
         }

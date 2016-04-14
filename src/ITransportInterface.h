@@ -43,7 +43,6 @@ namespace Surge {
         virtual void SetDelegate(SocketHandlerDelegate * const delegate) = 0;
 
         virtual std::string GetTransportHeaderString() const = 0;
-    
     };
     
 }

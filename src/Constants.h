@@ -20,6 +20,10 @@ namespace SurgeUtil {
 
         static int DEFAULT_RTCP_INTERLEAVED_CHANNEL = 1;
 
+        static int DEFAULT_RTP_PORT = 5000;
+
+        static int DEFAULT_RTCP_PORT = 5001;
+
         static int DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE = 256 * 1024;
 
         static int DEFAULT_SOCKET_HANDLER_TIMEOUT_MS = 5000;

@@ -5,6 +5,9 @@
 #include "Url.h"
 #include "Constants.h"
 
+#include "InterleavedRtspTransport.h"
+#include "UdpTransport.h"
+
 #include "H264Depacetizer.h"
 #include "MP4VDepacketizer.h"
 #include "MJPEGDepacketizer.h"
@@ -27,17 +30,8 @@ Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate,
 }
 
 Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate)
-    : m_delegate(delegate),
-      m_noPacketTimeout(DEFAULT_NO_PACKET_TIMEOUT_MS),
-      m_processedFirstPayload(false),
-      m_lastKeepAliveMs(0),
-      m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
-      m_sequenceNumber(1)
-{
-    // default interleaved is safest to avoid NAT issues.
-    //   NOTE: Can fail when some servers don't support interleaved mode
-    m_transport = new InterleavedRtspTransport(this);
-}
+//    : RtspClient(delegate, new UdpTransport(nullptr)) { }
+    : RtspClient(delegate, new InterleavedRtspTransport(nullptr)) { }
 
 Surge::RtspClient::~RtspClient() {
     if (m_transport->IsRunning()) {

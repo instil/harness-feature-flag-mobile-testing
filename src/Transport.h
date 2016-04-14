@@ -35,9 +35,9 @@ namespace Surge {
 
     class Transport : public ITransportInterface, private SurgeUtil::Runnable {
     public:
-        Transport(SocketHandlerDelegate *delegate) : m_delegate(delegate),
+        Transport(SocketHandlerDelegate *delegate) : m_running(false),
+                                                     m_delegate(delegate),
                                                      m_rtspSocketFD(-1),
-                                                     m_running(false),
                                                      m_connectTimeoutMs(DEFAULT_CONNECT_TIMEOUT_MS),
                                                      m_transactionTimeoutMs(DEFAULT_TRANSACTION_TIMEOUT_MS),
                                                      m_timeoutMs(DEFAULT_SOCKET_HANDLER_TIMEOUT_MS) { }
@@ -173,7 +173,7 @@ namespace Surge {
 
                 if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
                     resp = m_rtspOutputQueue.RemoveItem();
-                    TRACE("TRANSACTION RESPONSE: " << resp->StringDump());
+                    DEBUG("TRANSACTION RESPONSE: " << resp->StringDump());
                 }
             }
 
@@ -188,9 +188,11 @@ namespace Surge {
         
     protected:
 
+        std::atomic<bool> m_running;
+
         virtual void RtspHandleReceive(const SurgeUtil::WaitableEvent& event) = 0;
 
-        virtual void HandleEvent(const SurgeUtil::WaitableEvent * const event) { };
+        virtual void HandleEvent(const SurgeUtil::WaitableEvent * const event) { }
 
         virtual std::vector<const SurgeUtil::BasicFDEvent*> GetWaitables() const { return {}; }
 
@@ -200,14 +202,15 @@ namespace Surge {
                 SurgeUtil::WaitableEvents::WatchForType::readable
             };
 
-            std::vector<const SurgeUtil::WaitableEvent*> events_vector;
-            events_vector.push_back(&rtsp_socket_data_available);
-            events_vector.push_back(m_thread.StopRequested());
-            for (const SurgeUtil::BasicFDEvent *event: GetWaitables()) {
-                events_vector.push_back(event);
-            }
-    
             while (m_running) {
+                std::vector<const SurgeUtil::WaitableEvent*> events_vector;
+                events_vector.push_back(&rtsp_socket_data_available);
+                events_vector.push_back(m_thread.StopRequested());
+                
+                for (const SurgeUtil::BasicFDEvent *event: GetWaitables()) {
+                    events_vector.push_back(event);
+                }
+                
                 auto firedEvents = SurgeUtil::WaitableEvents::WaitFor(events_vector, m_timeoutMs);
 
                 if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, *(m_thread.StopRequested()))) {
@@ -257,7 +260,6 @@ namespace Surge {
         SocketHandlerDelegate *m_delegate;
         int m_rtspSocketFD;
 
-        std::atomic<bool> m_running;
         long m_connectTimeoutMs;
         long m_transactionTimeoutMs;
         long m_timeoutMs;

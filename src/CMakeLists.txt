@@ -33,6 +33,9 @@ if(BUILD_JAR STREQUAL OFF)
 
     InterleavedRtspTransport.h
     InterleavedRtspTransport.cc
+    UdpTransport.h
+    UdpTransport.cc
+    
     SocketHandlerDelegate.h
     Transport.h
     ITransportInterface.h

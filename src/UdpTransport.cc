@@ -57,12 +57,16 @@ Surge::UdpTransport::UdpTransport(SocketHandlerDelegate * const delegate, int rt
     rtp_serv_addr.sin_family = AF_INET;
     rtp_serv_addr.sin_addr.s_addr = INADDR_ANY;
     rtp_serv_addr.sin_port = htons(m_rtpPort);
+
+    int enable = 1;
+    if (setsockopt(m_rtpServerFD, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+        ERROR("setsockopt(SO_REUSEADDR) failed");
     
     if (bind(m_rtpServerFD, (struct sockaddr *) &rtp_serv_addr, sizeof(rtp_serv_addr)) < 0) {
         close(m_rtpServerFD);
         
         ostringstream message;
-        message << "Unable to open RTP Udp server-socket on: " << m_rtpServerFD;
+        message << "Unable to open RTP UDP server-socket on: " << m_rtpPort;
         throw runtime_error{ message.str() };
     }
 

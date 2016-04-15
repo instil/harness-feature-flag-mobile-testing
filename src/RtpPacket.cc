@@ -1,4 +1,4 @@
-#ifndef CYTHON
+#ifndef BINDING_BUILD
 # include "Config.h"
 #endif
 

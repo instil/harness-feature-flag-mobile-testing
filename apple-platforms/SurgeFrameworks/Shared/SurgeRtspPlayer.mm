@@ -21,6 +21,7 @@
 #import "SurgeRtspPlayer.h"
 #import "SurgeLogging.h"
 #import "SurgeH264Decoder.h"
+#import "SurgeMp4vDecoder.h"
 
 #include "Surge.h"
 #include "MimeTypes.h"
@@ -151,6 +152,8 @@ private:
 - (void)initialiseDecoderForStream:(Surge::SessionDescription)sessionDescription {
     if (sessionDescription.GetType() == Surge::RtspSessionType::H264) {
         self.decoder = [[SurgeH264Decoder alloc] initWithDelegate:self];
+    } else if (sessionDescription.GetType() == Surge::RtspSessionType::MP4V) {
+        self.decoder = [[SurgeMp4vDecoder alloc] initWithDelegate:self];
     }
 }
 

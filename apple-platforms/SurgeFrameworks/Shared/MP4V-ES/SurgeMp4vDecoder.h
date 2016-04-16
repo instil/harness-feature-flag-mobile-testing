@@ -18,27 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <SurgeMacOS/SurgeMacOS.h>
+#import "SurgeDecoder.h"
 
-#import "ViewController.h"
+@interface SurgeMp4vDecoder : SurgeDecoder
 
-@interface ViewController ()
-@property (nonatomic, strong) SurgeRtspPlayer *rtspPlayer;
-@end
-
-@implementation ViewController
-
-- (void)viewDidLoad {
-    self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
-    [self.view addSubview:self.rtspPlayer.playerView];
-}
-
-- (void)viewWillLayout {
-    self.rtspPlayer.playerView.frame = self.view.frame;
-}
-
-- (void)viewDidAppear {
-    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:@"rtsp://192.168.1.46:8554/test"]];
-}
+- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate;
 
 @end

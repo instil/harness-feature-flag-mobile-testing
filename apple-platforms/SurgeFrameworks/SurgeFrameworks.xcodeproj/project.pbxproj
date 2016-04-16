@@ -13,6 +13,12 @@
 		422E8E4C1CBB1FA00092FFB3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 422E8E4B1CBB1FA00092FFB3 /* CoreVideo.framework */; };
 		422E8E4E1CBB1FA50092FFB3 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 422E8E4D1CBB1FA50092FFB3 /* VideoToolbox.framework */; };
 		423B75B61CBAC0D4009204D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423B75B51CBAC0D4009204D5 /* UIKit.framework */; };
+		423D78101CBFC4E10099AEF6 /* SurgeMp4vDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 423D780E1CBFC4E10099AEF6 /* SurgeMp4vDecoder.h */; };
+		423D78111CBFC4E10099AEF6 /* SurgeMp4vDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 423D780E1CBFC4E10099AEF6 /* SurgeMp4vDecoder.h */; };
+		423D78121CBFC4E10099AEF6 /* SurgeMp4vDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 423D780E1CBFC4E10099AEF6 /* SurgeMp4vDecoder.h */; };
+		423D78131CBFC4E10099AEF6 /* SurgeMp4vDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 423D780F1CBFC4E10099AEF6 /* SurgeMp4vDecoder.m */; };
+		423D78141CBFC4E10099AEF6 /* SurgeMp4vDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 423D780F1CBFC4E10099AEF6 /* SurgeMp4vDecoder.m */; };
+		423D78151CBFC4E10099AEF6 /* SurgeMp4vDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 423D780F1CBFC4E10099AEF6 /* SurgeMp4vDecoder.m */; };
 		424111A11CB2C20400693E4B /* SurgeH264Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 424111991CB2C20400693E4B /* SurgeH264Decoder.h */; };
 		424111A21CB2C20400693E4B /* SurgeH264Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4241119A1CB2C20400693E4B /* SurgeH264Decoder.m */; };
 		424111A31CB2C20400693E4B /* NaluParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 4241119B1CB2C20400693E4B /* NaluParser.h */; };
@@ -66,6 +72,8 @@
 		422E8E4B1CBB1FA00092FFB3 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		422E8E4D1CBB1FA50092FFB3 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		423B75B51CBAC0D4009204D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS9.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		423D780E1CBFC4E10099AEF6 /* SurgeMp4vDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeMp4vDecoder.h; sourceTree = "<group>"; };
+		423D780F1CBFC4E10099AEF6 /* SurgeMp4vDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurgeMp4vDecoder.m; sourceTree = "<group>"; };
 		424111991CB2C20400693E4B /* SurgeH264Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeH264Decoder.h; sourceTree = "<group>"; };
 		4241119A1CB2C20400693E4B /* SurgeH264Decoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurgeH264Decoder.m; sourceTree = "<group>"; };
 		4241119B1CB2C20400693E4B /* NaluParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NaluParser.h; sourceTree = "<group>"; };
@@ -157,6 +165,15 @@
 			path = SurgeMacOS;
 			sourceTree = "<group>";
 		};
+		42580D7D1CBEA09700C65A8E /* MP4V-ES */ = {
+			isa = PBXGroup;
+			children = (
+				423D780E1CBFC4E10099AEF6 /* SurgeMp4vDecoder.h */,
+				423D780F1CBFC4E10099AEF6 /* SurgeMp4vDecoder.m */,
+			);
+			path = "MP4V-ES";
+			sourceTree = "<group>";
+		};
 		42EE5C131CA35C4D00204F31 /* SurgeiOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				424111971CB2C20400693E4B /* H264 */,
+				42580D7D1CBEA09700C65A8E /* MP4V-ES */,
 				425630DF1CB96FEA00E347C0 /* SurgeDecoder.h */,
 				425630E01CB96FEA00E347C0 /* SurgeDecoder.m */,
 				42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */,
@@ -242,6 +260,7 @@
 				4241D4F21CBB01640087BAAF /* NaluSegmentTypes.h in Headers */,
 				4241D4EC1CBB01480087BAAF /* SurgeDecoder.h in Headers */,
 				4241D4F01CBB015E0087BAAF /* NaluParser.h in Headers */,
+				423D78121CBFC4E10099AEF6 /* SurgeMp4vDecoder.h in Headers */,
 				4241D51A1CBB04AC0087BAAF /* SurgeRtspPlayer.h in Headers */,
 				4241D4E71CBB01160087BAAF /* SurgeMacOS.h in Headers */,
 				4241D4F11CBB01610087BAAF /* NaluSegment.h in Headers */,
@@ -257,6 +276,7 @@
 				425630E11CB96FEA00E347C0 /* SurgeDecoder.h in Headers */,
 				424111A71CB2C20400693E4B /* NaluSegmentTypes.h in Headers */,
 				424111A31CB2C20400693E4B /* NaluParser.h in Headers */,
+				423D78101CBFC4E10099AEF6 /* SurgeMp4vDecoder.h in Headers */,
 				424111A11CB2C20400693E4B /* SurgeH264Decoder.h in Headers */,
 				424111A51CB2C20400693E4B /* NaluSegment.h in Headers */,
 				42EFF7871CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */,
@@ -272,6 +292,7 @@
 				425630ED1CBAA30E00E347C0 /* SurgeDecoder.h in Headers */,
 				425630EC1CBAA30B00E347C0 /* NaluSegmentTypes.h in Headers */,
 				425630E81CBAA2FA00E347C0 /* NaluParser.h in Headers */,
+				423D78111CBFC4E10099AEF6 /* SurgeMp4vDecoder.h in Headers */,
 				425630E61CBAA2F400E347C0 /* SurgeH264Decoder.h in Headers */,
 				42EFF7881CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */,
 				42EFF8901CAD40410056B9F3 /* SurgeLogging.h in Headers */,
@@ -408,6 +429,7 @@
 				4241D4F61CBB017D0087BAAF /* SurgeDecoder.m in Sources */,
 				4241D4F51CBB01760087BAAF /* NaluSegment.m in Sources */,
 				4241D4F31CBB01710087BAAF /* SurgeH264Decoder.m in Sources */,
+				423D78151CBFC4E10099AEF6 /* SurgeMp4vDecoder.m in Sources */,
 				4241D4F71CBB01800087BAAF /* SurgeRtspPlayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -420,6 +442,7 @@
 				42EFF7891CAADB330056B9F3 /* SurgeRtspPlayer.mm in Sources */,
 				424111A61CB2C20400693E4B /* NaluSegment.m in Sources */,
 				424111A21CB2C20400693E4B /* SurgeH264Decoder.m in Sources */,
+				423D78131CBFC4E10099AEF6 /* SurgeMp4vDecoder.m in Sources */,
 				425630E21CB96FEA00E347C0 /* SurgeDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +455,7 @@
 				425630EE1CBAA31000E347C0 /* SurgeDecoder.m in Sources */,
 				425630EB1CBAA30500E347C0 /* NaluSegment.m in Sources */,
 				425630E71CBAA2F800E347C0 /* SurgeH264Decoder.m in Sources */,
+				423D78141CBFC4E10099AEF6 /* SurgeMp4vDecoder.m in Sources */,
 				425630EF1CBAA31700E347C0 /* SurgeRtspPlayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -486,6 +510,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../src",
 					"$(PROJECT_DIR)/../build/src",
+					"$(PROJECT_DIR)/../../RxCpp/Rx/v2/src",
 				);
 				INFOPLIST_FILE = SurgeMacOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -542,6 +567,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../src",
 					"$(PROJECT_DIR)/../build/src",
+					"$(PROJECT_DIR)/../../RxCpp/Rx/v2/src",
 				);
 				INFOPLIST_FILE = SurgeMacOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -603,6 +629,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../src",
 					"$(PROJECT_DIR)/../build/src",
+					"$(PROJECT_DIR)/../../RxCpp/Rx/v2/src",
 				);
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -662,6 +689,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../src",
 					"$(PROJECT_DIR)/../build/src",
+					"$(PROJECT_DIR)/../../RxCpp/Rx/v2/src",
 				);
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -725,6 +753,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../src",
 					"$(PROJECT_DIR)/../build/src",
+					"$(PROJECT_DIR)/../../RxCpp/Rx/v2/src",
 				);
 				INFOPLIST_FILE = SurgeTvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -781,6 +810,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../src",
 					"$(PROJECT_DIR)/../build/src",
+					"$(PROJECT_DIR)/../../RxCpp/Rx/v2/src",
 				);
 				INFOPLIST_FILE = SurgeTvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

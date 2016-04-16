@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import <CoreImage/CoreImage.h>
+#import <CoreMedia/CoreMedia.h>
 
 @protocol SurgeDecoderDelegate <NSObject>
 
@@ -31,6 +31,14 @@
 
 - (void)decoderDidStopBuffering;
 
+@end
+
+@interface DecoderSample : NSObject
+@property (nonatomic, assign) CMSampleBufferRef sampleBuffer;
+@property (nonatomic, assign) CMBlockBufferRef blockBuffer;
+@property (nonatomic, assign) CMFormatDescriptionRef formatDescription;
+@property (nonatomic, assign) int frameDuration;
+@property (nonatomic, assign) double presentationTime;
 @end
 
 @interface SurgeDecoder : NSObject

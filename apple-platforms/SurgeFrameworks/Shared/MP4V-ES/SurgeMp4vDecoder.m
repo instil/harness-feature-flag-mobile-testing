@@ -22,13 +22,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import <VideoToolbox/VideoToolbox.h>
 
-#import "SurgeH264Decoder.h"
-#import "NaluParser.h"
-#import "NaluSegment.h"
-#import "NaluSegmentTypes.h"
+#import "SurgeMp4vDecoder.h"
 #import "SurgeLogging.h"
 
-@interface SurgeH264Decoder ()
+@interface SurgeMp4vDecoder ()
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDesc;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
 
@@ -43,7 +40,7 @@
 @property (nonatomic, assign) NSTimeInterval timeSinceLastFpsNotifaction;
 @end
 
-@implementation SurgeH264Decoder
+@implementation SurgeMp4vDecoder
 
 - (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate {
     if (self = [super init]) {
@@ -365,26 +362,26 @@
     CGColorSpaceRelease(colorSpace);
 }
 
-//void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
-//                                             void *sourceFrameRefCon,
-//                                             OSStatus status,
-//                                             VTDecodeInfoFlags infoFlags,
-//                                             CVImageBufferRef imageBuffer,
-//                                             CMTime presentationTimeStamp,
-//                                             CMTime presentationDuration) {
-//    
-//    SurgeH264Decoder *decoder = (__bridge SurgeH264Decoder *)decompressionOutputRefCon;
-//    if (status == noErr) {
-//        decoder.framePerSecondCounter++;
-//        [decoder renderH264Sample:imageBuffer withPresentationTime:presentationTimeStamp];
-//        if ([decoder timeoutSinceLastDecodedFrameExceeded]) {
-//            [decoder notifyDelegateStoppedBuffering];
-//        }
-//        decoder.timeStampForLastDecodedFrame = [decoder currentTimeStamp];
-//    } else {
-//        SurgeLogError(@"Decode failed: %i", status);
-//    }
-//}
+void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
+                                             void *sourceFrameRefCon,
+                                             OSStatus status,
+                                             VTDecodeInfoFlags infoFlags,
+                                             CVImageBufferRef imageBuffer,
+                                             CMTime presentationTimeStamp,
+                                             CMTime presentationDuration) {
+    
+    SurgeMp4vDecoder *decoder = (__bridge SurgeMp4vDecoder *)decompressionOutputRefCon;
+    if (status == noErr) {
+        decoder.framePerSecondCounter++;
+        [decoder renderH264Sample:imageBuffer withPresentationTime:presentationTimeStamp];
+        if ([decoder timeoutSinceLastDecodedFrameExceeded]) {
+            [decoder notifyDelegateStoppedBuffering];
+        }
+        decoder.timeStampForLastDecodedFrame = [decoder currentTimeStamp];
+    } else {
+        SurgeLogError(@"Decode failed: %i", status);
+    }
+}
 
 - (void)createDecompressionSession {
     if (_decompressionSession != NULL) {
@@ -393,7 +390,7 @@
     }
     
     VTDecompressionOutputCallbackRecord callBackRecord;
-//    callBackRecord.decompressionOutputCallback = decompressionSessionDecodeFrameCallback;
+    callBackRecord.decompressionOutputCallback = decompressionSessionDecodeFrameCallback;
     // this is necessary if you need to make calls to Objective C "self" from within in the callback method.
     callBackRecord.decompressionOutputRefCon = (__bridge void *)self;
     

@@ -1,20 +1,17 @@
 # Surge
 
-High performance RTSP implementation with libraries/frameworks/wrappers for iOS, Android, C# and Python. 
+High performance [RTSP](https://en.wikipedia.org/wiki/Real_Time_Streaming_Protocol) implementation with libraries/frameworks/wrappers for iOS, Android, C# and Python. 
 
 ## Background
 
-RTSP is a real time streaming protocol with support for multiple Audio/Video (AV) formats which is currently used heavily in surveillance equipment.
-Real-time streaming of video data poses multiple challenges:
+RTSP is a real time streaming protocol with support for multiple Audio/Video (AV) formats which is currently used heavily in surveillance equipment but real-time streaming of video data poses multiple challenges:
 
 - Real-time encoding/decoding.
 - Minimizing client/server latency.
 
-<!-- Surge seeks to address these issues by executing asynchronously 
-uses abstract events to run asynchronously and reduce cpu load as much as possible.
-Payloads and events are handled in the client via a Delegate interface. -->
+Surge seeks to address these issues by being designed from the ground up to execute asynchronously whilst utilising non-blocking I/O and leveraging platform specific APIs to allow access to hardware accelerated video decoding. 
 
-RTP can handle many AV formats and Surge currently supports the most common formats below. Where possible Surge will attempt to use hardware accelerated decoding using platform specific APIs.
+RTP can handle many AV formats and Surge currently supports the most popular formats below.
 
 - H264 RTP Payloads.
 - MP4V-ES RTP Payloads.
@@ -108,24 +105,55 @@ TODO
 
 TODO
 
-## Raspberry Pi - Real-Time Camera
+## Testing live streaming with a Raspberry Pi
 
-The Raspberry Pi 2+ is capable of hardware accelerated video encoding/decoding through usage of the OpenMAX (OMX) APIs. Broadcom also provide the Multi-Media Abstraction Layer (MMAL) API which is a layer on top of OMX intended to provided a simpler API. 
+The Raspberry Pi 2+ is capable of hardware accelerated video encoding/decoding through usage of the OpenMAX (OMX) APIs. Broadcom also provide the Multi-Media Abstraction Layer (MMAL) API which is a layer on top of OMX intended intended to provide a simpler API. 
 
-Unfortunately ffmpeg does not use OMX and falls back to using software encoding which is too slow to be used in real-time processing. Tests on Raspberry Pi shown that it couldn't do much better than 0.2 speed so it eventually gets out of sync. Gstreamer however does allow use of the OMX APIs so we can use that for testing real-time transmission of video from the Raspberry Pi.
+Unfortunately ffmpeg does not use OMX and falls back to using software encoding which is too slow real-time encoding/decoding. Gstreamer however does allow use of the OMX APIs and provides a library with some helpful examples for building an RTSP server which we can use for testing.
 
-To use the gstreamer RTSP server:
+### GStreamer installation
+
+Firstly, install GStreamer dependencies.
 
 ```bash
 $ sudo apt-get install gstreamer1.0 gstreamer1.0-tools gstreamer1.0-omx libgstreamer1.0-dev
+```
+
+Then build the RTSP server library and sample code we'll be using for testing.
+
+```bash
+$ cd /usr/src
 $ wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.4.4.tar.xz
-$ tar xvf gst-rtsp-server-1.4.4
-$ cd gst-rtsp-server
+$ tar xvf gst-rtsp-server-1.4.4.tar.xz
+$ cd gst-rtsp-server-1.4.4
 $ ./configure --prefix=/opt/gst-rtsp
 $ make
+```
+
+Load the Broadcom Video4Linux driver which we'll be using.
+
+```bash
+$ sudo bash -c "echo bcm2835-v4l2 >> /etc/modules"
 $ sudo modprobe bcm2835-v4l2
-$ cd examples
+```
+
+### Streaming live H264
+
+```bash
+$ cd /usr/src/gst-rtsp-server-1.4.4/examples
 $ ./test-launch "( v4l2src device=/dev/video0 ! omxh264enc ! video/x-h264,width=720,height=480,framerate=10/1,profile=high,target-bitrate=8000000 ! h264parse ! rtph264pay name=pay0 config-interval=1 pt=96 )"
 ```
 
-Connect Surge to: rtsp://raspberry-pi-ip:8554/test
+### Streaming live MPEG-4 Part 2
+
+```bash
+$ cd /usr/src/gst-rtsp-server-1.4.4/examples
+$ 
+```
+
+### Streaming live MJPEG
+
+```bash
+$ cd /usr/src/gst-rtsp-server-1.4.4/examples
+$ 
+```

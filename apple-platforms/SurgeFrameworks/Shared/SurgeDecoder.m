@@ -20,6 +20,9 @@
 
 #import "SurgeDecoder.h"
 
+@implementation DecoderSample
+@end
+
 @implementation SurgeDecoder
 
 - (void)decodeFrameBuffer:(const unsigned char*)frameBuffer

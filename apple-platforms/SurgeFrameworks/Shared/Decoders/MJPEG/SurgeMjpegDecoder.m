@@ -21,11 +21,6 @@
 #import "SurgeMjpegDecoder.h"
 #import "SurgeLogging.h"
 
-#import <UIKit/UIKit.h>
-
-@interface SurgeMjpegDecoder()
-@property (nonatomic, assign) CMFormatDescriptionRef formatDescription;
-@end
 
 @implementation SurgeMjpegDecoder
 

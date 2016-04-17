@@ -22,7 +22,7 @@
 #import "SurgeLogging.h"
 
 @interface SurgeMp4vDecoder ()
-
+@property (nonatomic, assign) CMFormatDescriptionRef formatDescription;
 @end
 
 @implementation SurgeMp4vDecoder
@@ -32,8 +32,49 @@
         withFrameDuration:(int)frameDuration
       andPresentationTime:(unsigned int)presentationTimeInterval {
     
+    if (self.formatDescription == NULL) {
+        CMFormatDescriptionRef formatDescription;
+        OSStatus status = CMVideoFormatDescriptionCreate(kCFAllocatorDefault, kCMVideoCodecType_MPEG4Video, 720, 480, NULL, &formatDescription);
+        if (status == noErr) {
+            self.formatDescription = formatDescription;
+        } else {
+            SurgeLogError(@"Failed to create MP4V-ES format description: %d", status);
+            return;
+        }
+    }
     
+    CMBlockBufferRef blockBuffer = NULL;
+    OSStatus status = CMBlockBufferCreateWithMemoryBlock(kCFAllocatorDefault,
+                                                         frameBuffer,
+                                                         size,
+                                                         kCFAllocatorMalloc,
+                                                         NULL,
+                                                         0,
+                                                         size,
+                                                         0,
+                                                         &blockBuffer);
     
+    CMSampleTimingInfo timingInfo;
+    timingInfo.duration = CMTimeMakeWithSeconds(frameDuration, 1);
+    timingInfo.decodeTimeStamp = kCMTimeInvalid;
+    timingInfo.presentationTimeStamp = CMTimeMakeWithSeconds(presentationTimeInterval, 1);
+    
+    CMSampleBufferRef sampleBuffer = NULL;
+    status = CMSampleBufferCreate(kCFAllocatorDefault,
+                                  blockBuffer,
+                                  true,
+                                  NULL,
+                                  NULL,
+                                  self.formatDescription,
+                                  1,
+                                  1,
+                                  &timingInfo,
+                                  1,
+                                  &size,
+                                  &sampleBuffer);
+    
+    [self enqueueSampleBuffer:sampleBuffer];
+
 }
 
 

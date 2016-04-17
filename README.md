@@ -145,5 +145,6 @@ $ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=80
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=8000000" ! video/x-raw, width=720, height=480, framerate=1/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
+$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=15/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
 ```
+<!--$ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=8000000" ! video/x-raw, width=720, height=480, framerate=15/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"-->

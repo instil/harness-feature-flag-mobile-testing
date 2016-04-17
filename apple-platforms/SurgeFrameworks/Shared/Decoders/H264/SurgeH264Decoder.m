@@ -124,7 +124,7 @@
     return status;
 }
 
-- (void *)replaceNalUnitHeaderWithSize:(SurgeNalUnit*)nalUnit {
+- (void*)replaceNalUnitHeaderWithSize:(SurgeNalUnit*)nalUnit {
     void *origionalData = [nalUnit annexBBuffer];
     void *data = malloc(nalUnit.length);
     memcpy(data, origionalData, nalUnit.length);

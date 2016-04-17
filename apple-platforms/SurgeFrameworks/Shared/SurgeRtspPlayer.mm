@@ -22,6 +22,7 @@
 #import "SurgeLogging.h"
 #import "SurgeH264Decoder.h"
 #import "SurgeMp4vDecoder.h"
+#import "SurgeMjpegDecoder.h"
 
 #include "Surge.h"
 #include "MimeTypes.h"
@@ -154,6 +155,8 @@ private:
         self.decoder = [[SurgeH264Decoder alloc] initWithDelegate:self];
     } else if (sessionDescription.GetType() == Surge::RtspSessionType::MP4V) {
         self.decoder = [[SurgeMp4vDecoder alloc] initWithDelegate:self];
+    } else if (sessionDescription.GetType() == Surge::RtspSessionType::MJPEG) {
+        self.decoder = [[SurgeMjpegDecoder alloc] initWithDelegate:self];
     }
 }
 
@@ -187,12 +190,12 @@ private:
 
 #pragma mark - Decoder delegate
 
-- (void)decoderFrameAvailable:(CGImageRef)imageBuffer withTimeStamp:(NSTimeInterval)timestamp {
+- (void)decoderFrameAvailable:(CGImageRef)image withTimeStamp:(NSTimeInterval)timestamp {
     dispatch_sync(dispatch_get_main_queue(), ^{
         #if TARGET_OS_IPHONE
-            self.playerView.image = [[UIImage alloc] initWithCGImage:imageBuffer];
+            self.playerView.image = [[UIImage alloc] initWithCGImage:image];
         #else
-            self.playerView.image = [[NSImage alloc] initWithCGImage:imageBuffer size:NSZeroSize];
+            self.playerView.image = [[NSImage alloc] initWithCGImage:image size:NSZeroSize];
         #endif
     });
 }

@@ -18,23 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "SurgeMp4vDecoder.h"
-#import "SurgeLogging.h"
+#import "SurgeDecoder.h"
 
-@interface SurgeMp4vDecoder ()
-
-@end
-
-@implementation SurgeMp4vDecoder
-
-- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
-                   ofSize:(size_t)size
-        withFrameDuration:(int)frameDuration
-      andPresentationTime:(unsigned int)presentationTimeInterval {
-    
-    
-    
-}
-
+@interface SurgeMjpegDecoder : SurgeDecoder
 
 @end

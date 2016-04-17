@@ -30,12 +30,12 @@ namespace Surge {
         int m_width;
         int m_type;
         int m_qValue;
-        long m_fragmentOffset;
+        int m_fragmentOffset;
         int m_restartHeaderSize;
         int m_dri;
         int m_quantizationPayloadLength;
         unsigned char m_lumq[64];
-	unsigned char m_chrq[64];
+        unsigned char m_chrq[64];
         
         const SessionDescription *m_palette;
         const RtpPacket *m_packet;

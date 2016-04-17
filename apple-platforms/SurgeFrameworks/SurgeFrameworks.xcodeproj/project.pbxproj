@@ -53,6 +53,12 @@
 		42DCC30E1CC2D68A00497306 /* SurgeDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2EE1CC2D68A00497306 /* SurgeDecoder.m */; };
 		42DCC30F1CC2D68A00497306 /* SurgeDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2EE1CC2D68A00497306 /* SurgeDecoder.m */; };
 		42DCC3101CC30C5300497306 /* SurgeMp4vDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2EC1CC2D68A00497306 /* SurgeMp4vDecoder.m */; };
+		42DCC3131CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC3111CC31B1100497306 /* SurgeMjpegDecoder.h */; };
+		42DCC3141CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC3111CC31B1100497306 /* SurgeMjpegDecoder.h */; };
+		42DCC3151CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC3111CC31B1100497306 /* SurgeMjpegDecoder.h */; };
+		42DCC3161CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC3121CC31B1100497306 /* SurgeMjpegDecoder.m */; };
+		42DCC3171CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC3121CC31B1100497306 /* SurgeMjpegDecoder.m */; };
+		42DCC3181CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC3121CC31B1100497306 /* SurgeMjpegDecoder.m */; };
 		42EE5C151CA35C4D00204F31 /* SurgeiOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EE5C141CA35C4D00204F31 /* SurgeiOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42EE5C2F1CA35C8100204F31 /* SurgeTvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EE5C2E1CA35C8100204F31 /* SurgeTvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42EFF7871CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF7851CAADB330056B9F3 /* SurgeRtspPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -89,6 +95,8 @@
 		42DCC2EC1CC2D68A00497306 /* SurgeMp4vDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurgeMp4vDecoder.m; sourceTree = "<group>"; };
 		42DCC2ED1CC2D68A00497306 /* SurgeDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeDecoder.h; sourceTree = "<group>"; };
 		42DCC2EE1CC2D68A00497306 /* SurgeDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurgeDecoder.m; sourceTree = "<group>"; };
+		42DCC3111CC31B1100497306 /* SurgeMjpegDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeMjpegDecoder.h; sourceTree = "<group>"; };
+		42DCC3121CC31B1100497306 /* SurgeMjpegDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurgeMjpegDecoder.m; sourceTree = "<group>"; };
 		42EE5C121CA35C4D00204F31 /* SurgeiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SurgeiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EE5C141CA35C4D00204F31 /* SurgeiOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeiOS.h; sourceTree = "<group>"; };
 		42EE5C161CA35C4D00204F31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -175,6 +183,8 @@
 		42DCC2E91CC2D68A00497306 /* MJPEG */ = {
 			isa = PBXGroup;
 			children = (
+				42DCC3111CC31B1100497306 /* SurgeMjpegDecoder.h */,
+				42DCC3121CC31B1100497306 /* SurgeMjpegDecoder.m */,
 			);
 			path = MJPEG;
 			sourceTree = "<group>";
@@ -273,6 +283,7 @@
 				42DCC3061CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
 				4241D4ED1CBB014C0087BAAF /* SurgeLogging.h in Headers */,
 				42DCC3001CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
+				42DCC3151CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
 				42DCC2F71CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30C1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2F11CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
@@ -288,6 +299,7 @@
 				42DCC3041CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
 				42EE5C151CA35C4D00204F31 /* SurgeiOS.h in Headers */,
 				42DCC2FE1CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
+				42DCC3131CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
 				42DCC2F51CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30A1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2EF1CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
@@ -303,6 +315,7 @@
 				42DCC3051CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
 				42EE5C2F1CA35C8100204F31 /* SurgeTvOS.h in Headers */,
 				42DCC2FF1CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
+				42DCC3141CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
 				42DCC2F61CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30B1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2F01CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
@@ -437,6 +450,7 @@
 				42DCC3031CC2D68A00497306 /* SurgeH264Decoder.m in Sources */,
 				42DCC2FA1CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42DCC3091CC2D68A00497306 /* SurgeMp4vDecoder.m in Sources */,
+				42DCC3181CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */,
 				4241D4F71CBB01800087BAAF /* SurgeRtspPlayer.mm in Sources */,
 				42DCC30F1CC2D68A00497306 /* SurgeDecoder.m in Sources */,
 			);
@@ -450,6 +464,7 @@
 				42DCC3011CC2D68A00497306 /* SurgeH264Decoder.m in Sources */,
 				42DCC2F81CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42EFF7891CAADB330056B9F3 /* SurgeRtspPlayer.mm in Sources */,
+				42DCC3161CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */,
 				42DCC3101CC30C5300497306 /* SurgeMp4vDecoder.m in Sources */,
 				42DCC30D1CC2D68A00497306 /* SurgeDecoder.m in Sources */,
 			);
@@ -463,6 +478,7 @@
 				42DCC3021CC2D68A00497306 /* SurgeH264Decoder.m in Sources */,
 				42DCC2F91CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42DCC3081CC2D68A00497306 /* SurgeMp4vDecoder.m in Sources */,
+				42DCC3171CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */,
 				425630EF1CBAA31700E347C0 /* SurgeRtspPlayer.mm in Sources */,
 				42DCC30E1CC2D68A00497306 /* SurgeDecoder.m in Sources */,
 			);

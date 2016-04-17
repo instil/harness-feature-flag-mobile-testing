@@ -169,9 +169,9 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
                                                  bytesPerRow,
                                                  colorSpace,
                                                  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-    CGImageRef dstImage = CGBitmapContextCreateImage(context);
-    [self.delegate decoderFrameAvailable:dstImage withTimeStamp:presentationTime.value];
-    CGImageRelease(dstImage);
+    CGImageRef image = CGBitmapContextCreateImage(context);
+    [self.delegate decoderFrameAvailable:image withTimeStamp:presentationTime.value];
+    CGImageRelease(image);
     CGContextRelease(context);
     CGColorSpaceRelease(colorSpace);
 }

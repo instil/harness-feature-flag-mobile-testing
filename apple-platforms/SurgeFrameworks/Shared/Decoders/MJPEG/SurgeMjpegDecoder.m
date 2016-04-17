@@ -18,43 +18,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
-#import <CoreMedia/CoreMedia.h>
-#import <VideoToolbox/VideoToolbox.h>
+#import "SurgeMjpegDecoder.h"
+#import "SurgeLogging.h"
 
-@protocol SurgeDecoderDelegate <NSObject>
+#import <UIKit/UIKit.h>
 
-/**
- * Called when a decoded frame is available for
- * presentation at the application layer.
- */
-- (void)decoderFrameAvailable:(CGImageRef)image withTimeStamp:(NSTimeInterval)timestamp;
-
+@interface SurgeMjpegDecoder()
+@property (nonatomic, assign) CMFormatDescriptionRef formatDescription;
 @end
 
+@implementation SurgeMjpegDecoder
 
-@interface SurgeDecoder : NSObject
-
-- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate;
-
-/**
- * Abstract method to be implemented by decoders. Implementations
- * should create a CMSampleBufferRef and enqueue for decoding.
- */
 - (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
                    ofSize:(size_t)size
         withFrameDuration:(int)frameDuration
-      andPresentationTime:(unsigned int)presentationTimeInterval;
-
-/**
- * Enqueue a CMSampleBufferRef for decoding. Once decoded, the frame
- * will be made available through a delegate callback as a CGImageRef.
- */
-- (void)enqueueSampleBuffer:(CMSampleBufferRef)sampleBuffer;
-
-@property (nonatomic, weak) id<SurgeDecoderDelegate> delegate;
-
-@property (nonatomic, assign) NSUInteger framesPerSecond;
+      andPresentationTime:(unsigned int)presentationTimeInterval {
+    
+    CGDataProviderRef imageDataProvider = CGDataProviderCreateWithData(NULL, frameBuffer, size, NULL);
+    CGImageRef image = CGImageCreateWithJPEGDataProvider(imageDataProvider, NULL, true, kCGRenderingIntentDefault);
+    
+    [self.delegate decoderFrameAvailable:image withTimeStamp:presentationTimeInterval];
+    
+    CGImageRelease(image);
+    CGDataProviderRelease(imageDataProvider);
+}
 
 @end

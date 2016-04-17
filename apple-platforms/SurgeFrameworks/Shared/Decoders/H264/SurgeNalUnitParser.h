@@ -18,10 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "SurgeDecoder.h"
+#import <Foundation/Foundation.h>
 
-@interface SurgeMp4vDecoder : SurgeDecoder
+#import "SurgeNalUnit.h"
 
-- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate;
+@interface SurgeNalUnitParser : NSObject
+
++ (BOOL)arrayContainsNalUnit:(NSArray*)nalUnits ofType:(NSInteger)type;
+
++ (NSArray*)filteredArrayOfNalUnits:(NSArray*)nalUnits ofType:(NSInteger)type;
+
++ (NSArray*)parseNalUnitsFromFrameBuffer:(const unsigned char *)frameBuffer ofLength:(size_t)frameSize;
 
 @end

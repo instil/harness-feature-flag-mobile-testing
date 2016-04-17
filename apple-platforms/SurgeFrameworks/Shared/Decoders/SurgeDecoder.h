@@ -19,13 +19,42 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
+#import <VideoToolbox/VideoToolbox.h>
 
-@interface NaluParser : NSObject
+@protocol SurgeDecoderDelegate <NSObject>
 
-+ (BOOL)segmentList:(NSArray*)nalus containsNalu:(NSInteger)type;
+/**
+ * Called when a decoded frame is available for
+ * presentation at the application layer.
+ */
+- (void)decoderFrameAvailable:(CGImageRef)imageBuffer withTimeStamp:(NSTimeInterval)timestamp;
 
-+ (NSArray*)findNalusOfType:(NSInteger)type inArray:(NSArray*)nalus;
+@end
 
-+ (NSArray*)parseOutNalusFromFrameBuffer:(const unsigned char *)frameBuffer ofLength:(size_t)frameSize;
+
+@interface SurgeDecoder : NSObject
+
+- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate;
+
+/**
+ * Abstract method to be implemented by decoders. Implementations
+ * should create a CMSampleBufferRef and enqueue for decoding.
+ */
+- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
+                   ofSize:(size_t)size
+        withFrameDuration:(int)frameDuration
+      andPresentationTime:(unsigned int)presentationTimeInterval;
+
+/**
+ * Enqueue a CMSampleBufferRef for decoding. Once decoded, the frame
+ * will be made available through a delegate callback as a CGImageRef.
+ */
+- (void)enqueueSampleBuffer:(CMSampleBufferRef)sampleBuffer;
+
+@property (nonatomic, weak) id<SurgeDecoderDelegate> delegate;
+
+@property (nonatomic, assign) NSUInteger framesPerSecond;
 
 @end

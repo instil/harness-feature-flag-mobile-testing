@@ -1,21 +1,17 @@
 # Surge
 
-High performance [RTSP](https://en.wikipedia.org/wiki/Real_Time_Streaming_Protocol) implementation with libraries/frameworks/wrappers for iOS, Android, C# and Python. 
+Surge is a high performance Real-Time Streaming Protocol ([RTSP](https://en.wikipedia.org/wiki/Real_Time_Streaming_Protocol)) and Real-Time Transport Protocol ([RTP](https://en.wikipedia.org/wiki/Real-time_Transport_Protocol)) implementation with support for multiple languages and platforms. RTP can handle many AV formats and Surge currently supports the most popular formats below.
 
-## Background
+- H264
+- MP4V-ES
+- MJPEG
 
-RTSP is a real time streaming protocol with support for multiple Audio/Video (AV) formats which is currently used heavily in surveillance equipment but real-time streaming of video data poses multiple challenges:
+RTSP and RTP are currently a popular choice for use with IP video cameras both commercially and for home/hobbyist users e.g. the Raspberry Pi camera. However, real-time streaming of video data poses multiple challenges:
 
-- Real-time encoding/decoding.
+- Real-time encoding/decoding (particularly on lower end hardware like the RPi and mobile devices).
 - Minimizing client/server latency.
 
-Surge seeks to address these issues by being designed from the ground up to execute asynchronously whilst utilising non-blocking I/O and leveraging platform specific APIs to allow access to hardware accelerated video decoding. 
-
-RTP can handle many AV formats and Surge currently supports the most popular formats below.
-
-- H264 RTP Payloads.
-- MP4V-ES RTP Payloads.
-- MJPEG RTP Payloads.
+Surge seeks to address these issues by being designed from the ground up to execute asynchronously whilst utilising non-blocking I/O and leveraging platform specific APIs to access hardware accelerated video decoding.
 
 ## Compilation
 
@@ -93,30 +89,31 @@ $ export ANDROID_NDK=~/android-ndk-r10e
 $ ./release-android.sh
 ```
 
+### C# Wrapper (PInvoke)
+
+TODO
+
 ### Python Bindings
 
 TODO
 
-### C Wrapper (PInvoke)
+## Testing live streaming with the Raspberry Pi camera
 
-TODO
+The Raspberry Pi 2+ is capable of hardware accelerated H264 video encoding/decoding through usage of the OpenMAX (OMX) APIs. Broadcom in addition also provide the Multi-Media Abstraction Layer (MMAL) API on top of OMX which intended to provide a simpler API for devices with the VideoCore GPU (and this is actually what the raspivid utility uses for hardware accelerate H264 encoding). There are a number of options for live-streaming the RPi camera using RTSP but unfortunately not all of these options support the full feature set that we require for testing Surge - capturing compressed video data using the raspivid utility and packetizing it with the in-built VLC RTSP server works well but unfortunately does not support interleaved RTP over TCP. Gstreamer however does allow use of the OMX APIs and provides an RTSP library with some helpful examples for building an RTSP server which we can use for testing. 
 
-### Podspec
+### Raspberry Pi setup
 
-TODO
-
-## Testing live streaming with a Raspberry Pi
-
-The Raspberry Pi 2+ is capable of hardware accelerated video encoding/decoding through usage of the OpenMAX (OMX) APIs. Broadcom also provide the Multi-Media Abstraction Layer (MMAL) API which is a layer on top of OMX intended intended to provide a simpler API. 
-
-Unfortunately ffmpeg does not use OMX and falls back to using software encoding which is too slow real-time encoding/decoding. Gstreamer however does allow use of the OMX APIs and provides a library with some helpful examples for building an RTSP server which we can use for testing.
-
-### GStreamer installation
-
-Firstly, install GStreamer dependencies.
+Firstly, install GStreamer and the required dependencies. The script `tools/raspberry-pi-setup.sh` can also be used to automate the following steps.
 
 ```bash
-$ sudo apt-get install gstreamer1.0 gstreamer1.0-tools gstreamer1.0-omx libgstreamer1.0-dev
+$ sudo apt-get install gstreamer1.0 gstreamer1.0-tools gstreamer1.0-omx libgstreamer1.0-dev v4l-utils
+```
+
+Next, load the Broadcom Video4Linux driver which we'll be using.
+
+```bash
+$ sudo bash -c "echo bcm2835-v4l2 >> /etc/modules"
+$ sudo modprobe bcm2835-v4l2
 ```
 
 Then build the RTSP server library and sample code we'll be using for testing.
@@ -130,30 +127,23 @@ $ ./configure --prefix=/opt/gst-rtsp
 $ make
 ```
 
-Load the Broadcom Video4Linux driver which we'll be using.
-
-```bash
-$ sudo bash -c "echo bcm2835-v4l2 >> /etc/modules"
-$ sudo modprobe bcm2835-v4l2
-```
-
 ### Streaming live H264
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ ./test-launch "( v4l2src device=/dev/video0 ! omxh264enc ! video/x-h264,width=720,height=480,framerate=10/1,profile=high,target-bitrate=8000000 ! h264parse ! rtph264pay name=pay0 config-interval=1 pt=96 )"
+$ ./test-launch "( v4l2src device=/dev/video0 ! omxh264enc ! video/x-h264,width=720,height=480,framerate=25/1,profile=high,target-bitrate=8000000 ! h264parse ! rtph264pay name=pay0 config-interval=1 pt=96 )"
 ```
 
 ### Streaming live MPEG-4 Part 2
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ 
+$ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=8000000" ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! avenc_mpeg4 ! rtpmp4vpay name=pay0 config-interval=1 pt=96 )"
 ```
 
 ### Streaming live MJPEG
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ 
+$ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=8000000" ! video/x-raw, width=720, height=480, framerate=1/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
 ```

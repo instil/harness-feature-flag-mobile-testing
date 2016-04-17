@@ -18,24 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import "NaluSegmentTypes.h"
+#import "SurgeDecoder.h"
 
-@interface NaluSegment : NSObject
-
-@property (nonatomic, assign) size_t headerSize;
-@property (nonatomic, assign) size_t offset;
-@property (nonatomic, assign) NaluSegmentType type;
-@property (nonatomic, assign) size_t length;
-
-- (id)initWithType:(NaluSegmentType)type atOffset:(size_t)offset withHeaderSize:(size_t)headerSize;
-
-- (void)setBuffer:(const unsigned char *)buffer withLength:(size_t)length;
-
-- (void*)annexBBuffer;
-
-- (void*)bufferWithoutHeader;
-
-- (void)cleanup;
+@interface SurgeH264Decoder : SurgeDecoder
 
 @end

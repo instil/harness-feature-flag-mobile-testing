@@ -18,38 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import <CoreMedia/CoreMedia.h>
+#import "SurgeDecoder.h"
 
-@protocol SurgeDecoderDelegate <NSObject>
-
-- (void)decoderFrameAvailable:(CGImageRef)imageBuffer withTimeStamp:(NSTimeInterval)timestamp;
-
-@optional
-
-- (void)decoderDidBeginBuffering;
-
-- (void)decoderDidStopBuffering;
-
-@end
-
-@interface DecoderSample : NSObject
-@property (nonatomic, assign) CMSampleBufferRef sampleBuffer;
-@property (nonatomic, assign) CMBlockBufferRef blockBuffer;
-@property (nonatomic, assign) CMFormatDescriptionRef formatDescription;
-@property (nonatomic, assign) int frameDuration;
-@property (nonatomic, assign) double presentationTime;
-@end
-
-@interface SurgeDecoder : NSObject
-
-- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
-                   ofSize:(size_t)size
-        withFrameDuration:(int)frameDuration
-      andPresentationTime:(unsigned int)presentationTimeInterval;
-
-@property (nonatomic, weak) id<SurgeDecoderDelegate> delegate;
-
-@property (nonatomic, assign) NSUInteger framesPerSecond;
+@interface SurgeMp4vDecoder : SurgeDecoder
 
 @end

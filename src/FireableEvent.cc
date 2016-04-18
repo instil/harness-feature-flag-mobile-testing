@@ -31,7 +31,7 @@
 #include "MutexLocker.h"
 
 
-FireableEvent::FireableEvent()
+SurgeUtil::FireableEvent::FireableEvent()
 {
     if (pipe(m_pipeFD) == -1)
     {
@@ -42,13 +42,13 @@ FireableEvent::FireableEvent()
     }
 }
 
-FireableEvent::~FireableEvent()
+SurgeUtil::FireableEvent::~FireableEvent()
 {
     close(m_pipeFD[0]);
     close(m_pipeFD[1]);
 }
 
-void FireableEvent::Fire()
+void SurgeUtil::FireableEvent::Fire()
 {
     // The pipe is in a "fired" state when it contains
     // a byte available for reading.  We avoid ever
@@ -69,7 +69,7 @@ void FireableEvent::Fire()
     }
 }
 
-void FireableEvent::Reset()
+void SurgeUtil::FireableEvent::Reset()
 {
     // We put the pipe into an "unfired" state by
     // ensuring that it contains no bytes available
@@ -98,7 +98,7 @@ void FireableEvent::Reset()
             std::ostringstream message;
             message << "FireableEvent::Reset(): read() unexpectedly returned "
                     <<  count;
-            throwstd:: runtime_error{message.str()};
+            throw std:: runtime_error{message.str()};
         }
     }
 

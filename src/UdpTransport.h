@@ -33,9 +33,9 @@ namespace Surge {
     
     class UdpTransport : public Transport {
     public:
-        UdpTransport(SocketHandlerDelegate * const delegate);
+        UdpTransport(ISocketHandlerDelegate * const delegate);
 
-        UdpTransport(SocketHandlerDelegate * const delegate, int rtpPort, int rtcpPort);
+        UdpTransport(ISocketHandlerDelegate * const delegate, int rtpPort, int rtcpPort);
 
         ~UdpTransport();
 

@@ -4,14 +4,14 @@
 #include "TestUtil.h"
 #include "Logging.h"
 #include "RtspClient.h"
-#include "DelegateInterface.h"
+#include "IRtspClientDelegate.h"
 #include "NaluParser.h"
 #include <thread>
 #include <chrono>
 
 #include <cstdio>
 
-class Delegate: public Surge::RtspClientDelegate {
+class Delegate: public Surge::IRtspClientDelegate {
 public:
 
     void ClientDidTimeout() {

@@ -24,12 +24,12 @@
 
 #include "Surge.h"
 #include "ErrorDispatcher.h"
-#include "DelegateInterface.h"
+#include "IRtspClientDelegate.h"
 #include "StoppableThread.h"
 #include "Transport.h"
 #include "ITransportInterface.h"
 #include "SessionDescription.h"
-#include "SocketHandlerDelegate.h"
+#include "ISocketHandlerDelegate.h"
 
 #include "DescribeResponse.h"
 #include "SetupResponse.h"
@@ -40,11 +40,11 @@
 
 namespace Surge {
 
-    class RtspClient : public SocketHandlerDelegate, private SurgeUtil::Runnable {
+    class RtspClient : public ISocketHandlerDelegate, private SurgeUtil::Runnable {
     public:
-        RtspClient(RtspClientDelegate * const delegate);
+        RtspClient(IRtspClientDelegate * const delegate);
 
-        RtspClient(RtspClientDelegate * const delegate, Surge::ITransportInterface * const transport);
+        RtspClient(IRtspClientDelegate * const delegate, Surge::ITransportInterface * const transport);
 
         ~RtspClient();
 
@@ -69,7 +69,7 @@ namespace Surge {
 
         void StopClient();
 
-        RtspClientDelegate* GetDelegate() const { return m_delegate; }
+        IRtspClientDelegate* GetDelegate() const { return m_delegate; }
 
         void SocketReadFailed() override {
             NotifyDelegateTimeout();
@@ -158,7 +158,7 @@ namespace Surge {
         std::vector<unsigned char> m_currentFrame;
         SessionDescription m_currentPalette;
 
-        RtspClientDelegate * const m_delegate;
+        IRtspClientDelegate * const m_delegate;
         long m_noPacketTimeout;
         bool m_processedFirstPayload;
         std::uint64_t m_lastKeepAliveMs;

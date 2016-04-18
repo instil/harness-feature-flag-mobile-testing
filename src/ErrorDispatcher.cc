@@ -20,7 +20,7 @@
 
 #include "ErrorDispatcher.h"
 #include "RtspClient.h"
-#include "DelegateInterface.h"
+#include "IRtspClientDelegate.h"
 #include "Logging.h"
 
 #include "FireableEvent.h"
@@ -80,7 +80,7 @@ namespace Surge {
                 m_clientStopEvent.Reset();
                 m_receivedStopEvent.Fire();
 
-                Surge::RtspClientDelegate *delegate = client->GetDelegate();
+                Surge::IRtspClientDelegate *delegate = client->GetDelegate();
 
                 switch(type) {
                 case LOST_CONNECTION:

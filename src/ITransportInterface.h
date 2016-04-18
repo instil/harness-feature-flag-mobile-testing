@@ -26,7 +26,7 @@
 #include "RtspCommand.h"
 #include "Response.h"
 #include "RtpPacket.h"
-#include "SocketHandlerDelegate.h"
+#include "ISocketHandlerDelegate.h"
 
 #include <rxcpp/rx.hpp>
 #include <string>
@@ -60,7 +60,7 @@ namespace Surge {
 
         virtual Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true) = 0;
 
-        virtual void SetDelegate(SocketHandlerDelegate * const delegate) = 0;
+        virtual void SetDelegate(ISocketHandlerDelegate * const delegate) = 0;
 
         virtual std::string GetTransportHeaderString() const = 0;
     };

@@ -46,10 +46,10 @@ using SurgeUtil::Constants::DEFAULT_RTCP_PORT;
 using SurgeUtil::Constants::DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE;
 
 
-Surge::UdpTransport::UdpTransport(SocketHandlerDelegate * const delegate)
+Surge::UdpTransport::UdpTransport(ISocketHandlerDelegate * const delegate)
     : UdpTransport(delegate, DEFAULT_RTP_PORT, DEFAULT_RTCP_PORT) { }
 
-Surge::UdpTransport::UdpTransport(SocketHandlerDelegate * const delegate, int rtpPort, int rtcpPort)
+Surge::UdpTransport::UdpTransport(ISocketHandlerDelegate * const delegate, int rtpPort, int rtcpPort)
     : Transport(delegate),
       m_readBufferSize(DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE),
       m_rtpPort(rtpPort),

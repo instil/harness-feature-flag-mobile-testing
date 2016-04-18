@@ -32,7 +32,7 @@ namespace Surge {
     
     class InterleavedRtspTransport : public Transport {
     public:
-        InterleavedRtspTransport(SocketHandlerDelegate * const delegate);
+        InterleavedRtspTransport(ISocketHandlerDelegate * const delegate);
 
         ~InterleavedRtspTransport();
 

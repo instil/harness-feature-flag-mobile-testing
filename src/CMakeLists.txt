@@ -30,14 +30,15 @@ if(BUILD_JAR STREQUAL OFF)
     
     RtspClient.h
     RtspClient.cc
+    IRtspClientDelegate.h
 
     InterleavedRtspTransport.h
     InterleavedRtspTransport.cc
     UdpTransport.h
     UdpTransport.cc
-    
-    SocketHandlerDelegate.h
+        
     Transport.h
+    ISocketHandlerDelegate.h
     ITransportInterface.h
 
     RtspCommand.h
@@ -77,7 +78,6 @@ if(BUILD_JAR STREQUAL OFF)
 
     MimeTypes.h
     LoggingDelegate.h
-    DelegateInterface.h
     Constants.h
     BaseWaitableEvent.h
     BasicFDEvent.h

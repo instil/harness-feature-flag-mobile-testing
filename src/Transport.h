@@ -22,7 +22,7 @@
 #ifndef __TRANSPORT_H__
 #define __TRANSPORT_H__
 
-#include "SocketHandlerDelegate.h"
+#include "ISocketHandlerDelegate.h"
 #include "ITransportInterface.h"
 #include "Logging.h"
 #include "Helpers.h"
@@ -55,7 +55,7 @@ namespace Surge {
 
     class Transport : public ITransportInterface, private SurgeUtil::Runnable {
     public:
-        Transport(SocketHandlerDelegate *delegate) : m_running(false),
+        Transport(ISocketHandlerDelegate *delegate) : m_running(false),
                                                      m_delegate(delegate),
                                                      m_rtspSocketFD(-1),
                                                      m_connectTimeoutMs(DEFAULT_CONNECT_TIMEOUT_MS),
@@ -204,7 +204,7 @@ namespace Surge {
             return m_rtpPacketSubject.get_observable();
         }
 
-        void SetDelegate(SocketHandlerDelegate * const delegate) override { m_delegate = delegate; }
+        void SetDelegate(ISocketHandlerDelegate * const delegate) override { m_delegate = delegate; }
         
     protected:
 
@@ -277,7 +277,7 @@ namespace Surge {
             }
         }
 
-        SocketHandlerDelegate *m_delegate;
+        ISocketHandlerDelegate *m_delegate;
         int m_rtspSocketFD;
 
         long m_connectTimeoutMs;

@@ -25,7 +25,7 @@
 #include <system_error>
 
 
-void Mutex::Lock()
+void SurgeUtil::Mutex::Lock()
 {
     try
     {
@@ -40,7 +40,7 @@ void Mutex::Lock()
     }
 }
 
-void Mutex::Unlock()
+void SurgeUtil::Mutex::Unlock()
 {
     try
     {
@@ -48,7 +48,7 @@ void Mutex::Unlock()
     }
     catch (std::system_error e)
     {
-        st::ostringstream message;
+        std::ostringstream message;
         message << "Mutex::Unlock(): failed to unlock: "
                 << "error code = " << e.code();
         throw std::runtime_error{message.str()};

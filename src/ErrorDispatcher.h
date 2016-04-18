@@ -43,8 +43,6 @@ namespace Surge {
     class ErrorDispatcher : private SurgeUtil::Runnable
     {
     public:
-        ErrorDispatcher();
-        
         ~ErrorDispatcher() { StopRunning(); }
 
         static ErrorDispatcher& GetInstance() {
@@ -72,7 +70,9 @@ namespace Surge {
             }
         }
 
-    private:       
+    private:
+        ErrorDispatcher();
+        
         void WaitForErrorReceived(const long timeout_milliseconds);
         void Run() override;
         

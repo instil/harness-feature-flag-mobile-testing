@@ -19,27 +19,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __RTSP_CLIENT_DELEGATE_H__
-#define __RTSP_CLIENT_DELEGATE_H__
+#ifndef __ISOCKET_HANDLER_DELEGATE_H__
+#define __ISOCKET_HANDLER_DELEGATE_H__
 
 namespace Surge {
 
-    class RtspClientDelegate {
+    class ISocketHandlerDelegate {
     public:
 
-        virtual ~RtspClientDelegate() { };
+        virtual void SocketReadFailed() = 0;
 
-        // TIMEOUT
-        virtual void ClientDidTimeout() = 0;
+        virtual void AnnounceReceived() = 0;
 
-        // ANNOUNCE / REDIRECT
-        virtual void StreamConfigChanged(bool wasRedirect) = 0;
-
-        // VIDEO
-        virtual void Payload(const char* frameBuffer, size_t length) = 0;
-
+        virtual void RedirectReceived() = 0;
+        
     };
     
 };
 
-#endif // __RTSP_CLIENT_DELEGATE_H__
+#endif //__ISOCKET_HANDLER_DELEGATE_H__

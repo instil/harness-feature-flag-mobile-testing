@@ -17,6 +17,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 #include "RtspClient.h"
 #include "RtspCommandFactory.h"
 #include "Logging.h"
@@ -35,7 +36,7 @@ using SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
 using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 
 
-Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate,
+Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate,
                               Surge::ITransportInterface * const transport)
     : m_delegate(delegate),
       m_noPacketTimeout(DEFAULT_NO_PACKET_TIMEOUT_MS),
@@ -48,7 +49,7 @@ Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate,
     m_transport->SetDelegate(this);
 }
 
-Surge::RtspClient::RtspClient(Surge::RtspClientDelegate * const delegate)
+Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate)
 //    : RtspClient(delegate, new UdpTransport(nullptr)) { }
     : RtspClient(delegate, new InterleavedRtspTransport(nullptr)) { }
 

@@ -19,17 +19,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __RESPONSE_FACTORY_H__
-#define __RESPONSE_FACTORY_H__
+#ifndef __RTSP_CLIENT_DELEGATE_H__
+#define __RTSP_CLIENT_DELEGATE_H__
 
 namespace Surge {
 
-    namespace ResponseFactory {
+    class RtspClientDelegate {
+    public:
 
-        void ParseDescribeResponse(const Response* response);
-        
+        virtual ~RtspClientDelegate() { };
+
+        // TIMEOUT
+        virtual void ClientDidTimeout() = 0;
+
+        // ANNOUNCE / REDIRECT
+        virtual void StreamConfigChanged(bool wasRedirect) = 0;
+
+        // VIDEO
+        virtual void Payload(const char* frameBuffer, size_t length) = 0;
+
     };
     
 };
 
-#endif //__RESPONSE_FACTORY_H__
+#endif // __RTSP_CLIENT_DELEGATE_H__

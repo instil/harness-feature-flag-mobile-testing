@@ -1,30 +1,44 @@
-// Standard C++ Headers
+// Copyright (c) 2016 Instil Software.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+
 #include <cerrno>
 #include <cstdint>
-  using std::uint8_t;
 #include <sstream>
-  using std::ostringstream;
 #include <stdexcept>
-  using std::runtime_error;
 
-// System Headers
 #include <sys/select.h>
 #include <unistd.h>
 
-// SurgeUtil Headers
 #include "FireableEvent.h"
-  using SurgeUtil::FireableEvent;
 #include "MutexLocker.h"
-  using SurgeUtil::MutexLocker;
+
 
 FireableEvent::FireableEvent()
 {
     if (pipe(m_pipeFD) == -1)
     {
-        ostringstream message;
+        std::ostringstream message;
         message << "FireableEvent::FireableEvent(): failed to create pipe: "
                 << "errno = " << errno;
-        throw runtime_error{message.str()};
+        throw std::runtime_error{message.str()};
     }
 }
 
@@ -45,7 +59,7 @@ void FireableEvent::Fire()
     // and firing it (because we do not wish to have multiple
     // bytes in the pipe).
 
-    MutexLocker lock{m_pipeMutex};
+    SurgeUtil::MutexLocker lock{m_pipeMutex};
 
     if (!IsFired())
     {
@@ -66,7 +80,7 @@ void FireableEvent::Reset()
     // and unfiring it (because we do not wish to block due
     // to reading an empty pipe).
 
-    MutexLocker lock{m_pipeMutex};
+    SurgeUtil::MutexLocker lock{m_pipeMutex};
 
     if (IsFired())
     {
@@ -81,10 +95,10 @@ void FireableEvent::Reset()
         // leaving the pipe empty.
         if (count != 1)
         {
-            ostringstream message;
+            std::ostringstream message;
             message << "FireableEvent::Reset(): read() unexpectedly returned "
                     <<  count;
-            throw runtime_error{message.str()};
+            throwstd:: runtime_error{message.str()};
         }
     }
 

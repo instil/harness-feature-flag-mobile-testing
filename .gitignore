@@ -20,5 +20,6 @@ Test-AndroidStudio.iml
 
 src/wrappers/java/*.java
 src/wrappers/java/interface_wrap.*
+src/wrappers/python/Surge.cpp
 
 *.userprefs

@@ -18,14 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#import "SurgeDecoder.h"
 
-@interface NaluParser : NSObject
-
-+ (BOOL)segmentList:(NSArray*)nalus containsNalu:(NSInteger)type;
-
-+ (NSArray*)findNalusOfType:(NSInteger)type inArray:(NSArray*)nalus;
-
-+ (NSArray*)parseOutNalusFromFrameBuffer:(const unsigned char *)frameBuffer ofLength:(size_t)frameSize;
+@interface SurgeMjpegDecoder : SurgeDecoder
 
 @end

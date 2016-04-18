@@ -359,11 +359,12 @@ void Surge::MJPEGDepacketizer::ParseJpegHeader(const unsigned char *buffer) {
     const unsigned char * heightOffset = &buffer[7];
 
     // reset variables
-    m_qValue |= qOffset[0] & 0xFF;
-    m_type |= typeOffset[0] & 0xFF;
-    m_height |= heightOffset[0] & 0xFF;
-    m_width |= widthOffset[0] & 0xFF;
-
+    m_fragmentOffset = 0;
+    m_type = 0;
+    m_qValue = 0;
+    m_width = 0;
+    m_height = 0;
+    
     m_fragmentOffset |= 0x00 & 0xFF;
     m_fragmentOffset <<= 8;
     m_fragmentOffset |= fragmentOffset[0] & 0xFF;
@@ -371,6 +372,11 @@ void Surge::MJPEGDepacketizer::ParseJpegHeader(const unsigned char *buffer) {
     m_fragmentOffset |= fragmentOffset[1] & 0xFF;
     m_fragmentOffset <<= 8;
     m_fragmentOffset |= fragmentOffset[2] & 0xFF;
+    
+    m_type |= typeOffset[0] & 0xFF;
+    m_qValue |= qOffset[0] & 0xFF;
+    m_width |= widthOffset[0] & 0xFF;
+    m_height |= heightOffset[0] & 0xFF;
 }
 
 void Surge::MJPEGDepacketizer::ParseRestartMarkerHeader(const unsigned char * buffer) {

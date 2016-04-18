@@ -18,16 +18,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "SurgeDecoder.h"
+#import "SurgeMjpegDecoder.h"
+#import "SurgeLogging.h"
 
-@implementation SurgeDecoder
+
+@implementation SurgeMjpegDecoder
 
 - (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
                    ofSize:(size_t)size
         withFrameDuration:(int)frameDuration
       andPresentationTime:(unsigned int)presentationTimeInterval {
     
-    @throw [NSException exceptionWithName:@"Not implemented" reason:@"Method must be overridden" userInfo:nil];
+    CGDataProviderRef imageDataProvider = CGDataProviderCreateWithData(NULL, frameBuffer, size, NULL);
+    CGImageRef image = CGImageCreateWithJPEGDataProvider(imageDataProvider, NULL, true, kCGRenderingIntentDefault);
+    
+    [self.delegate decoderFrameAvailable:image withTimeStamp:presentationTimeInterval];
+    
+    CGImageRelease(image);
+    CGDataProviderRelease(imageDataProvider);
 }
 
 @end

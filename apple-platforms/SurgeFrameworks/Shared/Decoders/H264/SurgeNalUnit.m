@@ -18,16 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "NaluSegment.h"
-#import "NaluSegmentTypes.h"
+#import "SurgeNalUnit.h"
 
-@interface NaluSegment ()
+@interface SurgeNalUnit ()
 @property (nonatomic, assign) unsigned char *buffer;
 @end
 
-@implementation NaluSegment
+@implementation SurgeNalUnit
 
-- (id)initWithType:(NaluSegmentType)type atOffset:(size_t)offset withHeaderSize:(size_t)headerSize {
+- (id)initWithType:(SurgeNalUnitType)type atOffset:(size_t)offset withHeaderSize:(size_t)headerSize {
     if (self = [super init]) {
         [self setType:type];
         [self setOffset:offset];
@@ -76,8 +75,8 @@
         [self setHeaderSize:4];
         memcpy(self.buffer, buffer, length);
     } else {
-        @throw [NSException exceptionWithName:@"NaluSegmentException"
-                                       reason:@"Nalu contains invalid magic-byte sequence"
+        @throw [NSException exceptionWithName:@"SurgeNalUnitException"
+                                       reason:@"NAL unit contains invalid magic-byte sequence"
                                      userInfo:nil];
     }
 }

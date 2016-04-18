@@ -19,29 +19,15 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import <CoreImage/CoreImage.h>
 
-@protocol SurgeDecoderDelegate <NSObject>
+#import "SurgeNalUnit.h"
 
-- (void)decoderFrameAvailable:(CGImageRef)imageBuffer withTimeStamp:(NSTimeInterval)timestamp;
+@interface SurgeNalUnitParser : NSObject
 
-@optional
++ (BOOL)arrayContainsNalUnit:(NSArray*)nalUnits ofType:(NSInteger)type;
 
-- (void)decoderDidBeginBuffering;
++ (NSArray*)filteredArrayOfNalUnits:(NSArray*)nalUnits ofType:(NSInteger)type;
 
-- (void)decoderDidStopBuffering;
-
-@end
-
-@interface SurgeDecoder : NSObject
-
-- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
-                   ofSize:(size_t)size
-        withFrameDuration:(int)frameDuration
-      andPresentationTime:(unsigned int)presentationTimeInterval;
-
-@property (nonatomic, weak) id<SurgeDecoderDelegate> delegate;
-
-@property (nonatomic, assign) NSUInteger framesPerSecond;
++ (NSArray*)parseNalUnitsFromFrameBuffer:(const unsigned char *)frameBuffer ofLength:(size_t)frameSize;
 
 @end

@@ -22,6 +22,4 @@
 
 @interface SurgeH264Decoder : SurgeDecoder
 
-- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate;
-
 @end

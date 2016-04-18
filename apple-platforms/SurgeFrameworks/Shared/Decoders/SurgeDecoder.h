@@ -19,23 +19,42 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "NaluSegmentTypes.h"
+#import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
+#import <VideoToolbox/VideoToolbox.h>
 
-@interface NaluSegment : NSObject
+@protocol SurgeDecoderDelegate <NSObject>
 
-@property (nonatomic, assign) size_t headerSize;
-@property (nonatomic, assign) size_t offset;
-@property (nonatomic, assign) NaluSegmentType type;
-@property (nonatomic, assign) size_t length;
+/**
+ * Called when a decoded frame is available for
+ * presentation at the application layer.
+ */
+- (void)decoderFrameAvailable:(CGImageRef)image withTimeStamp:(NSTimeInterval)timestamp;
 
-- (id)initWithType:(NaluSegmentType)type atOffset:(size_t)offset withHeaderSize:(size_t)headerSize;
+@end
 
-- (void)setBuffer:(const unsigned char *)buffer withLength:(size_t)length;
 
-- (void*)annexBBuffer;
+@interface SurgeDecoder : NSObject
 
-- (void*)bufferWithoutHeader;
+- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate;
 
-- (void)cleanup;
+/**
+ * Abstract method to be implemented by decoders. Implementations
+ * should create a CMSampleBufferRef and enqueue for decoding.
+ */
+- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
+                   ofSize:(size_t)size
+        withFrameDuration:(int)frameDuration
+      andPresentationTime:(unsigned int)presentationTimeInterval;
+
+/**
+ * Enqueue a CMSampleBufferRef for decoding. Once decoded, the frame
+ * will be made available through a delegate callback as a CGImageRef.
+ */
+- (void)enqueueSampleBuffer:(CMSampleBufferRef)sampleBuffer;
+
+@property (nonatomic, weak) id<SurgeDecoderDelegate> delegate;
+
+@property (nonatomic, assign) NSUInteger framesPerSecond;
 
 @end

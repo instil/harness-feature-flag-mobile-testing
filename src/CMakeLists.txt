@@ -77,7 +77,7 @@ if(BUILD_JAR STREQUAL OFF)
     MJPEGDepacketizer.cc
 
     MimeTypes.h
-    LoggingDelegate.h
+    ILoggingDelegate.h
     Constants.h
     BaseWaitableEvent.h
     BasicFDEvent.h

@@ -19,15 +19,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __LOGGING_DELEGATE_H__
-#define __LOGGING_DELEGATE_H__
+#ifndef __ILOGGING_DELEGATE_H__
+#define __ILOGGING_DELEGATE_H__
 
 namespace SurgeUtil {
 
-    class LoggingDelegate {
+    class ILoggingDelegate {
     public:
 
-        virtual ~LoggingDelegate() { }
+        virtual ~ILoggingDelegate() { }
 
         virtual void info(const char *message) const { }
 

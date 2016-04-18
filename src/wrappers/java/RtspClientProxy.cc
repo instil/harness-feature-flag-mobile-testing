@@ -4,7 +4,7 @@ namespace SurgeJava {
 
     namespace LoggerProxy {
 
-        void SetLoggingDelegate(const SurgeUtil::LoggingDelegate *delegate) {
+        void SetLoggingDelegate(const SurgeUtil::ILoggingDelegate *delegate) {
             SurgeUtil::Logger& logger = SurgeUtil::Logger::GetInstance();
             logger.SetLoggingDelegate(delegate);
         }
@@ -13,7 +13,7 @@ namespace SurgeJava {
     
     namespace RtspClientProxy {
 
-        struct RtspClientWrapper* CreateNewRtspClient(Surge::RtspClientDelegate *delegate) {
+        struct RtspClientWrapper* CreateNewRtspClient(Surge::IRtspClientDelegate *delegate) {
 
             struct RtspClientWrapper* wrapper = (struct RtspClientWrapper*)
                 malloc(sizeof(struct RtspClientWrapper));

@@ -3,9 +3,9 @@
 #define __RTSP_CLIENT_PROXY_H__
 
 #include "RtspClient.h"
-#include "DelegateInterface.h"
+#include "IRtspClientDelegate.h"
 #include "SessionDescription.h"
-#include "LoggingDelegate.h"
+#include "ILoggingDelegate.h"
 
 // Swig c++ support seems to not understand class instance pointers making the bindings it generates not useful
 // this proxy will eliminate the sillyness in the bindings although will need to be maintained.
@@ -14,7 +14,7 @@ namespace SurgeJava {
 
     namespace LoggerProxy {
 
-        void SetLoggingDelegate(const SurgeUtil::LoggingDelegate *delegate);
+        void SetLoggingDelegate(const SurgeUtil::ILoggingDelegate *delegate);
         
     };
 
@@ -33,7 +33,7 @@ namespace SurgeJava {
             struct RtspPalette *palettes;
         };
 
-        struct RtspClientWrapper* CreateNewRtspClient(Surge::RtspClientDelegate *delegate);
+        struct RtspClientWrapper* CreateNewRtspClient(Surge::IRtspClientDelegate *delegate);
 
         int Describe(struct RtspClientWrapper* const client,
                      const char *url, bool requires_auth, const char *user, const char *pass,

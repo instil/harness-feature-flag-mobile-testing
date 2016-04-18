@@ -3,13 +3,13 @@
 #define __TEST_UTIL_H__
 
 #include "Logging.h"
-#include "LoggingDelegate.h"
+#include "ILoggingDelegate.h"
 
 namespace SurgeTestUtil {
 
     void SetupTestLogger(SurgeUtil::LogLevel level = SurgeUtil::LogLevel::Debug);
 
-    class Logger: public SurgeUtil::LoggingDelegate {
+    class Logger: public SurgeUtil::ILoggingDelegate {
     public:
         
         void info(const char *message) const override {

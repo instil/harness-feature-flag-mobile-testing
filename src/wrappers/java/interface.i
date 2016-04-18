@@ -42,7 +42,7 @@
 %}
 
 %{
-#include "DelegateInterface.h"
+#include "IRtspClientDelegate.h"
 #include "ErrorDispatcher.h"
 #include "RtspResponse.h"
 #include "DescribeResponse.h"
@@ -50,7 +50,7 @@
 #include "SessionDescription.h"
 #include "SessionDescriptionV0.h"
 #include "Logging.h"
-#include "LoggingDelegate.h"    
+#include "ILoggingDelegate.h"    
 #include "Surge.h"
 #include "RtspClient.h"
 #include "RtspClientProxy.h"
@@ -62,7 +62,7 @@ using namespace SurgeJava::RtspClientProxy;
 %}
 
 %include "ErrorDispatcher.h"
-%include "DelegateInterface.h"
+%include "IRtspClientDelegate.h"
 %include "Surge.h"
 %include "RtspClient.h"
 %include "RtspResponse.h"
@@ -71,5 +71,5 @@ using namespace SurgeJava::RtspClientProxy;
 %include "SessionDescription.h"
 %include "SessionDescriptionV0.h"
 %include "Logging.h"
-%include "LoggingDelegate.h"
+%include "ILoggingDelegate.h"
 %include "RtspClientProxy.h"

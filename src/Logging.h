@@ -27,7 +27,7 @@
 #include <sstream>
 #include <string>
 
-#include "LoggingDelegate.h"
+#include "ILoggingDelegate.h"
 
 namespace SurgeUtil {
 
@@ -43,7 +43,7 @@ namespace SurgeUtil {
 
         void SetLevel(LogLevel level) { m_level = level; }
 
-        void SetLoggingDelegate(const LoggingDelegate *delegate) { m_delegate = delegate;  }
+        void SetLoggingDelegate(const ILoggingDelegate *delegate) { m_delegate = delegate;  }
         
         void Log(const LogLevel a_level,
                  const std::ostringstream& a_message,
@@ -95,12 +95,12 @@ namespace SurgeUtil {
     private:
         Logger(): m_level(LogLevel::Debug), m_delegate(nullptr) { }
 
-        bool IsLogLevelEnabled(LogLevel level) {
+        bool IsLogLevelEnabled(LogLevel level) const {
             return level >= m_level;
         }
 
         LogLevel m_level;
-        const LoggingDelegate *m_delegate;
+        const ILoggingDelegate *m_delegate;
     };
 
 }

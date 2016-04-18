@@ -31,7 +31,8 @@
 #include "MutexLocker.h"
 
 
-SurgeUtil::FireableEvent::FireableEvent()
+SurgeUtil::FireableEvent::FireableEvent(): m_associatedData(nullptr),
+                                           m_associatedInt(-1)      
 {
     if (pipe(m_pipeFD) == -1)
     {

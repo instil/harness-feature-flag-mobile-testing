@@ -8,9 +8,9 @@
       location = "group:apple-platforms/SurgeFrameworks/SurgeFrameworks.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:apple-platforms/SurgeiOSTestApp/SurgeiOSTestApp.xcodeproj">
+      location = "group:apple-platforms/SurgeiOSDemoApp/SurgeiOSDemoApp.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:apple-platforms/SurgeMacOSTestApp/SurgeMacOSTestApp.xcodeproj">
+      location = "group:apple-platforms/SurgeMacOSDemoApp/SurgeMacOSDemoApp.xcodeproj">
    </FileRef>
 </Workspace>

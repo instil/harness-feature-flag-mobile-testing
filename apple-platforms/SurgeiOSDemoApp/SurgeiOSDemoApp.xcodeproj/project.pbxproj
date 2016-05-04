@@ -1,0 +1,549 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		426E88111CDA40AE00C7FF25 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88101CDA40AE00C7FF25 /* main.m */; };
+		426E88141CDA40AE00C7FF25 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88131CDA40AE00C7FF25 /* AppDelegate.m */; };
+		426E88171CDA40AE00C7FF25 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88161CDA40AE00C7FF25 /* ViewController.m */; };
+		426E881A1CDA40AE00C7FF25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E88181CDA40AE00C7FF25 /* Main.storyboard */; };
+		426E881C1CDA40AE00C7FF25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 426E881B1CDA40AE00C7FF25 /* Assets.xcassets */; };
+		426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */; };
+		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
+		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
+		426E88431CDA411200C7FF25 /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426E88421CDA411200C7FF25 /* SurgeiOS.framework */; };
+		426E88441CDA411200C7FF25 /* SurgeiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 426E88421CDA411200C7FF25 /* SurgeiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		426E88261CDA40AE00C7FF25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 426E88041CDA40AD00C7FF25 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 426E880B1CDA40AE00C7FF25;
+			remoteInfo = SurgeiOSDemoApp;
+		};
+		426E88311CDA40AE00C7FF25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 426E88041CDA40AD00C7FF25 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 426E880B1CDA40AE00C7FF25;
+			remoteInfo = SurgeiOSDemoApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		426E88451CDA411200C7FF25 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				426E88441CDA411200C7FF25 /* SurgeiOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		426E880C1CDA40AE00C7FF25 /* SurgeiOSDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurgeiOSDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		426E88101CDA40AE00C7FF25 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		426E88121CDA40AE00C7FF25 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		426E88131CDA40AE00C7FF25 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		426E88151CDA40AE00C7FF25 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		426E88161CDA40AE00C7FF25 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		426E88191CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		426E881B1CDA40AE00C7FF25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		426E881E1CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		426E88201CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		426E88251CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeiOSDemoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeiOSDemoAppTests.m; sourceTree = "<group>"; };
+		426E882B1CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		426E88301CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeiOSDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeiOSDemoAppUITests.m; sourceTree = "<group>"; };
+		426E88361CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		426E88421CDA411200C7FF25 /* SurgeiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeiOS.framework; path = "/Users/cvanes/Library/Developer/Xcode/DerivedData/Surge-ecglvfmqgwcjizcpxbkexnbinxvc/Build/Products/Debug-iphonesimulator/SurgeiOS.framework"; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		426E88091CDA40AE00C7FF25 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				426E88431CDA411200C7FF25 /* SurgeiOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		426E88221CDA40AE00C7FF25 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		426E882D1CDA40AE00C7FF25 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		426E88031CDA40AD00C7FF25 = {
+			isa = PBXGroup;
+			children = (
+				426E880E1CDA40AE00C7FF25 /* SurgeiOSDemoApp */,
+				426E88281CDA40AE00C7FF25 /* SurgeiOSDemoAppTests */,
+				426E88331CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests */,
+				426E88461CDA411B00C7FF25 /* Frameworks */,
+				426E880D1CDA40AE00C7FF25 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		426E880D1CDA40AE00C7FF25 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				426E880C1CDA40AE00C7FF25 /* SurgeiOSDemoApp.app */,
+				426E88251CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.xctest */,
+				426E88301CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		426E880E1CDA40AE00C7FF25 /* SurgeiOSDemoApp */ = {
+			isa = PBXGroup;
+			children = (
+				426E88121CDA40AE00C7FF25 /* AppDelegate.h */,
+				426E88131CDA40AE00C7FF25 /* AppDelegate.m */,
+				426E88151CDA40AE00C7FF25 /* ViewController.h */,
+				426E88161CDA40AE00C7FF25 /* ViewController.m */,
+				426E88181CDA40AE00C7FF25 /* Main.storyboard */,
+				426E881B1CDA40AE00C7FF25 /* Assets.xcassets */,
+				426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */,
+				426E88201CDA40AE00C7FF25 /* Info.plist */,
+				426E880F1CDA40AE00C7FF25 /* Supporting Files */,
+			);
+			path = SurgeiOSDemoApp;
+			sourceTree = "<group>";
+		};
+		426E880F1CDA40AE00C7FF25 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				426E88101CDA40AE00C7FF25 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		426E88281CDA40AE00C7FF25 /* SurgeiOSDemoAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */,
+				426E882B1CDA40AE00C7FF25 /* Info.plist */,
+			);
+			path = SurgeiOSDemoAppTests;
+			sourceTree = "<group>";
+		};
+		426E88331CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */,
+				426E88361CDA40AE00C7FF25 /* Info.plist */,
+			);
+			path = SurgeiOSDemoAppUITests;
+			sourceTree = "<group>";
+		};
+		426E88461CDA411B00C7FF25 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				426E88421CDA411200C7FF25 /* SurgeiOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		426E880B1CDA40AE00C7FF25 /* SurgeiOSDemoApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 426E88391CDA40AE00C7FF25 /* Build configuration list for PBXNativeTarget "SurgeiOSDemoApp" */;
+			buildPhases = (
+				426E88081CDA40AE00C7FF25 /* Sources */,
+				426E88091CDA40AE00C7FF25 /* Frameworks */,
+				426E880A1CDA40AE00C7FF25 /* Resources */,
+				426E88451CDA411200C7FF25 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SurgeiOSDemoApp;
+			productName = SurgeiOSDemoApp;
+			productReference = 426E880C1CDA40AE00C7FF25 /* SurgeiOSDemoApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		426E88241CDA40AE00C7FF25 /* SurgeiOSDemoAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 426E883C1CDA40AE00C7FF25 /* Build configuration list for PBXNativeTarget "SurgeiOSDemoAppTests" */;
+			buildPhases = (
+				426E88211CDA40AE00C7FF25 /* Sources */,
+				426E88221CDA40AE00C7FF25 /* Frameworks */,
+				426E88231CDA40AE00C7FF25 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				426E88271CDA40AE00C7FF25 /* PBXTargetDependency */,
+			);
+			name = SurgeiOSDemoAppTests;
+			productName = SurgeiOSDemoAppTests;
+			productReference = 426E88251CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		426E882F1CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 426E883F1CDA40AE00C7FF25 /* Build configuration list for PBXNativeTarget "SurgeiOSDemoAppUITests" */;
+			buildPhases = (
+				426E882C1CDA40AE00C7FF25 /* Sources */,
+				426E882D1CDA40AE00C7FF25 /* Frameworks */,
+				426E882E1CDA40AE00C7FF25 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				426E88321CDA40AE00C7FF25 /* PBXTargetDependency */,
+			);
+			name = SurgeiOSDemoAppUITests;
+			productName = SurgeiOSDemoAppUITests;
+			productReference = 426E88301CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		426E88041CDA40AD00C7FF25 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Instil;
+				TargetAttributes = {
+					426E880B1CDA40AE00C7FF25 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					426E88241CDA40AE00C7FF25 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 426E880B1CDA40AE00C7FF25;
+					};
+					426E882F1CDA40AE00C7FF25 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 426E880B1CDA40AE00C7FF25;
+					};
+				};
+			};
+			buildConfigurationList = 426E88071CDA40AD00C7FF25 /* Build configuration list for PBXProject "SurgeiOSDemoApp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 426E88031CDA40AD00C7FF25;
+			productRefGroup = 426E880D1CDA40AE00C7FF25 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				426E880B1CDA40AE00C7FF25 /* SurgeiOSDemoApp */,
+				426E88241CDA40AE00C7FF25 /* SurgeiOSDemoAppTests */,
+				426E882F1CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		426E880A1CDA40AE00C7FF25 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */,
+				426E881C1CDA40AE00C7FF25 /* Assets.xcassets in Resources */,
+				426E881A1CDA40AE00C7FF25 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		426E88231CDA40AE00C7FF25 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		426E882E1CDA40AE00C7FF25 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		426E88081CDA40AE00C7FF25 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				426E88171CDA40AE00C7FF25 /* ViewController.m in Sources */,
+				426E88141CDA40AE00C7FF25 /* AppDelegate.m in Sources */,
+				426E88111CDA40AE00C7FF25 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		426E88211CDA40AE00C7FF25 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		426E882C1CDA40AE00C7FF25 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		426E88271CDA40AE00C7FF25 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 426E880B1CDA40AE00C7FF25 /* SurgeiOSDemoApp */;
+			targetProxy = 426E88261CDA40AE00C7FF25 /* PBXContainerItemProxy */;
+		};
+		426E88321CDA40AE00C7FF25 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 426E880B1CDA40AE00C7FF25 /* SurgeiOSDemoApp */;
+			targetProxy = 426E88311CDA40AE00C7FF25 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		426E88181CDA40AE00C7FF25 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				426E88191CDA40AE00C7FF25 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				426E881E1CDA40AE00C7FF25 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		426E88371CDA40AE00C7FF25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		426E88381CDA40AE00C7FF25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		426E883A1CDA40AE00C7FF25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SurgeiOSDemoApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		426E883B1CDA40AE00C7FF25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SurgeiOSDemoApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		426E883D1CDA40AE00C7FF25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SurgeiOSDemoAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SurgeiOSDemoApp.app/SurgeiOSDemoApp";
+			};
+			name = Debug;
+		};
+		426E883E1CDA40AE00C7FF25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SurgeiOSDemoAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SurgeiOSDemoApp.app/SurgeiOSDemoApp";
+			};
+			name = Release;
+		};
+		426E88401CDA40AE00C7FF25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SurgeiOSDemoAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SurgeiOSDemoApp;
+			};
+			name = Debug;
+		};
+		426E88411CDA40AE00C7FF25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SurgeiOSDemoAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SurgeiOSDemoApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		426E88071CDA40AD00C7FF25 /* Build configuration list for PBXProject "SurgeiOSDemoApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				426E88371CDA40AE00C7FF25 /* Debug */,
+				426E88381CDA40AE00C7FF25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		426E88391CDA40AE00C7FF25 /* Build configuration list for PBXNativeTarget "SurgeiOSDemoApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				426E883A1CDA40AE00C7FF25 /* Debug */,
+				426E883B1CDA40AE00C7FF25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		426E883C1CDA40AE00C7FF25 /* Build configuration list for PBXNativeTarget "SurgeiOSDemoAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				426E883D1CDA40AE00C7FF25 /* Debug */,
+				426E883E1CDA40AE00C7FF25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		426E883F1CDA40AE00C7FF25 /* Build configuration list for PBXNativeTarget "SurgeiOSDemoAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				426E88401CDA40AE00C7FF25 /* Debug */,
+				426E88411CDA40AE00C7FF25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 426E88041CDA40AD00C7FF25 /* Project object */;
+}

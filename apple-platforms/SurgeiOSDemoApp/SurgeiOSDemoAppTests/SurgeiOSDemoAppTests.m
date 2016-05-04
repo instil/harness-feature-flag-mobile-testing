@@ -18,27 +18,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <SurgeMacOS/SurgeMacOS.h>
+#import <XCTest/XCTest.h>
 
-#import "ViewController.h"
+@interface SurgeiOSDemoAppTests : XCTestCase
 
-@interface ViewController ()
-@property (nonatomic, strong) SurgeRtspPlayer *rtspPlayer;
 @end
 
-@implementation ViewController
+@implementation SurgeiOSDemoAppTests
 
-- (void)viewDidLoad {
-    self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
-    [self.view addSubview:self.rtspPlayer.playerView];
+- (void)setUp {
+    [super setUp];
+    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
-- (void)viewWillLayout {
-    self.rtspPlayer.playerView.frame = self.view.frame;
+- (void)tearDown {
+    // Put teardown code here. This method is called after the invocation of each test method in the class.
+    [super tearDown];
 }
 
-- (void)viewDidAppear {
-    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:@"rtsp://192.168.1.46:8554/test"]];
+- (void)testExample {
+    // This is an example of a functional test case.
+    // Use XCTAssert and related functions to verify your tests produce the correct results.
+}
+
+- (void)testPerformanceExample {
+    // This is an example of a performance test case.
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+    }];
 }
 
 @end

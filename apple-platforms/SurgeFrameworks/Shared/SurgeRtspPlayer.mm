@@ -27,9 +27,8 @@
 #include "Surge.h"
 #include "MimeTypes.h"
 #include "Logging.h"
-#include "LoggingDelegate.h"
 
-class RtspLoggingDelegate: public SurgeUtil::LoggingDelegate {
+class RtspLoggingDelegate: public SurgeUtil::ILoggingDelegate {
 public:
     
     void trace(const char *message) const override {
@@ -63,7 +62,7 @@ public:
 - (void)rtspClientPayloadReceived:(const unsigned char *)payload withSize:(size_t)length;
 @end
 
-class RtspClientDelegateWrapper : public Surge::RtspClientDelegate {
+class RtspClientDelegateWrapper : public Surge::IRtspClientDelegate {
 public:
 
     RtspClientDelegateWrapper(id<SurgeRtspClientDelegate> delegate) : delegate(delegate) {}
@@ -84,7 +83,7 @@ private:
 
 @interface SurgeRtspPlayer () <SurgeRtspClientDelegate, SurgeDecoderDelegate>
 @property (nonatomic, strong) NSURL *url;
-@property (nonatomic, assign) Surge::RtspClientDelegate *clientDelegate;
+@property (nonatomic, assign) Surge::IRtspClientDelegate *clientDelegate;
 @property (nonatomic, assign) Surge::RtspClient *client;
 @property (nonatomic, strong) SurgeDecoder *decoder;
 

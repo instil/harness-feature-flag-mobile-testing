@@ -144,7 +144,7 @@ void MakeTables(int q, unsigned char *lqt, unsigned char *cqt) {
     else
         q = 200 - factor*2;
 
-    for (i = 0; i < 64; ++i) {
+    for (i = 0; i < 64; i++) {
         int lq = (jpeg_luma_quantizer[i] * q + 50) / 100;
         int cq = (jpeg_chroma_quantizer[i] * q + 50) / 100;
 
@@ -180,7 +180,7 @@ void MakeHuffmanHeader(std::vector<unsigned char> * const p, unsigned char *code
     p->push_back(0xc4);
     p->push_back(0);
     p->push_back(3 + ncodes + nsymbols);
-    p->push_back(tableClass << 4 | tableNo);
+    p->push_back((tableClass << 4) | tableNo);
 
     size_t preCopySize = p->size();
 
@@ -194,7 +194,7 @@ static
 void MakeDRIHeader(std::vector<unsigned char> * const p, unsigned short dri) {
     p->push_back(0xff);
     p->push_back(0xdd);
-    p->push_back(0);
+    p->push_back(0x0);
     p->push_back(4);
     p->push_back(dri >> 8);
     p->push_back(dri & 0xff);
@@ -367,7 +367,7 @@ void Surge::MJPEGDepacketizer::AddToFrame(std::vector<unsigned char> * const fra
 
     std::copy(rtp_packet_payload + jpeg_payload_offset,
               rtp_packet_payload + rtp_packet_length,
-              frame->begin() + frame_length);    
+              frame->begin() + frame_length);
 }
 
 void Surge::MJPEGDepacketizer::ParseJpegHeader(const unsigned char *buffer) {

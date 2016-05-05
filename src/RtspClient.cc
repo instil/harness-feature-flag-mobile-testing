@@ -429,8 +429,6 @@ void Surge::RtspClient::Run() {
 }
 
 void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
-
-    SurgeUtil::MutexLocker lock(m_mutex);
     
     switch (m_currentPalette.GetType()) {
     case H264:

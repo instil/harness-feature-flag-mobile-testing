@@ -97,9 +97,11 @@ TODO
 
 TODO
 
-## Testing live streaming with the Raspberry Pi camera
+## Testing real-time streaming
 
-The Raspberry Pi 2+ is capable of hardware accelerated H264 video encoding/decoding through usage of the OpenMAX (OMX) APIs. Broadcom in addition also provide the Multi-Media Abstraction Layer (MMAL) API on top of OMX which intended to provide a simpler API for devices with the VideoCore GPU (and this is actually what the raspivid utility uses for hardware accelerate H264 encoding). There are a number of options for live-streaming the RPi camera using RTSP but unfortunately not all of these options support the full feature set that we require for testing Surge - capturing compressed video data using the raspivid utility and packetizing it with the in-built VLC RTSP server works well but unfortunately does not support interleaved RTP over TCP. Gstreamer however does allow use of the OMX APIs and provides an RTSP library with some helpful examples for building an RTSP server which we can use for testing. 
+The Raspberry Pi 2+ and camera module provide a cheap option for testing real-time streaming which is capable of hardware accelerated H264 video encoding/decoding through usage of the OpenMAX (OMX) APIs. Broadcom in addition also provide the Multi-Media Abstraction Layer (MMAL) API on top of OMX which intended to provide a simpler API for devices with the VideoCore GPU (and this is actually what the raspivid utility uses for hardware accelerate H264 encoding). There are a number of options for live-streaming the RPi camera using RTSP but unfortunately not all of these options support the full feature set that we require for testing Surge - capturing compressed video data using the raspivid utility and packetizing it with the in-built VLC RTSP server works well but unfortunately does not support interleaved RTP over TCP. Gstreamer however does allow use of the OMX APIs and provides an RTSP library with some helpful examples for building an RTSP server which we can use for testing. 
+
+The instructions below have been tested on a Raspberry Pi but they should work for any Debian based distribution with access to a camera via a Video4Linux driver. It's also possible to use the GStreamer test source if a camera is not available and examples are provided below.
 
 ### Raspberry Pi setup
 
@@ -145,6 +147,12 @@ $ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=80
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
+$ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=8000000" ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
+```
+
+### Streaming without a camera
+
+```
+$ cd /usr/src/gst-rtsp-server-1.4.4/examples
 $ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=15/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
 ```
-<!--$ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=8000000" ! video/x-raw, width=720, height=480, framerate=15/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"-->

@@ -99,19 +99,19 @@ TODO
 
 ## Testing real-time streaming
 
-The Raspberry Pi 2+ and camera module provide a cheap option for testing real-time streaming which is capable of hardware accelerated H264 video encoding/decoding through usage of the OpenMAX (OMX) APIs. Broadcom in addition also provide the Multi-Media Abstraction Layer (MMAL) API on top of OMX which intended to provide a simpler API for devices with the VideoCore GPU (and this is actually what the raspivid utility uses for hardware accelerate H264 encoding). There are a number of options for live-streaming the RPi camera using RTSP but unfortunately not all of these options support the full feature set that we require for testing Surge - capturing compressed video data using the raspivid utility and packetizing it with the in-built VLC RTSP server works well but unfortunately does not support interleaved RTP over TCP. Gstreamer however does allow use of the OMX APIs and provides an RTSP library with some helpful examples for building an RTSP server which we can use for testing. 
+The Raspberry Pi 2+ and camera module provide a cheap option for testing real-time streaming which is capable of hardware accelerated H264 video encoding/decoding through usage of the OpenMAX (OMX) APIs. Broadcom in addition also provide the Multi-Media Abstraction Layer (MMAL) API on top of OMX which intended to provide a simpler API for devices with the VideoCore GPU (and this is actually what the raspivid utility uses for hardware accelerate H264 encoding). There are a number of options for live-streaming the RPi camera using RTSP but unfortunately not all of these options support the full feature set that we require for testing Surge - capturing compressed video data using the raspivid utility and packetizing it with the in-built VLC RTSP server works well but does not support interleaved RTP over TCP. Gstreamer however does allow use of the OMX APIs and provides an RTSP library with some helpful examples for building an RTSP server which we can use for testing. 
 
-The instructions below have been tested on a Raspberry Pi but they should work for any Debian based distribution with access to a camera via a Video4Linux driver. It's also possible to use the GStreamer test source if a camera is not available and examples are provided below.
+The instructions below have been tested on a Raspberry Pi but they should work for any Debian based system with access to a camera and the appropriate Video4Linux driver. It's also possible to use the GStreamer test source if a camera is not available, examples of which are provided below.
 
-### Raspberry Pi setup
+### Setup
 
-Firstly, install GStreamer and the required dependencies. The script `tools/raspberry-pi-setup.sh` can also be used to automate the following steps.
+Firstly, install GStreamer and the required dependencies. The script `tools/raspberry-pi-setup.sh` can also be used to automate this process for a Raspberry Pi.
 
 ```bash
 $ sudo apt-get install gstreamer1.0 gstreamer1.0-tools gstreamer1.0-omx libgstreamer1.0-dev v4l-utils
 ```
 
-Next, load the Broadcom Video4Linux driver which we'll be using.
+Next, load the Broadcom Video4Linux driver for the Raspberry Pi which we'll be using. For other platforms, substitute with the appropriate driver for your camera.
 
 ```bash
 $ sudo bash -c "echo bcm2835-v4l2 >> /etc/modules"
@@ -129,30 +129,48 @@ $ ./configure --prefix=/opt/gst-rtsp
 $ make
 ```
 
-### Streaming live H264
+### Streaming from live camera
+
+#### H264
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
 $ ./test-launch "( v4l2src device=/dev/video0 ! omxh264enc ! video/x-h264,width=720,height=480,framerate=25/1,profile=high,target-bitrate=8000000 ! h264parse ! rtph264pay name=pay0 config-interval=1 pt=96 )"
 ```
 
-### Streaming live MPEG-4 Part 2
+#### MPEG-4 Part 2
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=8000000" ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! avenc_mpeg4 ! rtpmp4vpay name=pay0 config-interval=1 pt=96 )"
+$ ./test-launch "( v4l2src device=/dev/video0 extra-controls=\"c,video_bitrate=8000000\" ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! avenc_mpeg4 ! rtpmp4vpay name=pay0 config-interval=1 pt=96 )"
 ```
 
-### Streaming live MJPEG
+#### MJPEG
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ ./test-launch "( v4l2src device=/dev/video0 extra-controls="c,video_bitrate=8000000" ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
+$ ./test-launch "( v4l2src device=/dev/video0 extra-controls=\"c,video_bitrate=8000000\" ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
 ```
 
-### Streaming without a camera
+### Streaming from GStreamer test source
 
-```
+#### H264
+
+```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=15/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
+$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! omxh264enc ! rtph264pay name=pay0 config-interval=1 pt=96 )"
+```
+
+### MPEG-4 Part 2
+
+```bash
+$ cd /usr/src/gst-rtsp-server-1.4.4/examples
+$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! avenc_mpeg4 ! rtpmp4vpay name=pay0 config-interval=1 pt=96 )"
+```
+
+### MJPEG
+
+```bash
+$ cd /usr/src/gst-rtsp-server-1.4.4/examples
+$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
 ```

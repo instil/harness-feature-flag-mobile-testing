@@ -18,11 +18,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "SurgeDecoder.h"
+#import <Foundation/Foundation.h>
 
 /**
- * Decoder for MPEG4 elementary streams as defined in ISO/IEC 14496-1 and 14496-2.
+ * A wrapper around primitive operations for reading bitstreams.
  */
-@interface SurgeMp4vDecoder : SurgeDecoder
+@interface BitstreamReader : NSObject
+
+- (instancetype)initWithBuffer:(uint8_t*)buffer ofSize:(size_t)size;
+
+- (uint8_t)readBit;
+
+- (uint8_t)readByte;
+
+- (uint16_t)readTwoBytes;
+
+- (uint32_t)readFourBytes;
+
+- (uint32_t)readNumberOfBits:(uint8_t)numberOfBits;
+
+- (void)skipNumberOfBits:(uint32_t)numberOfBits;
 
 @end

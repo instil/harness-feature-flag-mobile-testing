@@ -23,6 +23,18 @@
 		4241D51E1CBB07F80087BAAF /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4241D51D1CBB07F80087BAAF /* AppKit.framework */; };
 		425630EF1CBAA31700E347C0 /* SurgeRtspPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 42EFF7861CAADB330056B9F3 /* SurgeRtspPlayer.mm */; };
 		426A40E41CB1A3F200A4712B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A40E31CB1A3F200A4712B /* UIKit.framework */; };
+		42AD016A1CE6267E00EA072F /* BitstreamReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01661CE6267E00EA072F /* BitstreamReader.h */; };
+		42AD016B1CE6267E00EA072F /* BitstreamReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01661CE6267E00EA072F /* BitstreamReader.h */; };
+		42AD016C1CE6267E00EA072F /* BitstreamReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01661CE6267E00EA072F /* BitstreamReader.h */; };
+		42AD016D1CE6267E00EA072F /* BitstreamReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01671CE6267E00EA072F /* BitstreamReader.m */; };
+		42AD016E1CE6267E00EA072F /* BitstreamReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01671CE6267E00EA072F /* BitstreamReader.m */; };
+		42AD016F1CE6267E00EA072F /* BitstreamReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01671CE6267E00EA072F /* BitstreamReader.m */; };
+		42AD01781CE6317800EA072F /* BitstreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01761CE6317800EA072F /* BitstreamWriter.h */; };
+		42AD01791CE6317800EA072F /* BitstreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01761CE6317800EA072F /* BitstreamWriter.h */; };
+		42AD017A1CE6317800EA072F /* BitstreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01761CE6317800EA072F /* BitstreamWriter.h */; };
+		42AD017B1CE6317800EA072F /* BitstreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01771CE6317800EA072F /* BitstreamWriter.m */; };
+		42AD017C1CE6317800EA072F /* BitstreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01771CE6317800EA072F /* BitstreamWriter.m */; };
+		42AD017D1CE6317800EA072F /* BitstreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01771CE6317800EA072F /* BitstreamWriter.m */; };
 		42DCC2EF1CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E21CC2D68A00497306 /* SurgeNalUnitParser.h */; };
 		42DCC2F01CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E21CC2D68A00497306 /* SurgeNalUnitParser.h */; };
 		42DCC2F11CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E21CC2D68A00497306 /* SurgeNalUnitParser.h */; };
@@ -85,6 +97,10 @@
 		4241D51F1CBB08050087BAAF /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		426A40E11CB0CF1D00A4712B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
 		426A40E31CB1A3F200A4712B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		42AD01661CE6267E00EA072F /* BitstreamReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitstreamReader.h; sourceTree = "<group>"; };
+		42AD01671CE6267E00EA072F /* BitstreamReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BitstreamReader.m; sourceTree = "<group>"; };
+		42AD01761CE6317800EA072F /* BitstreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitstreamWriter.h; sourceTree = "<group>"; };
+		42AD01771CE6317800EA072F /* BitstreamWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BitstreamWriter.m; sourceTree = "<group>"; };
 		42DCC2E21CC2D68A00497306 /* SurgeNalUnitParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeNalUnitParser.h; sourceTree = "<group>"; };
 		42DCC2E31CC2D68A00497306 /* SurgeNalUnitParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurgeNalUnitParser.m; sourceTree = "<group>"; };
 		42DCC2E41CC2D68A00497306 /* SurgeNalUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeNalUnit.h; sourceTree = "<group>"; };
@@ -155,12 +171,24 @@
 			path = SurgeMacOS;
 			sourceTree = "<group>";
 		};
+		42AD01651CE6225000EA072F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				42AD01661CE6267E00EA072F /* BitstreamReader.h */,
+				42AD01671CE6267E00EA072F /* BitstreamReader.m */,
+				42AD01761CE6317800EA072F /* BitstreamWriter.h */,
+				42AD01771CE6317800EA072F /* BitstreamWriter.m */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		42DCC2E01CC2D68A00497306 /* Decoders */ = {
 			isa = PBXGroup;
 			children = (
 				42DCC2E11CC2D68A00497306 /* H264 */,
 				42DCC2E91CC2D68A00497306 /* MJPEG */,
 				42DCC2EA1CC2D68A00497306 /* MP4V-ES */,
+				42AD01651CE6225000EA072F /* Utilities */,
 				42DCC2ED1CC2D68A00497306 /* SurgeDecoder.h */,
 				42DCC2EE1CC2D68A00497306 /* SurgeDecoder.m */,
 			);
@@ -279,9 +307,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				4241D51A1CBB04AC0087BAAF /* SurgeRtspPlayer.h in Headers */,
+				42AD016C1CE6267E00EA072F /* BitstreamReader.h in Headers */,
 				4241D4E71CBB01160087BAAF /* SurgeMacOS.h in Headers */,
 				42DCC3061CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
 				4241D4ED1CBB014C0087BAAF /* SurgeLogging.h in Headers */,
+				42AD017A1CE6317800EA072F /* BitstreamWriter.h in Headers */,
 				42DCC3001CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
 				42DCC3151CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
 				42DCC2F71CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
@@ -295,9 +325,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				42EFF7871CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */,
+				42AD016A1CE6267E00EA072F /* BitstreamReader.h in Headers */,
 				42EFF88E1CAD40410056B9F3 /* SurgeLogging.h in Headers */,
 				42DCC3041CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
 				42EE5C151CA35C4D00204F31 /* SurgeiOS.h in Headers */,
+				42AD01781CE6317800EA072F /* BitstreamWriter.h in Headers */,
 				42DCC2FE1CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
 				42DCC3131CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
 				42DCC2F51CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
@@ -311,9 +343,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				42EFF7881CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */,
+				42AD016B1CE6267E00EA072F /* BitstreamReader.h in Headers */,
 				42EFF8901CAD40410056B9F3 /* SurgeLogging.h in Headers */,
 				42DCC3051CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
 				42EE5C2F1CA35C8100204F31 /* SurgeTvOS.h in Headers */,
+				42AD01791CE6317800EA072F /* BitstreamWriter.h in Headers */,
 				42DCC2FF1CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
 				42DCC3141CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
 				42DCC2F61CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
@@ -448,10 +482,12 @@
 			files = (
 				42DCC2F41CC2D68A00497306 /* SurgeNalUnitParser.m in Sources */,
 				42DCC3031CC2D68A00497306 /* SurgeH264Decoder.m in Sources */,
+				42AD016F1CE6267E00EA072F /* BitstreamReader.m in Sources */,
 				42DCC2FA1CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42DCC3091CC2D68A00497306 /* SurgeMp4vDecoder.m in Sources */,
 				42DCC3181CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */,
 				4241D4F71CBB01800087BAAF /* SurgeRtspPlayer.mm in Sources */,
+				42AD017D1CE6317800EA072F /* BitstreamWriter.m in Sources */,
 				42DCC30F1CC2D68A00497306 /* SurgeDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -462,10 +498,12 @@
 			files = (
 				42DCC2F21CC2D68A00497306 /* SurgeNalUnitParser.m in Sources */,
 				42DCC3011CC2D68A00497306 /* SurgeH264Decoder.m in Sources */,
+				42AD016D1CE6267E00EA072F /* BitstreamReader.m in Sources */,
 				42DCC2F81CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42EFF7891CAADB330056B9F3 /* SurgeRtspPlayer.mm in Sources */,
 				42DCC3161CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */,
 				42DCC3101CC30C5300497306 /* SurgeMp4vDecoder.m in Sources */,
+				42AD017B1CE6317800EA072F /* BitstreamWriter.m in Sources */,
 				42DCC30D1CC2D68A00497306 /* SurgeDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -476,10 +514,12 @@
 			files = (
 				42DCC2F31CC2D68A00497306 /* SurgeNalUnitParser.m in Sources */,
 				42DCC3021CC2D68A00497306 /* SurgeH264Decoder.m in Sources */,
+				42AD016E1CE6267E00EA072F /* BitstreamReader.m in Sources */,
 				42DCC2F91CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42DCC3081CC2D68A00497306 /* SurgeMp4vDecoder.m in Sources */,
 				42DCC3171CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */,
 				425630EF1CBAA31700E347C0 /* SurgeRtspPlayer.mm in Sources */,
+				42AD017C1CE6317800EA072F /* BitstreamWriter.m in Sources */,
 				42DCC30E1CC2D68A00497306 /* SurgeDecoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

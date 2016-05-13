@@ -429,7 +429,7 @@ void Surge::RtspClient::Run() {
 }
 
 void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
-    
+
     switch (m_currentPalette.GetType()) {
     case H264:
         ProcessH264Packet(packet);

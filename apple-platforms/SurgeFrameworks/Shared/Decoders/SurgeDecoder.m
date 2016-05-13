@@ -41,13 +41,16 @@
 }
 
 - (void)dealloc {
-    dispatch_sync(self.decoderQueue, ^{});
     [self freeFormatDescription];
     [self freeVideoDecompressionSession];
 }
 
+- (void)flushDecoderQueue {
+    dispatch_sync(self.decoderQueue, ^{});
+}
+
 - (void)freeFormatDescription {
-    if (_formatDescription != NULL) {
+    if (_formatDescription) {
         CFRelease(_formatDescription);
         _formatDescription = NULL;
     }
@@ -85,7 +88,7 @@
 }
 
 - (void)createDecompressionSessionIfRequired:(CMFormatDescriptionRef)formatDescription {
-    if (self.decompressionSession == NULL) {
+    if (!self.decompressionSession) {
         [self freeFormatDescription];
         self.formatDescription = formatDescription;
         [self createDecompressionSession];
@@ -103,24 +106,29 @@
     callBackRecord.decompressionOutputCallback = decompressionSessionDecodeFrameCallback;
     callBackRecord.decompressionOutputRefCon = (__bridge void *)self;
     
+    NSMutableDictionary *destinationImageBufferAttributes = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *decoderSpecification = [[NSMutableDictionary alloc] init];
+    
 #if TARGET_OS_IPHONE
-    NSDictionary *destinationImageBufferAttributes = @{ (id)kCVPixelBufferOpenGLESCompatibilityKey: @YES,
-                                                        (id)kCVPixelBufferCGImageCompatibilityKey: @YES };
+    [destinationImageBufferAttributes setValue:@YES forKey:(__bridge NSString *)kCVPixelBufferOpenGLESCompatibilityKey];
+    [destinationImageBufferAttributes setValue:@YES forKey:(__bridge NSString *)kCVPixelBufferCGImageCompatibilityKey];
 #else
-    NSDictionary *destinationImageBufferAttributes = @{ (id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_32BGRA),
-                                                        (id)kCVPixelBufferCGImageCompatibilityKey: @YES };
+    [decoderSpecification setValue:@YES forKey:(__bridge NSString *)kVTVideoDecoderSpecification_EnableHardwareAcceleratedVideoDecoder];
+    [destinationImageBufferAttributes setValue:@(kCVPixelFormatType_32BGRA) forKey:(__bridge NSString *)kCVPixelBufferPixelFormatTypeKey];
+    [destinationImageBufferAttributes setValue:@YES forKey:(__bridge NSString *)kCVPixelBufferCGImageCompatibilityKey];
 #endif
     
     OSStatus status =  VTDecompressionSessionCreate(NULL,
                                                     self.formatDescription,
-                                                    NULL,
-                                                    (__bridge CFDictionaryRef)(destinationImageBufferAttributes),
+                                                    (__bridge CFDictionaryRef)decoderSpecification,
+                                                    (__bridge CFDictionaryRef)destinationImageBufferAttributes,
                                                     &callBackRecord,
                                                     &_decompressionSession);
     
-    SurgeLogDebug(@"Video Decompression Session Create: \t %@", (status == noErr) ? @"successful!" : @"failed...");
     if(status != noErr) {
-        SurgeLogError(@"\t\t VTD ERROR type: %d", (int)status);
+        SurgeLogError(@"Failed to create video decompression session with error code %d", (int)status);
+    } else {
+        SurgeLogDebug(@"Successfully created video decompression session");
     }
 }
 
@@ -148,7 +156,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
         decoder.framePerSecondCounter++;
         [decoder renderFrame:imageBuffer withPresentationTime:presentationTimeStamp];
     } else {
-        SurgeLogError(@"Decode failed: %i", status);
+        SurgeLogError(@"Failed to decode frame with error code %i", status);
     }
 }
 
@@ -180,9 +188,9 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 
 - (void)updateFramesPerSecond {
    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), self.decoderQueue, ^{
-        self.framesPerSecond = self.framePerSecondCounter;
-        self.framePerSecondCounter = 0;
-        [self updateFramesPerSecond];
+       self.framesPerSecond = self.framePerSecondCounter;
+       self.framePerSecondCounter = 0;
+       [self updateFramesPerSecond];
     });
 }
 

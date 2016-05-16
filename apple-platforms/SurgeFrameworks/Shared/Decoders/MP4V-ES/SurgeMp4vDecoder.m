@@ -30,7 +30,7 @@
 
 @implementation SurgeMp4vDecoder
 
-- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
+- (void)decodeFrameBuffer:(const uint8_t *)frameBuffer
                    ofSize:(size_t)size
         withFrameDuration:(int)frameDuration
       andPresentationTime:(unsigned int)presentationTimeInterval {
@@ -99,7 +99,7 @@
 /**
  * Extract the VisualObjectSequence header from the bitstream.
  */
-- (NSData*)extractVisualObjectSequenceHeaderFrom:(const uint8_t *)frameBuffer ofSize:(size_t)size {
+- (NSData*)extractVisualObjectSequenceHeaderFrom:(uint8_t *)frameBuffer ofSize:(size_t)size {
     const unsigned char videoObjectPlaneStartCode[] = { 0x00, 0x00, 0x01, 0xb6 };
     for (int i = 0; i < size - 4; i++) {
         if (memcmp(frameBuffer + i, videoObjectPlaneStartCode, 4) == 0) {
@@ -121,9 +121,9 @@
     return CGSizeZero;
 }
 
-- (BOOL)isVideoObjectLayerStartCode:(const uint8_t *)descriptor {
+- (BOOL)isVideoObjectLayerStartCode:(uint8_t *)descriptor {
     const uint8_t startCodePrefix[] = { 0x00, 0x00, 0x01 };
-    uint8_t startCode = *(descriptor + 3);
+    uint8_t startCode = descriptor[3];
     if (memcmp(descriptor, startCodePrefix, 3) == 0 && (startCode >= 0x20 && startCode <= 0x2f)) {
         return YES;
     }

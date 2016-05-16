@@ -43,7 +43,7 @@
             return;
         }
 
-        NSDictionary *atoms = @{@"esds": [self createElementaryStreamDescriptorAtom:visualObjectSequence]};
+        NSDictionary *atoms = @{@"esds": [self createElementaryStreamDescriptorAtom:vosHeader]};
         NSMutableDictionary *decoderConfig = [[NSMutableDictionary alloc] init];
         [decoderConfig setValue:atoms forKey:(__bridge NSString *)kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms];
         

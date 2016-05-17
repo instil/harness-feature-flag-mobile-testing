@@ -59,10 +59,11 @@
     uint8_t bitOffset = self.currentBitOffset % 8;
     uint8_t maxBitsReadable = 8 - bitOffset;
     uint8_t bitsToRead = numberOfBits <= maxBitsReadable ? numberOfBits : maxBitsReadable;
-    self.currentBitOffset += bitsToRead;
     
     NSAssert(byteOffset < self.size, @"Buffer has been completely consumed");
-    uint32_t value = (*(self.buffer + byteOffset) >> (8 - bitsToRead - bitOffset));
+    uint8_t mask = pow(2, bitsToRead) - 1;
+    uint32_t value = (self.buffer[byteOffset] >> (8 - bitsToRead - bitOffset)) & mask;
+    self.currentBitOffset += bitsToRead;
     
     uint8_t bitsRemaining = numberOfBits - bitsToRead;
     if (bitsRemaining > 0) {

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "18F29A6448205DFBB861D8C263D7297E862B4DCC",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "0236D641C54501584C8420D7866740E13CED18EA" : 0,
+    "18F29A6448205DFBB861D8C263D7297E862B4DCC" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D8894CFA-FC25-44DA-81FF-D8275202570C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "0236D641C54501584C8420D7866740E13CED18EA" : "Surge\/core\/lib\/RxCpp\/",
+    "18F29A6448205DFBB861D8C263D7297E862B4DCC" : "Surge\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Surge",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "apple\/Surge.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Reactive-Extensions\/RxCpp.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0236D641C54501584C8420D7866740E13CED18EA"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.com:instil\/Surge.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "18F29A6448205DFBB861D8C263D7297E862B4DCC"
+    }
+  ]
+}

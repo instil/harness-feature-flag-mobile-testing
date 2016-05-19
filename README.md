@@ -11,9 +11,57 @@ RTSP and RTP are currently a popular choice for use with IP video cameras both c
 - Real-time encoding/decoding (particularly on lower end hardware like the RPi and mobile devices).
 - Minimizing client/server latency.
 
-Surge seeks to address these issues by being designed from the ground up to execute asynchronously whilst utilising non-blocking I/O and leveraging platform specific APIs to access hardware accelerated video decoding.
+Surge seeks to address these issues by being designed from the ground up to execute asynchronously whilst utilising non-blocking I/O and leveraging platform specific APIs to access hardware accelerated video decoding. 
 
-## Compilation
+## Building
+
+### Core
+
+To build the core Surge C/C++ library.
+
+```bash
+$ brew install cmake
+$ mkdir core/build
+$ cd core/build
+$ cmake -DUNIT_TESTS=ON -DDEBUG_SYMBOLS=ON ../
+$ make
+```
+
+To execute the tests.
+
+```bash
+$ ./test/testrunner
+```
+
+### iOS
+
+To build the iOS frameworks, first generate the Xcode project files for the Surge core library then open the workspace in Xcode.
+
+```bash
+$ brew install cmake
+$ mkdir core/build
+$ cd core/build
+$ cmake -DUNIT_TESTS=ON -DDEBUG_SYMBOLS=ON ../
+```
+
+### Android
+
+To build the Android library, execute the following. 
+
+```bash
+$ cd android
+$ ./gradlew clean build
+```
+
+### Xamarin
+
+TODO
+
+### Python
+
+TODO
+
+<!--
 
 Using [CMake](https://cmake.org/) allows us to generate IDE specific project files. This is used to port the code to iOS. To build for local development:
 
@@ -87,15 +135,7 @@ You also need the Android-NDK to be installed.
 ```bash
 $ export ANDROID_NDK=~/android-ndk-r10e
 $ ./release-android.sh
-```
-
-### C# Wrapper (PInvoke)
-
-TODO
-
-### Python Bindings
-
-TODO
+```-->
 
 ## Testing real-time streaming
 
@@ -158,19 +198,19 @@ $ ./test-launch "( v4l2src device=/dev/video0 extra-controls=\"c,video_bitrate=8
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! omxh264enc ! rtph264pay name=pay0 config-interval=1 pt=96 )"
+$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! omxh264enc ! h264parse ! rtph264pay name=pay0 config-interval=1 pt=96 )"
 ```
 
 #### MPEG-4 Part 2
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! avenc_mpeg4 ! rtpmp4vpay name=pay0 config-interval=1 pt=96 )"
+$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! avenc_mpeg4 ! rtpmp4vpay name=pay0 config-interval=1 pt=96 )"
 ```
 
 #### MJPEG
 
 ```bash
 $ cd /usr/src/gst-rtsp-server-1.4.4/examples
-$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
+$ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
 ```

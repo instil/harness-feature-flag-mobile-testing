@@ -22,11 +22,15 @@
 #ifndef __IRTSP_CLIENT_DELEGATE_H__
 #define __IRTSP_CLIENT_DELEGATE_H__
 
+#include "SessionDescription.h"
+#include "RawSessionDescription.h"
+
 namespace Surge {
 
     class IRtspClientDelegate {
     public:
 
+        // So DCTOR's are propigated
         virtual ~IRtspClientDelegate() { };
 
         // TIMEOUT
@@ -35,8 +39,17 @@ namespace Surge {
         // ANNOUNCE / REDIRECT
         virtual void StreamConfigChanged(bool wasRedirect) = 0;
 
+        // SDP
+        virtual void OnSessionDescription(const RawSessionDescription& description) = 0;
+
+        // SDP
+        virtual SessionDescription GetBestSession() = 0;
+
         // VIDEO
-        virtual void Payload(const char* frameBuffer, size_t length) = 0;
+        virtual void Payload(const unsigned char* frame_buffer,
+                             size_t frame_length,
+                             const unsigned char *extended_header,
+                             size_t extension_length) = 0;
 
     };
     

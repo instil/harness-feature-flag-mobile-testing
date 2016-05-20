@@ -32,7 +32,7 @@ namespace Surge {
     class MJPEGDepacketizer {
     public:
 
-        MJPEGDepacketizer(const SessionDescription* palette, const RtpPacket *packet, bool isFirstPayload);
+        MJPEGDepacketizer(const RtpPacket *packet, bool isFirstPayload);
 
         void AddToFrame(std::vector<unsigned char> * const frame);
 
@@ -57,9 +57,7 @@ namespace Surge {
         unsigned char m_lumq[64];
         unsigned char m_chrq[64];
         
-        const SessionDescription *m_palette;
         const RtpPacket *m_packet;
-
         std::vector<unsigned char> m_payload;
     };
     

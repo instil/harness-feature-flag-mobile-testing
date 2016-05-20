@@ -29,6 +29,7 @@
 #include "Transport.h"
 #include "ITransportInterface.h"
 #include "SessionDescription.h"
+#include "RtpExtendedHeader.h"
 #include "ISocketHandlerDelegate.h"
 
 #include "DescribeResponse.h"
@@ -36,6 +37,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 
 namespace Surge {
@@ -54,7 +56,7 @@ namespace Surge {
                                    const std::string& user,
                                    const std::string& password);
 
-        SetupResponse* Setup(const SessionDescription& sessionDescription, bool serverAllowsAggregate = true);
+        SetupResponse* Setup(bool serverAllowsAggregate = true);
 
         RtspResponse* Play(bool waitForResponse = true);
 
@@ -101,9 +103,7 @@ namespace Surge {
 
         void StartSession();
 
-        void Abort() {
-            m_abortWait.Fire();
-        }
+        void Abort() { m_abortWait.Fire(); }
 
         void ProcessRtpPacket(const RtpPacket* packet);
         
@@ -111,10 +111,13 @@ namespace Surge {
 
         bool IsFirstPayload() const { return !m_processedFirstPayload; }
 
-        void NotifyDelegatePayload(const unsigned char *buffer, size_t length) {
+        void NotifyDelegatePayload(const unsigned char *buffer, size_t length, const RtpExtendedHeader *header) {
             if (m_delegate != nullptr) {
-                // casting to char * so swig can see this as a byte[] for jni bindings
-                m_delegate->Payload((const char *)buffer, length);
+                if (header != nullptr) {
+                    m_delegate->Payload(buffer, length, header->GetBuffer(), header->GetBufferLength());
+                } else {
+                    m_delegate->Payload(buffer, length, nullptr, 0);
+                }
             }
         }
 
@@ -128,6 +131,16 @@ namespace Surge {
 
         void NotifyDelegateAnnounce() {
             GetDispatcher().FailureForClient(this, ERROR_TYPE::ANNOUNCE);
+        }
+
+        void NotifyDelegeSessionDescription(const RawSessionDescription& descroption) {
+            if (m_delegate != nullptr) {
+                m_delegate->OnSessionDescription(descroption);
+            }
+        }
+
+        SessionDescription QueryDelegateForBestPalette() {
+            return m_delegate->GetBestSession();
         }
 
         void AppendPayloadToCurrentFrame(const unsigned char *buffer, size_t length) {
@@ -158,6 +171,7 @@ namespace Surge {
 
         std::vector<unsigned char> m_currentFrame;
         SessionDescription m_sessionDescription;
+        std::map<uint32_t, RtpExtendedHeader*> m_headersMap;
 
         IRtspClientDelegate * const m_delegate;
         long m_noPacketTimeout;
@@ -169,7 +183,6 @@ namespace Surge {
         std::string m_session;
         Surge::ITransportInterface *m_transport;
         SurgeUtil::StoppableThread m_thread;
-        SurgeUtil::Mutex m_mutex;
     };
     
 }

@@ -296,11 +296,9 @@ void MakeHeaders(std::vector<unsigned char> * const p, int type, int w, int h, u
     p->push_back(0);
 }
 
-Surge::MJPEGDepacketizer::MJPEGDepacketizer(const SessionDescription* palette,
-                                            const RtpPacket *packet,
-                                            bool isFirstPayload) : m_palette(palette),
-                                                                   m_packet(packet) {
-
+Surge::MJPEGDepacketizer::MJPEGDepacketizer(const RtpPacket *packet,
+                                            bool isFirstPayload) : m_packet(packet) {
+    
     const unsigned char *rtp_packet_payload = m_packet->PayloadData();
     
     ParseJpegHeader(rtp_packet_payload);

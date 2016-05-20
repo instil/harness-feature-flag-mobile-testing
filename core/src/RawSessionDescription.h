@@ -19,38 +19,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "SessionDescriptionFactory.h"
-#include "SessionDescriptionV0.h"
+#ifndef __RAW_SESSION_DESCRIPTION_H__
+#define __RAW_SESSION_DESCRIPTION_H__
+
+#include <string>
+#include <vector>
 
 #include "Helpers.h"
-#include "Logging.h"
-
 
 namespace Surge {
 
-    namespace SessionDescriptionFactory {
+    class RawSessionDescription {
+    public:
+        RawSessionDescription(const std::string& raw_body):
+            m_lines(SurgeUtil::StringSplit(raw_body, '\n'))
+            { }
 
-        std::vector<SessionDescription>* ParseSessionDescriptionsFromBuffer(const RawSessionDescription& description) {
-            std::vector<SessionDescription> *sessionDescriptions = new std::vector<SessionDescription>;
-            const std::vector<std::string> lines = description.GetLines();
-            
-            if (lines.size() > 0) {
-                std::string version_line = lines[0];
+        const std::vector<std::string> GetLines() const { return m_lines; }
 
-                if (version_line.find("v=0") != std::string::npos) {
-                    SessionDescriptionV0 sessionDescription(description);
-                    sessionDescriptions->push_back(sessionDescription);
-                }
-                else if (!version_line.empty()) {
-                    ERROR("Unhandled Session Description version: [" << version_line << "]");
-                }
-                else {
-                    ERROR("No Session Description available");
-                }
-            }
-            
-            return sessionDescriptions;
-        }
-        
-    }
+        bool IsEmpty() const { return m_lines.size() <= 1; }
+
+    private:
+        std::vector<std::string> m_lines;
+    };
+    
 }
+
+#endif //__RAW_SESSION_DESCRIPTION_H__

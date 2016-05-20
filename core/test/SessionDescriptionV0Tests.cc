@@ -35,7 +35,7 @@ TEST(SESSION_DESCRIPTION_V0, TestThatRtpMapIsParsed) {
 
     Surge::SessionDescriptionV0 sdp(raw_sdp);
 
-    ASSERT_STREQ(sdp.GetRtpMap().c_str(), "a=rtpmap:96 H264/90000");
+    ASSERT_STREQ(sdp.GetRtpMap().c_str(), "a=rtpmap:96 H264/90000\r");
 }
 
 TEST(SESSION_DESCRIPTION_V0, TestThatFmtpIsParsed) {
@@ -55,7 +55,7 @@ TEST(SESSION_DESCRIPTION_V0, TestThatFmtpIsParsed) {
 
     ASSERT_STREQ(sdp.GetFmtp().c_str(),
                  "a=fmtp:96 packetization-mode=1; "
-                 "sprop-parameter-sets=Z2QAKaw05QFAFuhAAZdOwExLQCPGDEWA,aO68sA==; profile-level-id=640029");
+                 "sprop-parameter-sets=Z2QAKaw05QFAFuhAAZdOwExLQCPGDEWA,aO68sA==; profile-level-id=640029\r");
 }
 
 TEST(SESSION_DESCRIPTION_V0, TestThatIncompleteUrlReturnsIncompleteFlag) {

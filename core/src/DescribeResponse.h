@@ -24,7 +24,7 @@
 
 #include "Response.h"
 #include "RtspResponse.h"
-#include "SessionDescriptionFactory.h"
+#include "RawSessionDescription.h"
 
 #include <vector>
 
@@ -34,15 +34,15 @@ namespace Surge {
     public:
         DescribeResponse(const Response* resp)
             : RtspResponse(resp),
-              sessionDescriptions(SessionDescriptionFactory::ParseSessionDescriptionsFromBuffer(GetBodyString()))
+              m_sessionDescription(GetBodyString())
             { }
 
-        const std::vector<SessionDescription> GetSessionDescriptions() const { return sessionDescriptions; }
+        const RawSessionDescription& GetSessionDescription() const { return m_sessionDescription; }
 
-        const bool Ok() const override { return GetCode() == 200 && sessionDescriptions.size() > 0; }
+        const bool Ok() const { return GetCode() == 200 && !m_sessionDescription.IsEmpty(); }
 
     private:
-        std::vector<SessionDescription> sessionDescriptions;
+        RawSessionDescription m_sessionDescription;
     };
     
 };

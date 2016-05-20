@@ -19,38 +19,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "SessionDescriptionFactory.h"
-#include "SessionDescriptionV0.h"
+#ifndef __RTP_EXTENDED_HEADER_H__
+#define __RTP_EXTENDED_HEADER_H__
 
-#include "Helpers.h"
-#include "Logging.h"
-
+#include <cstdlib>
 
 namespace Surge {
 
-    namespace SessionDescriptionFactory {
-
-        std::vector<SessionDescription>* ParseSessionDescriptionsFromBuffer(const RawSessionDescription& description) {
-            std::vector<SessionDescription> *sessionDescriptions = new std::vector<SessionDescription>;
-            const std::vector<std::string> lines = description.GetLines();
-            
-            if (lines.size() > 0) {
-                std::string version_line = lines[0];
-
-                if (version_line.find("v=0") != std::string::npos) {
-                    SessionDescriptionV0 sessionDescription(description);
-                    sessionDescriptions->push_back(sessionDescription);
-                }
-                else if (!version_line.empty()) {
-                    ERROR("Unhandled Session Description version: [" << version_line << "]");
-                }
-                else {
-                    ERROR("No Session Description available");
-                }
-            }
-            
-            return sessionDescriptions;
+    class RtpExtendedHeader {
+    public:
+        RtpExtendedHeader(const unsigned char *buffer, size_t length) {
+            m_buffer = (unsigned char *)malloc(length);
+            memcpy(m_buffer, buffer, length);
         }
+
+        ~RtpExtendedHeader() {
+            free(m_buffer);
+        }
+
+        const unsigned char *GetBuffer() const { return m_buffer; }
+
+        size_t GetBufferLength() const { return m_length; }
         
-    }
+    private:
+        unsigned char *m_buffer;
+        size_t m_length;
+    };
+    
 }
+
+#endif //__RTP_EXTENDED_HEADER_H__

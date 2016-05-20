@@ -88,7 +88,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     }
 
     @Override
-    public void clientPayloadReceived(ByteBuffer byteBuffer) {
+    public void clientReceivedFrame(ByteBuffer byteBuffer) {
         decoder.decodeFrameBuffer(byteBuffer, 0, 0);
     }
 

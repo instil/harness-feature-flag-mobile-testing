@@ -1,11 +1,19 @@
 cmake_minimum_required(VERSION 2.6.3)
 project(Surge)
 
+# add_subdirectory(lib/RxCpp)
+include_directories(./lib/RxCpp/Rx/v2/src/)
+file(GLOB RX_CPP_SRCS
+  ./lib/RxCpp/Rx/v2/src/rxcpp/operators/*.hpp
+  ./lib/RxCpp/Rx/v2/src/rxcpp/schedulers/*.hpp
+  ./lib/RxCpp/Rx/v2/src/rxcpp/sources/*.hpp
+  ./lib/RxCpp/Rx/v2/src/rxcpp/subjects/*.hpp
+)
+
 include(TestBigEndian)
 test_big_endian(TEST_ENDIAN)
 message(STATUS "ENDIAN: ${TEST_ENDIAN}")
 set(SURGE_IS_BIG_ENDIAN ${TEST_ENDIAN})
-
 set(LIBRARY_TYPE STATIC)
 
 option(FOR_IOS "Enable iOS specific extensions" OFF)
@@ -38,8 +46,7 @@ if(BUILD_JAR)
 endif()
 
 option(BUILD_JNI_WRAPPER "Build JNI Wrapper" OFF)
-
-Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
 option(DEBUG_SYMBOLS "Turn on Debug Symbols" OFF)
 if(DEBUG_SYMBOLS)
@@ -52,14 +59,6 @@ if(CODE_COVERAGE)
   Set(CMAKE_CXX_FLAGS "-std=c++11 -g -O0 -Wall -fprofile-arcs -ftest-coverage")
   Set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
 endif()
-
-include_directories(./lib/RxCpp/Rx/v2/src/)
-file(GLOB RX_CPP_SRCS
-  ./lib/RxCpp/Rx/v2/src/rxcpp/operators/*.hpp
-  ./lib/RxCpp/Rx/v2/src/rxcpp/schedulers/*.hpp
-  ./lib/RxCpp/Rx/v2/src/rxcpp/sources/*.hpp
-  ./lib/RxCpp/Rx/v2/src/rxcpp/subjects/*.hpp
-)
 
 EXEC_PROGRAM(./version.sh "${PROJECT_SOURCE_DIR}"
   ARGS --version
@@ -88,5 +87,13 @@ add_subdirectory(src)
 
 option(UNIT_TESTS "Enable unit-tests" ON)
 if(UNIT_TESTS)
+  set(BUILD_GMOCK ON)
+  set(BUILD_GTEST ON)
+  
+  include_directories(./lib/googletest/googletest/include/)
+  include_directories(./lib/googletest/googlemock/include/)
+  add_subdirectory(lib/googletest)
+  
+  
   add_subdirectory(test)
 endif()

@@ -100,7 +100,7 @@ std::vector<const WaitableEvent*> SurgeUtil::WaitableEvents::WaitFor(std::vector
     {
         ostringstream message;
         message << "WaitableEvents::Waitfor(): select failed: "
-                << "errno = " << errno;
+                << "error (" << errno << ") " << strerror(errno);
         throw runtime_error{message.str()};
     }
 

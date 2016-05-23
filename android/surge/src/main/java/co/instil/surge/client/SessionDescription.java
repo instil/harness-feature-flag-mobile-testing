@@ -7,13 +7,13 @@ public class SessionDescription {
 
     private final SessionType type;
     private final String controlUrl;
-    private final String formatSpecificParameters;
+    private final String formatParameters;
     private final String rtpMap;
 
-    public SessionDescription(SessionType type, String controlUrl, String formatSpecificParameters, String rtpMap) {
+    public SessionDescription(SessionType type, String controlUrl, String formatParameters, String rtpMap) {
         this.type = type;
         this.controlUrl = controlUrl;
-        this.formatSpecificParameters = formatSpecificParameters;
+        this.formatParameters = formatParameters;
         this.rtpMap = rtpMap;
     }
 
@@ -25,8 +25,8 @@ public class SessionDescription {
         return controlUrl;
     }
 
-    public String getFormatSpecificParameters() {
-        return formatSpecificParameters;
+    public String getFormatParameters() {
+        return formatParameters;
     }
 
     public String getRtpMap() {

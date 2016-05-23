@@ -13,6 +13,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RtspPlayer player = new RtspPlayer();
-        player.initiatePlaybackOf("rtsp://192.168.1.45:8554/test");
+        player.initiatePlaybackOf("rtsp://192.168.1.133:8554/test");
     }
 }

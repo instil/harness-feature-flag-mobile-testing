@@ -6,21 +6,25 @@
 
 namespace SurgeJni {
 
-class RtspClientDelegateWrapper : public Surge::IRtspClientDelegate {
+    class RtspClientDelegateWrapper : public Surge::IRtspClientDelegate {
 
-public:
-    RtspClientDelegateWrapper(JNIEnv *env, jobject delegate) : env(env), delegate(delegate) {}
+    public:
+        RtspClientDelegateWrapper(JavaVM *jvm, jobject jDelegate) : jvm(jvm), jDelegate(jDelegate) {}
 
-    void ClientDidTimeout();
+        void ClientDidTimeout();
 
-    void StreamConfigChanged(bool wasRedirect);
+        void StreamConfigChanged(bool wasRedirect);
 
-    void Payload(const char* buffer, size_t length);
+        void Payload(const char* buffer, size_t length);
 
-private:
-    JNIEnv *env;
-    jobject delegate;
-};
+        jobject GetJavaDelegate() {
+            return jDelegate;
+        }
+
+    private:
+        JavaVM *jvm;
+        jobject jDelegate;
+    };
 
 }
 

@@ -165,7 +165,7 @@ void Surge::UdpTransport::RtspHandleReceive(const SurgeUtil::WaitableEvent& even
         
         size_t received = recv(event.FD(), buffer, m_readBufferSize, 0);
         if (received == -1) {
-            ERROR("Failed to recv errno: " << errno);
+            ERROR("Failed to recv: error (" << errno << ") " << strerror(errno));
             free(buffer);
             // Notify Delegate of Socket Failure...
             NotifyDelegateOfReadFailure();

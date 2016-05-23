@@ -101,13 +101,13 @@ namespace Surge {
             
             m_rtspSocketFD = socket(AF_INET, SOCK_STREAM, 0);
             if (m_rtspSocketFD == -1) {
-                ERROR("failed to create socket: error code = " << errno);
+                ERROR("failed to create socket: error (" << errno << ") " << strerror(errno));
                 return -1;
             }
 
             bool non_blocking_failed = SurgeUtil::SetNonBlocking(m_rtspSocketFD) == -1;
             if (non_blocking_failed) {
-                ERROR("Failed to put socket into non-blocking mode: error code = " << errno);
+                ERROR("Failed to put socket into non-blocking mode: error (" << errno << ") " << strerror(errno));
                 close(m_rtspSocketFD);
                 return -1;
             }
@@ -153,7 +153,7 @@ namespace Surge {
                     int error_code;
                     socklen_t optionLength = sizeof(error_code);
                     if (getsockopt(m_rtspSocketFD, SOL_SOCKET, SO_ERROR, &error_code, &optionLength) != 0) {
-                        ERROR("failed to determine result of socket connection attempt: error code = " << errno);
+                        ERROR("failed to determine result of socket connection attempt: error (" << errno << ") " << strerror(errno));
                         close(m_rtspSocketFD);
                         return -1;
                     }

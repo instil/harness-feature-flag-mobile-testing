@@ -39,9 +39,9 @@ To build the iOS frameworks, first generate the Xcode project files for the Surg
 
 ```bash
 $ brew install cmake
-$ mkdir core/build
-$ cd core/build
-$ cmake -DUNIT_TESTS=ON -DDEBUG_SYMBOLS=ON ../
+$ mkdir apple/build
+$ cd apple/build
+$ cmake -DFOR_IOS=ON -G Xcode ../../
 ```
 
 ### Android

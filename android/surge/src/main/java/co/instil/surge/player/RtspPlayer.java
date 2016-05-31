@@ -1,5 +1,7 @@
 package co.instil.surge.player;
 
+import android.view.Surface;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,14 +32,16 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     private final RtspClient rtspClient;
 
     private String url;
+    private Surface surface;
     private Decoder decoder;
 
     public RtspPlayer() {
         rtspClient = new RtspClient(this);
     }
 
-    public void initiatePlaybackOf(String url) {
+    public void initiatePlaybackOf(String url, Surface surface) {
         this.url = url;
+        this.surface = surface;
         logger.debug("Initating playback of {}", url);
         DescribeResponse response = rtspClient.describe(url);
         SessionDescription[] sessionDescriptions = response.getSessionDescriptions();
@@ -56,7 +60,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         if (sessionDescription.getType() == H264) {
             decoder = new H264Decoder();
         } else if (sessionDescription.getType() == MP4V) {
-            decoder = new Mp4vDecoder();
+            decoder = new Mp4vDecoder(surface);
         } else if (sessionDescription.getType() == MJPEG) {
             decoder = new MjpegDecoder();
         }

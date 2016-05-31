@@ -9,4 +9,5 @@ public interface Decoder {
 
     void decodeFrameBuffer(ByteBuffer frameBuffer, int duration, int presentationTime);
 
+    void close() throws InterruptedException;
 }

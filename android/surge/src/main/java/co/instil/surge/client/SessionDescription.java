@@ -33,4 +33,8 @@ public class SessionDescription {
         return rtpMap;
     }
 
+    @Override
+    public String toString() {
+        return String.format("\n{\n\ttype: \"%s\", \n\tcontrolUrl: \"%s\", \n\tformatParameters: \"%s\", \n\trtpMap: \"%s\"\n}", type, controlUrl, formatParameters, rtpMap);
+    }
 }

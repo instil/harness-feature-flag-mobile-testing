@@ -12,4 +12,8 @@ public class MjpegDecoder implements Decoder {
 
     }
 
+    @Override
+    public void close() throws InterruptedException {
+
+    }
 }

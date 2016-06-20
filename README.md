@@ -15,6 +15,8 @@ Surge seeks to address these issues by being designed from the ground up to exec
 
 ## Building
 
+Prior to building the library ensure that you have cloned the project and checked out all its associated submodules.
+
 ### Core
 
 To build the core Surge C/C++ library.

@@ -4,6 +4,7 @@
 
 #include <string>
 #include <map>
+#include <stdexcept>
 
 #include "Helpers.h"
 
@@ -23,6 +24,14 @@ namespace SurgeUtil {
             std::string port_string = raw_host.substr(pos + 1, raw_host.length());
             return atoi(port_string.c_str());
         }
+        
+        std::string GetScheme() {
+            size_t pos = m_rawUrl.find("://");
+            if (pos == std::string::npos) {
+                throw std::invalid_argument("The supplied URL was malformed: scheme could not be parsed");
+            }
+            return m_rawUrl.substr(0, pos + 3);
+        }
 
         std::string GetHost() {
             std::string raw_host = GetRawHostAndPort();
@@ -35,9 +44,9 @@ namespace SurgeUtil {
         }
 
         std::string GetRawHostAndPort() {
-            size_t pos = m_rawUrl.find("://");
-            std::string url_no_scheme = m_rawUrl.substr(pos + 3, m_rawUrl.length());
-            pos = url_no_scheme.find('/');
+            std::string scheme = GetScheme();
+            std::string url_no_scheme = m_rawUrl.substr(scheme.length(), m_rawUrl.length());
+            size_t pos = url_no_scheme.find('/');
 
             std::string raw_host = url_no_scheme.substr(0, pos);
 
@@ -49,15 +58,10 @@ namespace SurgeUtil {
             return raw_host;
         }
 
-        std::string GetScheme() {
-            size_t pos = m_rawUrl.find("://");
-            return m_rawUrl.substr(0, pos);
-        }
-
         std::string GetFullPath() {
-            size_t pos = m_rawUrl.find("://");
-            std::string url_no_scheme = m_rawUrl.substr(pos + 3, m_rawUrl.length());
-            pos = url_no_scheme.find('/');
+            std::string scheme = GetScheme();
+            std::string url_no_scheme = m_rawUrl.substr(scheme.length(), m_rawUrl.length());
+            size_t pos = url_no_scheme.find('/');
             return url_no_scheme.substr(pos, url_no_scheme.length());
         }
 
@@ -92,8 +96,9 @@ namespace SurgeUtil {
             return parameters;
         }
 
-    private:        
+    private:
         std::string m_rawUrl;
+        
     };
 }
 

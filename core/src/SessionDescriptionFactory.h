@@ -23,7 +23,6 @@
 #define __SESSION_DESCRIPTION_FACTORY_H__
 
 #include "SessionDescription.h"
-#include "RawSessionDescription.h"
 
 #include <vector>
 #include <string>
@@ -32,7 +31,7 @@ namespace Surge {
 
     namespace SessionDescriptionFactory {
 
-        std::vector<SessionDescription>* ParseSessionDescriptionsFromBuffer(const RawSessionDescription& description);
+        std::vector<SessionDescription> ParseSessionDescriptionsFromBuffer(const std::string& body);
         
     };
     

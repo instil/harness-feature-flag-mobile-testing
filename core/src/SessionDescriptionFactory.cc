@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,17 +28,17 @@
 namespace Surge {
 
     namespace SessionDescriptionFactory {
+    
+        std::vector<SessionDescription> ParseSessionDescriptionsFromBuffer(const std::string& body) {
+            std::vector<SessionDescription> sessionDescriptions;
 
-        std::vector<SessionDescription>* ParseSessionDescriptionsFromBuffer(const RawSessionDescription& description) {
-            std::vector<SessionDescription> *sessionDescriptions = new std::vector<SessionDescription>;
-            const std::vector<std::string> lines = description.GetLines();
-            
+            std::vector<std::string> lines = SurgeUtil::StringSplit(body, "\n");
             if (lines.size() > 0) {
                 std::string version_line = lines[0];
 
                 if (version_line.find("v=0") != std::string::npos) {
-                    SessionDescriptionV0 sessionDescription(description);
-                    sessionDescriptions->push_back(sessionDescription);
+                    SessionDescriptionV0 sessionDescription(body);
+                    sessionDescriptions.push_back(sessionDescription);
                 }
                 else if (!version_line.empty()) {
                     ERROR("Unhandled Session Description version: [" << version_line << "]");

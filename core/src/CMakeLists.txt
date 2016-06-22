@@ -56,7 +56,6 @@ if(BUILD_JAR STREQUAL OFF)
     DescribeResponse.h
     SetupResponse.h
 
-    RawSessionDescription.h
     SessionDescription.h
     SessionDescriptionV0.h
     SessionDescriptionV0.cc

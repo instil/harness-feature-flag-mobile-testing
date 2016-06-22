@@ -63,11 +63,6 @@ Surge::RtspClient::~RtspClient() {
     }
 
     delete m_transport;
-
-    for (auto it = m_headersMap.begin(); it != m_headersMap.end(); ++it) {
-        RtpExtendedHeader *header = it->second;
-        delete header;
-    }
 }
 
 Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url) {
@@ -103,7 +98,6 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
     DescribeResponse *resp = nullptr;
     try {
         resp = new DescribeResponse(raw_resp);
-        NotifyDelegeSessionDescription(resp->GetSessionDescription());
     }
     catch (const std::exception& e) {
         ERROR("Invalid DescribeResponse: " << e.what());
@@ -115,8 +109,7 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
     return resp;
 }
 
-Surge::SetupResponse* Surge::RtspClient::Setup(bool serverAllowsAggregate) {
-    SessionDescription sessionDescription = QueryDelegateForBestPalette();
+Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& sessionDescription, bool serverAllowsAggregate) {
     
     // control url is where we put any more requests to
     std::string setup_url = (sessionDescription.IsControlUrlComplete()) ?
@@ -439,9 +432,7 @@ void Surge::RtspClient::Run() {
 }
 
 void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
-    
-    // TODO
-    // virtual dispatch sucks - on m_sessionDescription set it could assign a fucntion pointer
+
     switch (m_sessionDescription.GetType()) {
     case H264:
         ProcessH264Packet(packet);
@@ -462,14 +453,6 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 
     m_processedFirstPayload = true;
     
-    if (packet->HasExtension()) {
-        RtpExtendedHeader *header = new RtpExtendedHeader(packet->GetExtensionData(),
-                                                          packet->GetExtensionLength());
-        m_headersMap.insert(
-            std::pair<uint32_t, RtpExtendedHeader*>(packet->GetTimestamp(), header)
-            );
-    }
-    
     if (!packet->IsMarked()) {
         return;
     }
@@ -477,11 +460,8 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
     size_t current_frame_size = GetCurrentFrameSize();
     const unsigned char *current_frame = GetCurrentFrame();
 
-    // lookup potential extend header
-    RtpExtendedHeader *header = m_headersMap[packet->GetTimestamp()];
-    
     // notify delegate of new payload
-    NotifyDelegatePayload(current_frame, current_frame_size, header);
+    NotifyDelegatePayload(current_frame, current_frame_size);
 
     // reset
     ResetCurrentPayload();
@@ -506,7 +486,7 @@ void Surge::RtspClient::ProcessMP4VPacket(const RtpPacket* packet) {
 }
 
 void Surge::RtspClient::ProcessMJPEGPacket(const RtpPacket* packet) {
-    MJPEGDepacketizer depacketizer(packet, IsFirstPayload());
+    MJPEGDepacketizer depacketizer(&m_sessionDescription, packet, IsFirstPayload());
 
     depacketizer.AddToFrame(&m_currentFrame);
 }

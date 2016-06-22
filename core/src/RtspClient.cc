@@ -36,22 +36,21 @@ using SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
 using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 
 
-Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate,
-                              Surge::ITransportInterface * const transport)
-    : m_delegate(delegate),
-      m_noPacketTimeout(DEFAULT_NO_PACKET_TIMEOUT_MS),
-      m_processedFirstPayload(false),
-      m_lastKeepAliveMs(0),
-      m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
-      m_sequenceNumber(1),
-      m_transport(transport)
-{
+Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool forceInterleavedTransport) :
+        m_delegate(delegate),
+        m_noPacketTimeout(DEFAULT_NO_PACKET_TIMEOUT_MS),
+        m_processedFirstPayload(false),
+        m_lastKeepAliveMs(0),
+        m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
+        m_sequenceNumber(1) {
+
+    if (forceInterleavedTransport) {
+        m_transport = new InterleavedRtspTransport(nullptr);
+    } else {
+        m_transport = new UdpTransport(nullptr);
+    }
     m_transport->SetDelegate(this);
 }
-
-Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate)
-//    : RtspClient(delegate, new UdpTransport(nullptr)) { }
-    : RtspClient(delegate, new InterleavedRtspTransport(nullptr)) { }
 
 Surge::RtspClient::~RtspClient() {
     if (m_transport->IsRunning()) {

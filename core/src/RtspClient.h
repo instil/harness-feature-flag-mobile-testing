@@ -42,9 +42,7 @@ namespace Surge {
 
     class RtspClient : public ISocketHandlerDelegate, private SurgeUtil::Runnable {
     public:
-        RtspClient(IRtspClientDelegate * const delegate);
-
-        RtspClient(IRtspClientDelegate * const delegate, Surge::ITransportInterface * const transport);
+        RtspClient(IRtspClientDelegate * const delegate, bool forceInterleavedTransport = true);
 
         ~RtspClient();
 

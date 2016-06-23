@@ -1,19 +1,17 @@
 package co.instil.surge.player;
 
-import android.util.Log;
 import android.view.Surface;
-
-import java.nio.ByteBuffer;
-
 import co.instil.surge.client.DescribeResponse;
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.decoders.AsyncH264Decoder;
 import co.instil.surge.decoders.Decoder;
-import co.instil.surge.decoders.H264Decoder;
 import co.instil.surge.decoders.MjpegDecoder;
 import co.instil.surge.decoders.Mp4vDecoder;
 import co.instil.surge.logger.Logger;
+
+import java.nio.ByteBuffer;
 
 import static co.instil.surge.client.SessionType.H264;
 import static co.instil.surge.client.SessionType.MJPEG;
@@ -60,7 +58,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     private void initialiseDecoder(SessionDescription sessionDescription) {
         if (sessionDescription.getType() == H264) {
-            decoder = new H264Decoder(surface);
+            decoder = new AsyncH264Decoder(surface);
         } else if (sessionDescription.getType() == MP4V) {
             decoder = new Mp4vDecoder(surface);
         } else if (sessionDescription.getType() == MJPEG) {

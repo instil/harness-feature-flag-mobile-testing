@@ -296,10 +296,14 @@ void MakeHeaders(std::vector<unsigned char> * const p, int type, int w, int h, u
     p->push_back(0);
 }
 
+
+
+
 Surge::MJPEGDepacketizer::MJPEGDepacketizer(const SessionDescription* palette,
                                             const RtpPacket *packet,
                                             bool isFirstPayload) : m_palette(palette),
-                                                                   m_packet(packet) {
+                                                                   m_packet(packet),
+                                                                   m_restartHeaderSize(0) {
 
     const unsigned char *rtp_packet_payload = m_packet->PayloadData();
     
@@ -308,7 +312,7 @@ Surge::MJPEGDepacketizer::MJPEGDepacketizer(const SessionDescription* palette,
     if (m_fragmentOffset == 0) {
         m_restartHeaderSize = ((m_type >= RESTART_MIN) && (m_type <= RESTART_MAX)) ?
             RESTARTMARKERHEADERSIZE : 0;
-        
+
         m_dri = 0;
 
         if (m_restartHeaderSize > 0 ) {

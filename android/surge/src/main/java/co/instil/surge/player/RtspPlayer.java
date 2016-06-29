@@ -62,7 +62,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         } else if (sessionDescription.getType() == MP4V) {
             decoder = new Mp4vDecoder(surface);
         } else if (sessionDescription.getType() == MJPEG) {
-            decoder = new MjpegDecoder();
+            decoder = new MjpegDecoder(surface);
         }
     }
 

@@ -46,8 +46,14 @@ namespace Surge {
 
         void ParseQuantizationTableData(const unsigned char * buffer);
 
+        // This field encodes the height of the image in 8-pixel multiples (e.g.,
+        // a height of 60 denotes an image 480 pixels wide).
         int m_height;
+
+        // This field encodes the width of the image in 8-pixel multiples (e.g.,
+        // a width of 40 denotes an image 320 pixels wide).
         int m_width;
+
         int m_type;
         int m_qValue;
         int m_fragmentOffset;

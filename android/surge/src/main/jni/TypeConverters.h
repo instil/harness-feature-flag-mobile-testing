@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,40 +18,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __MP4V_DEPACKETIZER_H__
-#define __MP4V_DEPACKETIZER_H__
+#ifndef ANDROID_TYPECONVERTERS_H
+#define ANDROID_TYPECONVERTERS_H
 
-#include "SessionDescription.h"
-#include "RtpPacket.h"
+#include <jni.h>
+#include <Surge.h>
 
-#include <vector>
+namespace SurgeJni {
 
-namespace Surge {
+    namespace NativeTypeConverters {
 
-    class MP4VDepacketizer {
-    public:
+        jstring convertString(JNIEnv *env, std::string string);
 
-        MP4VDepacketizer(const SessionDescription* palette, const RtpPacket *packet, bool isFirstPayload);
+        jobject convertMap(JNIEnv *env, std::map<std::string, std::string> map);
 
-        const unsigned char *PayloadBytes() const { return &(payload[0]); }
+        jobject convertResponse(JNIEnv *env, Surge::RtspResponse *response);
 
-        size_t PayloadLength() const { return payload.size(); }
+        jobject convertSessionType(JNIEnv *env, Surge::RtspSessionType type);
 
-    private:
+        jobject convertSessionDescription(JNIEnv *env, Surge::SessionDescription sessionDescription);
 
-        void PushBytesToCurrentPayload(const unsigned char *payload, size_t length) {
-            size_t i;
-            for (i = 0; i < length; ++i) {
-                this->payload.push_back(payload[i]);
-            }
-        }
-        
-        const SessionDescription *sessionDescription;
-        const RtpPacket *packet;
+        jobject convertSessionDescriptions(JNIEnv *env, std::vector<Surge::SessionDescription> sessionDescriptions);
 
-        std::vector<unsigned char> payload;
-    };
-    
-};
+        jobject convertDescribeResponse(JNIEnv *env, Surge::DescribeResponse *response);
 
-#endif //__MP4V_DEPACKETIZER_H__
+    }
+
+    namespace JavaTypeConverters {
+
+        std::string convertString(JNIEnv *env, jstring jString);
+
+        Surge::RtspSessionType convertSessionType(JNIEnv *env, jobject jSessionDescription);
+
+        Surge::SessionDescription convertSessionDescription(JNIEnv *env, jobject jSessionDescription);
+
+    }
+
+}
+
+
+#endif //ANDROID_TYPECONVERTERS_H

@@ -22,26 +22,26 @@
 
 #include <cstdlib>
 
-Surge::MP4VDepacketizer::MP4VDepacketizer(const SessionDescription* palette,
+Surge::MP4VDepacketizer::MP4VDepacketizer(const SessionDescription* sessionDescription,
                                           const RtpPacket *packet,
-                                          bool isFirstPayload) : m_palette(palette),
-                                                                 m_packet(packet) {
+                                          bool isFirstPayload) : sessionDescription(sessionDescription),
+                                                                 packet(packet) {
     if (isFirstPayload) {
-        std::string config = m_palette->GetFmtpConfigParameters();
-        std::vector<unsigned char> config_bytes;
+        std::string config = sessionDescription->GetFmtpConfigParameters();
+        std::vector<unsigned char> configBytes;
 
         size_t i;
         for (i = 0; i < config.length(); i += 2) {
-            std::string current_byte = config.substr(i, 2);
-            unsigned char wrapped_byte = (unsigned char)strtol(current_byte.c_str(), NULL, 16);
-            config_bytes.push_back(wrapped_byte);
+            std::string currentByte = config.substr(i, 2);
+            unsigned char wrappedByte = (unsigned char)strtol(currentByte.c_str(), NULL, 16);
+            configBytes.push_back(wrappedByte);
         }
 
-        PushBytesToCurrentPayload(&(config_bytes[0]), config_bytes.size());
+        PushBytesToCurrentPayload(&(configBytes[0]), configBytes.size());
     }
 
-    const unsigned char *rtp_packet_payload = m_packet->PayloadData();
-    size_t rtp_packet_payload_length = m_packet->PayloadLength();
+    const unsigned char *rtp_packet_payload = packet->PayloadData();
+    size_t rtp_packet_payload_length = packet->PayloadLength();
 
     PushBytesToCurrentPayload(rtp_packet_payload, rtp_packet_payload_length);
 }

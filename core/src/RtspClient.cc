@@ -460,8 +460,7 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
     size_t current_frame_size = GetCurrentFrameSize();
     const unsigned char *current_frame = GetCurrentFrame();
 
-    // notify delegate of new payload
-    NotifyDelegatePayload(current_frame, current_frame_size);
+    NotifyDelegateOfAvailableFrame(current_frame, current_frame_size);
 
     // reset
     ResetCurrentPayload();

@@ -6,10 +6,11 @@ import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.AsyncH264Decoder;
+import co.instil.surge.decoders.AsyncMp4vDecoder;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.decoders.MjpegDecoder;
-import co.instil.surge.decoders.Mp4vDecoder;
-import co.instil.surge.logger.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
@@ -22,11 +23,14 @@ import static co.instil.surge.client.SessionType.MP4V;
  */
 public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
+    private static Logger logger = LoggerFactory.getLogger(RtspPlayer.class);
+
     private final RtspClient rtspClient;
 
     private String url;
     private Surface surface;
     private Decoder decoder;
+    private SessionDescription sessionDescription;
 
     public RtspPlayer() {
         rtspClient = new RtspClient(this);
@@ -35,22 +39,23 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     public void initiatePlaybackOf(String url, Surface surface) {
         this.url = url;
         this.surface = surface;
-        Logger.debug("Initating playback of " + url);
+        logger.debug("Initating playback of {}", url);
 
         DescribeResponse response = rtspClient.describe(url);
         for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
-            Logger.debug(sessionDescription.toString());
+            logger.debug(sessionDescription.toString());
         }
 
         SessionDescription[] sessionDescriptions = response.getSessionDescriptions();
         if (sessionDescriptions.length > 0) {
             setupStream(sessionDescriptions[0]);
         } else {
-            throw new RuntimeException("No session descriptions, is the Stream up?");
+            throw new RuntimeException("No session description available, is the stream active?");
         }
     }
 
     private void setupStream(SessionDescription sessionDescription) {
+        this.sessionDescription = sessionDescription;
         initialiseDecoder(sessionDescription);
         rtspClient.setup(sessionDescription);
         rtspClient.play();
@@ -60,24 +65,24 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         if (sessionDescription.getType() == H264) {
             decoder = new AsyncH264Decoder(surface);
         } else if (sessionDescription.getType() == MP4V) {
-            decoder = new Mp4vDecoder(surface);
+            decoder = new AsyncMp4vDecoder(surface);
         } else if (sessionDescription.getType() == MJPEG) {
             decoder = new MjpegDecoder();
         }
     }
 
     public void play() {
-        Logger.debug("Starting/resuming playback of {}" + url);
+        logger.debug("Starting/resuming playback of {}", url);
         rtspClient.play();
     }
 
     public void pause() {
-        Logger.debug("Pausing playback of {}" + url);
+        logger.debug("Pausing playback of {}", url);
         rtspClient.pause();
     }
 
     public void stop() {
-        Logger.debug("Stopping playback of {}" + url);
+        logger.debug("Stopping playback of {}", url);
         rtspClient.tearDown();
     }
 
@@ -89,12 +94,12 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     @Override
     public void clientDidTimeout() {
-        Logger.error("RTSP client timed out");
+        logger.error("RTSP client timed out");
     }
 
     @Override
-    public void clientReceivedFrame(ByteBuffer byteBuffer) {
-        decoder.decodeFrameBuffer(byteBuffer, 0, 0);
+    public void clientReceivedFrame(ByteBuffer byteBuffer, int width, int height) {
+        decoder.decodeFrameBuffer(sessionDescription, byteBuffer, width, height, 0, 0);
     }
 
 }

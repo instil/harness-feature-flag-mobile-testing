@@ -2,12 +2,13 @@ package co.instil.surge.decoders;
 
 import android.media.MediaCodec;
 import android.media.MediaFormat;
-import android.util.Log;
 import android.view.Surface;
+import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.nalu.NaluParser;
 import co.instil.surge.decoders.nalu.NaluSegment;
 import co.instil.surge.decoders.nalu.NaluType;
-import co.instil.surge.logger.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -19,6 +20,8 @@ import java.util.List;
  *
  */
 public class AsyncH264Decoder extends MediaCodec.Callback implements Decoder {
+
+    private static Logger logger = LoggerFactory.getLogger(AsyncH264Decoder.class);
 
     private MediaCodec mediaCodec;
     private MediaFormat mediaFormat;
@@ -33,14 +36,14 @@ public class AsyncH264Decoder extends MediaCodec.Callback implements Decoder {
         this.surface = surface;
     }
 
-    private MediaCodec createMediaCodec(Surface surface) throws IOException {
+    private MediaCodec createMediaCodec(Surface surface, int width, int height) throws IOException {
         mediaCodec = MediaCodec.createDecoderByType("video/avc");
-        mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, 720, 480);
-        mediaFormat.setInteger(MediaFormat.KEY_WIDTH, 720);
-        mediaFormat.setInteger(MediaFormat.KEY_HEIGHT, 480);
+        mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, width, height);
+        mediaFormat.setInteger(MediaFormat.KEY_WIDTH, width);
+        mediaFormat.setInteger(MediaFormat.KEY_HEIGHT, height);
         mediaFormat.setByteBuffer("csd-0", ByteBuffer.wrap(sequenceParameterSet.getBuffer()));
         mediaFormat.setByteBuffer("csd-1", ByteBuffer.wrap(pictureParameterSet.getBuffer()));
-        mediaFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 720 * 480);
+        mediaFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, width * height);
         mediaCodec.configure(mediaFormat, surface, null, 0);
         return mediaCodec;
     }
@@ -72,9 +75,15 @@ public class AsyncH264Decoder extends MediaCodec.Callback implements Decoder {
     }
 
     @Override
-    public void decodeFrameBuffer(ByteBuffer frameBuffer, int duration, int presentationTime) {
+    public void decodeFrameBuffer(SessionDescription sessionDescription,
+                                  ByteBuffer frameBuffer,
+                                  int width,
+                                  int height,
+                                  int presentationTime,
+                                  int duration) {
+
         try {
-            Logger.debug("Received frame buffer for decoding");
+            logger.debug("Received H264 frame for decoding");
 
             List<NaluSegment> segments = NaluParser.parseNaluSegments(frameBuffer);
 
@@ -82,10 +91,10 @@ public class AsyncH264Decoder extends MediaCodec.Callback implements Decoder {
                 if (!containsParameterSets(segments)) {
                     return;
                 }
-                Logger.debug("Decoder received parameter sets");
+                logger.debug("Decoder received parameter sets");
                 cacheParameterSets(segments);
 
-                mediaCodec = createMediaCodec(surface);
+                mediaCodec = createMediaCodec(surface, width, height);
                 mediaCodec.setCallback(this);
                 mediaCodec.start();
             }
@@ -95,7 +104,7 @@ public class AsyncH264Decoder extends MediaCodec.Callback implements Decoder {
                 Frame frame = new Frame(segment, presentationTime);
 
                 if (availableInputBuffers.size() > 0) {
-                    Logger.debug("Submitting to available buffer: " + availableInputBuffers.get(0));
+                    logger.debug("Submitting to available buffer: " + availableInputBuffers.get(0));
                     submitFrameToBuffer(frame, availableInputBuffers.remove(0), mediaCodec);
                 } else {
                     decodeQueue.add(frame);
@@ -103,12 +112,12 @@ public class AsyncH264Decoder extends MediaCodec.Callback implements Decoder {
             }
 
         } catch (IllegalStateException e) {
-            Logger.error("Failed to get an input buffer from the media codec " + Log.getStackTraceString(e));
+            logger.error("Failed to get an input buffer from the media codec", e);
         } catch (IOException e) {
-            Logger.error("Device doesn't support H264 decoding " + Log.getStackTraceString(e));
+            logger.error("Device doesn't support H264 decoding ", e);
             throw new RuntimeException("Device doesn't support H264 decoding");
         } catch (Exception e) {
-            Logger.error("Failed to get nalu segments " + Log.getStackTraceString(e));
+            logger.error("Failed to get nalu segments ", e);
         }
     }
 
@@ -150,15 +159,15 @@ public class AsyncH264Decoder extends MediaCodec.Callback implements Decoder {
         if (frame.segment == null) {
             return;
         }
-        Logger.debug("Decode Queue Size: " + decodeQueue.size());
+        logger.debug("Decode Queue Size: " + decodeQueue.size());
         ByteBuffer buffer = codec.getInputBuffer(bufferIndex);
         buffer.clear();
         buffer.put(frame.segment.getBuffer());
 
-        Logger.debug(String.format("Submitting %s frame (%d) received at %s",
+        logger.debug("Submitting {} frame ({}) received at {}",
                 frame.isKeyFrame() ? "key" : "non-key",
                 frame.segment.getBufferSize(),
-                frame.timestamp));
+                frame.timestamp);
 
         int flags = 0;
         if (frame.isKeyFrame()) {
@@ -173,7 +182,6 @@ public class AsyncH264Decoder extends MediaCodec.Callback implements Decoder {
 
     @Override
     public void onInputBufferAvailable(MediaCodec codec, int index) {
-//        Logger.debug("onInputBufferAvailable!");
         if (decodeQueue.size() == 0) {
             availableInputBuffers.add(index);
             return;
@@ -184,17 +192,17 @@ public class AsyncH264Decoder extends MediaCodec.Callback implements Decoder {
 
     @Override
     public void onOutputBufferAvailable(MediaCodec codec, int index, MediaCodec.BufferInfo info) {
-        Logger.debug("onOutputBufferAvailable");
+        logger.debug("Rendering and releasing output buffer");
         codec.releaseOutputBuffer(index, info.size > 0);
     }
 
     @Override
     public void onError(MediaCodec codec, MediaCodec.CodecException e) {
-        Logger.debug("onError");
+        logger.debug("H264 decoding failed", e);
     }
 
     @Override
     public void onOutputFormatChanged(MediaCodec codec, MediaFormat format) {
-        Logger.debug("onOutputFormatChanged");
+        logger.debug("Output format changed");
     }
 }

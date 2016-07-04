@@ -1,5 +1,7 @@
 package co.instil.surge.decoders;
 
+import co.instil.surge.client.SessionDescription;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -8,7 +10,12 @@ import java.nio.ByteBuffer;
 public class MjpegDecoder implements Decoder {
 
     @Override
-    public void decodeFrameBuffer(ByteBuffer frameBuffer, int duration, int presentationTime) {
+    public void decodeFrameBuffer(SessionDescription sessionDescription,
+                                  ByteBuffer frameBuffer,
+                                  int width,
+                                  int height,
+                                  int presentationTime,
+                                  int duration) {
 
     }
 

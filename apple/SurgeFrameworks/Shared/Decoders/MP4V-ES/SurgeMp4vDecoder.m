@@ -284,6 +284,14 @@
     
     // VOS header
     [descriptor writeBytes:vosHeader];
+
+    NSMutableData *data = [NSMutableData data];
+    [data appendBytes:(void*[]){0x05} length:1];
+    for (int i = 3; i > 0; i--) {
+        [data appendBytes:(void*[]){([vosHeader length] >> (7 * i)) | 0x80} length:1];
+    }
+    [data appendBytes:(void*[]){([vosHeader length] & 0x7f)} length:1];
+    [data appendData:vosHeader];
 }
 
 - (void)appendSyncLayerDescriptor:(BitstreamWriter*)descriptor {

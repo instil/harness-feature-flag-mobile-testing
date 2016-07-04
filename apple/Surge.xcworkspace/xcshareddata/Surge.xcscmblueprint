@@ -5,11 +5,13 @@
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "0236D641C54501584C8420D7866740E13CED18EA" : 0,
+    "76A15575C5B740800EF8E92EA66B97A276AEF659" : 0,
     "18F29A6448205DFBB861D8C263D7297E862B4DCC" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D8894CFA-FC25-44DA-81FF-D8275202570C",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "0236D641C54501584C8420D7866740E13CED18EA" : "Surge\/core\/lib\/RxCpp\/",
+    "76A15575C5B740800EF8E92EA66B97A276AEF659" : "Surge\/core\/lib\/googletest\/",
     "18F29A6448205DFBB861D8C263D7297E862B4DCC" : "Surge\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Surge",
@@ -25,6 +27,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.com:instil\/Surge.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "18F29A6448205DFBB861D8C263D7297E862B4DCC"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/google\/googletest.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "76A15575C5B740800EF8E92EA66B97A276AEF659"
     }
   ]
 }

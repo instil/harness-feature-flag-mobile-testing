@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,40 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __MP4V_DEPACKETIZER_H__
-#define __MP4V_DEPACKETIZER_H__
+#ifndef ANDROID_BITSTREAMREADER_H
+#define ANDROID_BITSTREAMREADER_H
 
-#include "SessionDescription.h"
-#include "RtpPacket.h"
 
-#include <vector>
+class BitstreamReader {
 
-namespace Surge {
-
-    class MP4VDepacketizer {
-    public:
-
-        MP4VDepacketizer(const SessionDescription* palette, const RtpPacket *packet, bool isFirstPayload);
-
-        const unsigned char *PayloadBytes() const { return &(payload[0]); }
-
-        size_t PayloadLength() const { return payload.size(); }
-
-    private:
-
-        void PushBytesToCurrentPayload(const unsigned char *payload, size_t length) {
-            size_t i;
-            for (i = 0; i < length; ++i) {
-                this->payload.push_back(payload[i]);
-            }
-        }
-        
-        const SessionDescription *sessionDescription;
-        const RtpPacket *packet;
-
-        std::vector<unsigned char> payload;
-    };
-    
 };
 
-#endif //__MP4V_DEPACKETIZER_H__
+
+#endif //ANDROID_BITSTREAMREADER_H

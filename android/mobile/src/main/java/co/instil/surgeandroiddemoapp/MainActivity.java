@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.view.Surface;
 import android.view.TextureView;
 
-import co.instil.surge.logger.Logger;
 import co.instil.surge.player.RtspPlayer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MainActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener {
+
+    private static Logger logger = LoggerFactory.getLogger(MainActivity.class);
 
     private final RtspPlayer player = new RtspPlayer();
     private TextureView textureView;
@@ -24,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-        Logger.debug("textureView.isAvailable: " + textureView.isAvailable());
+        logger.debug("textureView.isAvailable: {}", textureView.isAvailable());
         player.initiatePlaybackOf("rtsp://192.168.1.52:8554/test", new Surface(surfaceTexture));
     }
 

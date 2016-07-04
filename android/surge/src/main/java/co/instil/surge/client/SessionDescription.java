@@ -29,12 +29,12 @@ public class SessionDescription {
         return formatParameters;
     }
 
+    public String getDecoderConfig() {
+        return formatParameters.substring(formatParameters.indexOf("config=") + 1);
+    }
+
     public String getRtpMap() {
         return rtpMap;
     }
 
-    @Override
-    public String toString() {
-        return String.format("\n{\n\ttype: \"%s\", \n\tcontrolUrl: \"%s\", \n\tformatParameters: \"%s\", \n\trtpMap: \"%s\"\n}", type, controlUrl, formatParameters, rtpMap);
-    }
 }

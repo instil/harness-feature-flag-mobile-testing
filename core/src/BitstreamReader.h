@@ -18,13 +18,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef ANDROID_BITSTREAMREADER_H
-#define ANDROID_BITSTREAMREADER_H
+#ifndef BITSTREAMREADER_H
+#define BITSTREAMREADER_H
+
+#include <stdlib.h>
+
+namespace SurgeUtil {
+
+    class BitstreamReader {
+
+    public:
+        BitstreamReader(uint8_t *bitstream, size_t size);
+
+        uint8_t ReadBit();
+
+        uint8_t ReadByte();
+
+        uint16_t ReadTwoBytes();
+
+        uint32_t ReadFourBytes();
+
+        uint32_t ReadNumberOfBits(uint8_t numberOfBits);
+
+        void SkipNumberOfBits(uint8_t numberOfBits);
+
+    private:
+        uint8_t *bitstream;
+        size_t size;
+        uint32_t currentBitOffset;
+    };
+
+}
 
 
-class BitstreamReader {
-
-};
-
-
-#endif //ANDROID_BITSTREAMREADER_H
+#endif //BITSTREAMREADER_H

@@ -24,33 +24,32 @@
 
 #include "SessionDescription.h"
 #include "RtpPacket.h"
+#include "Depacketizer.h"
 
 #include <vector>
 
 namespace Surge {
 
-    class MP4VDepacketizer {
+    class MP4VDepacketizer : public Depacketizer {
     public:
+        MP4VDepacketizer(const SessionDescription sessionDescription,
+                         std::vector<unsigned char> *frameBuffer)
 
-        MP4VDepacketizer(const SessionDescription* palette, const RtpPacket *packet, bool isFirstPayload);
+                : Depacketizer(frameBuffer),
+                  sessionDescription(sessionDescription) {}
 
-        const unsigned char *PayloadBytes() const { return &(payload[0]); }
-
-        size_t PayloadLength() const { return payload.size(); }
+        void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload);
 
     private:
+        void ExtractDimensionsFromVosHeader(std::vector<unsigned char> config);
 
-        void PushBytesToCurrentPayload(const unsigned char *payload, size_t length) {
-            size_t i;
-            for (i = 0; i < length; ++i) {
-                this->payload.push_back(payload[i]);
-            }
-        }
-        
-        const SessionDescription *sessionDescription;
-        const RtpPacket *packet;
+        bool IsVideoObjectLayerStartCode(uint8_t *descriptor);
 
-        std::vector<unsigned char> payload;
+        void ExtractDimensionsFromVolHeader(uint8_t *volHeader, size_t size);
+
+        uint8_t NumberOfBitsRequiredtoStoreValue(uint32_t value);
+
+        const SessionDescription sessionDescription;
     };
     
 };

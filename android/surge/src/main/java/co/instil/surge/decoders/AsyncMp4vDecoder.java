@@ -57,7 +57,7 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
         } catch (IllegalStateException e) {
             logger.error("Failed to get an input buffer from the media codec", e);
         } catch (IOException e) {
-            logger.error("Device doesn't support MP4V decoding", e);
+            logger.error("Device does not support MP4V decoding", e);
             throw new RuntimeException("Device doesn't support MP4V decoding");
         } catch (Exception e) {
             logger.error("Failed to decode MP4V", e);
@@ -83,16 +83,16 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
         }
     }
 
-    private void submitFrameToBuffer(ByteBuffer frame, int presentationTime, int bufferIndex, MediaCodec codec) {
+    private void submitFrameToBuffer(ByteBuffer frameBuffer, int presentationTime, int bufferIndex, MediaCodec codec) {
         logger.debug("Decode Queue Size {}", decodeQueue.size());
         ByteBuffer inputBuffer = codec.getInputBuffer(bufferIndex);
 
-        byte[] fBuffer = new byte[frame.capacity()];
-        frame.get(fBuffer);
-        inputBuffer.put(fBuffer);
+        byte[] frame = new byte[frameBuffer.capacity()];
+        frameBuffer.get(frame);
+        inputBuffer.put(frame);
 
         int flags = 0;
-        codec.queueInputBuffer(bufferIndex, 0, fBuffer.length, presentationTime, flags);
+        codec.queueInputBuffer(bufferIndex, 0, frame.length, presentationTime, flags);
     }
 
     @Override

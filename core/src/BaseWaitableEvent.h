@@ -28,15 +28,13 @@ namespace SurgeUtil {
    /**
     * Abstract base class implementing WaitableEvent.
     */
-    class BaseWaitableEvent: public WaitableEvent
-    {
+    class BaseWaitableEvent: public WaitableEvent {
     public:
         
        /**
         * Is this event in the "fired" state.
         */
-        bool IsFired() const override
-        {
+        bool IsFired() const override {
             return !WaitableEvents::WaitFor({this}, 0).empty();
         }
     };

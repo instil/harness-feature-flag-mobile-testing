@@ -36,13 +36,15 @@ void SurgeJni::RtspClientDelegateWrapper::StreamConfigChanged(bool wasRedirect) 
 void SurgeJni::RtspClientDelegateWrapper::ClientReceivedFrame(const unsigned char * buffer,
                                                               size_t length,
                                                               int32_t width,
-                                                              int32_t height) {
+                                                              int32_t height,
+                                                              int32_t presentationTime,
+                                                              int32_t duration) {
     JNIEnv *env;
     jvm->AttachCurrentThread(&env, NULL);
     jclass cls = env->GetObjectClass(jDelegate);
-    jmethodID method = env->GetMethodID(cls, "clientReceivedFrame", "(Ljava/nio/ByteBuffer;II)V");
+    jmethodID method = env->GetMethodID(cls, "clientReceivedFrame", "(Ljava/nio/ByteBuffer;IIII)V");
     jobject framebuffer = env->NewDirectByteBuffer((void*)buffer, length);
-    env->CallVoidMethod(jDelegate, method, framebuffer, width, height);
+    env->CallVoidMethod(jDelegate, method, framebuffer, width, height, presentationTime, duration);
     env->DeleteLocalRef(framebuffer);
     env->DeleteLocalRef(cls);
 }

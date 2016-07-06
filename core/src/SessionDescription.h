@@ -14,82 +14,58 @@ namespace Surge {
     class SessionDescription {
     public:
 
-        SessionDescription(): m_type(UNKNOWN),
-                              m_control(""),
-                              m_rtpMap(""),
-                              m_fmtp(""),
-                              m_frameRate(-1),
-                              m_resolutionWidth(-1),
-                              m_resolutionHeight(-1) { }
+        SessionDescription(): type(UNKNOWN),
+                              control(""),
+                              rtpMap(""),
+                              formatParameters("") { }
         
         SessionDescription(RtspSessionType type,
                            std::string control,
                            std::string rtpMap,
-                           std::string fmtp,
-                           int frameRate,
-                           int width,
-                           int height): m_type(type),
-                                        m_control(control),
-                                        m_rtpMap(rtpMap),
-                                        m_fmtp(fmtp),
-                                        m_frameRate(frameRate),
-                                        m_resolutionWidth(width),
-                                        m_resolutionHeight(height) { }
+                           std::string fmtp)
+                : type(type),
+                  control(control),
+                  rtpMap(rtpMap),
+                  formatParameters(fmtp) { }
 
         virtual ~SessionDescription() { }
 
-        RtspSessionType GetType() const { return m_type; }
+        RtspSessionType GetType() const { return type; }
 
-        bool IsControlUrlComplete() const { return m_control.find("://") != std::string::npos; }
+        bool IsControlUrlComplete() const { return control.find("://") != std::string::npos; }
 
-        const std::string GetControl() const { return m_control; }
+        const std::string GetControl() const { return control; }
 
-        const std::string GetRtpMap() const { return m_rtpMap; }
+        const std::string GetRtpMap() const { return rtpMap; }
 
-        const std::string GetFmtp() const { return m_fmtp; }
+        const std::string GetFmtp() const { return formatParameters; }
 
         const std::string GetFmtpH264ConfigParameters() const {
-            if (m_type != RtspSessionType::H264) {
+            if (type != RtspSessionType::H264) {
                 return std::string();
             }
             
-            size_t pos = m_fmtp.find("sprop-parameter-sets=");
+            size_t pos = formatParameters.find("sprop-parameter-sets=");
             if (pos == std::string::npos) {
                 return std::string();
             }
 
-            size_t end = m_fmtp.find(";", pos);
-            return m_fmtp.substr(pos + 21, end - pos - 21);
+            size_t end = formatParameters.find(";", pos);
+            return formatParameters.substr(pos + 21, end - pos - 21);
         }
 
         const std::string GetFmtpConfigParameters() const {
-            size_t pos = m_fmtp.find("config=");
+            size_t pos = formatParameters.find("config=");
             if (pos == std::string::npos) {
                 return std::string();
             }
 
-            size_t end = m_fmtp.find(";", pos);
+            size_t end = formatParameters.find(";", pos);
             if (end == std::string::npos) {
-                end = m_fmtp.length();
+                end = formatParameters.length();
             }
             
-            return m_fmtp.substr(pos + 7, end - pos);
-        }
-
-        int GetFrameRate() const { return m_frameRate; }
-
-        int GetResolutionWidth() const { return m_resolutionWidth; }
-
-        int GetResolutionHeight() const { return m_resolutionHeight; }
-
-        SessionDescription* DeepCopy() const {
-            return new SessionDescription(m_type,
-                                          m_control,
-                                          m_rtpMap,
-                                          m_fmtp,
-                                          m_frameRate,
-                                          m_resolutionWidth,
-                                          m_resolutionHeight);
+            return formatParameters.substr(pos + 7, end - pos);
         }
 
         static RtspSessionType GetTypeFromMime(const std::string& raw_mime) {
@@ -106,13 +82,10 @@ namespace Surge {
         }
 
     protected:
-        RtspSessionType m_type;
-        std::string m_control;
-        std::string m_rtpMap;
-        std::string m_fmtp;
-        int m_frameRate;
-        int m_resolutionWidth;
-        int m_resolutionHeight;
+        RtspSessionType type;
+        std::string control;
+        std::string rtpMap;
+        std::string formatParameters;
     };
     
 }

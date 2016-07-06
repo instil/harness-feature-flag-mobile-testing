@@ -18,13 +18,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef ANDROID_BITSTREAMWRITER_H
-#define ANDROID_BITSTREAMWRITER_H
+#ifndef BITSTREAMWRITER_H
+#define BITSTREAMWRITER_H
 
 
-class BitstreamWriter {
+#include <stdlib.h>
+#include <vector>
 
-};
+namespace SurgeUtil {
 
+    class BitstreamWriter {
+    public:
+        BitstreamWriter();
 
-#endif //ANDROID_BITSTREAMWRITER_H
+        ~BitstreamWriter();
+
+        void WriteBit(uint8_t value);
+
+        void WriteByte(uint8_t value);
+
+        void WriteTwoBytes(uint16_t value);
+
+        void WriteThreeBytes(uint32_t value);
+
+        void WriteFourBytes(uint32_t value);
+
+        void WriteBytes(uint8_t *bytes, size_t size);
+
+        void WriteBits(uint8_t value, uint8_t numberOfBits);
+
+        std::vector<uint8_t>* Bitstream();
+
+    private:
+        std::vector<uint8_t> *bitstream;
+        uint32_t currentBitOffset;
+    };
+
+}
+
+#endif //BITSTREAMWRITER_H

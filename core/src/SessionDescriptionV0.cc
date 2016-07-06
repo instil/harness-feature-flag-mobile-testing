@@ -12,20 +12,20 @@ Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string& rawSessionD
         bool is_mime = is_rtpmap;
 
         if (is_rtpmap) {
-            m_rtpMap = current_line;
+            rtpMap = current_line;
         }
                 
         if (is_fmtp) {
-            m_fmtp = current_line;
+            formatParameters = current_line;
         }
                 
         if (is_control) {
             size_t end_position = current_line.find(';');
-            m_control = current_line.substr(10, end_position - 10);
+            control = current_line.substr(10, end_position - 10);
         }
                 
         if (is_mime) {    
-            m_type = GetTypeFromMime(current_line);
+            type = GetTypeFromMime(current_line);
         }
     }
 }

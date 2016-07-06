@@ -41,7 +41,9 @@ namespace Surge {
         virtual void ClientReceivedFrame(const unsigned char * frameBuffer,
                                          size_t length,
                                          int32_t width,
-                                         int32_t height) = 0;
+                                         int32_t height,
+                                         int32_t presentationTime,
+                                         int32_t duration) = 0;
 
     };
     

@@ -127,6 +127,6 @@ Surge::SessionDescription SurgeJni::JavaTypeConverters::convertSessionDescriptio
     std::string controlUrl = convertString(env, callJSessionDescriptionGetter(env, jSessionDescription, "getControlUrl"));
     std::string rtpMap = convertString(env, callJSessionDescriptionGetter(env, jSessionDescription, "getRtpMap"));
     std::string formatParameters = convertString(env, callJSessionDescriptionGetter(env, jSessionDescription, "getFormatParameters"));
-    Surge::SessionDescription sessionDescription(type, controlUrl, rtpMap, formatParameters, -1, -1, -1);
+    Surge::SessionDescription sessionDescription(type, controlUrl, rtpMap, formatParameters);
     return sessionDescription;
 }

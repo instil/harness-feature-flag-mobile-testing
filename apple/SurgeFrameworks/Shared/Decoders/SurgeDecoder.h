@@ -42,10 +42,11 @@
  * Abstract method to be implemented by decoders. Implementations
  * should create a CMSampleBufferRef and enqueue for decoding.
  */
-- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
+- (void)decodeFrameBuffer:(const uint8_t *)frameBuffer
                    ofSize:(size_t)size
-        withFrameDuration:(int)frameDuration
-      andPresentationTime:(unsigned int)presentationTimeInterval;
+           withDimensions:(CGSize)dimensions
+         presentationTime:(unsigned int)presentationTime
+                 duration:(int)duration;
 
 /**
  * Enqueue a CMSampleBufferRef for decoding. Once decoded, the frame

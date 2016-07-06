@@ -9,6 +9,10 @@ public interface RtspClientDelegate {
 
     void clientDidTimeout();
 
-    void clientReceivedFrame(ByteBuffer frameBuffer, int width, int height);
+    void clientReceivedFrame(ByteBuffer frameBuffer,
+                             int width,
+                             int height,
+                             int presentationTime,
+                             int duration);
 
 }

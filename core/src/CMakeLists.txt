@@ -67,8 +67,15 @@ if(BUILD_JAR STREQUAL OFF)
     RtpPacket.h
     RtpPacket.cc
 
-    H264Depacetizer.h
-    H264Depacetizer.cc
+    BitstreamReader.h
+    BitstreamReader.cc
+    BitstreamWriter.h
+    BitstreamWriter.cc
+
+    Depacketizer.h
+
+    H264Depacketizer.h
+    H264Depacketizer.cc
 
     MP4VDepacketizer.h
     MP4VDepacketizer.cc

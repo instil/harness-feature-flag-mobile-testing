@@ -38,7 +38,9 @@ namespace SurgeJni {
         void ClientReceivedFrame(const unsigned char * buffer,
                                  size_t length,
                                  int32_t width,
-                                 int32_t height);
+                                 int32_t height,
+                                 int32_t presentationTime,
+                                 int32_t duration);
 
         jobject GetJavaDelegate() {
             return jDelegate;

@@ -32,17 +32,17 @@
 
 - (void)decodeFrameBuffer:(const uint8_t *)frameBuffer
                    ofSize:(size_t)size
-        withFrameDuration:(int)frameDuration
-      andPresentationTime:(unsigned int)presentationTimeInterval {
-    
+           withDimensions:(CGSize)dimensions
+         presentationTime:(unsigned int)presentationTime
+                 duration:(int)duration {
+
     if (!self.formatDescription) {
-        NSData *vosHeader = [self extractVisualObjectSequenceHeaderFrom:frameBuffer ofSize:size];
-        CGSize dimensions = [self extractDimensionsFromVisualObjectSequenceHeader:[vosHeader bytes] ofSize:[vosHeader length]];
         if (CGSizeEqualToSize(dimensions, CGSizeZero)) {
-            SurgeLogError(@"Failed to extract video dimensions from MPEG4 header, frame will be ignored");
+            SurgeLogError(@"No dimensions available for MPEG4 stream, frame will be ignored");
             return;
         }
 
+        NSData *vosHeader = [self extractVisualObjectSequenceHeaderFrom:frameBuffer ofSize:size];
         NSDictionary *atoms = @{@"esds": [self createElementaryStreamDescriptorAtom:vosHeader]};
         NSMutableDictionary *decoderConfig = [[NSMutableDictionary alloc] init];
         [decoderConfig setValue:atoms forKey:(__bridge NSString *)kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms];
@@ -75,9 +75,9 @@
                                                          &blockBuffer);
     
     CMSampleTimingInfo timingInfo;
-    timingInfo.duration = CMTimeMakeWithSeconds(frameDuration, 1);
+    timingInfo.duration = CMTimeMakeWithSeconds(duration, 1);
     timingInfo.decodeTimeStamp = kCMTimeInvalid;
-    timingInfo.presentationTimeStamp = CMTimeMakeWithSeconds(presentationTimeInterval, 1);
+    timingInfo.presentationTimeStamp = CMTimeMakeWithSeconds(presentationTime, 1);
     
     CMSampleBufferRef sampleBuffer = NULL;
     status = CMSampleBufferCreate(kCFAllocatorDefault,
@@ -107,86 +107,6 @@
         }
     }
     return nil;
-}
-
-/**
- * See the VisualObjectSequence definition in the ISO/IEC 14496-2 (MPEG4 Visual) specification.
- */
-- (CGSize)extractDimensionsFromVisualObjectSequenceHeader:(uint8_t *)vosHeader ofSize:(size_t)size {
-    for (int i = 0; i < size - 4; i++) {
-        if ([self isVideoObjectLayerStartCode:vosHeader + i]) {
-            return [self extractDimensionsFromVideoObjectLayerHeader:vosHeader + i + 4 size:size - i - 4];
-        }
-    }
-    return CGSizeZero;
-}
-
-- (BOOL)isVideoObjectLayerStartCode:(uint8_t *)descriptor {
-    const uint8_t startCodePrefix[] = { 0x00, 0x00, 0x01 };
-    uint8_t startCode = descriptor[3];
-    if (memcmp(descriptor, startCodePrefix, 3) == 0 && (startCode >= 0x20 && startCode <= 0x2f)) {
-        return YES;
-    }
-    return NO;
-}
-
-/**
- * See the VideoObjectLayer definition in the ISO/IEC 14496-2 (MPEG4 Visual) specification.
- */
-- (CGSize)extractDimensionsFromVideoObjectLayerHeader:(uint8_t*)volHeader size:(size_t)size {
-    BitstreamReader *videoObjectLayer = [[BitstreamReader alloc] initWithBuffer:volHeader ofSize:size];
-    [videoObjectLayer skipNumberOfBits:9];
-    uint8_t objectLayerIdentifier = [videoObjectLayer readBit];
-    uint8_t objectLayerVerId = 0;
-    if (objectLayerIdentifier) {
-        objectLayerVerId = [videoObjectLayer readNumberOfBits:4];
-        [videoObjectLayer skipNumberOfBits:3];
-    }
-
-    uint8_t aspectRatioInfo = [videoObjectLayer readNumberOfBits:4];
-    if (aspectRatioInfo == 0b1111) {
-        uint8_t width = [videoObjectLayer readByte];
-        uint8_t height = [videoObjectLayer readByte];
-        return CGSizeMake(width, height);
-    }
-    
-    uint8_t controlParameters = [videoObjectLayer readBit];
-    if (controlParameters) {
-        [videoObjectLayer skipNumberOfBits:3];
-        uint8_t vbvParameters = [videoObjectLayer readBit];
-        if (vbvParameters) {
-            [videoObjectLayer skipNumberOfBits:79];
-        }
-    }
-    
-    uint8_t videoObjectLayerShape = [videoObjectLayer readNumberOfBits:2];
-    if (videoObjectLayerShape == 0b00 && objectLayerVerId != 0b0001) {
-        [videoObjectLayer skipNumberOfBits:4];
-    }
-    
-    [videoObjectLayer skipNumberOfBits:1];
-    uint16_t vopTimeIncrementResolution = [videoObjectLayer readTwoBytes];
-    [videoObjectLayer skipNumberOfBits:1];
-    uint8_t fixedVopRate = [videoObjectLayer readBit];
-    if (fixedVopRate) {
-        [videoObjectLayer skipNumberOfBits:[self numberOfBitsRequiredtoStoreValue:vopTimeIncrementResolution]];
-    }
-    
-    if (videoObjectLayerShape != 0b10) {
-        if (videoObjectLayerShape == 0) {
-            [videoObjectLayer skipNumberOfBits:1];
-            uint32_t width = [videoObjectLayer readNumberOfBits:13];
-            [videoObjectLayer skipNumberOfBits:1];
-            uint32_t height = [videoObjectLayer readNumberOfBits:13];
-            return CGSizeMake(width, height);
-        }
-    }
-    
-    return CGSizeZero;
-}
-
-- (uint32_t)numberOfBitsRequiredtoStoreValue:(uint32_t)value {
-    return floor(log2(value)) + 1;
 }
 
 /*
@@ -284,14 +204,6 @@
     
     // VOS header
     [descriptor writeBytes:vosHeader];
-
-    NSMutableData *data = [NSMutableData data];
-    [data appendBytes:(void*[]){0x05} length:1];
-    for (int i = 3; i > 0; i--) {
-        [data appendBytes:(void*[]){([vosHeader length] >> (7 * i)) | 0x80} length:1];
-    }
-    [data appendBytes:(void*[]){([vosHeader length] & 0x7f)} length:1];
-    [data appendData:vosHeader];
 }
 
 - (void)appendSyncLayerDescriptor:(BitstreamWriter*)descriptor {

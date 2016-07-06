@@ -59,7 +59,12 @@ public:
 
 @protocol SurgeRtspClientDelegate <NSObject>
 - (void)rtspClientDidTimeout;
-- (void)rtspClientPayloadReceived:(const unsigned char *)payload withSize:(size_t)length;
+- (void)rtspClientReceivedFrame:(const unsigned char *)frameBuffer
+                         ofSize:(size_t)size
+                 withDimensions:(CGSize)dimensions
+               presentationTime:(unsigned int)presentationTime
+                       duration:(int)duration;
+
 @end
 
 class RtspClientDelegateWrapper : public Surge::IRtspClientDelegate {
@@ -73,8 +78,18 @@ public:
     
     void StreamConfigChanged(bool wasRedirect) {}
 
-    void Payload(const char* buffer, size_t length) {
-        [delegate rtspClientPayloadReceived:(const unsigned char *)buffer withSize:length];
+    void ClientReceivedFrame(const unsigned char* buffer,
+                             size_t size,
+                             int32_t width,
+                             int32_t height,
+                             int32_t presentationTime,
+                             int32_t duration) {
+
+        [delegate rtspClientReceivedFrame:buffer
+                                   ofSize:size
+                           withDimensions:CGSizeMake(width, height)
+                         presentationTime:presentationTime
+                                 duration:duration];
     }
 
 private:
@@ -187,8 +202,17 @@ private:
     [self.delegate rtspPlayerDidTimeout];
 }
 
-- (void)rtspClientPayloadReceived:(const unsigned char *)payload withSize:(size_t)length {
-    [self.decoder decodeFrameBuffer:payload ofSize:length withFrameDuration:0 andPresentationTime:0];
+- (void)rtspClientReceivedFrame:(const unsigned char *)frameBuffer
+                         ofSize:(size_t)size
+                 withDimensions:(CGSize)dimensions
+               presentationTime:(unsigned int)presentationTime
+                       duration:(int)duration {
+
+    [self.decoder decodeFrameBuffer:frameBuffer
+                             ofSize:size
+                     withDimensions:dimensions
+                   presentationTime:presentationTime
+                           duration:duration];
 }
 
 #pragma mark - Decoder delegate

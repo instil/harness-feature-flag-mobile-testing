@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "H264Depacetizer.h"
+#include "H264Depacketizer.h"
 #include "Base64.h"
 
 Surge::H264Depacketizer::H264Depacketizer(const SessionDescription* palette,

@@ -173,9 +173,14 @@ void MakeQuantHeader(std::vector<unsigned char> * const p, unsigned char *qt, in
 }
 
 static
-void MakeHuffmanHeader(std::vector<unsigned char> * const p, unsigned char *codelens, int ncodes,
-                       unsigned char *symbols, int nsymbols, int tableNo,
+void MakeHuffmanHeader(std::vector<unsigned char> * const p,
+                       unsigned char *codelens,
+                       int ncodes,
+                       unsigned char *symbols,
+                       int nsymbols,
+                       int tableNo,
                        int tableClass) {
+
     p->push_back(0xff);
     p->push_back(0xc4);
     p->push_back(0);
@@ -219,11 +224,13 @@ void MakeDRIHeader(std::vector<unsigned char> * const p, unsigned short dri) {
  *    absence of an EOI marker to terminate the scan).
  */
 static
-void MakeHeaders(std::vector<unsigned char> * const p, int type, int w, int h, unsigned char *lqt,
-                 unsigned char *cqt, unsigned short dri)
-{
-    p->clear();
-    p->resize(0);
+void MakeHeaders(std::vector<unsigned char> * const p,
+                 int type,
+                 int w,
+                 int h,
+                 unsigned char *lqt,
+                 unsigned char *cqt,
+                 unsigned short dri) {
 
     /* convert from blocks to pixels */
     w <<= 3;
@@ -296,95 +303,42 @@ void MakeHeaders(std::vector<unsigned char> * const p, int type, int w, int h, u
     p->push_back(0);
 }
 
-Surge::MJPEGDepacketizer::MJPEGDepacketizer(const SessionDescription* palette,
-                                            const RtpPacket *packet,
-                                            bool isFirstPayload) : m_palette(palette),
-                                                                   m_packet(packet) {
+void Surge::MJPEGDepacketizer::ProcessPacket(const RtpPacket *packet, const bool isFirstPayload) {
+    const unsigned char *payloadData = packet->PayloadData();
+    const size_t payloadLength = packet->PayloadLength();
 
-    const unsigned char *rtp_packet_payload = m_packet->PayloadData();
-    
-    ParseJpegHeader(rtp_packet_payload);
+    size_t jpegHeaderSize = ProcessJpegHeaders(packet);
 
-    if (m_fragmentOffset == 0) {
-        m_restartHeaderSize = ((m_type >= RESTART_MIN) && (m_type <= RESTART_MAX)) ?
-            RESTARTMARKERHEADERSIZE : 0;
-        
-        m_dri = 0;
+//    size_t frame_length = frameBuffer->size();
+//
+//    if (frame_length == 0 && m_fragmentOffset > 0) {
+//        return;
+//    }
 
-        if (m_restartHeaderSize > 0 ) {
-            ParseRestartMarkerHeader(rtp_packet_payload + JPEGHEADERSIZE);
-        }
-
-        ParseQuantizationHeader(rtp_packet_payload + JPEGHEADERSIZE + m_restartHeaderSize);
-
-        if (m_quantizationPayloadLength > 0) {
-            ParseQuantizationTableData(rtp_packet_payload
-                                       + JPEGHEADERSIZE
-                                       + m_restartHeaderSize
-                                       + QUANTIZATIONTABLEHEADERSIZE);
-        }
-
-        MakeHeaders(&m_payload, m_type, m_width, m_height, m_lumq, m_chrq, m_dri);
-    }
-    else {
-        m_quantizationPayloadLength = 0;
-        m_payload.resize(0);
-        m_payload.clear();
+    for (size_t i = jpegHeaderSize; i < payloadLength; i++) {
+        frameBuffer->push_back(payloadData[i]);
     }
 }
 
-void Surge::MJPEGDepacketizer::AddToFrame(std::vector<unsigned char> * const frame) {
-    const unsigned char *rtp_packet_payload = m_packet->PayloadData();
-    size_t rtp_packet_length = m_packet->PayloadLength();
-    
-    size_t frame_length = frame->size();
+//void Surge::MJPEGDepacketizer::
 
-    if (frame_length == 0 && m_fragmentOffset > 0) {
-        return;
-    }
+size_t Surge::MJPEGDepacketizer::ProcessJpegHeaders(const RtpPacket *packet) {
+    const unsigned char *payloadData = packet->PayloadData();
+    const size_t payloadLength = packet->PayloadLength();
 
-    size_t jpeg_payload_offset = JPEGHEADERSIZE;
-    if (m_fragmentOffset == 0) {
-        jpeg_payload_offset += (m_restartHeaderSize
-                                + QUANTIZATIONTABLEHEADERSIZE
-                                + m_quantizationPayloadLength);
-    }
-    
-    size_t add_to_packet_size = m_payload.size() + rtp_packet_length - jpeg_payload_offset;
-
-    if (frame_length < (frame_length + add_to_packet_size)) {
-        frame->resize(frame_length + add_to_packet_size);
-    }
-
-    if (m_fragmentOffset == 0) {
-        std::copy(m_payload.begin(), m_payload.end(), frame->begin());
-        frame_length += m_payload.size();
-    }
-
-    if (m_fragmentOffset != 0) {
-        jpeg_payload_offset += m_restartHeaderSize;
-    }
-
-    std::copy(rtp_packet_payload + jpeg_payload_offset,
-              rtp_packet_payload + rtp_packet_length,
-              frame->begin() + frame_length);
-}
-
-void Surge::MJPEGDepacketizer::ParseJpegHeader(const unsigned char *buffer) {
-    
-    const unsigned char * fragmentOffset = &buffer[1];
-    const unsigned char * typeOffset =  &buffer[4];
-    const unsigned char * qOffset = &buffer[5];
-    const unsigned char * widthOffset = &buffer[6];
-    const unsigned char * heightOffset = &buffer[7];
+    const unsigned char * fragmentOffset = &payloadData[1];
+    const unsigned char * typeOffset =  &payloadData[4];
+    const unsigned char * qOffset = &payloadData[5];
+    const unsigned char * widthOffset = &payloadData[6];
+    const unsigned char * heightOffset = &payloadData[7];
 
     // reset variables
-    m_fragmentOffset = 0;
-    m_type = 0;
-    m_qValue = 0;
-    m_width = 0;
-    m_height = 0;
-    
+    int m_fragmentOffset = 0;
+    int m_type = 0;
+    int m_qValue = 0;
+    int m_width = 0;
+    int m_height = 0;
+
     m_fragmentOffset |= 0x00 & 0xFF;
     m_fragmentOffset <<= 8;
     m_fragmentOffset |= fragmentOffset[0] & 0xFF;
@@ -392,52 +346,147 @@ void Surge::MJPEGDepacketizer::ParseJpegHeader(const unsigned char *buffer) {
     m_fragmentOffset |= fragmentOffset[1] & 0xFF;
     m_fragmentOffset <<= 8;
     m_fragmentOffset |= fragmentOffset[2] & 0xFF;
-    
+
     m_type |= typeOffset[0] & 0xFF;
     m_qValue |= qOffset[0] & 0xFF;
     m_width |= widthOffset[0] & 0xFF;
     m_height |= heightOffset[0] & 0xFF;
-}
+//    ParseJpegHeader(payloadData);
 
-void Surge::MJPEGDepacketizer::ParseRestartMarkerHeader(const unsigned char * buffer) {
-    m_dri = 0;
-    m_dri = buffer[0];
-    m_dri = m_dri << 8;
-    m_dri = m_dri | buffer[1];
-}
-
-void Surge::MJPEGDepacketizer::ParseQuantizationHeader(const unsigned char * pQuantizationHeader)
-{
-    m_quantizationPayloadLength = 0;
+    int restartHeaderSize = 0;
+    int quantizationPayloadLength = 0;
 
     if (m_fragmentOffset == 0) {
-        m_quantizationPayloadLength |= pQuantizationHeader[2] & 0xFF;
-        m_quantizationPayloadLength <<= 8;
-        m_quantizationPayloadLength |= pQuantizationHeader[3] & 0xFF;
+        int dri = 0;
+        restartHeaderSize = ((m_type >= RESTART_MIN) && (m_type <= RESTART_MAX))
+                            ? RESTARTMARKERHEADERSIZE : 0;
+        if (restartHeaderSize > 0) {
+            dri = ParseRestartMarkerHeader(payloadData + JPEGHEADERSIZE);
+        }
+
+//        ParseQuantizationHeader(payloadData + JPEGHEADERSIZE + restartHeaderSize);
+        unsigned char m_lumq[64];
+        unsigned char m_chrq[64];
+        if (m_fragmentOffset == 0) {
+            const unsigned char *quantizationHeader =
+                    payloadData + JPEGHEADERSIZE + restartHeaderSize;
+            quantizationPayloadLength |= quantizationHeader[2] & 0xFF;
+            quantizationPayloadLength <<= 8;
+            quantizationPayloadLength |= quantizationHeader[3] & 0xFF;
+        }
+
+//        if (quantizationPayloadLength > 0) {
+//            ParseQuantizationTableData(payloadData
+//                                       + JPEGHEADERSIZE
+//                                       + restartHeaderSize
+//                                       + QUANTIZATIONTABLEHEADERSIZE);
+//        }
+
+        if (quantizationPayloadLength > 0) {
+            int quantizationTableDataPosition = 0;
+            size_t lumqPosition;
+            const unsigned char *quantizationTableData = payloadData
+                                                         + JPEGHEADERSIZE
+                                                         + restartHeaderSize
+                                                         + QUANTIZATIONTABLEHEADERSIZE;
+            for (lumqPosition = 0; lumqPosition < 64 && lumqPosition <
+                                                        quantizationPayloadLength; lumqPosition++) {
+                m_lumq[lumqPosition] = quantizationTableData[quantizationTableDataPosition];
+                quantizationTableDataPosition++;
+            }
+
+            int chrqPosition;
+            for (chrqPosition = 0; chrqPosition < 64 && chrqPosition <
+                                                        quantizationPayloadLength; chrqPosition++) {
+                m_chrq[chrqPosition] = quantizationTableData[quantizationTableDataPosition];
+                quantizationTableDataPosition++;
+            }
+        } else {
+            // create tables from qfactor
+            MakeTables(m_qValue, m_lumq, m_chrq);
+        }
+
+        MakeHeaders(frameBuffer, m_type, m_width, m_height, m_lumq, m_chrq, dri);
     }
+
+    size_t jpeg_payload_offset = JPEGHEADERSIZE;
+    if (m_fragmentOffset == 0) {
+        jpeg_payload_offset += (restartHeaderSize
+                                + QUANTIZATIONTABLEHEADERSIZE
+                                + quantizationPayloadLength);
+    }
+
+    if (m_fragmentOffset != 0) {
+        jpeg_payload_offset += restartHeaderSize;
+    }
+
+    return jpeg_payload_offset;
 }
 
-void Surge::MJPEGDepacketizer::ParseQuantizationTableData(const unsigned char * pQuantizationTableData)
-{
-    if (m_quantizationPayloadLength > 0) {
-        int quantizationTableDataPosition = 0;
+void Surge::MJPEGDepacketizer::ParseJpegHeader(const unsigned char *buffer) {
+    
+//    const unsigned char * fragmentOffset = &buffer[1];
+//    const unsigned char * typeOffset =  &buffer[4];
+//    const unsigned char * qOffset = &buffer[5];
+//    const unsigned char * widthOffset = &buffer[6];
+//    const unsigned char * heightOffset = &buffer[7];
+//
+//    // reset variables
+//    m_fragmentOffset = 0;
+//    m_type = 0;
+//    m_qValue = 0;
+//    m_width = 0;
+//    m_height = 0;
+//
+//    m_fragmentOffset |= 0x00 & 0xFF;
+//    m_fragmentOffset <<= 8;
+//    m_fragmentOffset |= fragmentOffset[0] & 0xFF;
+//    m_fragmentOffset <<= 8;
+//    m_fragmentOffset |= fragmentOffset[1] & 0xFF;
+//    m_fragmentOffset <<= 8;
+//    m_fragmentOffset |= fragmentOffset[2] & 0xFF;
+//
+//    m_type |= typeOffset[0] & 0xFF;
+//    m_qValue |= qOffset[0] & 0xFF;
+//    m_width |= widthOffset[0] & 0xFF;
+//    m_height |= heightOffset[0] & 0xFF;
+}
 
-        size_t lumqPosition;
-        for (lumqPosition = 0; lumqPosition < 64 && lumqPosition < m_quantizationPayloadLength; lumqPosition++)
-        {
-            m_lumq[lumqPosition] = pQuantizationTableData[quantizationTableDataPosition];
-            quantizationTableDataPosition++;
-        }
+int Surge::MJPEGDepacketizer::ParseRestartMarkerHeader(const unsigned char * buffer) {
+    int dri = 0;
+    dri = buffer[0];
+    dri = dri << 8;
+    dri = dri | buffer[1];
+    return dri;
+}
 
-        int chrqPosition;
-        for (chrqPosition = 0; chrqPosition < 64 && chrqPosition < m_quantizationPayloadLength; chrqPosition++)
-        {
-            m_chrq[chrqPosition] = pQuantizationTableData[quantizationTableDataPosition];
-            quantizationTableDataPosition++;
-        }
-    }
-    else {
-        // create tables from qfactor
-        MakeTables(m_qValue, m_lumq, m_chrq);
-    }
+void Surge::MJPEGDepacketizer::ParseQuantizationHeader(const unsigned char * quantizationHeader) {
+//    quantizationPayloadLength = 0;
+//    if (m_fragmentOffset == 0) {
+//        quantizationPayloadLength |= quantizationHeader[2] & 0xFF;
+//        quantizationPayloadLength <<= 8;
+//        quantizationPayloadLength |= quantizationHeader[3] & 0xFF;
+//    }
+}
+
+void Surge::MJPEGDepacketizer::ParseQuantizationTableData(const unsigned char * quantizationTableData) {
+//    if (quantizationPayloadLength > 0) {
+//        int quantizationTableDataPosition = 0;
+//        size_t lumqPosition;
+//        for (lumqPosition = 0; lumqPosition < 64 && lumqPosition <
+//                                                    quantizationPayloadLength; lumqPosition++) {
+//            m_lumq[lumqPosition] = quantizationTableData[quantizationTableDataPosition];
+//            quantizationTableDataPosition++;
+//        }
+//
+//        int chrqPosition;
+//        for (chrqPosition = 0; chrqPosition < 64 && chrqPosition <
+//                                                    quantizationPayloadLength; chrqPosition++) {
+//            m_chrq[chrqPosition] = quantizationTableData[quantizationTableDataPosition];
+//            quantizationTableDataPosition++;
+//        }
+//    } else {
+//        // create tables from qfactor
+//        MakeTables(m_qValue, m_lumq, m_chrq);
+//    }
 }

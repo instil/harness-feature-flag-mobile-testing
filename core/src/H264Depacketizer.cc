@@ -21,83 +21,74 @@
 #include "H264Depacketizer.h"
 #include "Base64.h"
 
-Surge::H264Depacketizer::H264Depacketizer(const SessionDescription* palette,
-                                          const RtpPacket *packet,
-                                          bool isFirstPayload) : m_palette(palette),
-                                                                 m_packet(packet)
-{
-    const unsigned char *rtp_packet_payload = m_packet->PayloadData();
-    size_t rtp_packet_payload_length = m_packet->PayloadLength();
+void Surge::H264Depacketizer::ProcessPacket(const RtpPacket *packet, const bool isFirstPayload) {
+    const unsigned char *payloadData = packet->PayloadData();
+    size_t payloadLength = packet->PayloadLength();
 
     if (isFirstPayload) {
-        // append fmtp nalu config lines
-        std::string config = m_palette->GetFmtpH264ConfigParameters();
+        std::string config = sessionDescription.GetFmtpH264ConfigParameters();
 
         size_t pos = config.find(",");
-        std::string first_nalu = config.substr(0, pos);
-        std::string second_nalu = config.substr(pos + 1, config.length());
+        std::string encodedFirstNalu = config.substr(0, pos);
+        std::string encodedSecondNalu = config.substr(pos + 1, config.length());
 
-        // They are base 64 encoded
-        std::string first_nalu_decoded = SurgeUtil::Base64Decode(first_nalu);
-        std::string second_nalu_decoded = SurgeUtil::Base64Decode(second_nalu);
-        
-        Push4ByteNaluHeaderToCurrentPayload();
-        PushBytesToCurrentPayload((const unsigned char *)first_nalu_decoded.c_str(),
-                                  first_nalu_decoded.length());
+        std::string firstNalu = SurgeUtil::Base64Decode(encodedFirstNalu);
+        std::string secondNalu = SurgeUtil::Base64Decode(encodedSecondNalu);
 
-        Push4ByteNaluHeaderToCurrentPayload();
-        PushBytesToCurrentPayload((const unsigned char *)second_nalu_decoded.c_str(),
-                                  second_nalu_decoded.length());
+        AppendFourByteNaluHeaderToFrame();
+        AppendBytesToFrameBuffer((const unsigned char *)firstNalu.c_str(), firstNalu.length());
+
+        AppendFourByteNaluHeaderToFrame();
+        AppendBytesToFrameBuffer((const unsigned char *)secondNalu.c_str(), secondNalu.length());
+
+        SetWidth(720);
+        SetHeight(480);
     }
 
-    int payload_type = GetH264NaluTypeFromByte(rtp_packet_payload[0]);
+    int payload_type = GetH264NaluTypeFromByte(payloadData[0]);
 
     switch(payload_type) {
     case 0:
-        PushBytesToCurrentPayload(rtp_packet_payload, rtp_packet_payload_length);
+        AppendBytesToFrameBuffer(payloadData, payloadLength);
         break;
-
     case 7:
     case 8:
-        Push3ByteNaluHeaderToCurrentPayload();
-        PushBytesToCurrentPayload(rtp_packet_payload, rtp_packet_payload_length);
+        AppendThreeByteNaluHeaderToFrame();
+        AppendBytesToFrameBuffer(payloadData, payloadLength);
         break;
-        
     case 24:
-        Push3ByteNaluHeaderToCurrentPayload();
-        PushBytesToCurrentPayload(rtp_packet_payload + 1, rtp_packet_payload_length - 1);
+        AppendThreeByteNaluHeaderToFrame();
+        AppendBytesToFrameBuffer(payloadData + 1, payloadLength - 1);
         break;
-
     case 25:
     case 26:
     case 27:
-        Push3ByteNaluHeaderToCurrentPayload();
-        PushBytesToCurrentPayload(rtp_packet_payload + 3, rtp_packet_payload_length - 3);
+        AppendThreeByteNaluHeaderToFrame();
+        AppendBytesToFrameBuffer(payloadData + 3, payloadLength - 3);
         break;
-
     case 28:
     case 29: {
-        unsigned char start_bit = rtp_packet_payload[1] >> 7;
-        if (start_bit) {
-            unsigned char *temp_payload = (unsigned char*)malloc(rtp_packet_payload_length - 1);
-            memcpy(temp_payload, rtp_packet_payload + 1, rtp_packet_payload_length - 1);
+        unsigned char startBit = payloadData[1] >> 7;
+        if (startBit) {
+            unsigned char *payloadDataWithHeader = (unsigned char*)malloc(payloadLength - 1);
+            memcpy(payloadDataWithHeader, payloadData + 1, payloadLength - 1);
             
-            unsigned char header = (rtp_packet_payload[0] & 0xE0) + (rtp_packet_payload[1] & 0x1F);
-            temp_payload[0] = header;
+            unsigned char header = (payloadData[0] & 0xE0) + (payloadData[1] & 0x1F);
+            payloadDataWithHeader[0] = header;
+
+            AppendThreeByteNaluHeaderToFrame();
+            AppendBytesToFrameBuffer(payloadDataWithHeader, payloadLength - 1);
             
-            Push3ByteNaluHeaderToCurrentPayload();
-            PushBytesToCurrentPayload(temp_payload, rtp_packet_payload_length - 1);
-            
-            free(temp_payload);
+            free(payloadDataWithHeader);
         } else {
-            PushBytesToCurrentPayload(rtp_packet_payload + 2, rtp_packet_payload_length - 2);
+            AppendBytesToFrameBuffer(payloadData + 2, payloadLength - 2);
         }
     }
         break;
         
     default:
-        Push3ByteNaluHeaderToCurrentPayload();
-        PushBytesToCurrentPayload(rtp_packet_payload, rtp_packet_payload_length);
+        AppendThreeByteNaluHeaderToFrame();
+        AppendBytesToFrameBuffer(payloadData, payloadLength);
         break;
     }
     

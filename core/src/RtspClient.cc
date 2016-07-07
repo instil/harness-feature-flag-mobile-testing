@@ -456,11 +456,13 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 void Surge::RtspClient::CreateDepacketizer() {
     switch (m_sessionDescription.GetType()) {
         case H264:
+            depacketizer = new H264Depacketizer(m_sessionDescription, frameBuffer);
             break;
         case MP4V:
             depacketizer = new MP4VDepacketizer(m_sessionDescription, frameBuffer);
             break;
         case MJPEG:
+            depacketizer = new MJPEGDepacketizer(m_sessionDescription, frameBuffer);
             break;
         default:
             ERROR("Content type " << m_sessionDescription.GetType() << " not currently supported");

@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
         Logger.debug("textureView.isAvailable: " + textureView.isAvailable());
-        player.initiatePlaybackOf("rtsp://192.168.1.52:8554/test", new Surface(surfaceTexture));
+        player.initiatePlaybackOf("rtsp://192.168.1.104:8554/test", new Surface(surfaceTexture));
     }
 
     @Override
@@ -41,4 +41,5 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     }
+
 }

@@ -1,5 +1,6 @@
 package co.instil.surge.decoders;
 
+import android.annotation.TargetApi;
 import android.media.MediaCodec;
 import android.media.MediaCodec.BufferInfo;
 import android.media.MediaCodec.CodecException;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  *
  */
+@TargetApi(21)
 public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
 
     private static Logger logger = LoggerFactory.getLogger(AsyncMp4vDecoder.class);

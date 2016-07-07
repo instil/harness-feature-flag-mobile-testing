@@ -28,7 +28,7 @@
 #include "InterleavedRtspTransport.h"
 #include "UdpTransport.h"
 
-#include "H264Depacetizer.h"
+#include "H264Depacketizer.h"
 #include "MP4VDepacketizer.h"
 #include "MJPEGDepacketizer.h"
 
@@ -39,7 +39,7 @@ using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool forceInterleavedTransport) :
         m_delegate(delegate),
         m_noPacketTimeout(DEFAULT_NO_PACKET_TIMEOUT_MS),
-        m_processedFirstPayload(false),
+        processedFirstPayload(false),
         m_lastKeepAliveMs(0),
         m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
         m_sequenceNumber(1) {
@@ -50,6 +50,7 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         m_transport = new UdpTransport(nullptr);
     }
     m_transport->SetDelegate(this);
+    frameBuffer = new std::vector<unsigned char>();
 }
 
 Surge::RtspClient::~RtspClient() {
@@ -61,6 +62,8 @@ Surge::RtspClient::~RtspClient() {
         m_thread.Stop();
     }
 
+    delete frameBuffer;
+    delete depacketizer;
     delete m_transport;
 }
 
@@ -128,8 +131,10 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& session
     // set current palette
     m_sessionDescription = sessionDescription;
 
+    CreateDepacketizer();
+
     // new session = no processed payloads
-    m_processedFirstPayload = false;
+    processedFirstPayload = false;
     
     RtspCommand* setup = RtspCommandFactory::SetupRequest(setup_url, GetNextSequenceNumber(), m_transport);
     Response* raw_resp = m_transport->RtspTransaction(setup, true);
@@ -431,63 +436,37 @@ void Surge::RtspClient::Run() {
 }
 
 void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
-
-    switch (m_sessionDescription.GetType()) {
-    case H264:
-        ProcessH264Packet(packet);
-        break;
-
-    case MP4V:
-        ProcessMP4VPacket(packet);
-        break;
-
-    case MJPEG:
-        ProcessMJPEGPacket(packet);
-        break;
-        
-    default:
-        ERROR("Unhandled session type: " << m_sessionDescription.GetType());
+    if (depacketizer == nullptr) {
+        WARNING("Received RTP packet but no depacketizer available");
         return;
     }
 
-    m_processedFirstPayload = true;
+    depacketizer->ProcessPacket(packet, !processedFirstPayload);
+    processedFirstPayload = true;
     
     if (!packet->IsMarked()) {
         return;
     }
 
-    size_t current_frame_size = GetCurrentFrameSize();
-    const unsigned char *current_frame = GetCurrentFrame();
-
-    // notify delegate of new payload
-    NotifyDelegatePayload(current_frame, current_frame_size);
-
-    // reset
-    ResetCurrentPayload();
+    NotifyDelegateOfAvailableFrame();
+    ClearFrameBuffer();
 }
 
-void Surge::RtspClient::ProcessH264Packet(const RtpPacket* packet) {
-    H264Depacketizer depacketizer(&m_sessionDescription, packet, IsFirstPayload());
-
-    const unsigned char *payload = depacketizer.PayloadBytes();
-    size_t payload_size = depacketizer.PayloadLength();
-
-    AppendPayloadToCurrentFrame(payload, payload_size);
-}
-
-void Surge::RtspClient::ProcessMP4VPacket(const RtpPacket* packet) {
-    MP4VDepacketizer depacketizer(&m_sessionDescription, packet, IsFirstPayload());
-
-    const unsigned char *payload = depacketizer.PayloadBytes();
-    size_t payload_size = depacketizer.PayloadLength();
-
-    AppendPayloadToCurrentFrame(payload, payload_size);
-}
-
-void Surge::RtspClient::ProcessMJPEGPacket(const RtpPacket* packet) {
-    MJPEGDepacketizer depacketizer(&m_sessionDescription, packet, IsFirstPayload());
-
-    depacketizer.AddToFrame(&m_currentFrame);
+void Surge::RtspClient::CreateDepacketizer() {
+    switch (m_sessionDescription.GetType()) {
+        case H264:
+            depacketizer = new H264Depacketizer(m_sessionDescription, frameBuffer);
+            break;
+        case MP4V:
+            depacketizer = new MP4VDepacketizer(m_sessionDescription, frameBuffer);
+            break;
+        case MJPEG:
+            depacketizer = new MJPEGDepacketizer(m_sessionDescription, frameBuffer);
+            break;
+        default:
+            ERROR("Content type " << m_sessionDescription.GetType() << " not currently supported");
+            return;
+    }
 }
 
 int Surge::RtspClient::SetupRtspConnection(const std::string& url) {

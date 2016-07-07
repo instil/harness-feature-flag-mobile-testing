@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,39 +18,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __MP4V_DEPACKETIZER_H__
-#define __MP4V_DEPACKETIZER_H__
+#ifndef ANDROID_RTSPLOGGINGDELEGATEWRAPPER_H
+#define ANDROID_RTSPLOGGINGDELEGATEWRAPPER_H
 
-#include "SessionDescription.h"
-#include "RtpPacket.h"
-#include "Depacketizer.h"
+#include "Logging.h"
 
-#include <vector>
+namespace SurgeJni {
 
-namespace Surge {
+    class RtspLoggingDelegateWrapper : public SurgeUtil::ILoggingDelegate {
 
-    class MP4VDepacketizer : public Depacketizer {
     public:
-        MP4VDepacketizer(const SessionDescription sessionDescription,
-                         std::vector<unsigned char> *frameBuffer)
+        void trace(const char *message) const override;
 
-                : Depacketizer(frameBuffer),
-                  sessionDescription(sessionDescription) {}
+        void debug(const char *message) const override;
 
-        void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload);
+        void info(const char *message) const override;
 
-    private:
-        void ExtractDimensionsFromVosHeader(std::vector<unsigned char> config);
+        void warn(const char *message) const override;
 
-        bool IsVideoObjectLayerStartCode(uint8_t *descriptor);
+        void error(const char *message) const override;
 
-        void ExtractDimensionsFromVolHeader(uint8_t *volHeader, size_t size);
+        void fatal(const char *message) const override;
 
-        uint8_t NumberOfBitsRequiredtoStoreValue(uint32_t value);
-
-        const SessionDescription sessionDescription;
     };
-    
-};
 
-#endif //__MP4V_DEPACKETIZER_H__
+}
+#endif //ANDROID_RTSPLOGGINGDELEGATEWRAPPER_H

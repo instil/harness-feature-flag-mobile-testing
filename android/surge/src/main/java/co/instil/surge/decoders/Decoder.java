@@ -1,5 +1,7 @@
 package co.instil.surge.decoders;
 
+import co.instil.surge.client.SessionDescription;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -7,6 +9,12 @@ import java.nio.ByteBuffer;
  */
 public interface Decoder {
 
-    void decodeFrameBuffer(ByteBuffer frameBuffer, int duration, int presentationTime);
+    void decodeFrameBuffer(SessionDescription sessionDescription,
+                           ByteBuffer frameBuffer,
+                           int width,
+                           int height,
+                           int presentationTime,
+                           int duration);
 
+    void close() throws InterruptedException;
 }

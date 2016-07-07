@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,39 +18,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __MP4V_DEPACKETIZER_H__
-#define __MP4V_DEPACKETIZER_H__
+#include "RtspLoggingDelegateWrapper.h"
+#include <android/log.h>
 
-#include "SessionDescription.h"
-#include "RtpPacket.h"
-#include "Depacketizer.h"
 
-#include <vector>
+void SurgeJni::RtspLoggingDelegateWrapper::trace(const char *message) const {
+    __android_log_print(ANDROID_LOG_VERBOSE, "Surge", message);
+}
 
-namespace Surge {
+void SurgeJni::RtspLoggingDelegateWrapper::debug(const char *message) const {
+    __android_log_print(ANDROID_LOG_DEBUG, "Surge", message);
+}
 
-    class MP4VDepacketizer : public Depacketizer {
-    public:
-        MP4VDepacketizer(const SessionDescription sessionDescription,
-                         std::vector<unsigned char> *frameBuffer)
+void SurgeJni::RtspLoggingDelegateWrapper::info(const char *message) const {
+    __android_log_print(ANDROID_LOG_INFO, "Surge", message);
+}
 
-                : Depacketizer(frameBuffer),
-                  sessionDescription(sessionDescription) {}
+void SurgeJni::RtspLoggingDelegateWrapper::warn(const char *message) const {
+    __android_log_print(ANDROID_LOG_WARN, "Surge", message);
+}
 
-        void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload);
+void SurgeJni::RtspLoggingDelegateWrapper::error(const char *message) const {
+    __android_log_print(ANDROID_LOG_ERROR, "Surge", message);
+}
 
-    private:
-        void ExtractDimensionsFromVosHeader(std::vector<unsigned char> config);
-
-        bool IsVideoObjectLayerStartCode(uint8_t *descriptor);
-
-        void ExtractDimensionsFromVolHeader(uint8_t *volHeader, size_t size);
-
-        uint8_t NumberOfBitsRequiredtoStoreValue(uint32_t value);
-
-        const SessionDescription sessionDescription;
-    };
-    
-};
-
-#endif //__MP4V_DEPACKETIZER_H__
+void SurgeJni::RtspLoggingDelegateWrapper::fatal(const char *message) const {
+    __android_log_print(ANDROID_LOG_FATAL, "Surge", message);
+}

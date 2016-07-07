@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,39 +18,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __MP4V_DEPACKETIZER_H__
-#define __MP4V_DEPACKETIZER_H__
+#ifndef BITSTREAMWRITER_H
+#define BITSTREAMWRITER_H
 
-#include "SessionDescription.h"
-#include "RtpPacket.h"
-#include "Depacketizer.h"
 
+#include <stdlib.h>
 #include <vector>
 
-namespace Surge {
+namespace SurgeUtil {
 
-    class MP4VDepacketizer : public Depacketizer {
+    class BitstreamWriter {
     public:
-        MP4VDepacketizer(const SessionDescription sessionDescription,
-                         std::vector<unsigned char> *frameBuffer)
+        BitstreamWriter();
 
-                : Depacketizer(frameBuffer),
-                  sessionDescription(sessionDescription) {}
+        ~BitstreamWriter();
 
-        void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload);
+        void WriteBit(uint8_t value);
+
+        void WriteByte(uint8_t value);
+
+        void WriteTwoBytes(uint16_t value);
+
+        void WriteThreeBytes(uint32_t value);
+
+        void WriteFourBytes(uint32_t value);
+
+        void WriteBytes(uint8_t *bytes, size_t size);
+
+        void WriteBits(uint8_t value, uint8_t numberOfBits);
+
+        std::vector<uint8_t>* Bitstream();
 
     private:
-        void ExtractDimensionsFromVosHeader(std::vector<unsigned char> config);
-
-        bool IsVideoObjectLayerStartCode(uint8_t *descriptor);
-
-        void ExtractDimensionsFromVolHeader(uint8_t *volHeader, size_t size);
-
-        uint8_t NumberOfBitsRequiredtoStoreValue(uint32_t value);
-
-        const SessionDescription sessionDescription;
+        std::vector<uint8_t> *bitstream;
+        uint32_t currentBitOffset;
     };
-    
-};
 
-#endif //__MP4V_DEPACKETIZER_H__
+}
+
+#endif //BITSTREAMWRITER_H

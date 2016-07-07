@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,39 +18,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __MP4V_DEPACKETIZER_H__
-#define __MP4V_DEPACKETIZER_H__
+#ifndef ANDROID_TYPECONVERTERS_H
+#define ANDROID_TYPECONVERTERS_H
 
-#include "SessionDescription.h"
-#include "RtpPacket.h"
-#include "Depacketizer.h"
+#include <jni.h>
+#include <Surge.h>
 
-#include <vector>
+namespace SurgeJni {
 
-namespace Surge {
+    namespace NativeTypeConverters {
 
-    class MP4VDepacketizer : public Depacketizer {
-    public:
-        MP4VDepacketizer(const SessionDescription sessionDescription,
-                         std::vector<unsigned char> *frameBuffer)
+        jstring convertString(JNIEnv *env, std::string string);
 
-                : Depacketizer(frameBuffer),
-                  sessionDescription(sessionDescription) {}
+        jobject convertMap(JNIEnv *env, std::map<std::string, std::string> map);
 
-        void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload);
+        jobject convertResponse(JNIEnv *env, Surge::RtspResponse *response);
 
-    private:
-        void ExtractDimensionsFromVosHeader(std::vector<unsigned char> config);
+        jobject convertSessionType(JNIEnv *env, Surge::RtspSessionType type);
 
-        bool IsVideoObjectLayerStartCode(uint8_t *descriptor);
+        jobject convertSessionDescription(JNIEnv *env, Surge::SessionDescription sessionDescription);
 
-        void ExtractDimensionsFromVolHeader(uint8_t *volHeader, size_t size);
+        jobject convertSessionDescriptions(JNIEnv *env, std::vector<Surge::SessionDescription> sessionDescriptions);
 
-        uint8_t NumberOfBitsRequiredtoStoreValue(uint32_t value);
+        jobject convertDescribeResponse(JNIEnv *env, Surge::DescribeResponse *response);
 
-        const SessionDescription sessionDescription;
-    };
-    
-};
+    }
 
-#endif //__MP4V_DEPACKETIZER_H__
+    namespace JavaTypeConverters {
+
+        std::string convertString(JNIEnv *env, jstring jString);
+
+        Surge::RtspSessionType convertSessionType(JNIEnv *env, jobject jSessionDescription);
+
+        Surge::SessionDescription convertSessionDescription(JNIEnv *env, jobject jSessionDescription);
+
+    }
+
+}
+
+
+#endif //ANDROID_TYPECONVERTERS_H

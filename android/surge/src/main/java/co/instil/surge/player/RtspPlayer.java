@@ -1,20 +1,18 @@
 package co.instil.surge.player;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.nio.ByteBuffer;
-import java.util.List;
-
+import android.view.Surface;
 import co.instil.surge.client.DescribeResponse;
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
-import co.instil.surge.client.SessionType;
+import co.instil.surge.decoders.AsyncH264Decoder;
+import co.instil.surge.decoders.AsyncMp4vDecoder;
 import co.instil.surge.decoders.Decoder;
-import co.instil.surge.decoders.H264Decoder;
 import co.instil.surge.decoders.MjpegDecoder;
-import co.instil.surge.decoders.Mp4vDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.nio.ByteBuffer;
 
 import static co.instil.surge.client.SessionType.H264;
 import static co.instil.surge.client.SessionType.MJPEG;
@@ -25,28 +23,39 @@ import static co.instil.surge.client.SessionType.MP4V;
  */
 public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
-    private static final Logger logger = LoggerFactory.getLogger(RtspPlayer.class);
+    private static Logger logger = LoggerFactory.getLogger(RtspPlayer.class);
 
     private final RtspClient rtspClient;
 
     private String url;
+    private Surface surface;
     private Decoder decoder;
+    private SessionDescription sessionDescription;
 
     public RtspPlayer() {
         rtspClient = new RtspClient(this);
     }
 
-    public void initiatePlaybackOf(String url) {
+    public void initiatePlaybackOf(String url, Surface surface) {
         this.url = url;
+        this.surface = surface;
         logger.debug("Initating playback of {}", url);
+
         DescribeResponse response = rtspClient.describe(url);
+        for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
+            logger.debug(sessionDescription.toString());
+        }
+
         SessionDescription[] sessionDescriptions = response.getSessionDescriptions();
         if (sessionDescriptions.length > 0) {
             setupStream(sessionDescriptions[0]);
+        } else {
+            throw new RuntimeException("No session description available, is the stream active?");
         }
     }
 
     private void setupStream(SessionDescription sessionDescription) {
+        this.sessionDescription = sessionDescription;
         initialiseDecoder(sessionDescription);
         rtspClient.setup(sessionDescription);
         rtspClient.play();
@@ -54,11 +63,11 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     private void initialiseDecoder(SessionDescription sessionDescription) {
         if (sessionDescription.getType() == H264) {
-            decoder = new H264Decoder();
+            decoder = new AsyncH264Decoder(surface);
         } else if (sessionDescription.getType() == MP4V) {
-            decoder = new Mp4vDecoder();
+            decoder = new AsyncMp4vDecoder(surface);
         } else if (sessionDescription.getType() == MJPEG) {
-            decoder = new MjpegDecoder();
+            decoder = new MjpegDecoder(surface);
         }
     }
 
@@ -80,6 +89,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     @Override
     public void close() throws Exception {
         rtspClient.close();
+        decoder.close();
     }
 
     @Override
@@ -88,8 +98,18 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     }
 
     @Override
-    public void clientReceivedFrame(ByteBuffer byteBuffer) {
-        decoder.decodeFrameBuffer(byteBuffer, 0, 0);
+    public void clientReceivedFrame(ByteBuffer byteBuffer,
+                                    int width,
+                                    int height,
+                                    int presentationTime,
+                                    int duration) {
+
+        decoder.decodeFrameBuffer(sessionDescription,
+                                  byteBuffer,
+                                  width,
+                                  height,
+                                  presentationTime,
+                                  duration);
     }
 
 }

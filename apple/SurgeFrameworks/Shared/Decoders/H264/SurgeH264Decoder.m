@@ -30,10 +30,11 @@
 
 #pragma mark - Decoder
 
-- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
+- (void)decodeFrameBuffer:(const uint8_t *)frameBuffer
                    ofSize:(size_t)size
-        withFrameDuration:(int)frameDuration
-      andPresentationTime:(unsigned int)presentationTimeInterval {
+           withDimensions:(CGSize)dimensions
+         presentationTime:(unsigned int)presentationTime
+                 duration:(int)duration {
 
     NSArray *nalUnits = [SurgeNalUnitParser parseNalUnitsFromFrameBuffer:frameBuffer ofLength:size];
     for (SurgeNalUnit *nalUnit in nalUnits) {
@@ -61,8 +62,8 @@
                   withBlockBuffer:&blockBuffer
                        ofLength:CMBlockBufferGetDataLength(blockBuffer)
              andNumberOfSamples:1
-              withFrameDuration:frameDuration
-            andPresentationTime:presentationTimeInterval];
+              withFrameDuration:duration
+            andPresentationTime:presentationTime];
         
         [self enqueueSampleBuffer:sampleBuffer];
     }

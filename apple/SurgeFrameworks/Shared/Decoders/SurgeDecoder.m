@@ -66,10 +66,11 @@
 
 #pragma mark - Abstract methods
 
-- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
+- (void)decodeFrameBuffer:(const uint8_t *)frameBuffer
                    ofSize:(size_t)size
-        withFrameDuration:(int)frameDuration
-      andPresentationTime:(unsigned int)presentationTimeInterval {
+           withDimensions:(CGSize)dimensions
+         presentationTime:(unsigned int)presentationTime
+                 duration:(int)duration {
     
     @throw [NSException exceptionWithName:@"Not implemented" reason:@"Abstract method must implemented in sub-class" userInfo:nil];
 }

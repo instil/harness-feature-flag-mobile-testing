@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,39 +18,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __MP4V_DEPACKETIZER_H__
-#define __MP4V_DEPACKETIZER_H__
+#ifndef BITSTREAMREADER_H
+#define BITSTREAMREADER_H
 
-#include "SessionDescription.h"
-#include "RtpPacket.h"
-#include "Depacketizer.h"
+#include <stdlib.h>
 
-#include <vector>
+namespace SurgeUtil {
 
-namespace Surge {
+    class BitstreamReader {
 
-    class MP4VDepacketizer : public Depacketizer {
     public:
-        MP4VDepacketizer(const SessionDescription sessionDescription,
-                         std::vector<unsigned char> *frameBuffer)
+        BitstreamReader(uint8_t *bitstream, size_t size);
 
-                : Depacketizer(frameBuffer),
-                  sessionDescription(sessionDescription) {}
+        uint8_t ReadBit();
 
-        void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload);
+        uint8_t ReadByte();
+
+        uint16_t ReadTwoBytes();
+
+        uint32_t ReadFourBytes();
+
+        uint32_t ReadNumberOfBits(uint8_t numberOfBits);
+
+        void SkipNumberOfBits(uint8_t numberOfBits);
 
     private:
-        void ExtractDimensionsFromVosHeader(std::vector<unsigned char> config);
-
-        bool IsVideoObjectLayerStartCode(uint8_t *descriptor);
-
-        void ExtractDimensionsFromVolHeader(uint8_t *volHeader, size_t size);
-
-        uint8_t NumberOfBitsRequiredtoStoreValue(uint32_t value);
-
-        const SessionDescription sessionDescription;
+        uint8_t *bitstream;
+        size_t size;
+        uint32_t currentBitOffset;
     };
-    
-};
 
-#endif //__MP4V_DEPACKETIZER_H__
+}
+
+
+#endif //BITSTREAMREADER_H

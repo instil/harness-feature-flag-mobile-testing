@@ -38,7 +38,7 @@ SurgeUtil::FireableEvent::FireableEvent(): m_associatedData(nullptr),
     {
         std::ostringstream message;
         message << "FireableEvent::FireableEvent(): failed to create pipe: "
-                << "errno = " << errno;
+                << "error (" << errno << ") " << strerror(errno);
         throw std::runtime_error{message.str()};
     }
 }

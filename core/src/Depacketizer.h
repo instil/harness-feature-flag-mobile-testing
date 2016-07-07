@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,39 +18,50 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __MP4V_DEPACKETIZER_H__
-#define __MP4V_DEPACKETIZER_H__
+#ifndef DEPACKETIZER_H
+#define DEPACKETIZER_H
 
+
+#include <stdint.h>
 #include "SessionDescription.h"
 #include "RtpPacket.h"
-#include "Depacketizer.h"
-
-#include <vector>
 
 namespace Surge {
 
-    class MP4VDepacketizer : public Depacketizer {
+    class Depacketizer {
     public:
-        MP4VDepacketizer(const SessionDescription sessionDescription,
-                         std::vector<unsigned char> *frameBuffer)
+        Depacketizer(std::vector<unsigned char> *frameBuffer) : frameBuffer(frameBuffer) {};
 
-                : Depacketizer(frameBuffer),
-                  sessionDescription(sessionDescription) {}
+        virtual void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload) = 0;
 
-        void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload);
+        uint32_t GetWidth() {
+            return width;
+        }
 
-    private:
-        void ExtractDimensionsFromVosHeader(std::vector<unsigned char> config);
+        uint32_t GetHeight() {
+            return height;
+        }
 
-        bool IsVideoObjectLayerStartCode(uint8_t *descriptor);
+    protected:
+        void AppendBytesToFrameBuffer(const unsigned char *bytes, size_t length) {
+            for (int i = 0; i < length; ++i) {
+                frameBuffer->push_back(bytes[i]);
+            }
+        }
 
-        void ExtractDimensionsFromVolHeader(uint8_t *volHeader, size_t size);
+        void SetWidth(uint32_t width) {
+            this->width = width;
+        }
 
-        uint8_t NumberOfBitsRequiredtoStoreValue(uint32_t value);
+        void SetHeight(uint32_t height) {
+            this->height = height;
+        }
 
-        const SessionDescription sessionDescription;
+        std::vector<unsigned char> *frameBuffer;
+        uint32_t width;
+        uint32_t height;
     };
-    
-};
 
-#endif //__MP4V_DEPACKETIZER_H__
+}
+
+#endif //DEPACKETIZER_H

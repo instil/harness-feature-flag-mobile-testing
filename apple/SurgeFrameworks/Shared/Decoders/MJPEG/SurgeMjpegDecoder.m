@@ -24,15 +24,16 @@
 
 @implementation SurgeMjpegDecoder
 
-- (void)decodeFrameBuffer:(const unsigned char*)frameBuffer
+- (void)decodeFrameBuffer:(const uint8_t *)frameBuffer
                    ofSize:(size_t)size
-        withFrameDuration:(int)frameDuration
-      andPresentationTime:(unsigned int)presentationTimeInterval {
+           withDimensions:(CGSize)dimensions
+         presentationTime:(unsigned int)presentationTime
+                 duration:(int)duration {
     
     CGDataProviderRef imageDataProvider = CGDataProviderCreateWithData(NULL, frameBuffer, size, NULL);
     CGImageRef image = CGImageCreateWithJPEGDataProvider(imageDataProvider, NULL, true, kCGRenderingIntentDefault);
     
-    [self.delegate decoderFrameAvailable:image withTimeStamp:presentationTimeInterval];
+    [self.delegate decoderFrameAvailable:image withTimeStamp:presentationTime];
     
     CGImageRelease(image);
     CGDataProviderRelease(imageDataProvider);

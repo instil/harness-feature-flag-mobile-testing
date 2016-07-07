@@ -33,6 +33,7 @@
 
 #include "DescribeResponse.h"
 #include "SetupResponse.h"
+#include "Depacketizer.h"
 
 #include <string>
 #include <vector>
@@ -104,15 +105,19 @@ namespace Surge {
         }
 
         void ProcessRtpPacket(const RtpPacket* packet);
+
+        void CreateDepacketizer();
         
         int GetNextSequenceNumber() { return m_sequenceNumber++; }
 
-        bool IsFirstPayload() const { return !m_processedFirstPayload; }
-
-        void NotifyDelegatePayload(const unsigned char *buffer, size_t length) {
+        void NotifyDelegateOfAvailableFrame() {
             if (m_delegate != nullptr) {
-                // casting to char * so swig can see this as a byte[] for jni bindings
-                m_delegate->Payload((const char *)buffer, length);
+                m_delegate->ClientReceivedFrame(frameBuffer->data(),
+                                                frameBuffer->size(),
+                                                depacketizer->GetWidth(),
+                                                depacketizer->GetHeight(),
+                                                1,
+                                                1);
             }
         }
 
@@ -128,38 +133,23 @@ namespace Surge {
             GetDispatcher().FailureForClient(this, ERROR_TYPE::ANNOUNCE);
         }
 
-        void AppendPayloadToCurrentFrame(const unsigned char *buffer, size_t length) {
-            size_t old_size = m_currentFrame.size();
-            m_currentFrame.resize(old_size + length);
-            std::copy(buffer, buffer + length, m_currentFrame.begin() + old_size);
-        }
-
-        void ResetCurrentPayload() {
-            m_currentFrame.clear();
-            m_currentFrame.resize(0);
+        void ClearFrameBuffer() {
+            frameBuffer->clear();
+            frameBuffer->resize(0);
         }
 
         int SetupRtspConnection(const std::string& url);
 
-        const unsigned char * GetCurrentFrame() const { return &(m_currentFrame[0]); }
-
-        size_t GetCurrentFrameSize() const { return m_currentFrame.size(); }
-
-        void ProcessH264Packet(const RtpPacket* packet);
-
-        void ProcessMP4VPacket(const RtpPacket* packet);
-
-        void ProcessMJPEGPacket(const RtpPacket* packet);
-
         bool m_isPlaying;
         SurgeUtil::FireableEvent m_abortWait;
 
-        std::vector<unsigned char> m_currentFrame;
         SessionDescription m_sessionDescription;
+        std::vector<unsigned char> *frameBuffer;
 
+        Depacketizer *depacketizer;
         IRtspClientDelegate * const m_delegate;
         long m_noPacketTimeout;
-        bool m_processedFirstPayload;
+        bool processedFirstPayload;
         std::uint64_t m_lastKeepAliveMs;
         int m_keeepAliveIntervalInSeconds;
         int m_sequenceNumber;

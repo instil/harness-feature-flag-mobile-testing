@@ -22,6 +22,8 @@
 #ifndef __IRTSP_CLIENT_DELEGATE_H__
 #define __IRTSP_CLIENT_DELEGATE_H__
 
+#include "SessionDescription.h"
+
 namespace Surge {
 
     class IRtspClientDelegate {
@@ -36,7 +38,12 @@ namespace Surge {
         virtual void StreamConfigChanged(bool wasRedirect) = 0;
 
         // VIDEO
-        virtual void Payload(const char* frameBuffer, size_t length) = 0;
+        virtual void ClientReceivedFrame(const unsigned char * frameBuffer,
+                                         size_t length,
+                                         int32_t width,
+                                         int32_t height,
+                                         int32_t presentationTime,
+                                         int32_t duration) = 0;
 
     };
     

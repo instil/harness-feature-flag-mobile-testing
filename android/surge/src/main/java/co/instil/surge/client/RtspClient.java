@@ -7,6 +7,7 @@ public class RtspClient implements AutoCloseable {
 
     static {
         System.loadLibrary("surge");
+        load();
     }
 
     private final long nativeClient;
@@ -14,6 +15,8 @@ public class RtspClient implements AutoCloseable {
     public RtspClient(RtspClientDelegate delegate) {
         nativeClient = createNativeClientInstance(delegate);
     }
+
+    private static native void load();
 
     private native long createNativeClientInstance(RtspClientDelegate delegate);
 
@@ -25,7 +28,7 @@ public class RtspClient implements AutoCloseable {
 
     public native DescribeResponse describe(String url, String username, String password);
 
-    public native SetupResponse setup(SessionDescription sessionDescription);
+    public native Response setup(SessionDescription sessionDescription);
 
     public native Response play();
 

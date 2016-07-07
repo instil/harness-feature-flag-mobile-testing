@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     co_instil_surge_client_RtspClient
+ * Method:    load
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_load
+        (JNIEnv *, jclass);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
  * Method:    createNativeClientInstance
  * Signature: (Lco/instil/surge/client/RtspClientDelegate;)J
  */
@@ -50,7 +58,7 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    setup
- * Signature: (Lco/instil/surge/client/SessionDescription;)Lco/instil/surge/client/SetupResponse;
+ * Signature: (Lco/instil/surge/client/SessionDescription;)Lco/instil/surge/client/Response;
  */
 JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_setup
         (JNIEnv *, jobject, jobject);

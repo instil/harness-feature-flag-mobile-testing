@@ -1,6 +1,8 @@
 package co.instil.surge.decoders;
 
 import android.media.MediaCodec;
+import android.media.MediaCodec.BufferInfo;
+import android.media.MediaCodec.CodecException;
 import android.media.MediaFormat;
 import android.view.Surface;
 import co.instil.surge.client.SessionDescription;
@@ -41,16 +43,15 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
             logger.debug("Received MP4V frame for decoding");
 
             if (mediaCodec == null) {
-                mediaCodec = createMediaCodec(sessionDescription, surface, width, height);
+                mediaCodec = createMediaCodec(sessionDescription, width, height);
                 mediaCodec.setCallback(this);
                 mediaCodec.start();
             }
 
             if (availableInputBuffers.size() > 0) {
-                logger.debug("Input buffer {} available, queueing frame for immediate decoding", availableInputBuffers.get(0));
                 submitFrameToBuffer(frameBuffer, presentationTime, availableInputBuffers.remove(0), mediaCodec);
             } else {
-                logger.debug("No input buffer available, queueing frame until one becomes available");
+                logger.debug("No input buffer available, queueing frame until one becomes free");
                 decodeQueue.add(frameBuffer);
             }
 
@@ -64,15 +65,21 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
         }
     }
 
-    private MediaCodec createMediaCodec(SessionDescription sessionDescription, Surface surface, int width, int height) throws IOException {
+    private MediaCodec createMediaCodec(SessionDescription sessionDescription, int width, int height) throws IOException {
         mediaCodec = MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_VIDEO_MPEG4);
         mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_MPEG4, width, height);
-        mediaFormat.setInteger(MediaFormat.KEY_WIDTH, width);
-        mediaFormat.setInteger(MediaFormat.KEY_HEIGHT, height);
         mediaFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, width * height);
         mediaFormat.setByteBuffer("csd-0", ByteBuffer.wrap(sessionDescription.getDecoderConfig().getBytes()));
         mediaCodec.configure(mediaFormat, surface, null, 0);
         return mediaCodec;
+    }
+
+    private void resetCodec() {
+        availableInputBuffers.clear();
+        mediaCodec.reset();
+        mediaCodec.configure(mediaFormat, surface, null, 0);
+        mediaCodec.setCallback(this);
+        mediaCodec.start();
     }
 
     @Override
@@ -84,7 +91,7 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
     }
 
     private void submitFrameToBuffer(ByteBuffer frameBuffer, int presentationTime, int bufferIndex, MediaCodec codec) {
-        logger.debug("Decode Queue Size {}", decodeQueue.size());
+        logger.debug("Submitting frame to input buffer {}", bufferIndex);
         ByteBuffer inputBuffer = codec.getInputBuffer(bufferIndex);
 
         byte[] frame = new byte[frameBuffer.capacity()];
@@ -107,14 +114,17 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
     }
 
     @Override
-    public void onOutputBufferAvailable(MediaCodec codec, int index, MediaCodec.BufferInfo info) {
+    public void onOutputBufferAvailable(MediaCodec codec, int index, BufferInfo info) {
         logger.debug("Rendering and releasing output buffer");
         codec.releaseOutputBuffer(index, true);
     }
 
     @Override
-    public void onError(MediaCodec codec, MediaCodec.CodecException e) {
-        logger.debug("MP4V decoding failed", e);
+    public void onError(MediaCodec codec, CodecException error) {
+        logger.debug("MP4V decoding failed", error);
+        if (!error.isRecoverable()) {
+            resetCodec();
+        }
     }
 
     @Override

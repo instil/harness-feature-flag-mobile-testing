@@ -41,16 +41,18 @@ namespace Surge {
         void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload);
 
     private:
+        
+        size_t ProcessPacketHeaders(const unsigned char *payloadData, const size_t payloadLength);
+        
+        int ParseRestartMarkerHeader(const unsigned char *buffer);
 
-        void ParseJpegHeader(const unsigned char * buffer);
-
-        int ParseRestartMarkerHeader(const unsigned char * buffer);
-
-        void ParseQuantizationHeader(const unsigned char * buffer);
-
-        void ParseQuantizationTableData(const unsigned char * buffer);
-
-        size_t ProcessJpegHeaders(const RtpPacket *packet);
+        int ParseQuantizationTableLength(const unsigned char *buffer);
+        
+        void ParseQuantizationTable(const unsigned char *quantizationTableData,
+                                    int quantizationTableLength,
+                                    int qValue,
+                                    unsigned char *lumq,
+                                    unsigned char *chrq);
 
         const SessionDescription sessionDescription;
     };

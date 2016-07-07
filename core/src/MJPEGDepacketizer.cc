@@ -132,48 +132,56 @@ static unsigned char chm_ac_symbols[] = {
 /*
  * Call MakeTables with the Q factor and two u_char[64] return arrays
  */
-static
-void MakeTables(int q, unsigned char *lqt, unsigned char *cqt) {
+static void MakeTables(int q, unsigned char *lqt, unsigned char *cqt) {
     int i;
     int factor = q;
 
-    if (q < 1) factor = 1;
-    if (q > 99) factor = 99;
-    if (q < 50)
+    if (q < 1) {
+        factor = 1;
+    }
+    if (q > 99) {
+        factor = 99;
+    }
+    if (q < 50) {
         q = 5000 / factor;
-    else
+    } else {
         q = 200 - factor*2;
+    }
 
     for (i = 0; i < 64; i++) {
         int lq = (jpeg_luma_quantizer[i] * q + 50) / 100;
         int cq = (jpeg_chroma_quantizer[i] * q + 50) / 100;
 
         /* Limit the quantizers to 1 <= q <= 255 */
-        if (lq < 1) lq = 1;
-        else if (lq > 255) lq = 255;
+        if (lq < 1) {
+            lq = 1;
+        } else if (lq > 255) {
+            lq = 255;
+        }
         lqt[i] = lq;
 
-        if (cq < 1) cq = 1;
-        else if (cq > 255) cq = 255;
+        if (cq < 1) {
+            cq = 1;
+        } else if (cq > 255) {
+            cq = 255;
+        }
         cqt[i] = cq;
     }
 }
 
-static
-void MakeQuantHeader(std::vector<unsigned char> * const p, unsigned char *qt, int tableNo) {
-    p->push_back(0xff);
-    p->push_back(0xdb);
-    p->push_back(0);
-    p->push_back(67);
-    p->push_back(tableNo);
+static void MakeQuantHeader(std::vector<unsigned char> * const frameBuffer, unsigned char *qt, int tableNo) {
+    frameBuffer->push_back(0xff);
+    frameBuffer->push_back(0xdb);
+    frameBuffer->push_back(0);
+    frameBuffer->push_back(67);
+    frameBuffer->push_back(tableNo);
 
-    size_t preCopySize = p->size();
-    p->resize(p->size() + 64);
-    std::copy(qt, qt + 64, p->begin() + preCopySize);
+    size_t preCopySize = frameBuffer->size();
+    frameBuffer->resize(frameBuffer->size() + 64);
+    std::copy(qt, qt + 64, frameBuffer->begin() + preCopySize);
 }
 
-static
-void MakeHuffmanHeader(std::vector<unsigned char> * const p,
+static void MakeHuffmanHeader(std::vector<unsigned char> * const frameBuffer,
                        unsigned char *codelens,
                        int ncodes,
                        unsigned char *symbols,
@@ -181,28 +189,27 @@ void MakeHuffmanHeader(std::vector<unsigned char> * const p,
                        int tableNo,
                        int tableClass) {
 
-    p->push_back(0xff);
-    p->push_back(0xc4);
-    p->push_back(0);
-    p->push_back(3 + ncodes + nsymbols);
-    p->push_back((tableClass << 4) | tableNo);
+    frameBuffer->push_back(0xff);
+    frameBuffer->push_back(0xc4);
+    frameBuffer->push_back(0);
+    frameBuffer->push_back(3 + ncodes + nsymbols);
+    frameBuffer->push_back((tableClass << 4) | tableNo);
 
-    size_t preCopySize = p->size();
+    size_t preCopySize = frameBuffer->size();
 
-    p->resize(p->size() + ncodes + nsymbols);
+    frameBuffer->resize(frameBuffer->size() + ncodes + nsymbols);
 
-    std::copy(codelens, codelens + ncodes, p->begin() + preCopySize);
-    std::copy(symbols, symbols + nsymbols, p->begin() + preCopySize + ncodes);
+    std::copy(codelens, codelens + ncodes, frameBuffer->begin() + preCopySize);
+    std::copy(symbols, symbols + nsymbols, frameBuffer->begin() + preCopySize + ncodes);
 }
 
-static
-void MakeDRIHeader(std::vector<unsigned char> * const p, unsigned short dri) {
-    p->push_back(0xff);
-    p->push_back(0xdd);
-    p->push_back(0x0);
-    p->push_back(4);
-    p->push_back(dri >> 8);
-    p->push_back(dri & 0xff);
+static void MakeDRIHeader(std::vector<unsigned char> * const frameBuffer, unsigned short dri) {
+    frameBuffer->push_back(0xff);
+    frameBuffer->push_back(0xdd);
+    frameBuffer->push_back(0x0);
+    frameBuffer->push_back(4);
+    frameBuffer->push_back(dri >> 8);
+    frameBuffer->push_back(dri & 0xff);
 }
 
 /*
@@ -223,233 +230,133 @@ void MakeDRIHeader(std::vector<unsigned char> * const p, unsigned short dri) {
  *    interchange format (except for possible trailing garbage and
  *    absence of an EOI marker to terminate the scan).
  */
-static
-void MakeHeaders(std::vector<unsigned char> * const p,
-                 int type,
-                 int w,
-                 int h,
-                 unsigned char *lqt,
-                 unsigned char *cqt,
-                 unsigned short dri) {
+static void MakeHeaders(std::vector<unsigned char> * const frameBuffer,
+                        int type,
+                        int w,
+                        int h,
+                        unsigned char *lqt,
+                        unsigned char *cqt,
+                        unsigned short dri) {
 
     /* convert from blocks to pixels */
     w <<= 3;
     h <<= 3;
 
-    p->push_back(0xff);
-    p->push_back(0xd8);
+    frameBuffer->push_back(0xff);
+    frameBuffer->push_back(0xd8);
 
-    MakeQuantHeader(p, lqt, 0);
-    MakeQuantHeader(p, cqt, 1);
+    MakeQuantHeader(frameBuffer, lqt, 0);
+    MakeQuantHeader(frameBuffer, cqt, 1);
 
-    if (dri != 0)
-        MakeDRIHeader(p, dri);
+    if (dri != 0) {
+        MakeDRIHeader(frameBuffer, dri);
+    }
 
-    p->push_back(0xff);
-    p->push_back(0xc0);
-    p->push_back(0);
-    p->push_back(17);
-    p->push_back(8);
-    p->push_back(h >> 8);
-    p->push_back(h);
-    p->push_back(w >> 8);
-    p->push_back(w);
-    p->push_back(3);
-    p->push_back(0);
+    frameBuffer->push_back(0xff);
+    frameBuffer->push_back(0xc0);
+    frameBuffer->push_back(0);
+    frameBuffer->push_back(17);
+    frameBuffer->push_back(8);
+    frameBuffer->push_back(h >> 8);
+    frameBuffer->push_back(h);
+    frameBuffer->push_back(w >> 8);
+    frameBuffer->push_back(w);
+    frameBuffer->push_back(3);
+    frameBuffer->push_back(0);
     
-    if (type == 0)
-        p->push_back(0x21);
-    else
-        p->push_back(0x22);
+    if (type == 0) {
+        frameBuffer->push_back(0x21);
+    } else {
+        frameBuffer->push_back(0x22);
+    }
 
-    p->push_back(0);
-    p->push_back(1);
-    p->push_back(0x11);
-    p->push_back(1);
-    p->push_back(2);
-    p->push_back(0x11);
-    p->push_back(1);
+    frameBuffer->push_back(0);
+    frameBuffer->push_back(1);
+    frameBuffer->push_back(0x11);
+    frameBuffer->push_back(1);
+    frameBuffer->push_back(2);
+    frameBuffer->push_back(0x11);
+    frameBuffer->push_back(1);
     
-    MakeHuffmanHeader(p, lum_dc_codelens,
+    MakeHuffmanHeader(frameBuffer, lum_dc_codelens,
                       sizeof(lum_dc_codelens),
                       lum_dc_symbols,
                       sizeof(lum_dc_symbols), 0, 0);
-    MakeHuffmanHeader(p, lum_ac_codelens,
+    MakeHuffmanHeader(frameBuffer, lum_ac_codelens,
                       sizeof(lum_ac_codelens),
                       lum_ac_symbols,
                       sizeof(lum_ac_symbols), 0, 1);
-    MakeHuffmanHeader(p, chm_dc_codelens,
+    MakeHuffmanHeader(frameBuffer, chm_dc_codelens,
                       sizeof(chm_dc_codelens),
                       chm_dc_symbols,
                       sizeof(chm_dc_symbols), 1, 0);
-    MakeHuffmanHeader(p, chm_ac_codelens,
+    MakeHuffmanHeader(frameBuffer, chm_ac_codelens,
                       sizeof(chm_ac_codelens),
                       chm_ac_symbols,
                       sizeof(chm_ac_symbols), 1, 1);
 
-    p->push_back(0xff);
-    p->push_back(0xda);
-    p->push_back(0);
-    p->push_back(12);
-    p->push_back(3);
-    p->push_back(0);
-    p->push_back(0);
-    p->push_back(1);
-    p->push_back(0x11);
-    p->push_back(2);
-    p->push_back(0x11);
-    p->push_back(0);
-    p->push_back(63);
-    p->push_back(0);
+    frameBuffer->push_back(0xff);
+    frameBuffer->push_back(0xda);
+    frameBuffer->push_back(0);
+    frameBuffer->push_back(12);
+    frameBuffer->push_back(3);
+    frameBuffer->push_back(0);
+    frameBuffer->push_back(0);
+    frameBuffer->push_back(1);
+    frameBuffer->push_back(0x11);
+    frameBuffer->push_back(2);
+    frameBuffer->push_back(0x11);
+    frameBuffer->push_back(0);
+    frameBuffer->push_back(63);
+    frameBuffer->push_back(0);
 }
 
 void Surge::MJPEGDepacketizer::ProcessPacket(const RtpPacket *packet, const bool isFirstPayload) {
     const unsigned char *payloadData = packet->PayloadData();
     const size_t payloadLength = packet->PayloadLength();
-
-    size_t jpegHeaderSize = ProcessJpegHeaders(packet);
-
-//    size_t frame_length = frameBuffer->size();
-//
-//    if (frame_length == 0 && m_fragmentOffset > 0) {
-//        return;
-//    }
-
-    for (size_t i = jpegHeaderSize; i < payloadLength; i++) {
+    
+    size_t combinedHeadersSize = ProcessPacketHeaders(payloadData, payloadLength);
+    for (size_t i = combinedHeadersSize; i < payloadLength; i++) {
         frameBuffer->push_back(payloadData[i]);
     }
 }
 
-//void Surge::MJPEGDepacketizer::
+size_t Surge::MJPEGDepacketizer::ProcessPacketHeaders(const unsigned char *payloadData, const size_t payloadLength) {
+    int fragmentOffset = payloadData[1] & 0xFF;
+    fragmentOffset <<= 8;
+    fragmentOffset |= payloadData[2] & 0xFF;
+    fragmentOffset <<= 8;
+    fragmentOffset |= payloadData[3] & 0xFF;
 
-size_t Surge::MJPEGDepacketizer::ProcessJpegHeaders(const RtpPacket *packet) {
-    const unsigned char *payloadData = packet->PayloadData();
-    const size_t payloadLength = packet->PayloadLength();
-
-    const unsigned char * fragmentOffset = &payloadData[1];
-    const unsigned char * typeOffset =  &payloadData[4];
-    const unsigned char * qOffset = &payloadData[5];
-    const unsigned char * widthOffset = &payloadData[6];
-    const unsigned char * heightOffset = &payloadData[7];
-
-    // reset variables
-    int m_fragmentOffset = 0;
-    int m_type = 0;
-    int m_qValue = 0;
-    int m_width = 0;
-    int m_height = 0;
-
-    m_fragmentOffset |= 0x00 & 0xFF;
-    m_fragmentOffset <<= 8;
-    m_fragmentOffset |= fragmentOffset[0] & 0xFF;
-    m_fragmentOffset <<= 8;
-    m_fragmentOffset |= fragmentOffset[1] & 0xFF;
-    m_fragmentOffset <<= 8;
-    m_fragmentOffset |= fragmentOffset[2] & 0xFF;
-
-    m_type |= typeOffset[0] & 0xFF;
-    m_qValue |= qOffset[0] & 0xFF;
-    m_width |= widthOffset[0] & 0xFF;
-    m_height |= heightOffset[0] & 0xFF;
-//    ParseJpegHeader(payloadData);
-
+    int type = payloadData[4];
+    int qValue = payloadData[5];
+    int width = payloadData[6];
+    int height = payloadData[7];
     int restartHeaderSize = 0;
-    int quantizationPayloadLength = 0;
+    int quantizationTableLength = 0;
+    
+    if (fragmentOffset == 0) {
+        restartHeaderSize = ((type >= RESTART_MIN) && (type <= RESTART_MAX)) ? RESTARTMARKERHEADERSIZE : 0;
+        quantizationTableLength = ParseQuantizationTableLength(payloadData + JPEGHEADERSIZE + restartHeaderSize);
 
-    if (m_fragmentOffset == 0) {
+        unsigned char lumq[64];
+        unsigned char chrq[64];
+        const unsigned char *quantizationTableData = payloadData + JPEGHEADERSIZE + restartHeaderSize + QUANTIZATIONTABLEHEADERSIZE;
+        ParseQuantizationTable(quantizationTableData, quantizationTableLength, qValue, lumq, chrq);
+
         int dri = 0;
-        restartHeaderSize = ((m_type >= RESTART_MIN) && (m_type <= RESTART_MAX))
-                            ? RESTARTMARKERHEADERSIZE : 0;
         if (restartHeaderSize > 0) {
             dri = ParseRestartMarkerHeader(payloadData + JPEGHEADERSIZE);
         }
-
-//        ParseQuantizationHeader(payloadData + JPEGHEADERSIZE + restartHeaderSize);
-        unsigned char m_lumq[64];
-        unsigned char m_chrq[64];
-        if (m_fragmentOffset == 0) {
-            const unsigned char *quantizationHeader =
-                    payloadData + JPEGHEADERSIZE + restartHeaderSize;
-            quantizationPayloadLength |= quantizationHeader[2] & 0xFF;
-            quantizationPayloadLength <<= 8;
-            quantizationPayloadLength |= quantizationHeader[3] & 0xFF;
-        }
-
-//        if (quantizationPayloadLength > 0) {
-//            ParseQuantizationTableData(payloadData
-//                                       + JPEGHEADERSIZE
-//                                       + restartHeaderSize
-//                                       + QUANTIZATIONTABLEHEADERSIZE);
-//        }
-
-        if (quantizationPayloadLength > 0) {
-            int quantizationTableDataPosition = 0;
-            size_t lumqPosition;
-            const unsigned char *quantizationTableData = payloadData
-                                                         + JPEGHEADERSIZE
-                                                         + restartHeaderSize
-                                                         + QUANTIZATIONTABLEHEADERSIZE;
-            for (lumqPosition = 0; lumqPosition < 64 && lumqPosition <
-                                                        quantizationPayloadLength; lumqPosition++) {
-                m_lumq[lumqPosition] = quantizationTableData[quantizationTableDataPosition];
-                quantizationTableDataPosition++;
-            }
-
-            int chrqPosition;
-            for (chrqPosition = 0; chrqPosition < 64 && chrqPosition <
-                                                        quantizationPayloadLength; chrqPosition++) {
-                m_chrq[chrqPosition] = quantizationTableData[quantizationTableDataPosition];
-                quantizationTableDataPosition++;
-            }
-        } else {
-            // create tables from qfactor
-            MakeTables(m_qValue, m_lumq, m_chrq);
-        }
-
-        MakeHeaders(frameBuffer, m_type, m_width, m_height, m_lumq, m_chrq, dri);
+        MakeHeaders(frameBuffer, type, width, height, lumq, chrq, dri);
     }
 
-    size_t jpeg_payload_offset = JPEGHEADERSIZE;
-    if (m_fragmentOffset == 0) {
-        jpeg_payload_offset += (restartHeaderSize
-                                + QUANTIZATIONTABLEHEADERSIZE
-                                + quantizationPayloadLength);
+    size_t combinedHeadersSize = JPEGHEADERSIZE + restartHeaderSize;
+    if (fragmentOffset == 0) {
+        combinedHeadersSize += QUANTIZATIONTABLEHEADERSIZE + quantizationTableLength;
     }
-
-    if (m_fragmentOffset != 0) {
-        jpeg_payload_offset += restartHeaderSize;
-    }
-
-    return jpeg_payload_offset;
-}
-
-void Surge::MJPEGDepacketizer::ParseJpegHeader(const unsigned char *buffer) {
     
-//    const unsigned char * fragmentOffset = &buffer[1];
-//    const unsigned char * typeOffset =  &buffer[4];
-//    const unsigned char * qOffset = &buffer[5];
-//    const unsigned char * widthOffset = &buffer[6];
-//    const unsigned char * heightOffset = &buffer[7];
-//
-//    // reset variables
-//    m_fragmentOffset = 0;
-//    m_type = 0;
-//    m_qValue = 0;
-//    m_width = 0;
-//    m_height = 0;
-//
-//    m_fragmentOffset |= 0x00 & 0xFF;
-//    m_fragmentOffset <<= 8;
-//    m_fragmentOffset |= fragmentOffset[0] & 0xFF;
-//    m_fragmentOffset <<= 8;
-//    m_fragmentOffset |= fragmentOffset[1] & 0xFF;
-//    m_fragmentOffset <<= 8;
-//    m_fragmentOffset |= fragmentOffset[2] & 0xFF;
-//
-//    m_type |= typeOffset[0] & 0xFF;
-//    m_qValue |= qOffset[0] & 0xFF;
-//    m_width |= widthOffset[0] & 0xFF;
-//    m_height |= heightOffset[0] & 0xFF;
+    return combinedHeadersSize;
 }
 
 int Surge::MJPEGDepacketizer::ParseRestartMarkerHeader(const unsigned char * buffer) {
@@ -460,33 +367,33 @@ int Surge::MJPEGDepacketizer::ParseRestartMarkerHeader(const unsigned char * buf
     return dri;
 }
 
-void Surge::MJPEGDepacketizer::ParseQuantizationHeader(const unsigned char * quantizationHeader) {
-//    quantizationPayloadLength = 0;
-//    if (m_fragmentOffset == 0) {
-//        quantizationPayloadLength |= quantizationHeader[2] & 0xFF;
-//        quantizationPayloadLength <<= 8;
-//        quantizationPayloadLength |= quantizationHeader[3] & 0xFF;
-//    }
+int Surge::MJPEGDepacketizer::ParseQuantizationTableLength(const unsigned char * quantizationHeader) {
+    size_t quantizationPayloadLength = 0;
+    quantizationPayloadLength |= quantizationHeader[2] & 0xFF;
+    quantizationPayloadLength <<= 8;
+    quantizationPayloadLength |= quantizationHeader[3] & 0xFF;
+    return quantizationPayloadLength;
 }
 
-void Surge::MJPEGDepacketizer::ParseQuantizationTableData(const unsigned char * quantizationTableData) {
-//    if (quantizationPayloadLength > 0) {
-//        int quantizationTableDataPosition = 0;
-//        size_t lumqPosition;
-//        for (lumqPosition = 0; lumqPosition < 64 && lumqPosition <
-//                                                    quantizationPayloadLength; lumqPosition++) {
-//            m_lumq[lumqPosition] = quantizationTableData[quantizationTableDataPosition];
-//            quantizationTableDataPosition++;
-//        }
-//
-//        int chrqPosition;
-//        for (chrqPosition = 0; chrqPosition < 64 && chrqPosition <
-//                                                    quantizationPayloadLength; chrqPosition++) {
-//            m_chrq[chrqPosition] = quantizationTableData[quantizationTableDataPosition];
-//            quantizationTableDataPosition++;
-//        }
-//    } else {
-//        // create tables from qfactor
-//        MakeTables(m_qValue, m_lumq, m_chrq);
-//    }
+void Surge::MJPEGDepacketizer::ParseQuantizationTable(const unsigned char *quantizationTableData,
+                                                      int quantizationTableLength,
+                                                      int qValue,
+                                                      unsigned char *lumq,
+                                                      unsigned char *chrq) {
+    if (quantizationTableLength > 0) {
+        int quantizationTableDataPosition = 0;
+        size_t lumqPosition;
+        for (lumqPosition = 0; lumqPosition < 64 && lumqPosition < quantizationTableLength; lumqPosition++) {
+            lumq[lumqPosition] = quantizationTableData[quantizationTableDataPosition];
+            quantizationTableDataPosition++;
+        }
+
+        int chrqPosition;
+        for (chrqPosition = 0; chrqPosition < 64 && chrqPosition < quantizationTableLength; chrqPosition++) {
+            chrq[chrqPosition] = quantizationTableData[quantizationTableDataPosition];
+            quantizationTableDataPosition++;
+        }
+    } else {
+        MakeTables(qValue, lumq, chrq);
+    }
 }

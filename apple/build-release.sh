@@ -14,5 +14,5 @@ xcodebuild -workspace Surge.xcworkspace -scheme SurgeiOS -configuration Release 
 
 echo "Building macOS framework"
 xcodebuild -workspace Surge.xcworkspace -scheme SurgeMacOS -configuration Release clean build \
-  TARGET_BUILD_DIR=$(pwd)/build/ios-framework \
+  TARGET_BUILD_DIR=$(pwd)/build/macos-framework \
   CODE_SIGN_IDENTITY="iPhone Developer: Instil Software"

@@ -9,6 +9,17 @@ node {
     //
     // }
 
+    stage "Apple Frameworks"
+    dir("apple") {
+        try {
+            sh "./build-release.sh"
+            archive includes: "build/frameworks/apple-frameworks.zip"
+        } catch(e) {
+            // slackNotifyError("Failed to build Apple frameworks, see ${env.BUILD_URL}console")
+            error "Build failed"
+        }
+    }
+
     // stage "Android Libraries"
     // dir("android") {
     //     try {
@@ -23,17 +34,6 @@ node {
     //         error "Build failed"
     //     }
     // }
-
-    stage "Apple Frameworks"
-    dir("apple") {
-        try {
-            sh "./build-release.sh"
-            archive includes: "build/ios-frameworks/release/SurgeiOS.framework, build/macos-frameworks/release/SurgeMacOS.framework"
-        } catch(e) {
-            // slackNotifyError("Failed to build Apple frameworks, see ${env.BUILD_URL}console")
-            error "Build failed"
-        }
-    }
 }
 
 def slackNotify(message) {

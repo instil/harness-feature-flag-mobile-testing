@@ -9,30 +9,31 @@ node {
     //
     // }
 
-    stage "Android Libraries"
-    dir("android") {
-        try {
-            gradleBuild {
-                tasks = "clean build"
-                archiveFiles = "**/*.aar"
-                junitResults = "**/release/TEST-*.xml"
-            }
-            androidLinter pattern: "**/lint-results*.xml"
-        } catch(e) {
-            slackNotifyError("Failed to build Android libs, see ${env.BUILD_URL}console")
-            error "Build failed"
-        }
-    }
-
-    // stage "Apple Frameworks"
-    // dir("apple") {
+    // stage "Android Libraries"
+    // dir("android") {
     //     try {
-    //         sh "./build-release.sh"
+    //         gradleBuild {
+    //             tasks = "clean build"
+    //             archiveFiles = "**/*.aar"
+    //             junitResults = "**/release/TEST-*.xml"
+    //         }
+    //         androidLinter pattern: "**/lint-results*.xml"
     //     } catch(e) {
-    //         slackNotifyError("Failed to build Apple frameworks, see ${env.BUILD_URL}console")
+    //         // slackNotifyError("Failed to build Android libs, see ${env.BUILD_URL}console")
     //         error "Build failed"
     //     }
     // }
+
+    stage "Apple Frameworks"
+    dir("apple") {
+        try {
+            sh "./build-release.sh"
+            archive includes: "build/ios-framework/SurgeiOS.framework, build/macos-framework/SurgeMacOS.framework"
+        } catch(e) {
+            // slackNotifyError("Failed to build Apple frameworks, see ${env.BUILD_URL}console")
+            error "Build failed"
+        }
+    }
 }
 
 def slackNotify(message) {

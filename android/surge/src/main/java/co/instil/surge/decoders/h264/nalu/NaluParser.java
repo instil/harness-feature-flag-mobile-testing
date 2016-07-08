@@ -1,11 +1,34 @@
+/*
+ * Copyright (c) 2016 Instil Software.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package co.instil.surge.decoders.h264.nalu;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ */
 public class NaluParser {
-    /**
+    /*
      * H264 is comprised of NALU segments.
      *
      * XXXX Y ZZZZZZZZ -> XXXX Y ZZZZZZZZ -> XXXX Y ZZZZZZZZ
@@ -31,11 +54,11 @@ public class NaluParser {
 
         int lastStartingOffset = -1;
         for (int i = 0; i < buffer.length - 10; ++i) {
-            if (buffer[i] == 0x00 && buffer[i+1] == 0x00 && buffer[i+2] == 0x01) {
-                int naluType = (buffer[i+3] & 0x1F);
+            if (buffer[i] == 0x00 && buffer[i + 1] == 0x00 && buffer[i + 2] == 0x01) {
+                int naluType = buffer[i + 3] & 0x1F;
                 NaluSegment segment = new NaluSegment(naluType, 3, i);
 
-                if (i > 0 && buffer[i-1] == 0x00) {
+                if (i > 0 && buffer[i - 1] == 0x00) {
                     // This is actually a 4 byte segment
                     int currentSegmentOffset = segment.getOffset();
                     segment.setHeaderSize(4);

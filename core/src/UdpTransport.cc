@@ -19,27 +19,9 @@
 // THE SOFTWARE.
 
 #include "UdpTransport.h"
-#include "BasicFDEvent.h"
-#include "WaitableEvent.h"
-#include "MutexLocker.h"
-#include "Logging.h"
-#include "Helpers.h"
-#include "Constants.h"
 
-#include <fcntl.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-
-#include <sstream>
-  using std::ostringstream;
-#include <stdexcept>
-  using std::runtime_error;
+using std::ostringstream;
+using std::runtime_error;
 
 using SurgeUtil::Constants::DEFAULT_RTP_PORT;
 using SurgeUtil::Constants::DEFAULT_RTCP_PORT;

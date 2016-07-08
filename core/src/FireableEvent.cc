@@ -22,9 +22,7 @@
 #include <cerrno>
 #include <cstdint>
 #include <sstream>
-#include <stdexcept>
 
-#include <sys/select.h>
 #include <unistd.h>
 
 #include "FireableEvent.h"

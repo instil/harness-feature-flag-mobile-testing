@@ -20,10 +20,8 @@
 
 #include "RtspClient.h"
 #include "RtspCommandFactory.h"
-#include "Logging.h"
 #include "Datetime.h"
 #include "Url.h"
-#include "Constants.h"
 
 #include "InterleavedRtspTransport.h"
 #include "UdpTransport.h"

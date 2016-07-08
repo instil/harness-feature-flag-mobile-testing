@@ -25,14 +25,9 @@
 #include "RtpPacket.h"
 #include "Logging.h"
 
-#include <string>
-#include <sstream>
-  using std::ostringstream;
+using std::ostringstream;
 
-#include <stdexcept>
-  using std::runtime_error;
-
-#include <arpa/inet.h>
+using std::runtime_error;
 
 struct _RTPHeader {
 #if IS_BIG_ENDIAN

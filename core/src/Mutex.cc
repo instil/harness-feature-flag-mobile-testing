@@ -21,8 +21,6 @@
 #include "Mutex.h"
 
 #include <sstream>
-#include <stdexcept>
-#include <system_error>
 
 
 void SurgeUtil::Mutex::Lock()

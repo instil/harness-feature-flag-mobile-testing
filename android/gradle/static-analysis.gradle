@@ -1,0 +1,83 @@
+apply plugin: "checkstyle"
+apply plugin: "findbugs"
+apply plugin: "pmd"
+
+check.dependsOn "checkstyle", "findbugs", "pmd"
+
+task checkstyle(type: Checkstyle) {
+    showViolations = true
+    configFile file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+    configProperties.checkstyleSuppressionsPath = file("${project.rootDir}/config/checkstyle/suppressions.xml").absolutePath
+
+    source "src"
+    include "**/*.java"
+    exclude "**/gen/**"
+    classpath = files()
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        xml {
+            destination "$project.buildDir/reports/checkstyle/main.xml"
+        }
+        html {
+            destination "$project.buildDir/reports/checkstyle/main.html"
+        }
+    }
+}
+
+task findbugs(type: FindBugs) {
+    ignoreFailures = false
+    effort = "max"
+    reportLevel = "high"
+    classes = files("${project.buildDir}/intermediates/classes")
+    includeFilter = new File("${project.rootDir}/config/findbugs/includeFilter.xml")
+    excludeFilter = new File("${project.rootDir}/config/findbugs/excludeFilter.xml")
+
+    source "src/main/java"
+    include "**/*.java"
+    exclude "**/gen/**"
+    classpath = files()
+
+    reports {
+        xml.enabled = true
+        html.enabled = false
+        xml {
+            destination "$project.buildDir/reports/findbugs/main.xml"
+        }
+        html {
+            destination "$project.buildDir/reports/findbugs/main.html"
+        }
+    }
+}
+
+task pmd(type: Pmd) {
+    ignoreFailures = false
+    ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
+
+    source "src/main/java"
+    include "**/*.java"
+    exclude "**/gen/**"
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        xml {
+            destination "$project.buildDir/reports/pmd/main.xml"
+        }
+        html {
+            destination "$project.buildDir/reports/pmd/main.html"
+        }
+    }
+}
+
+model {
+    android.lintOptions {
+        abortOnError true
+        xmlReport true
+        htmlReport true
+        lintConfig file("${project.rootDir}/config/lint/lint.xml")
+        htmlOutput file("$project.buildDir/reports/lint/lint-results.html")
+        xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
+    }
+}

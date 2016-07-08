@@ -1,4 +1,6 @@
 apply plugin: "com.android.model.library"
+apply plugin: "jacoco"
+apply from: "${project.rootDir}/gradle/static-analysis.gradle"
 
 model {
     android {
@@ -33,6 +35,9 @@ model {
     }
 
     android.buildTypes {
+        debug {
+            testCoverageEnabled = true
+        }
         release {
             minifyEnabled = false
             proguardFiles.add(file("proguard-rules.pro"))

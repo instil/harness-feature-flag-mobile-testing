@@ -4,7 +4,7 @@ node {
     stage "Checkout"
     gitCloneWithSubmodules url: "git@gitlab.com:instil/Surge.git"
 
-    stage "Android"
+    stage "Android Libraries"
     dir("android") {
         try {
             gradleBuild {
@@ -12,13 +12,14 @@ node {
                 archiveFiles = "**/*.aar"
                 junitResults = "**/release/TEST-*.xml"
             }
+            androidLinter pattern: "**/lint-results*.xml"
         } catch(e) {
-            slackNotifyError("Build #${env.BUILD_NUMBER} failed to build Android libs, see ${env.BUILD_URL}console")
+            slackNotifyError("Failed to build Android libs, see ${env.BUILD_URL}console")
             error "Build failed"
         }
     }
 
-    // stage "Apple"
+    // stage "Apple Frameworks"
     // dir("apple") {
     //     try {
     //         sh "mkdir build"
@@ -27,7 +28,7 @@ node {
     //         }
     //
     //     } catch(e) {
-    //         // slackNotifyError("Build #${env.BUILD_NUMBER} failed to build Apple frameworks, see ${env.BUILD_URL}console")
+    //         slackNotifyError("Failed to build Apple frameworks, see ${env.BUILD_URL}console")
     //         error "Build failed"
     //     }
     // }

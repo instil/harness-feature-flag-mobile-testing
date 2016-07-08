@@ -1,4 +1,4 @@
-package co.instil.surge.decoders;
+package co.instil.surge.decoders.mp4v;
 
 import android.annotation.TargetApi;
 import android.media.MediaCodec;
@@ -7,6 +7,7 @@ import android.media.MediaCodec.CodecException;
 import android.media.MediaFormat;
 import android.view.Surface;
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.decoders.Decoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

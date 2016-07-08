@@ -1,13 +1,14 @@
-package co.instil.surge.decoders;
+package co.instil.surge.decoders.h264;
 
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.os.Build;
 import android.view.Surface;
 import co.instil.surge.client.SessionDescription;
-import co.instil.surge.decoders.nalu.NaluParser;
-import co.instil.surge.decoders.nalu.NaluSegment;
-import co.instil.surge.decoders.nalu.NaluType;
+import co.instil.surge.decoders.Decoder;
+import co.instil.surge.decoders.h264.nalu.NaluParser;
+import co.instil.surge.decoders.h264.nalu.NaluSegment;
+import co.instil.surge.decoders.h264.nalu.NaluType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

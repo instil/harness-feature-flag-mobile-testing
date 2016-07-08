@@ -1,11 +1,12 @@
-package co.instil.surge.decoders;
+package co.instil.surge.decoders.mjpeg;
 
 import android.annotation.TargetApi;
-import co.instil.surge.client.SessionDescription;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.Surface;
+import co.instil.surge.client.SessionDescription;
+import co.instil.surge.decoders.Decoder;
 
 import java.nio.ByteBuffer;
 

@@ -1,4 +1,4 @@
-package co.instil.surge.decoders;
+package co.instil.surge.decoders.h264;
 
 import android.annotation.TargetApi;
 import android.media.MediaCodec;

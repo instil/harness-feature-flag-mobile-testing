@@ -1,4 +1,4 @@
-package co.instil.surge.decoders.nalu;
+package co.instil.surge.decoders.h264.nalu;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

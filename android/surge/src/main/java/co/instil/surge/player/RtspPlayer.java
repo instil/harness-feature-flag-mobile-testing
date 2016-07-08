@@ -5,10 +5,10 @@ import co.instil.surge.client.DescribeResponse;
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
-import co.instil.surge.decoders.AsyncH264Decoder;
-import co.instil.surge.decoders.AsyncMp4vDecoder;
+import co.instil.surge.decoders.h264.AsyncH264Decoder;
+import co.instil.surge.decoders.mp4v.AsyncMp4vDecoder;
 import co.instil.surge.decoders.Decoder;
-import co.instil.surge.decoders.MjpegDecoder;
+import co.instil.surge.decoders.mjpeg.MjpegDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package co.instil.surge.decoders.nalu;
+package co.instil.surge.decoders.h264.nalu;
 
 public enum NaluType {
     UNSPECIFIED("0: Unspecified (non-VCL)"),

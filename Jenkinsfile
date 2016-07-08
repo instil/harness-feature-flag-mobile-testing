@@ -4,6 +4,11 @@ node {
     stage "Checkout"
     gitCloneWithSubmodules url: "git@gitlab.com:instil/Surge.git"
 
+    // stage "Core Library"
+    // dir("core") {
+    //
+    // }
+
     stage "Android Libraries"
     dir("android") {
         try {
@@ -22,11 +27,7 @@ node {
     // stage "Apple Frameworks"
     // dir("apple") {
     //     try {
-    //         sh "mkdir build"
-    //         dir("build") {
-    //             sh "cmake -DFOR_IOS=ON -G Xcode ../../core"
-    //         }
-    //
+    //         sh "./build-release.sh"
     //     } catch(e) {
     //         slackNotifyError("Failed to build Apple frameworks, see ${env.BUILD_URL}console")
     //         error "Build failed"

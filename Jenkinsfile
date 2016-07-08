@@ -28,7 +28,7 @@ node {
     dir("apple") {
         try {
             sh "./build-release.sh"
-            archive includes: "build/ios-framework/SurgeiOS.framework, build/macos-framework/SurgeMacOS.framework"
+            archive includes: "build/ios-frameworks/release/SurgeiOS.framework, build/macos-frameworks/release/SurgeMacOS.framework"
         } catch(e) {
             // slackNotifyError("Failed to build Apple frameworks, see ${env.BUILD_URL}console")
             error "Build failed"

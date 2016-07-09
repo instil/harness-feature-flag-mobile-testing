@@ -2,23 +2,20 @@
 
 set -e
 
-mkdir build
-cd build
+cd $(dirname $0)
 
-cmake -DCODE_COVERAGE=ON -DDEBUG_SYMBOLS=ON -DUNIT_TESTS=ON ../
+echo "Building library"
+mkdir -p build
+cd build
+cmake -DUNIT_TESTS=ON -DCODE_COVERAGE=ON -DDEBUG_SYMBOLS=ON ../
 make
 
-# lcov --zerocounters --directory ../
-# lcov --capture --initial --directory ../ --output-file app
-#
-# # run the tests
-# valgrind --leak-check=full --track-origins=yes --trace-children=yes --xml=yes --xml-file=./valgrind.result -- ./test/testrunner --gtest_output=xml:gtestresults.xml
-#
-# lcov --no-checksum --directory . --capture --output-file app.info
-# python ../tools/lcov_cobertura.py app.info
-#
-# popd
-#
-# rm -f ./cppcheck.xml
-# rm -f ./src/wrappers/java/interface_wrap.* # don't scan the swig stuff nothing i can do about those issues.
-# cppcheck --std=c++11 --xml --xml-version=2 --enable=warning,performance,portability,information ./src/ 2> cppcheck.xml
+mkdir -p release/include
+cp ../src/*.h release/include
+cp src/libsurge.a release
+cd release
+zip -r surge.zip .
+cd ..
+
+echo "Executing tests"
+./test/testrunner #--gtest_output=xml:build/reports/test-results.xml

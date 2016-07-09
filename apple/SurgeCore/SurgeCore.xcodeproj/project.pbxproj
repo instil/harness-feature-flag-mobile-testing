@@ -113,7 +113,6 @@
 		42D671CB1D3069BB00D42C35 /* BitstreamWriter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BitstreamWriter.cc; path = ../../core/src/BitstreamWriter.cc; sourceTree = "<group>"; };
 		42D671CC1D3069BB00D42C35 /* BitstreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BitstreamWriter.h; path = ../../core/src/BitstreamWriter.h; sourceTree = "<group>"; };
 		42D671CD1D3069BB00D42C35 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = ../../core/src/CMakeLists.txt; sourceTree = "<group>"; };
-		42D671CE1D3069BB00D42C35 /* Config.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Config.h.in; path = ../../core/src/Config.h.in; sourceTree = "<group>"; };
 		42D671CF1D3069BB00D42C35 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = ../../core/src/Constants.h; sourceTree = "<group>"; };
 		42D671D01D3069BB00D42C35 /* DataEventQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataEventQueue.h; path = ../../core/src/DataEventQueue.h; sourceTree = "<group>"; };
 		42D671D11D3069BB00D42C35 /* DateTime.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DateTime.cc; path = ../../core/src/DateTime.cc; sourceTree = "<group>"; };
@@ -250,7 +249,6 @@
 				42D671CB1D3069BB00D42C35 /* BitstreamWriter.cc */,
 				42D671CC1D3069BB00D42C35 /* BitstreamWriter.h */,
 				42D671CD1D3069BB00D42C35 /* CMakeLists.txt */,
-				42D671CE1D3069BB00D42C35 /* Config.h.in */,
 				42D671CF1D3069BB00D42C35 /* Constants.h */,
 				42D671D01D3069BB00D42C35 /* DataEventQueue.h */,
 				42D671D11D3069BB00D42C35 /* DateTime.cc */,

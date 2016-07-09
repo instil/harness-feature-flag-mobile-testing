@@ -18,9 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef BINDING_BUILD
-#include "Config.h"
-#endif
+#define BIG_ENDIAN (*(uint16_t *)"\0\xff" < 0x100)
 
 #include "RtpPacket.h"
 #include "Logging.h"
@@ -30,7 +28,7 @@ using std::ostringstream;
 using std::runtime_error;
 
 struct _RTPHeader {
-#if IS_BIG_ENDIAN
+#if BIG_ENDIAN == true
 	uint8_t version:2;
 	uint8_t padding:1;
 	uint8_t extension:1;

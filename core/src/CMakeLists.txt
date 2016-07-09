@@ -1,120 +1,91 @@
 set(JNI_SRCS)
 
-if(FOR_ANDROID)
-  MESSAGE(STATUS "Will Build JNI Bindings: " ${BUILD_JNI_WRAPPER})
-  
-  if(BUILD_JNI_WRAPPER)
-    set(JNI_SRCS
-      ./wrappers/java/interface_wrap.cc
-      ./wrappers/java/interface_wrap.h
-      ./wrappers/java/RtspClientProxy.h
-      ./wrappers/java/RtspClientProxy.cc
-      )
-  endif()
+add_library(surge ${LIBRARY_TYPE}
+  Surge.h
+  Surge.cc
 
-  # this will cause crashes on android - swig generates old style pointer code for DIRECTORS
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-strict-aliasing -Wunused-function")
-endif()
+  RtspClient.h
+  RtspClient.cc
+  IRtspClientDelegate.h
 
-MESSAGE(STATUS "Will Build JNI Jar archive: " ${BUILD_JAR})
-if(BUILD_JAR)
-  FILE(GLOB source "./wrappers/java/*.java")
-  add_jar(Surge ${source})
-endif()
+  InterleavedRtspTransport.h
+  InterleavedRtspTransport.cc
+  UdpTransport.h
+  UdpTransport.cc
 
-if(BUILD_JAR STREQUAL OFF)
-  add_library(surge ${LIBRARY_TYPE}
+  Transport.h
+  ISocketHandlerDelegate.h
+  ITransportInterface.h
 
-    Surge.h
-    Surge.cc
-    
-    RtspClient.h
-    RtspClient.cc
-    IRtspClientDelegate.h
+  RtspCommand.h
+  RtspCommandFactory.h
+  RtspCommandFactory.cc
+  Describe.h
+  Setup.h
+  Pause.h
+  Play.h
+  Options.h
+  Teardown.h
 
-    InterleavedRtspTransport.h
-    InterleavedRtspTransport.cc
-    UdpTransport.h
-    UdpTransport.cc
-        
-    Transport.h
-    ISocketHandlerDelegate.h
-    ITransportInterface.h
+  Response.h
+  RtspResponse.h
+  DescribeResponse.h
+  SetupResponse.h
 
-    RtspCommand.h
-    RtspCommandFactory.h
-    RtspCommandFactory.cc
-    Describe.h
-    Setup.h
-    Pause.h
-    Play.h
-    Options.h
-    Teardown.h
+  SessionDescription.h
+  SessionDescriptionV0.h
+  SessionDescriptionV0.cc
+  SessionDescriptionFactory.h
+  SessionDescriptionFactory.cc
 
-    Response.h
-    RtspResponse.h
-    DescribeResponse.h
-    SetupResponse.h
+  ResponseFactory.h
 
-    SessionDescription.h
-    SessionDescriptionV0.h
-    SessionDescriptionV0.cc
-    SessionDescriptionFactory.h
-    SessionDescriptionFactory.cc
+  RtpPacket.h
+  RtpPacket.cc
 
-    ResponseFactory.h
+  BitstreamReader.h
+  BitstreamReader.cc
+  BitstreamWriter.h
+  BitstreamWriter.cc
 
-    RtpPacket.h
-    RtpPacket.cc
+  Depacketizer.h
 
-    BitstreamReader.h
-    BitstreamReader.cc
-    BitstreamWriter.h
-    BitstreamWriter.cc
+  H264Depacketizer.h
+  H264Depacketizer.cc
 
-    Depacketizer.h
+  MP4VDepacketizer.h
+  MP4VDepacketizer.cc
 
-    H264Depacketizer.h
-    H264Depacketizer.cc
+  MJPEGDepacketizer.h
+  MJPEGDepacketizer.cc
 
-    MP4VDepacketizer.h
-    MP4VDepacketizer.cc
-    
-    MJPEGDepacketizer.h
-    MJPEGDepacketizer.cc
+  MimeTypes.h
+  ILoggingDelegate.h
+  Constants.h
+  BaseWaitableEvent.h
+  BasicFDEvent.h
+  DateTime.cc
+  DateTime.h
+  FireableEvent.cc
+  FireableEvent.h
+  Logging.h
+  Mutex.cc
+  Mutex.h
+  MutexLocker.h
+  StoppableThread.h
+  Thread.cc
+  Thread.h
+  WaitableEvent.h
+  WaitableEvents.cc
+  Base64.cc
+  Base64.h
+  Url.h
+  Helpers.h
+  Helpers.cc
+  DataEventQueue.h
+  ErrorDispatcher.h
+  ErrorDispatcher.cc
 
-    MimeTypes.h
-    ILoggingDelegate.h
-    Constants.h
-    BaseWaitableEvent.h
-    BasicFDEvent.h
-    DateTime.cc
-    DateTime.h
-    FireableEvent.cc
-    FireableEvent.h
-    Logging.h
-    Mutex.cc
-    Mutex.h
-    MutexLocker.h
-    StoppableThread.h
-    Thread.cc
-    Thread.h
-    WaitableEvent.h
-    WaitableEvents.cc
-    Base64.cc
-    Base64.h
-    Url.h
-    Helpers.h
-    Helpers.cc
-    DataEventQueue.h
-    ErrorDispatcher.h
-    ErrorDispatcher.cc
-
-    # RxCpp
-    ${RX_CPP_SRCS}
-
-    # Jni
-    ${JNI_SRCS}
-  )
-
-endif()
+  # RxCpp
+  ${RX_CPP_SRCS}
+)

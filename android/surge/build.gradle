@@ -29,7 +29,6 @@ model {
         cppFlags.add("-fexceptions")
         cppFlags.add("-I" + file("../../core/lib/RxCpp/Rx/v2/src"))
         cppFlags.add("-I" + file("../../core/src"))
-        cppFlags.add("-DBINDING_BUILD=1")
         ldLibs.addAll(["log"])
         stl "c++_shared"
     }

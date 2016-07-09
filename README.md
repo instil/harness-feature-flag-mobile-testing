@@ -17,24 +17,6 @@ Surge seeks to address these issues by being designed from the ground up to exec
 
 Prior to building the library ensure that you have cloned the project and checked out all its associated submodules.
 
-### Core
-
-To build the core Surge C/C++ library.
-
-```bash
-$ brew install cmake
-$ mkdir core/build
-$ cd core/build
-$ cmake -DUNIT_TESTS=ON -DDEBUG_SYMBOLS=ON ../
-$ make
-```
-
-To execute the tests.
-
-```bash
-$ ./test/testrunner
-```
-
 ### iOS
 
 To build the iOS/macOS frameworks, either open the workspace `apple/Surge.xcworkspace` in XCode or execute the following.
@@ -56,6 +38,24 @@ $ ./gradlew clean build
 ### Xamarin
 
 TODO
+
+### Core
+
+To build the core Surge C/C++ library.
+
+```bash
+$ brew install cmake
+$ mkdir core/build
+$ cd core/build
+$ cmake -DUNIT_TESTS=ON -DCODE_COVERAGE=ON -DDEBUG_SYMBOLS=ON ../
+$ make
+```
+
+To execute the tests.
+
+```bash
+$ ./test/testrunner
+```
 
 ## Testing real-time streaming
 

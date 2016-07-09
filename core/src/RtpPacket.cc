@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 #ifndef BINDING_BUILD
-# include "Config.h"
+#include "Config.h"
 #endif
 
 #include "RtpPacket.h"

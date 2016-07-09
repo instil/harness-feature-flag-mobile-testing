@@ -517,6 +517,7 @@
 				426E88B51CDA54E500C7FF25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		426E88B61CDA54E500C7FF25 /* Build configuration list for PBXNativeTarget "SurgeMacOSDemoAppTests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +526,7 @@
 				426E88B81CDA54E500C7FF25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		426E88B91CDA54E500C7FF25 /* Build configuration list for PBXNativeTarget "SurgeMacOSDemoAppUITests" */ = {
 			isa = XCConfigurationList;
@@ -533,6 +535,7 @@
 				426E88BB1CDA54E500C7FF25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

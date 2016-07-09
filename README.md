@@ -37,13 +37,11 @@ $ ./test/testrunner
 
 ### iOS
 
-To build the iOS frameworks, first generate the Xcode project files for the Surge core library then open the workspace in Xcode.
+To build the iOS/macOS frameworks, either open the workspace `apple/Surge.xcworkspace` in XCode or execute the following.
 
 ```bash
-$ brew install cmake
-$ mkdir apple/build
-$ cd apple/build
-$ cmake -DFOR_IOS=ON -G Xcode ../../core
+$ cd apple
+$ ./build-release.sh
 ```
 
 ### Android

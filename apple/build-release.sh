@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
 
+set -e
+
 cd $(dirname $0)
 
-mkdir build
-cd build
-cmake -DFOR_IOS=ON -G Xcode ../../core
+# echo "Analysing source"
+# xctool -workspace Surge.xcworkspace -scheme SurgeCore analyze -failOnWarnings
 
-cd ..
+echo "Executing tests"
+xctool -workspace Surge.xcworkspace -scheme SurgeCore clean test \
+  -reporter pretty \
+  -reporter junit:build/test-results/core-lib-tests.xml
+
 echo "Building iOS framework"
-xcodebuild -workspace Surge.xcworkspace -scheme SurgeiOS -configuration Release clean build \
+xctool -workspace Surge.xcworkspace -scheme SurgeiOS -configuration Release clean build \
   CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/iOS/release \
   CODE_SIGN_IDENTITY="iPhone Developer: Instil Software"
 
 echo "Building macOS framework"
-xcodebuild -workspace Surge.xcworkspace -scheme SurgeMacOS -configuration Release clean build \
+xctool -workspace Surge.xcworkspace -scheme SurgeMacOS -configuration Release clean build \
   CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/macOS/release \
   CODE_SIGN_IDENTITY="iPhone Developer: Instil Software"
 

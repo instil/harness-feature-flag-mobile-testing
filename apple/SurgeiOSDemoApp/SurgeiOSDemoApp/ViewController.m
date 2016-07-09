@@ -30,12 +30,12 @@
 
 - (void)viewDidLoad {
     self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
-    self.rtspPlayer.playerView.frame = [[UIScreen mainScreen] bounds];
+    self.rtspPlayer.playerView.frame = [[UIScreen ma inScreen] bounds];
     [self.view addSubview:self.rtspPlayer.playerView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:@"rtsp://192.168.1.45:8554/test"]];
+    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:@"rtsp://192.168.1.128:8554/test"]];
 }
 
 @end

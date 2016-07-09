@@ -1,0 +1,9 @@
+coverage_service: cobertura_xml
+workspace: ../Surge.xcworkspace
+xcodeproj: SurgeFrameworks.xcodeproj
+scheme: SurgeiOS
+source_directory: Shared
+output_directory: build/reports/
+ignore:
+  - ../../core/lib/*
+  - ../../../../../../../Applications/*

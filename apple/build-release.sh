@@ -12,6 +12,18 @@ xctool -workspace Surge.xcworkspace -scheme SurgeCore clean test \
   -reporter pretty \
   -reporter junit:build/test-results/core-lib-tests.xml
 
+# cd SurgeCore
+# slather coverage
+# cd ..
+
+xctool -workspace Surge.xcworkspace -scheme SurgeiOS clean test \
+  -reporter pretty \
+  -reporter junit:build/test-results/framework-tests.xml
+
+# cd SurgeFrameworks
+# slather coverage
+# cd ..
+
 echo "Building macOS framework"
 xctool -workspace Surge.xcworkspace -scheme SurgeMacOS -configuration Release clean build \
   CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/macOS \

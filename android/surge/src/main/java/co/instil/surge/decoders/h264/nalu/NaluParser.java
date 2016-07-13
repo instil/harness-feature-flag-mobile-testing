@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2016 Instil Software.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package co.instil.surge.decoders.h264.nalu;
 
 import java.nio.ByteBuffer;
@@ -11,7 +31,7 @@ public class NaluParser {
 
     private static final int MINIMUM_NAL_UNIT_LENGTH = 6;
 
-    /**
+    /*
      * H264 is comprised of NALU segments.
      *
      * XXXX Y ZZZZZZZZ -> XXXX Y ZZZZZZZZ -> XXXX Y ZZZZZZZZ
@@ -26,14 +46,14 @@ public class NaluParser {
      * read until the next magic-byte-sequence AKA the next segment to figure
      * out the full nalu length
      **/
-    public List<NaluSegment> parseNaluSegments(ByteBuffer byteBuffer) throws Exception {
+    public static List<NaluSegment> parseNaluSegments(ByteBuffer byteBuffer) throws Exception {
         byte[] buffer = new byte[byteBuffer.capacity()];
         byteBuffer.get(buffer);
 
         List<NaluSegment> segmentList = new ArrayList<>();
         NaluSegment previousSegment = null;
 
-        if (buffer.length < MINIMUM_NAL_UNIT_LENGTH) {
+        if (buffer.length <= MINIMUM_NAL_UNIT_LENGTH) {
             return segmentList;
         }
 
@@ -48,6 +68,7 @@ public class NaluParser {
                 if (previousSegment != null) {
                     copyBufferIntoSegment(buffer, previousSegment.getOffset(), i - previousSegment.getOffset(), previousSegment);
                 }
+                i += magicByteLength;
                 segmentList.add(segment);
                 previousSegment = segment;
             }
@@ -68,7 +89,7 @@ public class NaluParser {
      * @return the length of the magic byte sequence at the position (3 or 4); or -1 a magic
      * byte sequence does not start at the supplied position.
      */
-    private int lengthOfMagicByteSequenceAtPosition(byte[] buffer, int position) {
+    private static int lengthOfMagicByteSequenceAtPosition(byte[] buffer, int position) {
         boolean startsWithZeroBytes = buffer[position] == 0x00 && buffer[position+1] == 0x00;
         if (startsWithZeroBytes && buffer[position+2] == 0x01) {
             return 3;
@@ -79,7 +100,7 @@ public class NaluParser {
         }
     }
 
-    private void copyBufferIntoSegment(byte[] buffer, int offset, int length, NaluSegment segment) throws Exception {
+    private static void copyBufferIntoSegment(byte[] buffer, int offset, int length, NaluSegment segment) throws Exception {
         byte[] segmentBuffer = new byte[length];
         System.arraycopy(buffer, offset, segmentBuffer, 0, length);
         segment.setBuffer(segmentBuffer);

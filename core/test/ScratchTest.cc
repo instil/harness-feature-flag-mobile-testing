@@ -22,10 +22,15 @@ public:
         
     }
 
-    void Payload(const char* buffer, size_t length) {
+    virtual void ClientReceivedFrame(const unsigned char *frameBuffer,
+                                     size_t length,
+                                     int32_t width,
+                                     int32_t height,
+                                     int32_t presentationTime,
+                                     int32_t duration) {
         // print out nalus
         INFO("PAYLOAD");
-        SurgeTestUtil::PrintOutAllNaluTypes((const unsigned char*)buffer, length);
+        SurgeTestUtil::PrintOutAllNaluTypes((const unsigned char*)frameBuffer, length);
     }
     
 };

@@ -38,7 +38,7 @@
 }
 
 - (void)viewDidAppear {
-    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:@"rtsp://192.168.1.129:8554/test"]];
+    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:@"rtsp://192.168.1.128:8554/test"]];
 }
 
 @end

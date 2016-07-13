@@ -1,12 +1,9 @@
 // Standard C++ Headers
 #include <sstream>
   using std::ostringstream;
-#include <stdexcept>
-  using std::runtime_error;
-#include <system_error>
-  using std::system_error;
-#include <utility>
-  using std::move;
+using std::runtime_error;
+using std::system_error;
+using std::move;
 
 #include "Thread.h"
   using SurgeUtil::Runnable;

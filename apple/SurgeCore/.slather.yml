@@ -1,0 +1,9 @@
+coverage_service: cobertura_xml
+workspace: ../Surge.xcworkspace
+xcodeproj: SurgeCore.xcodeproj
+scheme: SurgeCore
+source_directory: ../../core/src
+output_directory: build/reports/
+ignore:
+  - ../../core/lib/*
+  - ../../../../../../../Applications/*

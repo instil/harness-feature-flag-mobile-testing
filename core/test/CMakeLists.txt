@@ -1,7 +1,7 @@
 include_directories(
-    "${PROJECT_SOURCE_DIR}/src"
-    "${PROJECT_SOURCE_DIR}/test"
-    )
+  "${PROJECT_SOURCE_DIR}/src"
+  "${PROJECT_SOURCE_DIR}/test"
+)
 
 add_executable(testrunner
   testrunner.cc
@@ -17,6 +17,7 @@ add_executable(testrunner
   TestUtil.h
   NaluParser.h
 )
+
 target_link_libraries(testrunner
   surge
   gtest

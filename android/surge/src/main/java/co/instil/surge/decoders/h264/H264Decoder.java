@@ -27,6 +27,7 @@ import android.os.Build;
 import android.view.Surface;
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.Decoder;
+import co.instil.surge.decoders.MediaCodecFactory;
 import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
@@ -54,6 +55,8 @@ public abstract class H264Decoder implements Decoder {
     private MediaCodec mediaCodec;
     private MediaFormat mediaFormat;
     private Surface surface;
+    private MediaCodecFactory mediaCodecFactory;
+    private NaluParser naluParser;
     private NaluSegment pictureParameterSet;
     private NaluSegment sequenceParameterSet;
     private ByteBuffer[] inputBuffers = null;
@@ -64,7 +67,19 @@ public abstract class H264Decoder implements Decoder {
      * @param surface the surface into which the decoder will return the decoded video.
      */
     protected H264Decoder(Surface surface) {
+        this(surface, new MediaCodecFactory(), new NaluParser());
+    }
+
+    /**
+     * Constructor for a {@link H264Decoder} instance.
+     * @param surface the surface into which the decoder will return the decoded video.
+     * @param mediaCodecFactory factory used to instantiate {@link MediaCodec} decoder interfaces.
+     * @param naluParser parser used to parse NAL units from raw packets of bytes handed to the decoder.
+     */
+    protected H264Decoder(Surface surface, MediaCodecFactory mediaCodecFactory, NaluParser naluParser) {
         setSurface(surface);
+        this.mediaCodecFactory = mediaCodecFactory;
+        this.naluParser = naluParser;
     }
 
     @Override
@@ -78,7 +93,7 @@ public abstract class H264Decoder implements Decoder {
         logger.debug("Received frame buffer for decoding");
 
         try {
-            List<NaluSegment> segments = NaluParser.parseNaluSegments(frameBuffer);
+            List<NaluSegment> segments = naluParser.parseNaluSegments(frameBuffer);
 
             MediaCodec codec = getMediaCodec();
             if (!hasCachedParameterSets() && codec == null) {
@@ -185,7 +200,7 @@ public abstract class H264Decoder implements Decoder {
             buffer = mediaCodec.getInputBuffer(inputBufferId);
         }
         buffer.clear();
-        buffer.put(packet.segment.getBuffer());
+        buffer.put(packet.segment.getPayload());
     }
 
     protected void setPictureParameterSet(NaluSegment segment) {
@@ -200,7 +215,7 @@ public abstract class H264Decoder implements Decoder {
         if (packet.isPictureParameterSet() || packet.isSequenceParameterSet()) {
             flags &= MediaCodec.BUFFER_FLAG_CODEC_CONFIG;
         }
-        return 0;
+        return flags;
     }
 
     protected NaluSegment getPictureParameterSet() {
@@ -270,7 +285,7 @@ public abstract class H264Decoder implements Decoder {
         public String toString() {
             return String.format("H264 packet: %s frame of size %d bytes received at %s",
                     isKeyFrame() ? "key" : "non-key",
-                    segment.getBufferSize(),
+                    segment.getPayloadLength(),
                     timestamp);
         }
 
@@ -281,12 +296,12 @@ public abstract class H264Decoder implements Decoder {
     }
 
     private MediaCodec createMediaCodec(Surface surface) throws IOException {
-        setMediaCodec(MediaCodec.createDecoderByType("video/avc"));
+        setMediaCodec(mediaCodecFactory.createDecoderOfType("video/avc"));
         setMediaFormat(MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, 720, 480));
         getMediaFormat().setInteger(MediaFormat.KEY_WIDTH, 720);
         getMediaFormat().setInteger(MediaFormat.KEY_HEIGHT, 480);
-        getMediaFormat().setByteBuffer("csd-0", ByteBuffer.wrap(getSequenceParameterSet().getBuffer()));
-        getMediaFormat().setByteBuffer("csd-1", ByteBuffer.wrap(getPictureParameterSet().getBuffer()));
+        getMediaFormat().setByteBuffer("csd-0", ByteBuffer.wrap(getSequenceParameterSet().getPayload()));
+        getMediaFormat().setByteBuffer("csd-1", ByteBuffer.wrap(getPictureParameterSet().getPayload()));
         getMediaFormat().setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 0);
         getMediaCodec().configure(getMediaFormat(), surface, null, 0);
         onCreatedMediaCodec(getMediaCodec());

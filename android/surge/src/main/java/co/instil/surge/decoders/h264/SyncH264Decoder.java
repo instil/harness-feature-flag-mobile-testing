@@ -109,7 +109,7 @@ public class SyncH264Decoder extends H264Decoder {
                     logger.debug("Submitting to decoder: {}", packet.toString());
                     int flags = decoderFlagsForPacket(packet);
                     getMediaCodec().queueInputBuffer(
-                            bufferId, 0, packet.segment.getBufferSize(), packet.presentationTime, flags);
+                            bufferId, 0, packet.segment.getPayloadLength(), packet.presentationTime, flags);
                 }
             }
         }

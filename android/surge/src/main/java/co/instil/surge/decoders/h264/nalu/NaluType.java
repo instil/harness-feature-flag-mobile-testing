@@ -72,7 +72,6 @@ public enum NaluType {
         return description;
     }
 
-    // These are the only nalu's that come from tyco - keep and eye on that warning for more.
     public static NaluType getTypeFromCode(int rawType) {
         NaluType type = NaluType.UNSPECIFIED;
         switch(rawType) {

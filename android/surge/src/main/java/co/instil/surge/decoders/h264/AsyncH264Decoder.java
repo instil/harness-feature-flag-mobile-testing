@@ -83,7 +83,7 @@ public class AsyncH264Decoder extends H264Decoder {
         writePacketToInputBuffer(packet, bufferIndex);
         logger.debug("Submitting to decoder: {}", packet.toString());
         int flags = decoderFlagsForPacket(packet);
-        codec.queueInputBuffer(bufferIndex, 0, packet.segment.getBufferSize(), packet.presentationTime, flags);
+        codec.queueInputBuffer(bufferIndex, 0, packet.segment.getPayloadLength(), packet.presentationTime, flags);
     }
 
     private class AsyncH264DecoderCallbackHandler extends MediaCodec.Callback {

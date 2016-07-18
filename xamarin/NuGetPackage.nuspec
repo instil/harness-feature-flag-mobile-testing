@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SurgeXamarinBindings</id>
+    <version>1.0.0</version>
+    <authors>Instil</authors>
+    <owners>Instil</owners>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://gitlab.com/instil/Surge</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Surge is a high performance Real-Time Streaming Protocol (RTSP) and Real-Time Transport Protocol (RTP) implementation with support for multiple languages and platforms.</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>RTSP</tags>
+  </metadata>
+  <files>
+    <file src="SurgeXamarinAndroid/SurgeXamarinAndroidBindings/bin/Release/SurgeXamarinAndroidBindings.dll" target="lib/MonoAndroid10" />
+    <file src="SurgeXamariniOS/SurgeXamariniOSBindings/bin/Release/SurgeXamariniOSBindings.dll" target="lib/Xamarin.iOS10" />
+  </files>
+</package>

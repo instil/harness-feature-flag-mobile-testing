@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<!--
+  This sample removes the class: android.support.v4.content.AsyncTaskLoader.LoadTask:
+  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='AsyncTaskLoader.LoadTask']" />
+  
+  This sample removes the method: android.support.v4.content.CursorLoader.loadInBackground:
+  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
+  -->
+
+	<!--    Log4J includeded in fat AAR, don't create Xamarin bindings for it       -->
+    <remove-node path="/api/package[@name='org.slf4j.helpers']" />
+
+    <!--    Conflicts within the generated bindings, trying to change access levels of overrided methods. Unsure why yet, but enforcing same visibility types.      -->
+    <attr path="/api/package[@name='co.instil.surge.decoders.h264']/class[@name='H264Decoder']/method[@name='onCreatedMediaCodec']" name="visibility">public</attr>
+    <attr path="/api/package[@name='co.instil.surge.decoders.h264']/class[@name='SyncH264Decoder']/method[@name='onCreatedMediaCodec']" name="visibility">public</attr>
+    <attr path="/api/package[@name='co.instil.surge.decoders.h264']/class[@name='AsyncH264Decoder']/method[@name='onCreatedMediaCodec']" name="visibility">public</attr>
+    <attr path="/api/package[@name='co.instil.surge.decoders.h264']/class[@name='H264Decoder.H264Packet']" name="visibility">public</attr>
+</metadata>

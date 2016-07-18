@@ -44,8 +44,30 @@ model {
     }
 }
 
+//task copyLibs(type: Copy) {
+//    from configurations.compile
+//    into 'libs'
+//}
+//copyLibs.onlyIf { project.hasProperty('buildaar') }
+
+//task cleanLibsDir(type: Delete) {
+//    delete fileTree(dir: "libs")
+//}
+//cleanLibsDir.mustRunAfter(build)
+
+
+ext.includeLibsFolder = 'libs'
+task copyLibs(type: Copy, dependsOn: 'cleanLibs') {
+    from configurations.compile
+    into includeLibsFolder
+}
+
+task cleanLibs(type: Delete) {
+    delete includeLibsFolder
+}
+
 dependencies {
-    compile fileTree(dir: "libs", include: ["*.jar"])
+    compile fileTree(dir: includeLibsFolder, include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.4.0"
     compile "org.slf4j:slf4j-api:1.7.21"
 

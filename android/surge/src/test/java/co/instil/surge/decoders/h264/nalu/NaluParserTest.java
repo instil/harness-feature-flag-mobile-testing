@@ -6,8 +6,8 @@ import org.junit.Test;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import static co.instil.surge.decoders.h264.H26TestUtils.generateNalUnitBytes;
-import static co.instil.surge.decoders.h264.H26TestUtils.joinNalUnits;
+import static co.instil.surge.decoders.h264.H264TestUtils.generateNalUnitBytes;
+import static co.instil.surge.decoders.h264.H264TestUtils.joinNalUnits;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;

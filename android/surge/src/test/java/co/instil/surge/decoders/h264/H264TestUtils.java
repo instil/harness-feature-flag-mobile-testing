@@ -5,7 +5,7 @@ import co.instil.surge.decoders.h264.nalu.NaluType;
 /**
  * Created by mattmccomb on 14/07/16.
  */
-public class H26TestUtils {
+public class H264TestUtils {
 
     public static class NaluSpec {
 

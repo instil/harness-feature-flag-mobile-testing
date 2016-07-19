@@ -2,6 +2,9 @@ package co.instil.surge.decoders.h264;
 
 import android.media.MediaCodec;
 import android.view.Surface;
+import co.instil.surge.decoders.MediaCodecFactory;
+import co.instil.surge.decoders.h264.nalu.NaluParser;
+import co.instil.surge.device.DeviceExaminer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +14,6 @@ import java.util.List;
  */
 public class StubH264Decoder extends H264Decoder {
 
-    public MediaCodec mediaCodec;
-
     private List<H264Packet> receivedPackets;
 
     protected StubH264Decoder(Surface surface) {
@@ -20,9 +21,18 @@ public class StubH264Decoder extends H264Decoder {
         receivedPackets = new ArrayList<>();
     }
 
+    protected StubH264Decoder(
+            Surface surface,
+            MediaCodecFactory mediaCodecFactory,
+            NaluParser naluParser,
+            DeviceExaminer deviceExaminer) {
+        super(surface, mediaCodecFactory, naluParser, deviceExaminer);
+        receivedPackets = new ArrayList<>();
+    }
+
     @Override
     protected void onCreatedMediaCodec(MediaCodec mediaCodec) {
-        this.mediaCodec = mediaCodec;
+
     }
 
     @Override
@@ -31,7 +41,7 @@ public class StubH264Decoder extends H264Decoder {
     }
 
     @Override
-    protected void onReceiveH264Packet(H264Decoder.H264Packet packet) {
+    protected void onReceiveH264Packet(H264Packet packet) {
         receivedPackets.add(packet);
     }
 

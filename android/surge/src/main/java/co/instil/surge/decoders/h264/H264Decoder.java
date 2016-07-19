@@ -23,7 +23,6 @@ package co.instil.surge.decoders.h264;
 import android.annotation.TargetApi;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
-import android.os.Build;
 import android.view.Surface;
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.Decoder;
@@ -31,12 +30,12 @@ import co.instil.surge.decoders.MediaCodecFactory;
 import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
+import co.instil.surge.device.DeviceExaminer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,6 +49,7 @@ import java.util.List;
 @TargetApi(21)
 public abstract class H264Decoder implements Decoder {
 
+
     private static Logger logger = LoggerFactory.getLogger(H264Decoder.class);
 
     private MediaCodec mediaCodec;
@@ -60,6 +60,7 @@ public abstract class H264Decoder implements Decoder {
     private NaluSegment pictureParameterSet;
     private NaluSegment sequenceParameterSet;
     private ByteBuffer[] inputBuffers = null;
+    private DeviceExaminer deviceExaminer;
 
 
     /**
@@ -67,7 +68,7 @@ public abstract class H264Decoder implements Decoder {
      * @param surface the surface into which the decoder will return the decoded video.
      */
     protected H264Decoder(Surface surface) {
-        this(surface, new MediaCodecFactory(), new NaluParser());
+        this(surface, new MediaCodecFactory(), new NaluParser(), new DeviceExaminer());
     }
 
     /**
@@ -76,10 +77,15 @@ public abstract class H264Decoder implements Decoder {
      * @param mediaCodecFactory factory used to instantiate {@link MediaCodec} decoder interfaces.
      * @param naluParser parser used to parse NAL units from raw packets of bytes handed to the decoder.
      */
-    protected H264Decoder(Surface surface, MediaCodecFactory mediaCodecFactory, NaluParser naluParser) {
+    protected H264Decoder(
+            Surface surface,
+            MediaCodecFactory mediaCodecFactory,
+            NaluParser naluParser,
+            DeviceExaminer deviceExaminer) {
         setSurface(surface);
         this.mediaCodecFactory = mediaCodecFactory;
         this.naluParser = naluParser;
+        this.deviceExaminer = deviceExaminer;
     }
 
     @Override
@@ -103,9 +109,10 @@ public abstract class H264Decoder implements Decoder {
                 logger.debug("Decoder received parameter sets");
                 cacheParameterSets(segments);
 
-                codec = createMediaCodec(getSurface());
+                codec = createMediaCodec();
+                setMediaCodec(codec);
                 codec.start();
-                if (isPreLollipopDevice()) {
+                if (deviceExaminer.isPreLollipopDevice()) {
                     inputBuffers = codec.getInputBuffers();
                 }
                 onStartedCodec(codec);
@@ -194,13 +201,14 @@ public abstract class H264Decoder implements Decoder {
         if (inputBufferId == -1) {
             return;
         }
-        if (isPreLollipopDevice()) {
+        if (deviceExaminer.isPreLollipopDevice()) {
             buffer = inputBuffers[inputBufferId];
         } else {
             buffer = mediaCodec.getInputBuffer(inputBufferId);
         }
         buffer.clear();
-        buffer.put(packet.segment.getPayload());
+        byte[] payload = packet.segment.getPayload();
+        buffer.put(payload, 0, payload != null ? payload.length : 0);
     }
 
     protected void setPictureParameterSet(NaluSegment segment) {
@@ -254,58 +262,10 @@ public abstract class H264Decoder implements Decoder {
         return surface;
     }
 
-    /**
-     * A wrapper around a single H264 timestamp which provides additional meta-data and
-     * utility methods.
-     */
-    protected class H264Packet {
-
-        public long presentationTime;
-        public NaluSegment segment;
-        public Date timestamp;
-
-        public H264Packet(NaluSegment segment, long presentationTime) {
-            this.presentationTime = presentationTime;
-            this.segment = segment;
-            this.timestamp = new Date();
-        }
-
-        public boolean isKeyFrame() {
-            return segment.getType() == NaluType.CODED_SLICE_IDR;
-        }
-
-        public boolean isSequenceParameterSet() {
-            return segment.getType() == NaluType.SPS;
-        }
-
-        public boolean isPictureParameterSet() {
-            return segment.getType() == NaluType.PPS;
-        }
-
-        public String toString() {
-            return String.format("H264 packet: %s frame of size %d bytes received at %s",
-                    isKeyFrame() ? "key" : "non-key",
-                    segment.getPayloadLength(),
-                    timestamp);
-        }
-
+    private MediaCodec createMediaCodec() throws IOException {
+        return mediaCodecFactory.createH264DecoderWithParameters(
+                sequenceParameterSet, pictureParameterSet, surface, 720, 480);
     }
 
-    private boolean isPreLollipopDevice() {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    private MediaCodec createMediaCodec(Surface surface) throws IOException {
-        setMediaCodec(mediaCodecFactory.createDecoderOfType("video/avc"));
-        setMediaFormat(MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, 720, 480));
-        getMediaFormat().setInteger(MediaFormat.KEY_WIDTH, 720);
-        getMediaFormat().setInteger(MediaFormat.KEY_HEIGHT, 480);
-        getMediaFormat().setByteBuffer("csd-0", ByteBuffer.wrap(getSequenceParameterSet().getPayload()));
-        getMediaFormat().setByteBuffer("csd-1", ByteBuffer.wrap(getPictureParameterSet().getPayload()));
-        getMediaFormat().setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 0);
-        getMediaCodec().configure(getMediaFormat(), surface, null, 0);
-        onCreatedMediaCodec(getMediaCodec());
-        return getMediaCodec();
-    }
 
 }

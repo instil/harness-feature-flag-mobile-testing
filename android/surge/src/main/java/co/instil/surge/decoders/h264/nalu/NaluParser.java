@@ -74,10 +74,10 @@ public class NaluParser {
      * byte sequence does not start at the supplied position.
      */
     private int lengthOfMagicByteSequenceAtPosition(byte[] buffer, int position) {
-        boolean startsWithZeroBytes = buffer[position] == 0x00 && buffer[position+1] == 0x00;
-        if (startsWithZeroBytes && buffer[position+2] == 0x01) {
+        boolean startsWithZeroBytes = buffer[position] == 0x00 && buffer[position + 1] == 0x00;
+        if (startsWithZeroBytes && buffer[position + 2] == 0x01) {
             return MINIMUM_MAGIC_HEADER_LENGTH;
-        } else if (startsWithZeroBytes && buffer[position+2] == 0x00 && buffer[position+3] == 0x01) {
+        } else if (startsWithZeroBytes && buffer[position + 2] == 0x00 && buffer[position + 3] == 0x01) {
             return MAXIMUM_MAGIC_HEADER_LENGTH;
         } else {
             return -1;

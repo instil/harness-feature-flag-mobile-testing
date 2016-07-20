@@ -26,7 +26,7 @@ import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.Decoder;
-import co.instil.surge.decoders.h264.SyncH264Decoder;
+import co.instil.surge.decoders.h264.AsyncH264Decoder;
 import co.instil.surge.decoders.mjpeg.MjpegDecoder;
 import co.instil.surge.decoders.mp4v.AsyncMp4vDecoder;
 import org.slf4j.Logger;
@@ -83,7 +83,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     private void initialiseDecoder(SessionDescription sessionDescription) {
         if (sessionDescription.getType() == H264) {
-            decoder = new SyncH264Decoder(surface);
+            decoder = new AsyncH264Decoder(surface);
         } else if (sessionDescription.getType() == MP4V) {
             decoder = new AsyncMp4vDecoder(surface);
         } else if (sessionDescription.getType() == MJPEG) {

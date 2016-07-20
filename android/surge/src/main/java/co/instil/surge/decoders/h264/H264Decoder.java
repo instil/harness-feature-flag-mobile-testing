@@ -198,7 +198,7 @@ public abstract class H264Decoder implements Decoder {
 
     protected void writePacketToInputBuffer(H264Packet packet, int inputBufferId) {
         ByteBuffer buffer;
-        if (inputBufferId == -1) {
+        if (inputBufferId == -1 || packet == null) {
             return;
         }
         if (deviceExaminer.isPreLollipopDevice()) {
@@ -208,7 +208,9 @@ public abstract class H264Decoder implements Decoder {
         }
         buffer.clear();
         byte[] payload = packet.segment.getPayload();
-        buffer.put(payload, 0, payload != null ? payload.length : 0);
+        if (payload != null && payload.length > 0) {
+            buffer.put(payload, 0, payload.length);
+        }
     }
 
     protected void setPictureParameterSet(NaluSegment segment) {

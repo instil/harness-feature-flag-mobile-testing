@@ -52,6 +52,6 @@ public class NaluSegment {
 
     @Override
     public String toString() {
-        return String.format("\n{\n\ttype: \"%s\", \n\tpayload: \"%s\"}", type, payload);
+        return String.format("\n{\n\ttype: \"%s\", \n\tpayload length: \"%s\"}", type, payload.length);
     }
 }

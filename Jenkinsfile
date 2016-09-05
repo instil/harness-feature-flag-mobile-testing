@@ -1,6 +1,9 @@
-node {
-    discardOldBuilds maxBuildsToKeep: "25", maxArtifactsToKeep: "10"
+properties([
+    buildDiscarder(logRotator(numToKeepStr: '25', artifactNumToKeepStr: '10')),
+    pipelineTriggers([[$class: "SCMTrigger", scmpoll_spec: "H/15 * * * *"]])
+])
 
+node {
     stage "Checkout"
     gitCloneWithSubmodules url: "git@gitlab.com:instil/Surge.git"
 

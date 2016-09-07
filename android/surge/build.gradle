@@ -44,18 +44,6 @@ model {
     }
 }
 
-//task copyLibs(type: Copy) {
-//    from configurations.compile
-//    into 'libs'
-//}
-//copyLibs.onlyIf { project.hasProperty('buildaar') }
-
-//task cleanLibsDir(type: Delete) {
-//    delete fileTree(dir: "libs")
-//}
-//cleanLibsDir.mustRunAfter(build)
-
-
 ext.includeLibsFolder = 'libs'
 task copyLibs(type: Copy, dependsOn: 'cleanLibs') {
     from configurations.compile

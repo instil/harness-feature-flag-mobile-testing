@@ -1,8 +1,8 @@
 ﻿using System;
 using ObjCRuntime;
 using UIKit;
-using SurgeiOSBindings;
 using Foundation;
+using SurgeXamariniOSBindings;
 
 namespace SurgeiOSTestApp
 {

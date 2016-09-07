@@ -11,7 +11,7 @@ namespace SurgeXamariniOSBindings
     public interface SurgeRtspPlayer
     {
         [Export("initiatePlaybackOf:")]
-        Palette[] InitiatePlaybackOf(NSUrl url);
+        void InitiatePlaybackOf(NSUrl url);
 
         [Export("stop")]
         void Stop();

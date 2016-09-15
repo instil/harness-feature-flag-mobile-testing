@@ -11,8 +11,6 @@ namespace SurgeXamarinAndroid
 	[Activity(Label = "SurgeXamarinAndroid", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : Activity, TextureView.ISurfaceTextureListener
 	{
-		//int count = 1;
-
 		RtspPlayer player;
 		private TextureView textureView;
 
@@ -36,11 +34,6 @@ namespace SurgeXamarinAndroid
 
 			//button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
 		}
-
-
-
-
-
 
 		public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
 		{

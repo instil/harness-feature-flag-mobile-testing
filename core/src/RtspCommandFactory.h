@@ -55,9 +55,12 @@ namespace Surge {
         void ResetSession();
         
         RtspCommand* DescribeRequest(const std::string& url,
-                                     int nextSequenceNumber,
-                                     bool isLive);
+                                     int nextSequenceNumber);
 
+        RtspCommand* DescribeRequest(const std::string& url,
+                                     int nextSequenceNumber,
+                                     const SurgeUtil::DateTime startDate);
+        
         RtspCommand* SetupRequest(const std::string& url,
                                   int nextSequenceNumber,
                                   const ITransportInterface *transport);
@@ -65,6 +68,17 @@ namespace Surge {
         RtspCommand* PlayRequest(const std::string& url,
                                  const std::string& session,
                                  int nextSequenceNumber);
+        
+        RtspCommand* PlayRequest(const std::string& url,
+                                 const std::string& session,
+                                 int nextSequenceNumber,
+                                 const SurgeUtil::DateTime startDate);
+        
+        RtspCommand* PlayRequest(const std::string& url,
+                                 const std::string& session,
+                                 int nextSequenceNumber,
+                                 const SurgeUtil::DateTime startDate,
+                                 const SurgeUtil::DateTime endDate);
 
         RtspCommand* PauseRequest(const std::string& url,
                                   const std::string& session,

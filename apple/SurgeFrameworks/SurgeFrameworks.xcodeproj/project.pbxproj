@@ -78,6 +78,15 @@
 		42EFF7891CAADB330056B9F3 /* SurgeRtspPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 42EFF7861CAADB330056B9F3 /* SurgeRtspPlayer.mm */; };
 		42EFF88E1CAD40410056B9F3 /* SurgeLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */; };
 		42EFF8901CAD40410056B9F3 /* SurgeLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */; };
+		F41D9E4D1D940B95005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
+		F41D9E4E1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
+		F41D9E4F1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
+		F4B2A0101D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
+		F4B2A0111D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
+		F4B2A0121D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
+		F4B2A0131D4B87C100979ABB /* NSDate+SurgeExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */; };
+		F4B2A0141D4B87C100979ABB /* NSDate+SurgeExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */; };
+		F4B2A0151D4B87C100979ABB /* NSDate+SurgeExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -127,6 +136,9 @@
 		42EFF7851CAADB330056B9F3 /* SurgeRtspPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayer.h; sourceTree = "<group>"; };
 		42EFF7861CAADB330056B9F3 /* SurgeRtspPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SurgeRtspPlayer.mm; sourceTree = "<group>"; };
 		42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeLogging.h; sourceTree = "<group>"; };
+		F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayer_Private.h; sourceTree = "<group>"; };
+		F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+SurgeExtensions.h"; sourceTree = "<group>"; };
+		F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDate+SurgeExtensions.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,10 +284,12 @@
 		42F577921CA3526800112E27 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F4B2A00D1D4B879D00979ABB /* Utilities */,
 				42DCC2E01CC2D68A00497306 /* Decoders */,
 				42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */,
 				42EFF7851CAADB330056B9F3 /* SurgeRtspPlayer.h */,
 				42EFF7861CAADB330056B9F3 /* SurgeRtspPlayer.mm */,
+				F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -305,6 +319,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F4B2A00D1D4B879D00979ABB /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */,
+				F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -313,6 +336,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4241D51A1CBB04AC0087BAAF /* SurgeRtspPlayer.h in Headers */,
+				F41D9E4F1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */,
 				42AD016C1CE6267E00EA072F /* BitstreamReader.h in Headers */,
 				4241D4E71CBB01160087BAAF /* SurgeMacOS.h in Headers */,
 				42DCC3061CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
@@ -323,6 +347,7 @@
 				42DCC2F71CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30C1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2F11CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
+				F4B2A0121D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +356,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42EFF7871CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */,
+				F41D9E4D1D940B95005D2B0A /* SurgeRtspPlayer_Private.h in Headers */,
 				42AD016A1CE6267E00EA072F /* BitstreamReader.h in Headers */,
 				42EFF88E1CAD40410056B9F3 /* SurgeLogging.h in Headers */,
 				42DCC3041CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
@@ -341,6 +367,7 @@
 				42DCC2F51CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30A1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2EF1CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
+				F4B2A0101D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42EFF7881CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */,
+				F41D9E4E1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */,
 				42AD016B1CE6267E00EA072F /* BitstreamReader.h in Headers */,
 				42EFF8901CAD40410056B9F3 /* SurgeLogging.h in Headers */,
 				42DCC3051CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
@@ -359,6 +387,7 @@
 				42DCC2F61CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30B1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2F01CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
+				F4B2A0111D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +536,7 @@
 				42AD016D1CE6267E00EA072F /* BitstreamReader.m in Sources */,
 				42DCC2F81CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42EFF7891CAADB330056B9F3 /* SurgeRtspPlayer.mm in Sources */,
+				F4B2A0131D4B87C100979ABB /* NSDate+SurgeExtensions.mm in Sources */,
 				42DCC3161CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */,
 				42DCC3101CC30C5300497306 /* SurgeMp4vDecoder.m in Sources */,
 				42AD017B1CE6317800EA072F /* BitstreamWriter.m in Sources */,
@@ -523,6 +553,7 @@
 				42AD016E1CE6267E00EA072F /* BitstreamReader.m in Sources */,
 				42DCC2F91CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42DCC3081CC2D68A00497306 /* SurgeMp4vDecoder.m in Sources */,
+				F4B2A0141D4B87C100979ABB /* NSDate+SurgeExtensions.mm in Sources */,
 				42DCC3171CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */,
 				425630EF1CBAA31700E347C0 /* SurgeRtspPlayer.mm in Sources */,
 				42AD017C1CE6317800EA072F /* BitstreamWriter.m in Sources */,

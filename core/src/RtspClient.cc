@@ -40,7 +40,12 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         processedFirstPayload(false),
         m_lastKeepAliveMs(0),
         m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
-        m_sequenceNumber(1) {
+        m_sequenceNumber(1),
+        startTimeSet(false),
+        endTimeSet(false),
+        factory(new SessionDescriptionFactory()){
+            
+    StartErrorDispatcher();
 
     if (forceInterleavedTransport) {
         m_transport = new InterleavedRtspTransport(nullptr);
@@ -63,6 +68,7 @@ Surge::RtspClient::~RtspClient() {
     delete frameBuffer;
     delete depacketizer;
     delete m_transport;
+    delete factory;
 }
 
 Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url) {
@@ -84,7 +90,14 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
         RtspCommandFactory::SetBasicAuthCredentials(user.c_str(), password.c_str());
     }
 
-    RtspCommand* describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber(), true);
+    RtspCommand* describe;
+    if (startTimeSet) {
+        describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber(), startDate);
+    }
+    else {
+        describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber());
+    }
+    
     Response* raw_resp = m_transport->RtspTransaction(describe, true);
     delete describe;
     
@@ -97,11 +110,15 @@ Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
     
     DescribeResponse *resp = nullptr;
     try {
-        resp = new DescribeResponse(raw_resp);
+        resp = new DescribeResponse(raw_resp, factory);
     }
     catch (const std::exception& e) {
         ERROR("Invalid DescribeResponse: " << e.what());
         resp = nullptr;
+    }
+    
+    if (!resp->Ok()) {
+        NotifyDelegateTimeout();
     }
     
     delete raw_resp;
@@ -156,7 +173,7 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& session
     delete raw_resp;
 
     if (resp != nullptr && resp->Ok()) {
-        m_lastKeepAliveMs = SurgeUtil::CurrentTimeMilliseconds();
+        m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
         m_keeepAliveIntervalInSeconds = resp->GetTimeoutSeconds();
         m_session = resp->GetSession();
 
@@ -173,14 +190,24 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& session
             DEBUG("Rtcp Interleaved Channel set to: " << resp->GetRtcpInterleavedChannel());
         }
         
-        StartSession();
     }
     
     return resp;
 }
 
 Surge::RtspResponse* Surge::RtspClient::Play(bool waitForResponse) {
-    RtspCommand* play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber());
+    RtspCommand* play;
+    
+    if (endTimeSet) {
+        play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber(), startDate, endDate);
+    }
+    else if (startTimeSet) {
+        play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber(), startDate);
+    }
+    else {
+        play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber());
+    }
+    
     Response* raw_resp = m_transport->RtspTransaction(play, true);
     delete play;
 
@@ -205,6 +232,7 @@ Surge::RtspResponse* Surge::RtspClient::Play(bool waitForResponse) {
     }
 
     m_isPlaying = resp != nullptr && resp->Ok();
+    StartSession();
     
     return resp;
 }
@@ -361,6 +389,10 @@ void Surge::RtspClient::StopClient() {
     }
 }
 
+void Surge::RtspClient::StopStream() {
+    m_transport->StopRunning();
+}
+
 void Surge::RtspClient::StartSession() {
     if (m_thread.IsRunning()) {
         return;
@@ -371,7 +403,7 @@ void Surge::RtspClient::StartSession() {
 
 void Surge::RtspClient::Run() {
 
-    uint64_t time_last_packet_was_processed = SurgeUtil::CurrentTimeMilliseconds();
+    uint64_t time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
 
     auto rtp_packet_obs = m_transport->GetRtpPacketObservable().subscribe(
         [&](RtpPacket* packet) {
@@ -380,7 +412,7 @@ void Surge::RtspClient::Run() {
                 
                 delete packet;
                 
-                time_last_packet_was_processed = SurgeUtil::CurrentTimeMilliseconds();
+                time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
             }
         },
         [](std::exception_ptr){
@@ -398,7 +430,7 @@ void Surge::RtspClient::Run() {
         }
 
         // TIMEOUT
-        int64_t timeout_delta_ms = SurgeUtil::CurrentTimeMilliseconds() - time_last_packet_was_processed;
+        int64_t timeout_delta_ms = SurgeUtil::currentTimeMilliseconds() - time_last_packet_was_processed;
         bool client_did_timeout = m_isPlaying && timeout_delta_ms >= m_noPacketTimeout;
         if (client_did_timeout) {
             ERROR("No processed packets in the last " << timeout_delta_ms << "(ms). Issueing timeout signal.");
@@ -407,7 +439,7 @@ void Surge::RtspClient::Run() {
         }
 
         // KEEP ALIVE        
-        int64_t delta = SurgeUtil::CurrentTimeMilliseconds() - m_lastKeepAliveMs;
+        int64_t delta = SurgeUtil::currentTimeMilliseconds() - m_lastKeepAliveMs;
         int64_t delta_seconds = delta / 1000;
         bool need_keep_alive = delta_seconds >= static_cast<int64_t>(m_keeepAliveIntervalInSeconds * 0.9);
         if (need_keep_alive) {
@@ -425,12 +457,13 @@ void Surge::RtspClient::Run() {
                 NotifyDelegateTimeout();
                 break;
             } else {
-                m_lastKeepAliveMs = SurgeUtil::CurrentTimeMilliseconds();
+                m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
                 delete resp;
             }
         }
     }    
     INFO("Rtsp Client is Finished");
+    rtp_packet_obs.unsubscribe();
 }
 
 void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
@@ -441,6 +474,11 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 
     depacketizer->ProcessPacket(packet, !processedFirstPayload);
     processedFirstPayload = true;
+    
+    if (packet->HasExtension()) {
+        NotifyDelegateOfExtendedRtpHeader(packet->GetExtensionData(),
+                                          packet->GetExtensionLength());
+    }
     
     if (!packet->IsMarked()) {
         return;
@@ -469,8 +507,8 @@ void Surge::RtspClient::CreateDepacketizer() {
 
 int Surge::RtspClient::SetupRtspConnection(const std::string& url) {
     if (m_transport->IsRunning()) {
-        WARNING("Trying to setup RTSP connection on already running transport - ignoring request.");
-        return 0;
+        WARNING("Trying to setup RTSP connection on already running transport - resetting connection.");
+        m_transport->StopRunning();
     }
 
     m_abortWait.Reset();
@@ -483,6 +521,8 @@ int Surge::RtspClient::SetupRtspConnection(const std::string& url) {
 
     if (retval == 0) {
         m_transport->StartRunning();
+    } else {
+        ERROR("Did not start the Transport thread.");
     }
     
     return retval;

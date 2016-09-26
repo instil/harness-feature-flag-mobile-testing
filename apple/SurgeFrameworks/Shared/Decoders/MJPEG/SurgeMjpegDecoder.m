@@ -21,6 +21,9 @@
 #import "SurgeMjpegDecoder.h"
 #import "SurgeLogging.h"
 
+@interface SurgeDecoder()
+@property (nonatomic, assign) int framePerSecondCounter;
+@end
 
 @implementation SurgeMjpegDecoder
 
@@ -29,14 +32,19 @@
            withDimensions:(CGSize)dimensions
          presentationTime:(unsigned int)presentationTime
                  duration:(int)duration {
-    
-    CGDataProviderRef imageDataProvider = CGDataProviderCreateWithData(NULL, frameBuffer, size, NULL);
+
+    CFDataRef cfdata = CFDataCreate(NULL, frameBuffer, size);
+    CGDataProviderRef imageDataProvider = CGDataProviderCreateWithCFData(cfdata);
     CGImageRef image = CGImageCreateWithJPEGDataProvider(imageDataProvider, NULL, true, kCGRenderingIntentDefault);
     
     [self.delegate decoderFrameAvailable:image withTimeStamp:presentationTime];
-    
+
+    CFRelease(cfdata);
+
     CGImageRelease(image);
     CGDataProviderRelease(imageDataProvider);
+    
+    self.framePerSecondCounter++;
 }
 
 @end

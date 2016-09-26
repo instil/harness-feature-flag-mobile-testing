@@ -17,16 +17,34 @@ namespace Surge {
         SessionDescription(): type(UNKNOWN),
                               control(""),
                               rtpMap(""),
-                              formatParameters("") { }
+                              formatParameters(""),
+                              isNative(true),
+                              framerate(-1),
+                              fpsFraction(-1),
+                              width(-1),
+                              height(-1),
+                              bitrate(0) { }
         
         SessionDescription(RtspSessionType type,
                            std::string control,
                            std::string rtpMap,
-                           std::string fmtp)
+                           std::string fmtp,
+                           bool isNative,
+                           int framerate,
+                           int fpsFraction,
+                           int width,
+                           int height,
+                           int bitrate)
                 : type(type),
                   control(control),
                   rtpMap(rtpMap),
-                  formatParameters(fmtp) { }
+                  formatParameters(fmtp),
+                  isNative(isNative),
+                  framerate(framerate),
+                  fpsFraction(fpsFraction),
+                  width(width),
+                  height(height),
+                  bitrate(bitrate) { }
 
         virtual ~SessionDescription() { }
 
@@ -40,6 +58,18 @@ namespace Surge {
 
         const std::string GetFmtp() const { return formatParameters; }
 
+        const bool IsNative() const { return isNative; }
+
+        const int GetFramerate() const { return framerate; }
+        
+        const int GetFpsFraction() const { return fpsFraction; }
+        
+        const int GetWidth() const { return width; }
+        
+        const int GetHeight() const { return height; }
+        
+        const int GetBitrate() const { return bitrate; }
+        
         const std::string GetFmtpH264ConfigParameters() const {
             if (type != RtspSessionType::H264) {
                 return std::string();
@@ -86,6 +116,13 @@ namespace Surge {
         std::string control;
         std::string rtpMap;
         std::string formatParameters;
+        
+        bool isNative;
+        int framerate;
+        int fpsFraction;
+        int width;
+        int height;
+        int bitrate;
     };
     
 }

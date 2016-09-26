@@ -335,8 +335,9 @@ size_t Surge::MJPEGDepacketizer::ProcessPacketHeaders(const unsigned char *paylo
     int restartHeaderSize = 0;
     int quantizationTableLength = 0;
     
+    restartHeaderSize = ((type >= RESTART_MIN) && (type <= RESTART_MAX)) ? RESTARTMARKERHEADERSIZE : 0;
+    
     if (fragmentOffset == 0) {
-        restartHeaderSize = ((type >= RESTART_MIN) && (type <= RESTART_MAX)) ? RESTARTMARKERHEADERSIZE : 0;
         quantizationTableLength = ParseQuantizationTableLength(payloadData + JPEGHEADERSIZE + restartHeaderSize);
 
         unsigned char lumq[64];

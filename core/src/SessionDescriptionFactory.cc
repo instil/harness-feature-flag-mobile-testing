@@ -25,31 +25,34 @@
 #include "Logging.h"
 
 
-namespace Surge {
 
-    namespace SessionDescriptionFactory {
-    
-        std::vector<SessionDescription> ParseSessionDescriptionsFromBuffer(const std::string& body) {
-            std::vector<SessionDescription> sessionDescriptions;
+std::vector<Surge::SessionDescription> Surge::SessionDescriptionFactory::ParseSessionDescriptionsFromBuffer(const std::string& body) {
+    std::vector<SessionDescription> sessionDescriptions;
 
-            std::vector<std::string> lines = SurgeUtil::StringSplit(body, "\n");
-            if (lines.size() > 0) {
-                std::string version_line = lines[0];
+    std::vector<std::string> lines = SurgeUtil::StringSplit(body, "\n");
+    if (lines.size() > 0) {
+        std::string version_line = lines[0];
 
-                if (version_line.find("v=0") != std::string::npos) {
-                    SessionDescriptionV0 sessionDescription(body);
-                    sessionDescriptions.push_back(sessionDescription);
-                }
-                else if (!version_line.empty()) {
-                    ERROR("Unhandled Session Description version: [" << version_line << "]");
-                }
-                else {
-                    ERROR("No Session Description available");
-                }
-            }
-            
-            return sessionDescriptions;
+        if (!version_line.empty()) {
+            sessionDescriptions = ParseSessionDescription(version_line, body);
+        } else {
+            ERROR("No Session Description available");
         }
-        
     }
+    
+    return sessionDescriptions;
+}
+
+std::vector<Surge::SessionDescription> Surge::SessionDescriptionFactory::ParseSessionDescription(const std::string& versionLine, const std::string& body) {
+    std::vector<SessionDescription> sessionDescriptions;
+        
+    if (versionLine.find("v=0") != std::string::npos) {
+        SessionDescriptionV0 sessionDescription(body);
+        sessionDescriptions.push_back(sessionDescription);
+    }
+    else {
+        ERROR("Unhandled Session Description version: [" << versionLine << "]");
+    }
+    
+    return sessionDescriptions;
 }

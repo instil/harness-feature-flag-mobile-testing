@@ -66,6 +66,8 @@
             andPresentationTime:presentationTime];
         
         [self enqueueSampleBuffer:sampleBuffer];
+
+        CFRelease(blockBuffer);
     }
     
     for (SurgeNalUnit *nalUnit in nalUnits) {
@@ -116,7 +118,7 @@
     OSStatus status = CMBlockBufferCreateWithMemoryBlock(kCFAllocatorDefault,
                                                          data,
                                                          nalUnit.length,
-                                                         kCFAllocatorMalloc,
+                                                         kCFAllocatorDefault,
                                                          NULL,
                                                          0,
                                                          nalUnit.length,

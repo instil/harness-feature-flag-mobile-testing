@@ -37,7 +37,7 @@
 		42D672281D3069BB00D42C35 /* ISocketHandlerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E21D3069BB00D42C35 /* ISocketHandlerDelegate.h */; };
 		42D672291D3069BB00D42C35 /* ITransportInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E31D3069BB00D42C35 /* ITransportInterface.h */; };
 		42D6722A1D3069BB00D42C35 /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E41D3069BB00D42C35 /* Logging.h */; };
-		42D6722B1D3069BB00D42C35 /* MimeTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E51D3069BB00D42C35 /* MimeTypes.h */; };
+		42D6722B1D3069BB00D42C35 /* MimeTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E51D3069BB00D42C35 /* MimeTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42D6722C1D3069BB00D42C35 /* MJPEGDepacketizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671E61D3069BB00D42C35 /* MJPEGDepacketizer.cc */; };
 		42D6722D1D3069BB00D42C35 /* MJPEGDepacketizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E71D3069BB00D42C35 /* MJPEGDepacketizer.h */; };
 		42D6722E1D3069BB00D42C35 /* MP4VDepacketizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671E81D3069BB00D42C35 /* MP4VDepacketizer.cc */; };
@@ -58,7 +58,7 @@
 		42D6723D1D3069BB00D42C35 /* RtspCommandFactory.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671F71D3069BB00D42C35 /* RtspCommandFactory.cc */; };
 		42D6723E1D3069BB00D42C35 /* RtspCommandFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671F81D3069BB00D42C35 /* RtspCommandFactory.h */; };
 		42D6723F1D3069BB00D42C35 /* RtspResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671F91D3069BB00D42C35 /* RtspResponse.h */; };
-		42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671FA1D3069BB00D42C35 /* SessionDescription.h */; };
+		42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671FA1D3069BB00D42C35 /* SessionDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42D672411D3069BB00D42C35 /* SessionDescriptionFactory.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671FB1D3069BB00D42C35 /* SessionDescriptionFactory.cc */; };
 		42D672421D3069BB00D42C35 /* SessionDescriptionFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671FC1D3069BB00D42C35 /* SessionDescriptionFactory.h */; };
 		42D672431D3069BB00D42C35 /* SessionDescriptionV0.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671FD1D3069BB00D42C35 /* SessionDescriptionV0.cc */; };
@@ -777,6 +777,7 @@
 				42D671BF1D30684A00D42C35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		42D673231D306ACE00D42C35 /* Build configuration list for PBXNativeTarget "SurgeCoreUnitTests" */ = {
 			isa = XCConfigurationList;
@@ -785,6 +786,7 @@
 				42D673251D306ACE00D42C35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

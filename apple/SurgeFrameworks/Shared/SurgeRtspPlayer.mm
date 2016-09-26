@@ -18,15 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "SurgeRtspPlayer.h"
+#import "SurgeRtspPlayer_Private.h"
 #import "SurgeLogging.h"
 #import "SurgeH264Decoder.h"
 #import "SurgeMp4vDecoder.h"
 #import "SurgeMjpegDecoder.h"
 
-#include "Surge.h"
-#include "MimeTypes.h"
-#include "Logging.h"
+#import "Surge.h"
+
+#include "NSDate+SurgeExtensions.h"
 
 class RtspLoggingDelegate: public SurgeUtil::ILoggingDelegate {
 public:
@@ -64,12 +64,14 @@ public:
                  withDimensions:(CGSize)dimensions
                presentationTime:(unsigned int)presentationTime
                        duration:(int)duration;
+- (void) rtspClientReceivedExtendedHeaders:(const unsigned char *)data
+                                  ofLength:(int)length;
 
 @end
 
 class RtspClientDelegateWrapper : public Surge::IRtspClientDelegate {
 public:
-
+ 
     RtspClientDelegateWrapper(id<SurgeRtspClientDelegate> delegate) : delegate(delegate) {}
 
     void ClientDidTimeout() {
@@ -91,15 +93,19 @@ public:
                          presentationTime:presentationTime
                                  duration:duration];
     }
+    
+    void ClientReceivedExtendedHeader(const unsigned char * buffer,
+                                      size_t length) {
+        [delegate rtspClientReceivedExtendedHeaders:buffer ofLength:length];
+    }
 
 private:
     id<SurgeRtspClientDelegate> delegate;
 };
 
 @interface SurgeRtspPlayer () <SurgeRtspClientDelegate, SurgeDecoderDelegate>
-@property (nonatomic, strong) NSURL *url;
+
 @property (nonatomic, assign) Surge::IRtspClientDelegate *clientDelegate;
-@property (nonatomic, assign) Surge::RtspClient *client;
 @property (nonatomic, strong) SurgeDecoder *decoder;
 
 #if TARGET_OS_IPHONE
@@ -124,6 +130,7 @@ private:
         self.clientDelegate = new RtspClientDelegateWrapper(self);
         self.client = new Surge::RtspClient(self.clientDelegate);
         [self configurePlayerView];
+        SurgeLogInfo("Initiating RTSP stream via Surge");
     }
     return self;
 }
@@ -146,26 +153,98 @@ private:
     delete self.clientDelegate;
 }
 
+- (void)closeStream {
+    SurgeLogInfo(@"Closing Stream");
+    
+    self.client->StopStream();
+}
+
 #pragma mark - Public API
 
-- (void)initiatePlaybackOf:(NSURL*)url {
+- (BOOL)initiatePlaybackOf:(NSURL*)url {
+    return [self initiatePlaybackOf:url withUsername:@"" andPassword:@""];
+}
+
+- (BOOL)initiatePlaybackOf:(NSURL*)url withUsername:(NSString *)username andPassword:(NSString *)password {
+    return [self initiatePlaybackOf:url withUsername:username andPassword:password startingAt:nil andEndingAt:nil];
+}
+
+- (BOOL)initiatePlaybackOf:(NSURL*)url
+                   withUsername:(NSString *)username
+                    andPassword:(NSString *)password
+                     startingAt:(NSDate *)startDate
+                    andEndingAt:(NSDate *)endDate {
     SurgeLogDebug(@"Initating playback of %@", url);
     
     self.url = url;
+    self.username = username;
+    self.password = password;
     
-    Surge::DescribeResponse *describeResponse = self.client->Describe(std::string(self.url.absoluteString.UTF8String));
-    Surge::SessionDescription sessionDescription = describeResponse->GetSessionDescriptions()[0];
+    self.startTime = startDate;
+    self.endTime = endDate;
+    
+    [self setRangeWithStartTime:startDate andEndTime:endDate];
+    [self describe];
+    
+    if (self.sessionDescriptions.size() == 0) {
+        return NO;
+    }
+    
+    Surge::SessionDescription currentSessionDescription = [self selectPreferredSessionDescription];
+    
+    [self setupStream:currentSessionDescription];
+    [self play];
+    
+    return YES;
+}
 
-    [self setupStream:sessionDescription];
+- (void)seekToStartTime:(NSDate *)startTime
+             andEndTime:(NSDate *)endTime {
+    
+    SurgeLogInfo(@"Seeking to start time %@ and end time %@", startTime, endTime);
+    
+    if ([startTime compare:endTime] == NSOrderedDescending) {
+        SurgeLogError(@"End time cannot be earlier than Start time");
+        return;
+    }
+    
+    self.startTime = startTime;
+    self.endTime = endTime;
+    
+    [self pause];
+    
+    [self setRangeWithStartTime:self.startTime
+                     andEndTime:self.endTime];
+    
+    [self play];
+}
+
+- (void)setStreamToLiveVideo {
+    SurgeLogInfo(@"Resetting stream back to live video");
+    
+    [self pause];
+    
+    self.client->ResetTimeToLive();
+
+    [self play];
+}
+
+- (void)describe {
+    Surge::DescribeResponse *describeResponse = self.client->Describe(std::string(self.url.absoluteString.UTF8String),
+                                                                      std::string(self.username.UTF8String),
+                                                                      std::string(self.password.UTF8String));
+    self.sessionDescriptions = describeResponse->GetSessionDescriptions();
+    
     delete describeResponse;
 }
 
 - (void)setupStream:(Surge::SessionDescription)sessionDescription {
+    SurgeLogInfo(@"Setting up stream with SessionDescription; %@",
+                 [NSString stringWithUTF8String:sessionDescription.GetFmtp().c_str()]);
+    
     [self initialiseDecoderForStream:sessionDescription];
     Surge::RtspResponse *setupResponse = self.client->Setup(sessionDescription, false);
     delete setupResponse;
-
-    [self play];
 }
 
 - (void)initialiseDecoderForStream:(Surge::SessionDescription)sessionDescription {
@@ -179,21 +258,51 @@ private:
 }
 
 - (void)play {
-    SurgeLogDebug(@"Starting/resuming playback of %@", self.url);
+    SurgeLogInfo(@"Starting/resuming playback of %@", self.url);
     Surge::RtspResponse *playResponse = self.client->Play(false);
     delete playResponse;
 }
 
 - (void)pause {
-    SurgeLogDebug(@"Pausing playback of %@", self.url);
+    SurgeLogInfo(@"Pausing playback of %@", self.url);
+    
     Surge::RtspResponse *pauseResponse = self.client->Pause();
     delete pauseResponse;
 }
 
 - (void)stop {
-    SurgeLogDebug(@"Stopping playback of %@", self.url);
-    Surge::RtspResponse *teardownResponse = self.client->Teardown();
-    delete teardownResponse;
+    SurgeLogInfo(@"Stopping playback of %@", self.url);
+    
+    [self closeStream];
+    self.client->StopClient();
+}
+
+#pragma mark - Package API
+
+- (void)setRangeWithStartTime:(NSDate *)startTime
+                   andEndTime:(NSDate *)endTime {
+    
+    SurgeUtil::DateTime surgeStartTime;
+    SurgeUtil::DateTime surgeEndTime;
+    
+    if (startTime != nil) {
+        surgeStartTime = [NSDate toSurgeDateTime:startTime];
+        self.client->SetStartTime(surgeStartTime);
+    }
+    
+    if (endTime != nil) {
+        surgeEndTime = [NSDate toSurgeDateTime:endTime];
+        self.client->SetEndTime(surgeEndTime);
+    }
+}
+
+- (Surge::SessionDescription)selectPreferredSessionDescription {
+    return self.sessionDescriptions[0];
+}
+
+- (int) framesPerSecond {
+    SurgeLogDebug(@"Current FPS: %d", self.decoder.framesPerSecond);
+    return self.decoder.framesPerSecond;
 }
 
 #pragma mark - RTSP client delegate

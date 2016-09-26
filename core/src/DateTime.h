@@ -22,6 +22,9 @@
 #ifndef __DATETIME_H__
 #define __DATETIME_H__
 
+#include <chrono>
+#include <string>
+
 namespace SurgeUtil {
     
     /**
@@ -41,7 +44,7 @@ namespace SurgeUtil {
    /**
     * Current UTC date and time.
     */
-    DateTime CurrentDateTime();
+    DateTime currentDateTime();
 
    /**
     * Current time in milliseconds since the clock epoch.
@@ -49,7 +52,13 @@ namespace SurgeUtil {
     * @note   This is measured with a "steady" clock, so it
     *         will not be affected by system time adjustments.
     */
-    std::int_least64_t CurrentTimeMilliseconds();
+    std::int_least64_t currentTimeMilliseconds();
+    
+    /**
+     * Convert a DateTime object into an ISO 8601 string
+     */
+    std::string convertToISO(const SurgeUtil::DateTime& value);
+    
 }
 
 #endif //__DATETIME_H__

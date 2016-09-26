@@ -33,6 +33,11 @@ public:
         SurgeTestUtil::PrintOutAllNaluTypes((const unsigned char*)frameBuffer, length);
     }
     
+    virtual void ClientReceivedExtendedHeader(const unsigned char * buffer,
+                                              size_t length) {
+        INFO("EXTENDED HEADER RECEIVED");
+    }
+    
 };
 
 

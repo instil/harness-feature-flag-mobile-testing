@@ -35,9 +35,10 @@
 #include "SetupResponse.h"
 #include "Depacketizer.h"
 
+#include "DateTime.h"
+
 #include <string>
 #include <vector>
-
 
 namespace Surge {
 
@@ -68,6 +69,8 @@ namespace Surge {
         RtspResponse* KeepAlive();
 
         void StopClient();
+        
+        void StopStream();
 
         IRtspClientDelegate* GetDelegate() const { return m_delegate; }
 
@@ -94,6 +97,33 @@ namespace Surge {
         void SetConnectTimeout(long timeout) {
             m_transport->SetConnectTimeout(timeout);
         }
+        
+        void SetTimeRange(SurgeUtil::DateTime startDate, SurgeUtil::DateTime endDate) {
+            this->startDate = startDate;
+            this->startTimeSet = true;
+            this->endDate = endDate;
+            this->endTimeSet = true;
+        }
+        
+        void SetStartTime(SurgeUtil::DateTime startDate) {
+            this->startDate = startDate;
+            this->startTimeSet = true;
+        }
+        
+        void SetEndTime(SurgeUtil::DateTime endDate) {
+            this->endDate = endDate;
+            this->endTimeSet = true;
+        }
+        
+        void ResetTimeToLive() {
+            this->startTimeSet = false;
+            this->endTimeSet = false;
+        }
+        
+        void SetSessionDescriptionFactory(SessionDescriptionFactory *factory) {
+            delete this->factory;
+            this->factory = factory;
+        }
 
     private:
         void Run() override;
@@ -118,6 +148,12 @@ namespace Surge {
                                                 depacketizer->GetHeight(),
                                                 1,
                                                 1);
+            }
+        }
+        
+        void NotifyDelegateOfExtendedRtpHeader(const unsigned char *extendedHeaderBuffer, size_t length) {
+            if (m_delegate != nullptr) {
+                m_delegate->ClientReceivedExtendedHeader(extendedHeaderBuffer, length);
             }
         }
 
@@ -158,6 +194,12 @@ namespace Surge {
         Surge::ITransportInterface *m_transport;
         SurgeUtil::StoppableThread m_thread;
         SurgeUtil::Mutex m_mutex;
+        
+        bool startTimeSet;
+        SurgeUtil::DateTime startDate;
+        bool endTimeSet;
+        SurgeUtil::DateTime endDate;
+        SessionDescriptionFactory *factory;
     };
     
 }

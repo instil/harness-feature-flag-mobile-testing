@@ -41,6 +41,7 @@
 }
 
 - (void)dealloc {
+    SurgeLogInfo("Dealloc called");
     [self freeFormatDescription];
     [self freeVideoDecompressionSession];
 }
@@ -57,8 +58,9 @@
 }
 
 - (void)freeVideoDecompressionSession {
-    if (_decompressionSession) {
-        VTDecompressionSessionInvalidate(_decompressionSession);
+    if (self.decompressionSession) {
+        SurgeLogInfo("Decompression Session freed");
+        VTDecompressionSessionInvalidate(self.decompressionSession);
         CFRelease(_decompressionSession);
         _decompressionSession = NULL;
     }
@@ -94,6 +96,7 @@
         self.formatDescription = formatDescription;
         [self createDecompressionSession];
     } else if (!VTDecompressionSessionCanAcceptFormatDescription(self.decompressionSession, formatDescription)) {
+        SurgeLogInfo("Decompression Session found to be replaced");
         [self freeFormatDescription];
         self.formatDescription = formatDescription;
         [self createDecompressionSession];

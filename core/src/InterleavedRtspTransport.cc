@@ -75,8 +75,8 @@ void Surge::InterleavedRtspTransport::RtspHandleReceive(const SurgeUtil::Waitabl
         
         size_t received = recv(event.FD(), buffer, m_readBufferSize, 0);
         if (received == -1) {
-            ERROR("Failed to recv: error (" << errno << ") " << strerror(errno));
-            free(buffer);
+            int errorNo = errno;
+            ERROR("Failed to recv: error (" << errorNo << ") " << strerror(errorNo));
             // Notify Delegate of Socket Failure...
             NotifyDelegateOfReadFailure();
             m_running = false;

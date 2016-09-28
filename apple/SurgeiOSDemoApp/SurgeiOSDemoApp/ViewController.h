@@ -22,6 +22,16 @@
 
 @interface ViewController : UIViewController
 
+@property(nonatomic, strong) IBOutlet UIView* playbackViewHolder;
+@property(nonatomic, strong) IBOutlet UIView* playbackControlsHolder;
+@property(nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
+
+@property(nonatomic, strong) IBOutlet UIButton* pauseButton;
+@property(nonatomic, strong) IBOutlet UIButton* playButton;
+@property(nonatomic, strong) IBOutlet UITextField* streamUrlField;
+
+- (IBAction)tappedPauseButton:(id)sender;
+- (IBAction)tappedPlayButton:(id)sender;
 
 @end
 

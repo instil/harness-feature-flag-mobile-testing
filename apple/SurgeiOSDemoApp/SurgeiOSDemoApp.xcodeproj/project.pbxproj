@@ -15,8 +15,7 @@
 		426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */; };
 		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
-		426E88431CDA411200C7FF25 /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426E88421CDA411200C7FF25 /* SurgeiOS.framework */; };
-		426E88441CDA411200C7FF25 /* SurgeiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 426E88421CDA411200C7FF25 /* SurgeiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D100A1171D93D06400806B0C /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D100A1161D93D06400806B0C /* SurgeiOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,20 +34,6 @@
 			remoteInfo = SurgeiOSDemoApp;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		426E88451CDA411200C7FF25 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				426E88441CDA411200C7FF25 /* SurgeiOS.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		426E880C1CDA40AE00C7FF25 /* SurgeiOSDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurgeiOSDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				426E88431CDA411200C7FF25 /* SurgeiOS.framework in Frameworks */,
+				D100A1171D93D06400806B0C /* SurgeiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +147,7 @@
 		426E88461CDA411B00C7FF25 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				426E88421CDA411200C7FF25 /* SurgeiOS.framework */,
+				D100A1161D93D06400806B0C /* SurgeiOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -177,7 +162,6 @@
 				426E88081CDA40AE00C7FF25 /* Sources */,
 				426E88091CDA40AE00C7FF25 /* Frameworks */,
 				426E880A1CDA40AE00C7FF25 /* Resources */,
-				426E88451CDA411200C7FF25 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

@@ -67,7 +67,7 @@
 		426E88301CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeiOSDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeiOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88361CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		426E88421CDA411200C7FF25 /* SurgeiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeiOS.framework; path = "/Users/cvanes/Library/Developer/Xcode/DerivedData/Surge-ecglvfmqgwcjizcpxbkexnbinxvc/Build/Products/Debug-iphonesimulator/SurgeiOS.framework"; sourceTree = "<absolute>"; };
+		426E88421CDA411200C7FF25 /* SurgeiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeiOS.framework; path = "../DerivedData/Surge/Build/Products/Debug-iphoneos/SurgeiOS.framework"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +235,7 @@
 				TargetAttributes = {
 					426E880B1CDA40AE00C7FF25 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = M6W9FG2WLN;
 					};
 					426E88241CDA40AE00C7FF25 = {
 						CreatedOnToolsVersion = 7.3;
@@ -443,6 +444,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = M6W9FG2WLN;
 				INFOPLIST_FILE = SurgeiOSDemoApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoApp;
@@ -454,6 +456,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = M6W9FG2WLN;
 				INFOPLIST_FILE = SurgeiOSDemoApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoApp;
@@ -526,6 +529,7 @@
 				426E883B1CDA40AE00C7FF25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		426E883C1CDA40AE00C7FF25 /* Build configuration list for PBXNativeTarget "SurgeiOSDemoAppTests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +538,7 @@
 				426E883E1CDA40AE00C7FF25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		426E883F1CDA40AE00C7FF25 /* Build configuration list for PBXNativeTarget "SurgeiOSDemoAppUITests" */ = {
 			isa = XCConfigurationList;
@@ -542,6 +547,7 @@
 				426E88411CDA40AE00C7FF25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

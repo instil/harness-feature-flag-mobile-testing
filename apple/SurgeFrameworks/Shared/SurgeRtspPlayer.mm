@@ -64,8 +64,9 @@ public:
                  withDimensions:(CGSize)dimensions
                presentationTime:(unsigned int)presentationTime
                        duration:(int)duration;
+@optional
 - (void) rtspClientReceivedExtendedHeaders:(const unsigned char *)data
-                                  ofLength:(int)length;
+                                  ofLength:(size_t)length;
 
 @end
 
@@ -301,14 +302,16 @@ private:
 }
 
 - (int) framesPerSecond {
-    SurgeLogDebug(@"Current FPS: %d", self.decoder.framesPerSecond);
-    return self.decoder.framesPerSecond;
+    SurgeLogDebug(@"Current FPS: %@", @(self.decoder.framesPerSecond));
+    return (int)self.decoder.framesPerSecond;
 }
 
 #pragma mark - RTSP client delegate
 
 - (void)rtspClientDidTimeout {
-    [self.delegate rtspPlayerDidTimeout];
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(rtspPlayerDidTimeout:)]) {
+        [self.delegate rtspPlayerDidTimeout:self];
+    }
 }
 
 - (void)rtspClientReceivedFrame:(const unsigned char *)frameBuffer
@@ -337,14 +340,14 @@ private:
 }
 
 - (void)decoderDidBeginBuffering {
-    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidBeginBuffering)]) {
-        [self.delegate rtspPlayerDidBeginBuffering];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(rtspPlayerDidBeginBuffering:)]) {
+        [self.delegate rtspPlayerDidBeginBuffering:self];
     }
 }
 
 - (void)decoderDidStopBuffering {
-    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidStopBuffering)]) {
-        [self.delegate rtspPlayerDidStopBuffering];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(rtspPlayerDidStopBuffering:)]) {
+        [self.delegate rtspPlayerDidStopBuffering:self];
     }
 }
 

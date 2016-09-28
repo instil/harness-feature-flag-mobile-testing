@@ -13,6 +13,14 @@ RTSP and RTP are currently a popular choice for use with IP video cameras both c
 
 Surge seeks to address these issues by being designed from the ground up to execute asynchronously whilst utilising non-blocking I/O and leveraging platform specific APIs to access hardware accelerated video decoding.
 
+## Project Setup
+
+Clone the repository and install the dependencies by running `git submodule` from the root directory:
+
+```bash
+$ git submodule update --init --recursive
+```
+
 ## Building
 
 Prior to building the library ensure that you have cloned the project and checked out all its associated submodules.

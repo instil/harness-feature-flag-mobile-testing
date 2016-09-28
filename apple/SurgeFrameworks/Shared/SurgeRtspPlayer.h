@@ -26,6 +26,8 @@
 #import <AppKit/AppKit.h>
 #endif
 
+@class SurgeRtspPlayer;
+
 @protocol SurgeRtspPlayerDelegate <NSObject>
 
 @optional
@@ -33,27 +35,27 @@
 /**
  * Called when the player begins or resumes playback of a stream.
  */
-- (void)rtspPlayerDidBeginPlayback;
+- (void)rtspPlayerDidBeginPlayback:(SurgeRtspPlayer *)player;
 
 /**
  * Called when the player enters the buffering state.
  */
-- (void)rtspPlayerDidBeginBuffering;
+- (void)rtspPlayerDidBeginBuffering:(SurgeRtspPlayer *)player;
 
 /**
  * Called when the player exits the buffering state.
  */
-- (void)rtspPlayerDidStopBuffering;
+- (void)rtspPlayerDidStopBuffering:(SurgeRtspPlayer *)player;
 
 /**
  * Called when the player times out.
  */
-- (void)rtspPlayerDidTimeout;
+- (void)rtspPlayerDidTimeout:(SurgeRtspPlayer *)player;
 
 /**
  * Guaranteed to be call at most once per second with the current player frame rate.
  */
-- (void)rtspPlayerDidObservePlaybackFrameRate:(NSUInteger)frameRate;
+- (void)rtspPlayer:(SurgeRtspPlayer *)player didObservePlaybackFrameRate:(NSUInteger)frameRate;
 
 @end
 
@@ -116,7 +118,7 @@
 /**
  * Optional delegate used to receive notification of player events.
  */
-@property (nonatomic, strong) id<SurgeRtspPlayerDelegate> delegate;
+@property (nonatomic, weak) id<SurgeRtspPlayerDelegate> delegate;
 
 /*
  * Recorded FPS of the current stream.

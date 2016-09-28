@@ -30,7 +30,7 @@
 
 - (void)viewDidLoad {
     self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
-    self.rtspPlayer.playerView.frame = [[UIScreen ma inScreen] bounds];
+    self.rtspPlayer.playerView.frame = [[UIScreen mainScreen] bounds];
     [self.view addSubview:self.rtspPlayer.playerView];
 }
 

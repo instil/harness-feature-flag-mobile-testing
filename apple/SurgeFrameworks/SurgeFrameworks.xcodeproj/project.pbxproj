@@ -86,7 +86,6 @@
 		F4B2A0121D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
 		F4B2A0131D4B87C100979ABB /* NSDate+SurgeExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */; };
 		F4B2A0141D4B87C100979ABB /* NSDate+SurgeExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */; };
-		F4B2A0151D4B87C100979ABB /* NSDate+SurgeExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,7 +133,7 @@
 		42EE5C361CA35D1C00204F31 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS9.2.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		42EE5C381CA35D2E00204F31 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/AVKit.framework; sourceTree = DEVELOPER_DIR; };
 		42EFF7851CAADB330056B9F3 /* SurgeRtspPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayer.h; sourceTree = "<group>"; };
-		42EFF7861CAADB330056B9F3 /* SurgeRtspPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SurgeRtspPlayer.mm; sourceTree = "<group>"; };
+		42EFF7861CAADB330056B9F3 /* SurgeRtspPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SurgeRtspPlayer.mm; sourceTree = "<group>"; tabWidth = 4; };
 		42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeLogging.h; sourceTree = "<group>"; };
 		F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayer_Private.h; sourceTree = "<group>"; };
 		F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+SurgeExtensions.h"; sourceTree = "<group>"; };

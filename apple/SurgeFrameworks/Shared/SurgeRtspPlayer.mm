@@ -287,12 +287,12 @@ private:
     SurgeUtil::DateTime surgeEndTime;
     
     if (startTime != nil) {
-        surgeStartTime = [NSDate toSurgeDateTime:startTime];
+        surgeStartTime = [startTime toSurgeDateTime];
         self.client->SetStartTime(surgeStartTime);
     }
     
     if (endTime != nil) {
-        surgeEndTime = [NSDate toSurgeDateTime:endTime];
+        surgeEndTime = [endTime toSurgeDateTime];
         self.client->SetEndTime(surgeEndTime);
     }
 }

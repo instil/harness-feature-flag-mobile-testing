@@ -1,25 +1,113 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sjz-aP-ZiB">
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QwQ-hg-ym7">
+                                        <frame key="frameInset" minX="115" minY="10" width="59" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="play-icon"/>
+                                        <connections>
+                                            <action selector="tappedPlayButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bav-UX-U4f"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PJI-Eo-TkR">
+                                        <frame key="frameInset" minX="182" minY="10" width="75" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="pause-icon"/>
+                                        <connections>
+                                            <action selector="tappedPauseButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5T6-Zg-wxd"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="ppf-xs-H2M"/>
+                                </constraints>
+                            </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jPf-f6-ZbD">
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="woF-6q-uzm"/>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="woF-6q-uzm" firstAttribute="centerX" secondItem="jPf-f6-ZbD" secondAttribute="centerX" id="dbR-h1-iEq"/>
+                                    <constraint firstItem="woF-6q-uzm" firstAttribute="centerY" secondItem="jPf-f6-ZbD" secondAttribute="centerY" id="xba-ly-Ppc"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gx3-2K-pai">
+                                <subviews>
+                                    <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tCe-BE-gWs">
+                                        <frame key="frameInset" minY="36" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="c9L-dy-NqJ"/>
+                                        </connections>
+                                    </searchBar>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.40000000000000002" blue="0.64313725489999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="pmt-y0-RWc"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="jPf-f6-ZbD" firstAttribute="top" secondItem="Gx3-2K-pai" secondAttribute="bottom" id="0HC-aR-Gbl"/>
+                            <constraint firstItem="Sjz-aP-ZiB" firstAttribute="top" secondItem="jPf-f6-ZbD" secondAttribute="bottom" id="6Dh-NB-OFn"/>
+                            <constraint firstItem="Gx3-2K-pai" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FVY-BA-gi2"/>
+                            <constraint firstItem="Gx3-2K-pai" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="RzY-eS-Arg"/>
+                            <constraint firstAttribute="trailing" secondItem="Gx3-2K-pai" secondAttribute="trailing" id="USF-EA-3KF"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Sjz-aP-ZiB" secondAttribute="bottom" id="adM-rj-srj"/>
+                            <constraint firstItem="jPf-f6-ZbD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="g2H-s7-5st"/>
+                            <constraint firstItem="Sjz-aP-ZiB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="moj-AU-ndl"/>
+                            <constraint firstAttribute="trailing" secondItem="Sjz-aP-ZiB" secondAttribute="trailing" id="u9h-iE-IXi"/>
+                            <constraint firstAttribute="trailing" secondItem="jPf-f6-ZbD" secondAttribute="trailing" id="wTL-Mj-ef5"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="activityIndicator" destination="woF-6q-uzm" id="4fK-XM-VNO"/>
+                        <outlet property="pauseButton" destination="PJI-Eo-TkR" id="pgr-VX-3Q3"/>
+                        <outlet property="playButton" destination="QwQ-hg-ym7" id="leB-3B-lcL"/>
+                        <outlet property="playbackControlsHolder" destination="Sjz-aP-ZiB" id="JDp-fN-WD0"/>
+                        <outlet property="playbackViewHolder" destination="jPf-f6-ZbD" id="tlg-My-ysJ"/>
+                        <outlet property="searchDisplayController" destination="5pX-Pa-7cr" id="vqU-gk-DL5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="5pX-Pa-7cr">
+                    <connections>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="Hme-NI-zDE"/>
+                        <outlet property="searchBar" destination="tCe-BE-gWs" id="vmE-8b-I3w"/>
+                        <outlet property="searchContentsController" destination="BYZ-38-t0r" id="Rlb-R3-gU3"/>
+                        <outlet property="searchResultsDataSource" destination="BYZ-38-t0r" id="qRt-X8-Ojq"/>
+                        <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="mhS-j7-oK5"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="37.331334332833585"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="pause-icon" width="25" height="25"/>
+        <image name="play-icon" width="25" height="25"/>
+    </resources>
 </document>

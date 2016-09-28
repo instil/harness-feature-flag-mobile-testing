@@ -309,7 +309,7 @@ private:
 #pragma mark - RTSP client delegate
 
 - (void)rtspClientDidTimeout {
-    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(rtspPlayerDidTimeout:)]) {
+    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidTimeout:)]) {
         [self.delegate rtspPlayerDidTimeout:self];
     }
 }
@@ -340,13 +340,13 @@ private:
 }
 
 - (void)decoderDidBeginBuffering {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(rtspPlayerDidBeginBuffering:)]) {
+    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidBeginBuffering:)]) {
         [self.delegate rtspPlayerDidBeginBuffering:self];
     }
 }
 
 - (void)decoderDidStopBuffering {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(rtspPlayerDidStopBuffering:)]) {
+    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidStopBuffering:)]) {
         [self.delegate rtspPlayerDidStopBuffering:self];
     }
 }

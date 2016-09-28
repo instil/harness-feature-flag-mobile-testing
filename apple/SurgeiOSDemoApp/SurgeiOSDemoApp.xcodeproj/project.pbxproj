@@ -17,6 +17,7 @@
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
 		7C43DA161D9BBB9200E4D1CD /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */; };
 		7C43DA171D9BBB9200E4D1CD /* SurgeiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +57,7 @@
 		426E88121CDA40AE00C7FF25 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		426E88131CDA40AE00C7FF25 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		426E88151CDA40AE00C7FF25 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		426E88161CDA40AE00C7FF25 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		426E88161CDA40AE00C7FF25 /* ViewController.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		426E88191CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		426E881B1CDA40AE00C7FF25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		426E881E1CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -68,6 +69,8 @@
 		426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeiOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88361CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SurgeiOS.framework; path = "../DerivedData/Surge/Build/Products/Debug-iphoneos/SurgeiOS.framework"; sourceTree = "<group>"; };
+		7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
+		7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; tabWidth = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +131,8 @@
 				426E881B1CDA40AE00C7FF25 /* Assets.xcassets */,
 				426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */,
 				426E88201CDA40AE00C7FF25 /* Info.plist */,
+				7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */,
+				7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */,
 				426E880F1CDA40AE00C7FF25 /* Supporting Files */,
 			);
 			path = SurgeiOSDemoApp;
@@ -301,6 +306,7 @@
 			files = (
 				426E88171CDA40AE00C7FF25 /* ViewController.m in Sources */,
 				426E88141CDA40AE00C7FF25 /* AppDelegate.m in Sources */,
+				7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */,
 				426E88111CDA40AE00C7FF25 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

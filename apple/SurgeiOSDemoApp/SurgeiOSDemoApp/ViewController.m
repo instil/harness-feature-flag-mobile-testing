@@ -21,24 +21,34 @@
 #import <SurgeiOS/SurgeiOS.h>
 
 #import "ViewController.h"
+#import "NSArray+RtspAddressStorage.h"
 
-@interface ViewController () <SurgeRtspPlayerDelegate, UITextFieldDelegate>
+@interface ViewController ()
+<SurgeRtspPlayerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate, UISearchBarDelegate>
 @property (nonatomic, strong) SurgeRtspPlayer *rtspPlayer;
+@property (nonatomic, copy) NSArray <NSString *> *allStoredAddresses;
+@property (nonatomic, copy) NSArray <NSString *> *storedAddressSearchResults;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     _rtspPlayer = [[SurgeRtspPlayer alloc] init];
     [_rtspPlayer setDelegate:self];
     [self embedPlayerView:[_rtspPlayer playerView]];
     [_activityIndicator startAnimating];
     [_activityIndicator setHidden:YES];
-    [_streamUrlField setDelegate:self];
+    
+    self.allStoredAddresses = [NSArray<NSString *> storedRtspAddresses];
+    self.storedAddressSearchResults = @[];
+    
+    [self.searchDisplayController.searchResultsTableView registerClass:[UITableViewCell class]
+                                                forCellReuseIdentifier:@"SearchResultTableViewCell"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    //[self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:@"rtsp://192.168.1.54:8554/test"]];
+    [super viewDidAppear:animated];
 }
 
 #pragma mark - View Customization
@@ -50,7 +60,7 @@
     [_playbackViewHolder addSubview:playerView];
     [_playbackViewHolder bringSubviewToFront:_activityIndicator];
     
-    NSDictionary *keyedViews = [NSDictionary dictionaryWithObjectsAndKeys:playerView, @"playerView", nil];
+    NSDictionary *keyedViews = @{@"playerView" : playerView};
     NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[playerView]-0-|"
                                                                    options:NSLayoutFormatAlignAllLeft
                                                                    metrics:nil
@@ -63,9 +73,6 @@
                                                           metrics:nil
                                                             views:keyedViews];
     [NSLayoutConstraint activateConstraints:constraints];
-    
-    
-    
 }
 
 #pragma mark - Playback Controls
@@ -112,15 +119,56 @@
  * Guaranteed to be call at most once per second with the current player frame rate.
  */
 - (void)rtspPlayerDidObservePlaybackFrameRate:(NSUInteger)frameRate {
-    NSLog(@"Frame rate: %d", frameRate);
+    NSLog(@"Frame rate: %@", @(frameRate));
 }
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - UISearchDisplayDelegate
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    NSLog(@"%@", string);
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(nullable NSString *)searchString {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self CONTAINS[cd] %@", searchString];
+    self.storedAddressSearchResults = [self.allStoredAddresses filteredArrayUsingPredicate:predicate];
     return YES;
 }
 
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    // save user input and load stream
+    self.allStoredAddresses = [self.allStoredAddresses arrayByAddingObject:searchBar.text];
+    [self.allStoredAddresses saveAsStoredRtspAddresses];
+    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:searchBar.text]];
+    [self.searchDisplayController setActive:NO animated:YES];
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        return self.storedAddressSearchResults.count;
+    }
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultTableViewCell"];
+        cell.textLabel.text = self.storedAddressSearchResults[indexPath.row];
+        return cell;
+    }
+    return nil;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:self.storedAddressSearchResults[indexPath.row]]];
+        [self.searchDisplayController setActive:NO animated:YES];
+    }
+}
 
 @end

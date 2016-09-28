@@ -28,7 +28,6 @@
 
 @property(nonatomic, strong) IBOutlet UIButton* pauseButton;
 @property(nonatomic, strong) IBOutlet UIButton* playButton;
-@property(nonatomic, strong) IBOutlet UITextField* streamUrlField;
 
 - (IBAction)tappedPauseButton:(id)sender;
 - (IBAction)tappedPlayButton:(id)sender;

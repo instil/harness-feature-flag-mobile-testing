@@ -32,9 +32,9 @@ namespace Surge {
 
     class DescribeResponse: public RtspResponse {
     public:
-        DescribeResponse(const Response* resp)
+        DescribeResponse(const Response* resp, SessionDescriptionFactory* factory)
             : RtspResponse(resp),
-              sessionDescriptions(SessionDescriptionFactory::ParseSessionDescriptionsFromBuffer(GetBodyString()))
+              sessionDescriptions(factory->ParseSessionDescriptionsFromBuffer(GetBodyString()))
             { }
 
         const std::vector<SessionDescription> GetSessionDescriptions() const { return sessionDescriptions; }

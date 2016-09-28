@@ -34,26 +34,33 @@ namespace Surge {
         PlayRequest(const std::string& url,
                     const std::string& session,
                     const int nextSequenceNumber,
-                    const std::string& authHeader) {
-
-            std::string packet = "PLAY " + url + " RTSP/1.0\r\n";
+                    const std::string& authHeader,
+                    const SurgeUtil::DateTime startTime,
+                    const SurgeUtil::DateTime endTime) {
             
-            char headerField[256];
-            snprintf(headerField, sizeof(headerField),
-                     "CSeq: %d\r\n", nextSequenceNumber);
-            packet += std::string(headerField);
-
-            packet += "Session: " + session + "\r\n";
-
-            packet += "Range: npt=0.000-\r\n";
-
-            if (!authHeader.empty()) {
-                packet += authHeader;
-            }
-            packet += "\r\n";
-
-            m_buffer = (unsigned char *)malloc(packet.length());
-            m_length = packet.copy((char *)m_buffer, packet.length(), 0);
+            std::string rangeHeader = "Range: clock=" + SurgeUtil::convertToISO(startTime) + "-" + SurgeUtil::convertToISO(endTime);
+            
+            generatePlayRequest(url, session, nextSequenceNumber, authHeader, rangeHeader);
+        }
+        
+        PlayRequest(const std::string& url,
+                    const std::string& session,
+                    const int nextSequenceNumber,
+                    const std::string& authHeader,
+                    const SurgeUtil::DateTime startTime) {
+            
+            std::string rangeHeader = "Range: clock=" + SurgeUtil::convertToISO(startTime) + "-";
+            
+            generatePlayRequest(url, session, nextSequenceNumber, authHeader, rangeHeader);
+        }
+        
+        PlayRequest(const std::string& url,
+                     const std::string& session,
+                     const int nextSequenceNumber,
+                     const std::string& authHeader) {
+            
+            std::string rangeHeader = "Range: npt=now-";
+            generatePlayRequest(url, session, nextSequenceNumber, authHeader, rangeHeader);
         }
 
         ~PlayRequest() {
@@ -71,6 +78,38 @@ namespace Surge {
     private:
         unsigned char *m_buffer;
         size_t m_length;
+        
+        void generatePlayRequest(const std::string& url,
+                                 const std::string& session,
+                                 const int nextSequenceNumber,
+                                 const std::string& authHeader,
+                                 const std::string& rangeHeader) {
+            
+            std::string packet = "PLAY " + url + " RTSP/1.0\r\n";
+            
+            char headerField[256];
+            snprintf(headerField, sizeof(headerField),
+                     "CSeq: %d\r\n", nextSequenceNumber);
+            packet += std::string(headerField);
+            
+            packet += "Session: " + session + "\r\n";
+            
+            if (!rangeHeader.empty()) {
+                packet += rangeHeader;
+            }
+            else {
+                packet += "Range: npt=now-";
+            }
+            packet += "\r\n";
+            
+            if (!authHeader.empty()) {
+                packet += authHeader;
+            }
+            packet += "\r\n";
+            
+            m_buffer = (unsigned char *)malloc(packet.length());
+            m_length = packet.copy((char *)m_buffer, packet.length(), 0);
+        }
     };
     
 };

@@ -58,6 +58,11 @@ namespace Surge {
                 + "-"
                 + std::string(rtcp_channel);
         }
+        
+        int RtspTcpOpen(const std::string& host, int port, const SurgeUtil::FireableEvent& abort) {
+            m_receivedBuffer.clear();
+            return Transport::RtspTcpOpen(host, port, abort);
+        }
 
     protected:
 

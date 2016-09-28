@@ -252,7 +252,7 @@ namespace Surge {
             }
 
             close(m_rtspSocketFD);
-            DEBUG("SocketHandler thread finished...");
+            INFO("SocketHandler thread finished...");
         }
         
         bool ProcessSend(const int fd, const unsigned char *bytes, size_t length) {

@@ -61,10 +61,33 @@
 @interface SurgeRtspPlayer : NSObject
 
 /**
- * Initiate playback of the RTSP stream - this will issue the required 
+ * Initiate playback of the RTSP stream - this will issue the required
  * describe, setup and play RTSP requests.
  */
-- (void)initiatePlaybackOf:(NSURL*)url;
+- (BOOL)initiatePlaybackOf:(NSURL*)url;
+
+
+/**
+ * Initiate playback of a basic auth protected RTSP stream -
+ * this will issue the required describe, setup and play RTSP requests.
+ */
+- (BOOL)initiatePlaybackOf:(NSURL*)url withUsername:(NSString*)username andPassword:(NSString*)password;
+
+/**
+ * Initiate playback of a basic auth protected RTSP stream at a specific start and end time -
+ * this will issue the required describe, setup and play RTSP requests.
+ */
+- (BOOL)initiatePlaybackOf:(NSURL*)url
+              withUsername:(NSString *)username
+               andPassword:(NSString *)password
+                startingAt:(NSDate *)startDate
+               andEndingAt:(NSDate *)endDate;
+
+/**
+ * Seek to a specific time in the stream.
+ */
+- (void)seekToStartTime:(NSDate *)startTime
+             andEndTime:(NSDate *)endTime;
 
 /**
  * Begin/resume playback of the stream.
@@ -93,6 +116,11 @@
 /**
  * Optional delegate used to receive notification of player events.
  */
-@property (nonatomic, weak) id<SurgeRtspPlayerDelegate> delegate;
+@property (nonatomic, strong) id<SurgeRtspPlayerDelegate> delegate;
+
+/*
+ * Recorded FPS of the current stream.
+ */
+@property (nonatomic, readonly) int framesPerSecond;
 
 @end

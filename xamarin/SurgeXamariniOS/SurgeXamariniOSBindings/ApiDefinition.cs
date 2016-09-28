@@ -11,7 +11,7 @@ namespace SurgeXamariniOSBindings
     public interface SurgeRtspPlayer
     {
         [Export("initiatePlaybackOf:")]
-        void InitiatePlaybackOf(NSUrl url);
+        bool InitiatePlaybackOf(NSUrl url);
 
         [Export("stop")]
         void Stop();
@@ -24,6 +24,17 @@ namespace SurgeXamariniOSBindings
 
         [Export("playerView")]
         UIImageView PlayerView { get; set; }
+
+        [Export("delegate")]
+        SurgeRtspPlayerDelegate ClientDelegate { get; set; }
+    }
+
+    [BaseType(typeof(NSObject))]
+    [Model][Protocol]
+    public interface SurgeRtspPlayerDelegate
+    {
+        [Abstract][Export("rtspPlayerDidTimeout")]
+        void RtspPlayerDidTimeout();
     }
 }
 

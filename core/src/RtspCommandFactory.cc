@@ -20,6 +20,8 @@
 
 #include "RtspCommandFactory.h"
 
+#include "DateTime.h"
+
 namespace Surge {
 
     namespace RtspCommandFactory {
@@ -47,23 +49,46 @@ namespace Surge {
         }
         
         RtspCommand* DescribeRequest(const std::string& url,
+                                     int nextSequenceNumber) {
+            return new class DescribeRequest(url, nextSequenceNumber, GetBasicAuthHeader());
+        }
+        
+        RtspCommand* DescribeRequest(const std::string& url,
                                      int nextSequenceNumber,
-                                     bool isLive) {
-            return new class DescribeRequest(url, nextSequenceNumber, isLive, GetBasicAuthHeader());
+                                     const SurgeUtil::DateTime startDate) {
+            return new class DescribeRequest(url, nextSequenceNumber, GetBasicAuthHeader(), startDate);
         }
 
+        
         RtspCommand* SetupRequest(const std::string& url,
                                   int nextSequenceNumber,
                                   const ITransportInterface *transport) {
             return new class SetupRequest(url, nextSequenceNumber, transport, GetBasicAuthHeader());
         }
 
+        
         RtspCommand* PlayRequest(const std::string& url,
                                  const std::string& session,
                                  int nextSequenceNumber) {
             return new class PlayRequest(url, session, nextSequenceNumber, GetBasicAuthHeader());
         }
+        
+        RtspCommand* PlayRequest(const std::string& url,
+                                 const std::string& session,
+                                 int nextSequenceNumber,
+                                 const SurgeUtil::DateTime startDate) {
+            return new class PlayRequest(url, session, nextSequenceNumber, GetBasicAuthHeader(), startDate);
+        }
+        
+        RtspCommand* PlayRequest(const std::string& url,
+                                 const std::string& session,
+                                 int nextSequenceNumber,
+                                 const SurgeUtil::DateTime startDate,
+                                 const SurgeUtil::DateTime endDate) {
+            return new class PlayRequest(url, session, nextSequenceNumber, GetBasicAuthHeader(), startDate, endDate);
+        }
 
+        
         RtspCommand* PauseRequest(const std::string& url,
                                   const std::string& session,
                                   int nextSequenceNumber) {

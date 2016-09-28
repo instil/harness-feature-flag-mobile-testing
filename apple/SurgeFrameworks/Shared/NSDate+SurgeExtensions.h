@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,37 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __IRTSP_CLIENT_DELEGATE_H__
-#define __IRTSP_CLIENT_DELEGATE_H__
+#import <Foundation/Foundation.h>
 
-#include "SessionDescription.h"
+#import "DateTime.h"
 
-namespace Surge {
+@interface NSDate (SurgeExtensions)
 
-    class IRtspClientDelegate {
-    public:
+/**
+ * Convert an NSDate object into a Surge compatible DateTime object
+ */
++ (SurgeUtil::DateTime) toSurgeDateTime:(NSDate *)nsDate;
 
-        virtual ~IRtspClientDelegate() { };
-
-        // TIMEOUT
-        virtual void ClientDidTimeout() = 0;
-
-        // ANNOUNCE / REDIRECT
-        virtual void StreamConfigChanged(bool wasRedirect) = 0;
-
-        // VIDEO
-        virtual void ClientReceivedFrame(const unsigned char * frameBuffer,
-                                         size_t length,
-                                         int32_t width,
-                                         int32_t height,
-                                         int32_t presentationTime,
-                                         int32_t duration) = 0;
-        
-        virtual void ClientReceivedExtendedHeader(const unsigned char * buffer,
-                                         size_t length) = 0;
-
-    };
-    
-};
-
-#endif // __IRTSP_CLIENT_DELEGATE_H__
+@end

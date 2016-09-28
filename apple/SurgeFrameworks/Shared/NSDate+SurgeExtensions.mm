@@ -1,4 +1,3 @@
-// -*-c++-*-
 // Copyright (c) 2016 Instil Software.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,37 +18,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __IRTSP_CLIENT_DELEGATE_H__
-#define __IRTSP_CLIENT_DELEGATE_H__
+#import "NSDate+SurgeExtensions.h"
 
-#include "SessionDescription.h"
+@implementation NSDate (SurgeExtensions)
 
-namespace Surge {
-
-    class IRtspClientDelegate {
-    public:
-
-        virtual ~IRtspClientDelegate() { };
-
-        // TIMEOUT
-        virtual void ClientDidTimeout() = 0;
-
-        // ANNOUNCE / REDIRECT
-        virtual void StreamConfigChanged(bool wasRedirect) = 0;
-
-        // VIDEO
-        virtual void ClientReceivedFrame(const unsigned char * frameBuffer,
-                                         size_t length,
-                                         int32_t width,
-                                         int32_t height,
-                                         int32_t presentationTime,
-                                         int32_t duration) = 0;
-        
-        virtual void ClientReceivedExtendedHeader(const unsigned char * buffer,
-                                         size_t length) = 0;
-
-    };
++ (SurgeUtil::DateTime) toSurgeDateTime:(NSDate *)nsDate {
+    SurgeUtil::DateTime dateTime = SurgeUtil::DateTime();
     
-};
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    [calendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    
+    NSDateComponents *components = [calendar components:NSCalendarUnitTimeZone | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitNanosecond
+                                               fromDate:nsDate];
 
-#endif // __IRTSP_CLIENT_DELEGATE_H__
+    dateTime.Year = [components year];
+    dateTime.Month = [components month];
+    dateTime.Day = [components day];
+    dateTime.Hour = [components hour];
+    dateTime.Minute = [components minute];
+    dateTime.Second = [components second];
+    dateTime.Nanosecond = [components nanosecond];
+    
+    return dateTime;
+}
+
+@end

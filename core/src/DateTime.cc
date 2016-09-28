@@ -18,11 +18,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <chrono>
-
 #include "DateTime.h"
 
-SurgeUtil::DateTime SurgeUtil::CurrentDateTime()
+SurgeUtil::DateTime SurgeUtil::currentDateTime()
 {
     auto now = std::chrono::system_clock::now();
     time_t tt = std::chrono::system_clock::to_time_t(now);
@@ -42,8 +40,22 @@ SurgeUtil::DateTime SurgeUtil::CurrentDateTime()
     return result;
 }
 
-std::int_least64_t SurgeUtil::CurrentTimeMilliseconds()
+std::int_least64_t SurgeUtil::currentTimeMilliseconds()
 {
     return std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::steady_clock::now().time_since_epoch()).count();
+}
+
+std::string SurgeUtil::convertToISO(const SurgeUtil::DateTime& value)
+{
+    char result[100];
+    snprintf(result, sizeof(result), "%04d%02d%02dT%02d%02d%02d.%09dZ",
+             value.Year,
+             value.Month,
+             value.Day,
+             value.Hour,
+             value.Minute,
+             value.Second,
+             value.Nanosecond);
+    return result;
 }

@@ -15,7 +15,8 @@
 		426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */; };
 		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
-		D100A1171D93D06400806B0C /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D100A1161D93D06400806B0C /* SurgeiOS.framework */; };
+		7C43DA161D9BBB9200E4D1CD /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */; };
+		7C43DA171D9BBB9200E4D1CD /* SurgeiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		7C43DA181D9BBB9200E4D1CD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7C43DA171D9BBB9200E4D1CD /* SurgeiOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		426E880C1CDA40AE00C7FF25 /* SurgeiOSDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurgeiOSDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E88101CDA40AE00C7FF25 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -52,7 +67,7 @@
 		426E88301CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeiOSDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeiOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88361CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		426E88421CDA411200C7FF25 /* SurgeiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeiOS.framework; path = "../DerivedData/Surge/Build/Products/Debug-iphoneos/SurgeiOS.framework"; sourceTree = SOURCE_ROOT; };
+		7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SurgeiOS.framework; path = "../DerivedData/Surge/Build/Products/Debug-iphoneos/SurgeiOS.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D100A1171D93D06400806B0C /* SurgeiOS.framework in Frameworks */,
+				7C43DA161D9BBB9200E4D1CD /* SurgeiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +162,7 @@
 		426E88461CDA411B00C7FF25 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D100A1161D93D06400806B0C /* SurgeiOS.framework */,
+				7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -162,6 +177,7 @@
 				426E88081CDA40AE00C7FF25 /* Sources */,
 				426E88091CDA40AE00C7FF25 /* Frameworks */,
 				426E880A1CDA40AE00C7FF25 /* Resources */,
+				7C43DA181D9BBB9200E4D1CD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

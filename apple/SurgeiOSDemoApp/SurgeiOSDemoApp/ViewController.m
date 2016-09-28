@@ -47,10 +47,6 @@
                                                 forCellReuseIdentifier:@"SearchResultTableViewCell"];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
 #pragma mark - View Customization
 
 - (void)embedPlayerView:(UIView*)playerView {

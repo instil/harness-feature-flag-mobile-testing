@@ -65,7 +65,7 @@
 		426E88AA1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeMacOSDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E88AE1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeMacOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88B01CDA54E500C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeMacOS.framework; path = "/Users/cvanes/Library/Developer/Xcode/DerivedData/Surge-ecglvfmqgwcjizcpxbkexnbinxvc/Build/Products/Debug/SurgeMacOS.framework"; sourceTree = "<absolute>"; };
+		426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeMacOS.framework; path = ../DerivedData/Surge/Build/Products/Debug/SurgeMacOS.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

@@ -13,14 +13,25 @@
 @interface AddressesViewController ()
 @property (copy) NSArray <NSString *> *allStoredAddresses;
 @property (strong) IBOutlet NSArrayController *arrayController;
+@property (weak) IBOutlet NSButton *addButton;
+@property (weak) IBOutlet NSSearchField *searchField;
 @end
 
 @implementation AddressesViewController
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSControlTextDidChangeNotification object:nil];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.allStoredAddresses = [NSArray storedRtspAddresses];
     [self.arrayController addObjects:self.allStoredAddresses];
+    self.addButton.enabled = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(controlTextDidChangeNotification:)
+                                                 name:NSControlTextDidChangeNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear {
@@ -28,12 +39,25 @@
     [self.tableView deselectAll:nil];
 }
 
+#pragma mark - Table
+
 - (IBAction)rowSelectionChanged:(id)sender {
     NSInteger row = self.tableView.selectedRow;
     if (row >= 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:RtspAddressSelectionNotification object:self.arrayController.arrangedObjects[row]];
         [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
     }
+}
+
+#pragma mark - Search
+
+- (void)controlTextDidChangeNotification:(NSNotification *)notification {
+    self.addButton.enabled = self.searchField.stringValue.length;
+}
+
+- (IBAction)addButtonAction:(id)sender {
+    [self.arrayController addObject:self.searchField.stringValue];
+    [self.arrayController.arrangedObjects saveAsStoredRtspAddresses];
 }
 
 @end

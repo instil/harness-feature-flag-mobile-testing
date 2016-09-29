@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -150,23 +151,23 @@
             <objects>
                 <viewController id="ku4-WD-buJ" customClass="AddressesViewController" sceneMemberID="viewController">
                     <view key="view" id="KUb-XS-xeX">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="488" height="302"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XgL-Ek-Yaw">
-                                <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="488" height="243"/>
                                 <clipView key="contentView" drawsBackground="NO" id="g9I-i2-Wy3">
-                                    <rect key="frame" x="1" y="0.0" width="448" height="299"/>
+                                    <rect key="frame" x="1" y="0.0" width="486" height="242"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" headerView="Wj2-h3-z9T" id="cLh-CC-KxR">
-                                            <rect key="frame" x="0.0" y="0.0" width="448" height="276"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="486" height="219"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="328" minWidth="40" maxWidth="1000" id="4Er-Dy-qy0">
+                                                <tableColumn width="483" minWidth="40" maxWidth="1000" id="4Er-Dy-qy0">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Addresses">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -197,31 +198,89 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="Noy-yJ-8In">
-                                    <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                    <rect key="frame" x="471" y="23" width="16" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <tableHeaderView key="headerView" id="Wj2-h3-z9T">
-                                    <rect key="frame" x="0.0" y="0.0" width="448" height="23"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="486" height="23"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OBn-0r-cDt">
+                                <rect key="frame" x="0.0" y="243" width="488" height="59"/>
+                                <subviews>
+                                    <searchField wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nRS-48-ITL">
+                                        <rect key="frame" x="20" y="17" width="410" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="V0d-9F-guM"/>
+                                        </constraints>
+                                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="p2r-Qy-BJm">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </searchFieldCell>
+                                        <connections>
+                                            <binding destination="cwF-sC-ahk" name="predicate" keyPath="filterPredicate" id="Zyp-LO-yYu">
+                                                <dictionary key="options">
+                                                    <string key="NSDisplayName">predicate</string>
+                                                    <string key="NSPredicateFormat">description contains $value</string>
+                                                </dictionary>
+                                            </binding>
+                                        </connections>
+                                    </searchField>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xLX-m6-XnG">
+                                        <rect key="frame" x="438" y="16" width="30" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="NHC-Vv-2Ib"/>
+                                            <constraint firstAttribute="width" constant="30" id="qzm-zF-Ydh"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gvC-T5-My9">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="addButtonAction:" target="ku4-WD-buJ" id="t7d-97-dVr"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <edgeInsets key="edgeInsets" left="20" right="20" top="20" bottom="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="59" id="l8C-US-wsJ"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="XgL-Ek-Yaw" secondAttribute="bottom" id="RwL-md-EIO"/>
-                            <constraint firstAttribute="trailing" secondItem="XgL-Ek-Yaw" secondAttribute="trailing" id="jcb-sC-Qx6"/>
-                            <constraint firstItem="XgL-Ek-Yaw" firstAttribute="top" secondItem="KUb-XS-xeX" secondAttribute="top" id="qUY-6L-Fg7"/>
-                            <constraint firstItem="XgL-Ek-Yaw" firstAttribute="leading" secondItem="KUb-XS-xeX" secondAttribute="leading" id="tnq-ep-zp6"/>
+                            <constraint firstItem="OBn-0r-cDt" firstAttribute="top" secondItem="KUb-XS-xeX" secondAttribute="top" id="1XK-SE-Tml"/>
+                            <constraint firstItem="XgL-Ek-Yaw" firstAttribute="leading" secondItem="KUb-XS-xeX" secondAttribute="leading" id="F3d-rs-f7E"/>
+                            <constraint firstItem="XgL-Ek-Yaw" firstAttribute="top" secondItem="OBn-0r-cDt" secondAttribute="bottom" id="Gq7-Uc-O1n"/>
+                            <constraint firstItem="XgL-Ek-Yaw" firstAttribute="leading" secondItem="KUb-XS-xeX" secondAttribute="leading" id="IbX-vf-FQL"/>
+                            <constraint firstAttribute="bottom" secondItem="XgL-Ek-Yaw" secondAttribute="bottom" id="TLW-5G-Rg0"/>
+                            <constraint firstAttribute="trailing" secondItem="XgL-Ek-Yaw" secondAttribute="trailing" id="m5H-AZ-Kad"/>
+                            <constraint firstAttribute="trailing" secondItem="XgL-Ek-Yaw" secondAttribute="trailing" id="oqZ-4V-s85"/>
+                            <constraint firstAttribute="trailing" secondItem="OBn-0r-cDt" secondAttribute="trailing" id="uRu-eh-AHO"/>
+                            <constraint firstAttribute="bottom" secondItem="XgL-Ek-Yaw" secondAttribute="bottom" id="wXO-Cf-1cF"/>
+                            <constraint firstItem="OBn-0r-cDt" firstAttribute="leading" secondItem="KUb-XS-xeX" secondAttribute="leading" id="zdY-Uq-Dzj"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addButton" destination="xLX-m6-XnG" id="GgK-mX-a0V"/>
                         <outlet property="arrayController" destination="cwF-sC-ahk" id="Lbf-iH-fcP"/>
+                        <outlet property="searchField" destination="nRS-48-ITL" id="8jV-ea-eUr"/>
                         <outlet property="tableView" destination="cLh-CC-KxR" id="Bbc-Oa-qys"/>
                     </connections>
                 </viewController>
                 <customObject id="XNH-sM-ozh" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <arrayController id="cwF-sC-ahk"/>
             </objects>
-            <point key="canvasLocation" x="1091" y="567"/>
+            <point key="canvasLocation" x="1110" y="568"/>
         </scene>
         <!--Playback-->
         <scene sceneID="YvP-sw-lgA">
@@ -252,4 +311,7 @@
             <point key="canvasLocation" x="1091" y="928"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NSAddTemplate" width="11" height="11"/>
+    </resources>
 </document>

@@ -34,11 +34,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _rtspPlayer = [[SurgeRtspPlayer alloc] init];
-    [_rtspPlayer setDelegate:self];
-    [self embedPlayerView:[_rtspPlayer playerView]];
-    [_activityIndicator startAnimating];
-    [_activityIndicator setHidden:YES];
+    self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
+    self.rtspPlayer.delegate = self;
+    self.rtspPlayer.playerView = self.playbackView;
+    
+    [self.activityIndicator stopAnimating];
     
     self.allStoredAddresses = [NSArray<NSString *> storedRtspAddresses];
     self.storedAddressSearchResults = @[];
@@ -47,38 +47,14 @@
                                                 forCellReuseIdentifier:@"SearchResultTableViewCell"];
 }
 
-#pragma mark - View Customization
-
-- (void)embedPlayerView:(UIView*)playerView {
-    
-    [playerView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    [_playbackViewHolder addSubview:playerView];
-    [_playbackViewHolder bringSubviewToFront:_activityIndicator];
-    
-    NSDictionary *keyedViews = @{@"playerView" : playerView};
-    NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[playerView]-0-|"
-                                                                   options:NSLayoutFormatAlignAllLeft
-                                                                   metrics:nil
-                                                                     views:keyedViews];
-    [NSLayoutConstraint activateConstraints:constraints];
-    
-    
-    constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[playerView]-0-|"
-                                                          options:NSLayoutFormatAlignAllTop
-                                                          metrics:nil
-                                                            views:keyedViews];
-    [NSLayoutConstraint activateConstraints:constraints];
-}
-
 #pragma mark - Playback Controls
 
 - (IBAction)tappedPauseButton:(id)sender {
-    [_rtspPlayer pause];
+    [self.rtspPlayer pause];
 }
 
 - (IBAction)tappedPlayButton:(id)sender {
-    [_rtspPlayer play];
+    [self.rtspPlayer play];
 }
 
 #pragma mark - SurgeRtspPlayerDelegate

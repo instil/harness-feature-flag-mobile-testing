@@ -44,11 +44,16 @@
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jPf-f6-ZbD">
                                 <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="woF-6q-uzm"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1B1-5U-hXp"/>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="woF-6q-uzm"/>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="1B1-5U-hXp" secondAttribute="bottom" id="4Hl-Pb-dje"/>
+                                    <constraint firstItem="1B1-5U-hXp" firstAttribute="top" secondItem="jPf-f6-ZbD" secondAttribute="top" id="QUb-Nq-fvC"/>
+                                    <constraint firstItem="1B1-5U-hXp" firstAttribute="leading" secondItem="jPf-f6-ZbD" secondAttribute="leading" id="aIt-8L-pUs"/>
                                     <constraint firstItem="woF-6q-uzm" firstAttribute="centerX" secondItem="jPf-f6-ZbD" secondAttribute="centerX" id="dbR-h1-iEq"/>
+                                    <constraint firstAttribute="trailing" secondItem="1B1-5U-hXp" secondAttribute="trailing" id="xSR-Xa-onf"/>
                                     <constraint firstItem="woF-6q-uzm" firstAttribute="centerY" secondItem="jPf-f6-ZbD" secondAttribute="centerY" id="xba-ly-Ppc"/>
                                 </constraints>
                             </view>
@@ -88,7 +93,7 @@
                         <outlet property="pauseButton" destination="PJI-Eo-TkR" id="pgr-VX-3Q3"/>
                         <outlet property="playButton" destination="QwQ-hg-ym7" id="leB-3B-lcL"/>
                         <outlet property="playbackControlsHolder" destination="Sjz-aP-ZiB" id="JDp-fN-WD0"/>
-                        <outlet property="playbackViewHolder" destination="jPf-f6-ZbD" id="tlg-My-ysJ"/>
+                        <outlet property="playbackView" destination="1B1-5U-hXp" id="ytb-Tw-ged"/>
                         <outlet property="searchDisplayController" destination="5pX-Pa-7cr" id="vqU-gk-DL5"/>
                     </connections>
                 </viewController>

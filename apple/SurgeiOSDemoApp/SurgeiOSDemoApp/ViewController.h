@@ -22,12 +22,12 @@
 
 @interface ViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIView* playbackViewHolder;
-@property (weak, nonatomic) IBOutlet UIView* playbackControlsHolder;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView* activityIndicator;
+@property (weak, nonatomic) IBOutlet UIImageView *playbackView;
+@property (weak, nonatomic) IBOutlet UIView *playbackControlsHolder;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property (weak, nonatomic) IBOutlet UIButton* pauseButton;
-@property (weak, nonatomic) IBOutlet UIButton* playButton;
+@property (weak, nonatomic) IBOutlet UIButton *pauseButton;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
 
 - (IBAction)tappedPauseButton:(id)sender;
 - (IBAction)tappedPlayButton:(id)sender;

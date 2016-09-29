@@ -156,19 +156,19 @@ private:
 
 #pragma mark - Public API
 
-- (BOOL)initiatePlaybackOf:(NSURL*)url {
+- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url {
     return [self initiatePlaybackOf:url withUsername:@"" andPassword:@""];
 }
 
-- (BOOL)initiatePlaybackOf:(NSURL*)url withUsername:(NSString *)username andPassword:(NSString *)password {
+- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url withUsername:(nonnull NSString *)username andPassword:(nonnull NSString *)password {
     return [self initiatePlaybackOf:url withUsername:username andPassword:password startingAt:nil andEndingAt:nil];
 }
 
-- (BOOL)initiatePlaybackOf:(NSURL*)url
-                   withUsername:(NSString *)username
-                    andPassword:(NSString *)password
-                     startingAt:(NSDate *)startDate
-                    andEndingAt:(NSDate *)endDate {
+- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url
+              withUsername:(nonnull NSString *)username
+               andPassword:(nonnull NSString *)password
+                startingAt:(nullable NSDate *)startDate
+               andEndingAt:(nullable NSDate *)endDate {
     SurgeLogDebug(@"Initating playback of %@", url);
     
     self.url = url;
@@ -193,8 +193,8 @@ private:
     return YES;
 }
 
-- (void)seekToStartTime:(NSDate *)startTime
-             andEndTime:(NSDate *)endTime {
+- (void)seekToStartTime:(nullable NSDate *)startTime
+             andEndTime:(nullable NSDate *)endTime {
     
     SurgeLogInfo(@"Seeking to start time %@ and end time %@", startTime, endTime);
     
@@ -274,8 +274,8 @@ private:
 
 #pragma mark - Package API
 
-- (void)setRangeWithStartTime:(NSDate *)startTime
-                   andEndTime:(NSDate *)endTime {
+- (void)setRangeWithStartTime:(nullable NSDate *)startTime
+                   andEndTime:(nullable NSDate *)endTime {
     
     SurgeUtil::DateTime surgeStartTime;
     SurgeUtil::DateTime surgeEndTime;

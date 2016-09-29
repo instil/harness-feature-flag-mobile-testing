@@ -109,12 +109,6 @@ private:
 @property (nonatomic, assign) Surge::IRtspClientDelegate *clientDelegate;
 @property (nonatomic, strong) SurgeDecoder *decoder;
 
-#if TARGET_OS_IPHONE
-@property (nonatomic, strong) UIImageView *playerView;
-#else
-@property (nonatomic, strong) NSImageView *playerView;
-#endif
-
 @end
 
 @implementation SurgeRtspPlayer
@@ -330,6 +324,9 @@ private:
 #pragma mark - Decoder delegate
 
 - (void)decoderFrameAvailable:(CGImageRef)image withTimeStamp:(NSTimeInterval)timestamp {
+    if (!self.playerView) {
+        return;
+    }
     dispatch_sync(dispatch_get_main_queue(), ^{
         #if TARGET_OS_IPHONE
             self.playerView.image = [[UIImage alloc] initWithCGImage:image];

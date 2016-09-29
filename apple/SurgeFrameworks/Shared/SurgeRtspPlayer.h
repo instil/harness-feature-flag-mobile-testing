@@ -110,9 +110,9 @@
  * The basic player view without controls.
  */
 #if TARGET_OS_IPHONE
-@property (nonatomic, strong, readonly) UIImageView *playerView;
+@property (nonatomic, strong) UIImageView * __nonnull playerView;
 #else
-@property (nonatomic, strong, readonly) NSImageView *playerView;
+@property (nonatomic, strong) NSImageView * __nonnull playerView;
 #endif
 
 /**

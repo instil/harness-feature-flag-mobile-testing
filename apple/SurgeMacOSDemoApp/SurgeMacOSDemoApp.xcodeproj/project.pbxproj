@@ -16,6 +16,8 @@
 		426E88AF1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88AE1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests.m */; };
 		426E88BD1CDA562E00C7FF25 /* SurgeMacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */; };
 		426E88BE1CDA562E00C7FF25 /* SurgeMacOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7C9D3ECC1D9D282E000C4F62 /* AddressesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9D3ECB1D9D282E000C4F62 /* AddressesViewController.m */; };
+		7CCE4B6B1D9D1697002771E2 /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCE4B6A1D9D1697002771E2 /* NSArray+RtspAddressStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +57,7 @@
 		426E888D1CDA54E500C7FF25 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		426E88901CDA54E500C7FF25 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		426E88921CDA54E500C7FF25 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		426E88931CDA54E500C7FF25 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		426E88931CDA54E500C7FF25 /* ViewController.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		426E88951CDA54E500C7FF25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		426E88981CDA54E500C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		426E889A1CDA54E500C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -65,7 +67,12 @@
 		426E88AA1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeMacOSDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E88AE1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeMacOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88B01CDA54E500C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeMacOS.framework; path = "/Users/cvanes/Library/Developer/Xcode/DerivedData/Surge-ecglvfmqgwcjizcpxbkexnbinxvc/Build/Products/Debug/SurgeMacOS.framework"; sourceTree = "<absolute>"; };
+		426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeMacOS.framework; path = ../DerivedData/Surge/Build/Products/Debug/SurgeMacOS.framework; sourceTree = SOURCE_ROOT; };
+		7C9D3ECA1D9D282E000C4F62 /* AddressesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesViewController.h; sourceTree = "<group>"; };
+		7C9D3ECB1D9D282E000C4F62 /* AddressesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesViewController.m; sourceTree = "<group>"; tabWidth = 4; };
+		7C9D3ECD1D9D469B000C4F62 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		7CCE4B691D9D1697002771E2 /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
+		7CCE4B6A1D9D1697002771E2 /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,9 +129,14 @@
 				426E888D1CDA54E500C7FF25 /* AppDelegate.m */,
 				426E88921CDA54E500C7FF25 /* ViewController.h */,
 				426E88931CDA54E500C7FF25 /* ViewController.m */,
+				7C9D3ECA1D9D282E000C4F62 /* AddressesViewController.h */,
+				7C9D3ECB1D9D282E000C4F62 /* AddressesViewController.m */,
 				426E88951CDA54E500C7FF25 /* Assets.xcassets */,
 				426E88971CDA54E500C7FF25 /* Main.storyboard */,
 				426E889A1CDA54E500C7FF25 /* Info.plist */,
+				7CCE4B691D9D1697002771E2 /* NSArray+RtspAddressStorage.h */,
+				7CCE4B6A1D9D1697002771E2 /* NSArray+RtspAddressStorage.m */,
+				7C9D3ECD1D9D469B000C4F62 /* Constants.h */,
 				426E888F1CDA54E500C7FF25 /* Supporting Files */,
 			);
 			path = SurgeMacOSDemoApp;
@@ -296,7 +308,9 @@
 			files = (
 				426E88941CDA54E500C7FF25 /* ViewController.m in Sources */,
 				426E88911CDA54E500C7FF25 /* main.m in Sources */,
+				7CCE4B6B1D9D1697002771E2 /* NSArray+RtspAddressStorage.m in Sources */,
 				426E888E1CDA54E500C7FF25 /* AppDelegate.m in Sources */,
+				7C9D3ECC1D9D282E000C4F62 /* AddressesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

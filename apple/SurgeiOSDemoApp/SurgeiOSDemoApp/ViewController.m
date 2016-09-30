@@ -21,61 +21,40 @@
 #import <SurgeiOS/SurgeiOS.h>
 
 #import "ViewController.h"
+#import "NSArray+RtspAddressStorage.h"
 
-@interface ViewController () <SurgeRtspPlayerDelegate, UITextFieldDelegate>
+@interface ViewController ()
+<SurgeRtspPlayerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate, UISearchBarDelegate>
 @property (nonatomic, strong) SurgeRtspPlayer *rtspPlayer;
+@property (nonatomic, copy) NSArray <NSString *> *allStoredAddresses;
+@property (nonatomic, copy) NSArray <NSString *> *storedAddressSearchResults;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
-    _rtspPlayer = [[SurgeRtspPlayer alloc] init];
-    [_rtspPlayer setDelegate:self];
-    [self embedPlayerView:[_rtspPlayer playerView]];
-    [_activityIndicator startAnimating];
-    [_activityIndicator setHidden:YES];
-    [_streamUrlField setDelegate:self];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    //[self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:@"rtsp://192.168.1.54:8554/test"]];
-}
-
-#pragma mark - View Customization
-
-- (void)embedPlayerView:(UIView*)playerView {
+    [super viewDidLoad];
+    self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
+    self.rtspPlayer.delegate = self;
+    self.rtspPlayer.playerView = self.playbackView;
     
-    [playerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.activityIndicator stopAnimating];
     
-    [_playbackViewHolder addSubview:playerView];
-    [_playbackViewHolder bringSubviewToFront:_activityIndicator];
+    self.allStoredAddresses = [NSArray<NSString *> storedRtspAddresses];
+    self.storedAddressSearchResults = @[];
     
-    NSDictionary *keyedViews = [NSDictionary dictionaryWithObjectsAndKeys:playerView, @"playerView", nil];
-    NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[playerView]-0-|"
-                                                                   options:NSLayoutFormatAlignAllLeft
-                                                                   metrics:nil
-                                                                     views:keyedViews];
-    [NSLayoutConstraint activateConstraints:constraints];
-    
-    
-    constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[playerView]-0-|"
-                                                          options:NSLayoutFormatAlignAllTop
-                                                          metrics:nil
-                                                            views:keyedViews];
-    [NSLayoutConstraint activateConstraints:constraints];
-    
-    
-    
+    [self.searchDisplayController.searchResultsTableView registerClass:[UITableViewCell class]
+                                                forCellReuseIdentifier:@"SearchResultTableViewCell"];
 }
 
 #pragma mark - Playback Controls
 
 - (IBAction)tappedPauseButton:(id)sender {
-    [_rtspPlayer pause];
+    [self.rtspPlayer pause];
 }
 
 - (IBAction)tappedPlayButton:(id)sender {
-    [_rtspPlayer play];
+    [self.rtspPlayer play];
 }
 
 #pragma mark - SurgeRtspPlayerDelegate
@@ -112,15 +91,56 @@
  * Guaranteed to be call at most once per second with the current player frame rate.
  */
 - (void)rtspPlayerDidObservePlaybackFrameRate:(NSUInteger)frameRate {
-    NSLog(@"Frame rate: %d", frameRate);
+    NSLog(@"Frame rate: %@", @(frameRate));
 }
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - UISearchDisplayDelegate
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    NSLog(@"%@", string);
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(nullable NSString *)searchString {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self CONTAINS[cd] %@", searchString];
+    self.storedAddressSearchResults = [self.allStoredAddresses filteredArrayUsingPredicate:predicate];
     return YES;
 }
 
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    // save user input and load stream
+    self.allStoredAddresses = [self.allStoredAddresses arrayByAddingObject:searchBar.text];
+    [self.allStoredAddresses saveAsStoredRtspAddresses];
+    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:searchBar.text]];
+    [self.searchDisplayController setActive:NO animated:YES];
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        return self.storedAddressSearchResults.count;
+    }
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultTableViewCell"];
+        cell.textLabel.text = self.storedAddressSearchResults[indexPath.row];
+        return cell;
+    }
+    return nil;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:self.storedAddressSearchResults[indexPath.row]]];
+        [self.searchDisplayController setActive:NO animated:YES];
+    }
+}
 
 @end

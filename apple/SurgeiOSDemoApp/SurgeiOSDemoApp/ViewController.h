@@ -22,13 +22,12 @@
 
 @interface ViewController : UIViewController
 
-@property(nonatomic, strong) IBOutlet UIView* playbackViewHolder;
-@property(nonatomic, strong) IBOutlet UIView* playbackControlsHolder;
-@property(nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
+@property (weak, nonatomic) IBOutlet UIImageView *playbackView;
+@property (weak, nonatomic) IBOutlet UIView *playbackControlsHolder;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property(nonatomic, strong) IBOutlet UIButton* pauseButton;
-@property(nonatomic, strong) IBOutlet UIButton* playButton;
-@property(nonatomic, strong) IBOutlet UITextField* streamUrlField;
+@property (weak, nonatomic) IBOutlet UIButton *pauseButton;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
 
 - (IBAction)tappedPauseButton:(id)sender;
 - (IBAction)tappedPlayButton:(id)sender;

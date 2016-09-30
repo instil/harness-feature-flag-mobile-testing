@@ -26,6 +26,8 @@
 #import <AppKit/AppKit.h>
 #endif
 
+@class SurgeRtspPlayer;
+
 @protocol SurgeRtspPlayerDelegate <NSObject>
 
 @optional
@@ -33,27 +35,27 @@
 /**
  * Called when the player begins or resumes playback of a stream.
  */
-- (void)rtspPlayerDidBeginPlayback;
+- (void)rtspPlayerDidBeginPlayback:(nonnull SurgeRtspPlayer *)player;
 
 /**
  * Called when the player enters the buffering state.
  */
-- (void)rtspPlayerDidBeginBuffering;
+- (void)rtspPlayerDidBeginBuffering:(nonnull SurgeRtspPlayer *)player;
 
 /**
  * Called when the player exits the buffering state.
  */
-- (void)rtspPlayerDidStopBuffering;
+- (void)rtspPlayerDidStopBuffering:(nonnull SurgeRtspPlayer *)player;
 
 /**
  * Called when the player times out.
  */
-- (void)rtspPlayerDidTimeout;
+- (void)rtspPlayerDidTimeout:(nonnull SurgeRtspPlayer *)player;
 
 /**
  * Guaranteed to be call at most once per second with the current player frame rate.
  */
-- (void)rtspPlayerDidObservePlaybackFrameRate:(NSUInteger)frameRate;
+- (void)rtspPlayer:(nonnull SurgeRtspPlayer *)player didObservePlaybackFrameRate:(NSUInteger)frameRate;
 
 @end
 
@@ -64,30 +66,30 @@
  * Initiate playback of the RTSP stream - this will issue the required
  * describe, setup and play RTSP requests.
  */
-- (BOOL)initiatePlaybackOf:(NSURL*)url;
+- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url;
 
 
 /**
  * Initiate playback of a basic auth protected RTSP stream -
  * this will issue the required describe, setup and play RTSP requests.
  */
-- (BOOL)initiatePlaybackOf:(NSURL*)url withUsername:(NSString*)username andPassword:(NSString*)password;
+- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url withUsername:(nonnull NSString *)username andPassword:(nonnull NSString *)password;
 
 /**
  * Initiate playback of a basic auth protected RTSP stream at a specific start and end time -
  * this will issue the required describe, setup and play RTSP requests.
  */
-- (BOOL)initiatePlaybackOf:(NSURL*)url
-              withUsername:(NSString *)username
-               andPassword:(NSString *)password
-                startingAt:(NSDate *)startDate
-               andEndingAt:(NSDate *)endDate;
+- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url
+              withUsername:(nonnull NSString *)username
+               andPassword:(nonnull NSString *)password
+                startingAt:(nullable NSDate *)startDate
+               andEndingAt:(nullable NSDate *)endDate;
 
 /**
  * Seek to a specific time in the stream.
  */
-- (void)seekToStartTime:(NSDate *)startTime
-             andEndTime:(NSDate *)endTime;
+- (void)seekToStartTime:(nullable NSDate *)startTime
+             andEndTime:(nullable NSDate *)endTime;
 
 /**
  * Begin/resume playback of the stream.
@@ -108,15 +110,15 @@
  * The basic player view without controls.
  */
 #if TARGET_OS_IPHONE
-@property (nonatomic, strong, readonly) UIImageView *playerView;
+@property (nonatomic, strong, nonnull) UIImageView *playerView;
 #else
-@property (nonatomic, strong, readonly) NSImageView *playerView;
+@property (nonatomic, strong, nonnull) NSImageView *playerView;
 #endif
 
 /**
  * Optional delegate used to receive notification of player events.
  */
-@property (nonatomic, strong) id<SurgeRtspPlayerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SurgeRtspPlayerDelegate> delegate;
 
 /*
  * Recorded FPS of the current stream.

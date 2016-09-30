@@ -64,8 +64,9 @@ public:
                  withDimensions:(CGSize)dimensions
                presentationTime:(unsigned int)presentationTime
                        duration:(int)duration;
+@optional
 - (void) rtspClientReceivedExtendedHeaders:(const unsigned char *)data
-                                  ofLength:(int)length;
+                                  ofLength:(size_t)length;
 
 @end
 
@@ -107,12 +108,6 @@ private:
 
 @property (nonatomic, assign) Surge::IRtspClientDelegate *clientDelegate;
 @property (nonatomic, strong) SurgeDecoder *decoder;
-
-#if TARGET_OS_IPHONE
-@property (nonatomic, strong) UIImageView *playerView;
-#else
-@property (nonatomic, strong) NSImageView *playerView;
-#endif
 
 @end
 
@@ -161,19 +156,19 @@ private:
 
 #pragma mark - Public API
 
-- (BOOL)initiatePlaybackOf:(NSURL*)url {
+- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url {
     return [self initiatePlaybackOf:url withUsername:@"" andPassword:@""];
 }
 
-- (BOOL)initiatePlaybackOf:(NSURL*)url withUsername:(NSString *)username andPassword:(NSString *)password {
+- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url withUsername:(nonnull NSString *)username andPassword:(nonnull NSString *)password {
     return [self initiatePlaybackOf:url withUsername:username andPassword:password startingAt:nil andEndingAt:nil];
 }
 
-- (BOOL)initiatePlaybackOf:(NSURL*)url
-                   withUsername:(NSString *)username
-                    andPassword:(NSString *)password
-                     startingAt:(NSDate *)startDate
-                    andEndingAt:(NSDate *)endDate {
+- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url
+              withUsername:(nonnull NSString *)username
+               andPassword:(nonnull NSString *)password
+                startingAt:(nullable NSDate *)startDate
+               andEndingAt:(nullable NSDate *)endDate {
     SurgeLogDebug(@"Initating playback of %@", url);
     
     self.url = url;
@@ -198,8 +193,8 @@ private:
     return YES;
 }
 
-- (void)seekToStartTime:(NSDate *)startTime
-             andEndTime:(NSDate *)endTime {
+- (void)seekToStartTime:(nullable NSDate *)startTime
+             andEndTime:(nullable NSDate *)endTime {
     
     SurgeLogInfo(@"Seeking to start time %@ and end time %@", startTime, endTime);
     
@@ -279,19 +274,19 @@ private:
 
 #pragma mark - Package API
 
-- (void)setRangeWithStartTime:(NSDate *)startTime
-                   andEndTime:(NSDate *)endTime {
+- (void)setRangeWithStartTime:(nullable NSDate *)startTime
+                   andEndTime:(nullable NSDate *)endTime {
     
     SurgeUtil::DateTime surgeStartTime;
     SurgeUtil::DateTime surgeEndTime;
     
     if (startTime != nil) {
-        surgeStartTime = [NSDate toSurgeDateTime:startTime];
+        surgeStartTime = [startTime toSurgeDateTime];
         self.client->SetStartTime(surgeStartTime);
     }
     
     if (endTime != nil) {
-        surgeEndTime = [NSDate toSurgeDateTime:endTime];
+        surgeEndTime = [endTime toSurgeDateTime];
         self.client->SetEndTime(surgeEndTime);
     }
 }
@@ -301,14 +296,16 @@ private:
 }
 
 - (int) framesPerSecond {
-    SurgeLogDebug(@"Current FPS: %d", self.decoder.framesPerSecond);
-    return self.decoder.framesPerSecond;
+    SurgeLogDebug(@"Current FPS: %@", @(self.decoder.framesPerSecond));
+    return (int)self.decoder.framesPerSecond;
 }
 
 #pragma mark - RTSP client delegate
 
 - (void)rtspClientDidTimeout {
-    [self.delegate rtspPlayerDidTimeout];
+    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidTimeout:)]) {
+        [self.delegate rtspPlayerDidTimeout:self];
+    }
 }
 
 - (void)rtspClientReceivedFrame:(const unsigned char *)frameBuffer
@@ -327,6 +324,9 @@ private:
 #pragma mark - Decoder delegate
 
 - (void)decoderFrameAvailable:(CGImageRef)image withTimeStamp:(NSTimeInterval)timestamp {
+    if (!self.playerView) {
+        return;
+    }
     dispatch_sync(dispatch_get_main_queue(), ^{
         #if TARGET_OS_IPHONE
             self.playerView.image = [[UIImage alloc] initWithCGImage:image];
@@ -337,14 +337,14 @@ private:
 }
 
 - (void)decoderDidBeginBuffering {
-    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidBeginBuffering)]) {
-        [self.delegate rtspPlayerDidBeginBuffering];
+    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidBeginBuffering:)]) {
+        [self.delegate rtspPlayerDidBeginBuffering:self];
     }
 }
 
 - (void)decoderDidStopBuffering {
-    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidStopBuffering)]) {
-        [self.delegate rtspPlayerDidStopBuffering];
+    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidStopBuffering:)]) {
+        [self.delegate rtspPlayerDidStopBuffering:self];
     }
 }
 

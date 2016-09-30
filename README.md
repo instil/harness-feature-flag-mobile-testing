@@ -13,9 +13,24 @@ RTSP and RTP are currently a popular choice for use with IP video cameras both c
 
 Surge seeks to address these issues by being designed from the ground up to execute asynchronously whilst utilising non-blocking I/O and leveraging platform specific APIs to access hardware accelerated video decoding.
 
+## Development
+
+### Apple Frameworks
+
+A workspace is located at `apple/Surge.xcworkspace` for developing any Apple Surge frameworks, including iOS, macOS and tvOS. Frameworks are built using an embedded Xcode project and their products are placed in `apple/DerivedData` and automatically linked within the relevant demo apps in the workspace. All derived data (including built framework products) is omitted from source conrol by default.
+
+### Android Frameworks
+
+TBC
+
+
 ## Building
 
 Prior to building the library ensure that you have cloned the project and checked out all its associated submodules.
+
+```bash
+$ git submodule update --init --recursive
+```
 
 ### iOS
 

@@ -20,8 +20,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ViewController : NSViewController
+@interface ViewController : NSViewController <NSSearchFieldDelegate>
 
+@property (weak) IBOutlet NSImageView *playbackView;
+@property (weak) IBOutlet NSSearchField *searchField;
 
 @end
 

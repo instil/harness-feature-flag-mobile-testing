@@ -22,14 +22,21 @@
 
 @implementation NSDate (SurgeExtensions)
 
-+ (SurgeUtil::DateTime) toSurgeDateTime:(NSDate *)nsDate {
+- (SurgeUtil::DateTime) toSurgeDateTime {
     SurgeUtil::DateTime dateTime = SurgeUtil::DateTime();
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
     [calendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
-    NSDateComponents *components = [calendar components:NSCalendarUnitTimeZone | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitNanosecond
-                                               fromDate:nsDate];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitTimeZone |
+                                                         NSCalendarUnitDay |
+                                                         NSCalendarUnitMonth |
+                                                         NSCalendarUnitYear |
+                                                         NSCalendarUnitHour |
+                                                         NSCalendarUnitMinute |
+                                                         NSCalendarUnitSecond |
+                                                         NSCalendarUnitNanosecond)
+                                               fromDate:self];
 
     dateTime.Year = [components year];
     dateTime.Month = [components month];

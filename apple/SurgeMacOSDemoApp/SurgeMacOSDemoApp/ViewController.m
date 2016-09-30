@@ -21,26 +21,38 @@
 #import <SurgeMacOS/SurgeMacOS.h>
 
 #import "ViewController.h"
+#import "Constants.h"
 
-@interface ViewController ()
+@interface ViewController () <SurgeRtspPlayerDelegate>
 @property (nonatomic, strong) SurgeRtspPlayer *rtspPlayer;
 @end
 
 @implementation ViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RtspAddressSelectionNotification object:nil];
+}
+
 - (void)viewDidLoad {
+    [super viewDidLoad];
     self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
-    [self.view addSubview:self.rtspPlayer.playerView];
+    self.rtspPlayer.delegate = self;
+    self.rtspPlayer.playerView = self.playbackView;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadRtspStreamFromNotification:)
+                                                 name:RtspAddressSelectionNotification
+                                               object:nil];
 }
 
-- (void)viewWillLayout {
-    self.rtspPlayer.playerView.frame = self.view.frame;
-}
+#pragma mark - Actions
 
-- (void)viewDidAppear {
-    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:@"rtsp://192.168.1.128:8554/test"]];
+- (void)loadRtspStreamFromNotification:(NSNotification *)notification {
+    NSString *rtspAddress = notification.object;
+    if (![rtspAddress isKindOfClass:[NSString class]]) {
+        return;
+    }
+    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:rtspAddress]];
 }
-
-#
 
 @end

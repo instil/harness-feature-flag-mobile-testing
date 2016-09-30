@@ -255,21 +255,28 @@ private:
 - (void)play {
     SurgeLogInfo(@"Starting/resuming playback of %@", self.url);
     Surge::RtspResponse *playResponse = self.client->Play(false);
+    if (playResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
+        [self.delegate rtspPlayerDidBeginPlayback:self];
+    }
     delete playResponse;
 }
 
 - (void)pause {
     SurgeLogInfo(@"Pausing playback of %@", self.url);
-    
     Surge::RtspResponse *pauseResponse = self.client->Pause();
+    if (pauseResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
+        [self.delegate rtspPlayerDidStopPlayback:self];
+    }
     delete pauseResponse;
 }
 
 - (void)stop {
     SurgeLogInfo(@"Stopping playback of %@", self.url);
-    
     [self closeStream];
     self.client->StopClient();
+    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
+        [self.delegate rtspPlayerDidStopPlayback:self];
+    }
 }
 
 #pragma mark - Package API

@@ -38,6 +38,11 @@
 - (void)rtspPlayerDidBeginPlayback:(nonnull SurgeRtspPlayer *)player;
 
 /**
+ * Called when the player stops or pauses playback of a stream.
+ */
+- (void)rtspPlayerDidStopPlayback:(nonnull SurgeRtspPlayer *)player;
+
+/**
  * Called when the player enters the buffering state.
  */
 - (void)rtspPlayerDidBeginBuffering:(nonnull SurgeRtspPlayer *)player;

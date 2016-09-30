@@ -1,0 +1,97 @@
+//
+//  PlaybackViewController.m
+//  SurgeiOSDemoApp
+//
+//  Created by Niall Kelly on 30/09/2016.
+//  Copyright © 2016 Instil. All rights reserved.
+//
+
+#import "PlaybackViewController.h"
+#import <SurgeiOS/SurgeiOS.h>
+
+@interface PlaybackViewController () <SurgeRtspPlayerDelegate>
+@property (nonatomic, strong) SurgeRtspPlayer *rtspPlayer;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIImageView *playbackView;
+@property (weak, nonatomic) IBOutlet UILabel *urlLabel;
+@end
+
+@implementation PlaybackViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
+    self.rtspPlayer.delegate = self;
+    self.rtspPlayer.playerView = self.playbackView;
+    self.urlLabel.text = @"";
+    [self.activityIndicator stopAnimating];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (self.playbackUrlString) {
+        self.urlLabel.text = self.playbackUrlString;
+        [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:self.playbackUrlString]];
+        self.playbackUrlString = nil;
+    }
+}
+
+#pragma mark - Actions
+
+- (void)loadRtspStreamFromNotification:(NSNotification *)notification {
+    NSString *rtspAddress = notification.object;
+    if (![rtspAddress isKindOfClass:[NSString class]]) {
+        return;
+    }
+    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:rtspAddress]];
+}
+
+#pragma mark - Playback Controls
+
+- (IBAction)tappedPauseButton:(id)sender {
+    [self.rtspPlayer pause];
+}
+
+- (IBAction)tappedPlayButton:(id)sender {
+    [self.rtspPlayer play];
+}
+
+#pragma mark - SurgeRtspPlayerDelegate
+
+/**
+ * Called when the player begins or resumes playback of a stream.
+ */
+- (void)rtspPlayerDidBeginPlayback {
+    NSLog(@"Did begin playback...");
+}
+
+/**
+ * Called when the player enters the buffering state.
+ */
+- (void)rtspPlayerDidBeginBuffering {
+    NSLog(@"Did begin buffering...");
+}
+
+/**
+ * Called when the player exits the buffering state.
+ */
+- (void)rtspPlayerDidStopBuffering {
+    NSLog(@"Did stop buffering...");
+}
+
+/**
+ * Called when the player times out.
+ */
+- (void)rtspPlayerDidTimeout {
+    
+}
+
+/**
+ * Guaranteed to be call at most once per second with the current player frame rate.
+ */
+- (void)rtspPlayerDidObservePlaybackFrameRate:(NSUInteger)frameRate {
+    NSLog(@"Frame rate: %@", @(frameRate));
+}
+
+
+@end

@@ -126,10 +126,16 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="XSJ-dJ-dhS">
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="37" id="4sR-Qo-jw4"/>
                                     <constraint firstAttribute="height" constant="37" id="bZM-td-D0j"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="khT-S7-g8X">
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.69986530172413797" colorSpace="calibratedRGB"/>
@@ -171,6 +177,7 @@
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="XSJ-dJ-dhS" id="jtP-gF-aVx"/>
+                        <outlet property="playbackControlsToolbar" destination="nEa-ed-CVY" id="o4N-x0-tA4"/>
                         <outlet property="playbackView" destination="JTe-B9-gOf" id="FJ3-ZC-5uF"/>
                         <outlet property="urlLabel" destination="khT-S7-g8X" id="DNv-No-1ey"/>
                     </connections>

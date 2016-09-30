@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIImageView *playbackView;
 @property (weak, nonatomic) IBOutlet UILabel *urlLabel;
+@property (weak, nonatomic) IBOutlet UIToolbar *playbackControlsToolbar;
+@property (weak, nonatomic, readonly) UIBarButtonItem *playbackButton;
 @end
 
 @implementation PlaybackViewController
@@ -24,15 +26,19 @@
     self.rtspPlayer.delegate = self;
     self.rtspPlayer.playerView = self.playbackView;
     self.urlLabel.text = @"";
-    [self.activityIndicator stopAnimating];
+    [self setupInterfaceForPlaying:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if (self.playbackUrlString) {
+        [self.activityIndicator startAnimating];
         self.urlLabel.text = self.playbackUrlString;
         [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:self.playbackUrlString]];
         self.playbackUrlString = nil;
+    }
+    else {
+        self.playbackButton.enabled = NO;
     }
 }
 
@@ -56,40 +62,71 @@
     [self.rtspPlayer play];
 }
 
+- (void)setupInterfaceForPlaying:(BOOL)playing {
+    UIBarButtonSystemItem systemItem = playing ? UIBarButtonSystemItemPause : UIBarButtonSystemItemPlay;
+    SEL action = playing ? @selector(tappedPauseButton:) : @selector(tappedPlayButton:);
+    UIBarButtonItem *newItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem
+                                                                             target:self
+                                                                             action:action];
+    NSMutableArray *m_toolbarItems = self.playbackControlsToolbar.items.mutableCopy;
+    [m_toolbarItems replaceObjectAtIndex:1 withObject:newItem];
+    self.playbackControlsToolbar.items = m_toolbarItems;
+    
+    if (playing) {
+        [self.activityIndicator stopAnimating];
+    }
+}
+
+- (UIBarButtonItem *)playbackButton {
+    return self.playbackControlsToolbar.items.count >= 2 ? self.playbackControlsToolbar.items[1] : nil;
+}
+
 #pragma mark - SurgeRtspPlayerDelegate
 
 /**
  * Called when the player begins or resumes playback of a stream.
  */
-- (void)rtspPlayerDidBeginPlayback {
+- (void)rtspPlayerDidBeginPlayback:(SurgeRtspPlayer *)player {
     NSLog(@"Did begin playback...");
+    [self setupInterfaceForPlaying:YES];
+}
+
+/**
+ * Called when the player stops or pauses playback of a stream.
+ */
+- (void)rtspPlayerDidStopPlayback:(SurgeRtspPlayer *)player {
+    NSLog(@"Did stop playback...");
+    [self setupInterfaceForPlaying:NO];
 }
 
 /**
  * Called when the player enters the buffering state.
  */
-- (void)rtspPlayerDidBeginBuffering {
+- (void)rtspPlayerDidBeginBuffering:(SurgeRtspPlayer *)player {
     NSLog(@"Did begin buffering...");
+    [self.activityIndicator startAnimating];
+    [self setupInterfaceForPlaying:NO];
 }
 
 /**
  * Called when the player exits the buffering state.
  */
-- (void)rtspPlayerDidStopBuffering {
+- (void)rtspPlayerDidStopBuffering:(SurgeRtspPlayer *)player {
     NSLog(@"Did stop buffering...");
+    [self setupInterfaceForPlaying:YES];
 }
 
 /**
  * Called when the player times out.
  */
-- (void)rtspPlayerDidTimeout {
+- (void)rtspPlayerDidTimeout:(SurgeRtspPlayer *)player {
     
 }
 
 /**
  * Guaranteed to be call at most once per second with the current player frame rate.
  */
-- (void)rtspPlayerDidObservePlaybackFrameRate:(NSUInteger)frameRate {
+- (void)rtspPlayer:(SurgeRtspPlayer *)player didObservePlaybackFrameRate:(NSUInteger)frameRate {
     NSLog(@"Frame rate: %@", @(frameRate));
 }
 

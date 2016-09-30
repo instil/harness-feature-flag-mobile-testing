@@ -70,9 +70,9 @@
 		426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeMacOS.framework; path = ../DerivedData/Surge/Build/Products/Debug/SurgeMacOS.framework; sourceTree = SOURCE_ROOT; };
 		7C9D3ECA1D9D282E000C4F62 /* AddressesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesViewController.h; sourceTree = "<group>"; };
 		7C9D3ECB1D9D282E000C4F62 /* AddressesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesViewController.m; sourceTree = "<group>"; tabWidth = 4; };
-		7C9D3ECD1D9D469B000C4F62 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		7CCE4B691D9D1697002771E2 /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
 		7CCE4B6A1D9D1697002771E2 /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; };
+		7CD256791D9E93CA00300A88 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,7 +136,7 @@
 				426E889A1CDA54E500C7FF25 /* Info.plist */,
 				7CCE4B691D9D1697002771E2 /* NSArray+RtspAddressStorage.h */,
 				7CCE4B6A1D9D1697002771E2 /* NSArray+RtspAddressStorage.m */,
-				7C9D3ECD1D9D469B000C4F62 /* Constants.h */,
+				7CD256791D9E93CA00300A88 /* Constants.h */,
 				426E888F1CDA54E500C7FF25 /* Supporting Files */,
 			);
 			path = SurgeMacOSDemoApp;

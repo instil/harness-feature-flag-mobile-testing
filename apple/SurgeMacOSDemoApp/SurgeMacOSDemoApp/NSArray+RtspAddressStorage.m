@@ -11,22 +11,26 @@
 @implementation NSArray (RtspAddressStorage)
 
 + (instancetype)storedRtspAddresses {
-    NSArray <NSString *> *stored = [NSKeyedUnarchiver unarchiveObjectWithFile:[self rtspAddressesStoragePath]];
-    if (stored) {
-        return [self arrayWithArray:stored];
-    }
-    stored = @[@"rtsp://192.168.1.54:8554/test", @"rtsp://127.0.0.1:8554/test"];
-    [stored saveAsStoredRtspAddresses];
+  NSURL *path = [self rtspAddressesStoragePath];
+  NSData *data = [NSData dataWithContentsOfURL:path options:NSDataReadingUncached error:nil];
+  if (data) {
+    NSArray *stored = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     return [self arrayWithArray:stored];
+  }
+  NSArray *defaultValues = @[@"rtsp://192.168.1.54:8554/test", @"rtsp://127.0.0.1:8554/test"];
+  [defaultValues saveAsStoredRtspAddresses];
+  return [self arrayWithArray:defaultValues];
 }
 
-- (void)saveAsStoredRtspAddresses {
-    [NSKeyedArchiver archiveRootObject:self toFile:[NSArray<NSString *> rtspAddressesStoragePath]];
+- (BOOL)saveAsStoredRtspAddresses {
+  NSURL    *path = [NSArray rtspAddressesStoragePath];
+  NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
+  return [data writeToURL:path atomically:YES];
 }
 
-+ (NSString *)rtspAddressesStoragePath {
-    NSURL *docsBaseUrl = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    return [docsBaseUrl URLByAppendingPathComponent:@"rtspAddresses.plist"].absoluteString;
++ (NSURL *)rtspAddressesStoragePath {
+  NSURL *docsBaseUrl = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+  return [docsBaseUrl URLByAppendingPathComponent:@"rtspAddresses.plist"];
 }
 
 @end

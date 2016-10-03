@@ -60,4 +60,18 @@
     [self.arrayController.arrangedObjects saveAsStoredRtspAddresses];
 }
 
+#pragma mark - Menu
+
+- (IBAction)menuDeleteItemAction:(id)sender {
+    NSInteger clickedRow = self.tableView.clickedRow;
+    
+    NSString *address = self.arrayController.arrangedObjects[clickedRow];
+    [self.arrayController removeObject:address];
+    
+    NSMutableArray *m_allStoredAddresses = self.allStoredAddresses.mutableCopy;
+    [m_allStoredAddresses removeObject:address];
+    self.allStoredAddresses = m_allStoredAddresses;
+    [self.allStoredAddresses saveAsStoredRtspAddresses];
+}
+
 @end

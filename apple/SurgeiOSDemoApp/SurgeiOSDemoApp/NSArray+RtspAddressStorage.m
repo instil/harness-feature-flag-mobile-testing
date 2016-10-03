@@ -30,7 +30,7 @@
 
 + (NSURL *)rtspAddressesStoragePath {
     NSURL *docsBaseUrl = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    return [docsBaseUrl URLByAppendingPathComponent:@"rtspAddresses.plist"]; //.absoluteString;
+    return [docsBaseUrl URLByAppendingPathComponent:@"rtspAddresses.plist"];
 }
 
 @end

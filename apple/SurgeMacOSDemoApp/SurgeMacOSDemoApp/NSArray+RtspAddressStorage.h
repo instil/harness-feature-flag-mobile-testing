@@ -10,5 +10,5 @@
 
 @interface NSArray (RtspAddressStorage)
 + (instancetype)storedRtspAddresses;
-- (void)saveAsStoredRtspAddresses;
+- (BOOL)saveAsStoredRtspAddresses;
 @end

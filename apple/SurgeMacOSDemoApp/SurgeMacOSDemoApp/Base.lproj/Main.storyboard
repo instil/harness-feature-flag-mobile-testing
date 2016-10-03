@@ -188,6 +188,7 @@
                                                 <action selector="rowSelectionChanged:" target="ku4-WD-buJ" id="Jck-dQ-txp"/>
                                                 <outlet property="dataSource" destination="ku4-WD-buJ" id="Id2-0A-Xs9"/>
                                                 <outlet property="delegate" destination="ku4-WD-buJ" id="x8o-Mp-SJc"/>
+                                                <outlet property="menu" destination="BeS-yR-8OI" id="oQE-lo-5wF"/>
                                             </connections>
                                         </tableView>
                                     </subviews>
@@ -278,6 +279,16 @@
                     </connections>
                 </viewController>
                 <customObject id="XNH-sM-ozh" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <menu id="BeS-yR-8OI">
+                    <items>
+                        <menuItem title="Delete" id="pDd-bZ-rvP" userLabel="Delete">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="menuDeleteItemAction:" target="ku4-WD-buJ" id="svu-Xb-wJD"/>
+                            </connections>
+                        </menuItem>
+                    </items>
+                </menu>
                 <arrayController id="cwF-sC-ahk"/>
             </objects>
             <point key="canvasLocation" x="1110" y="568"/>

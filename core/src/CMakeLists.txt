@@ -89,3 +89,5 @@ add_library(surge ${LIBRARY_TYPE}
   # RxCpp
   ${RX_CPP_SRCS}
 )
+
+target_link_libraries(surge uv)

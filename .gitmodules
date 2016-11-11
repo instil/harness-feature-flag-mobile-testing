@@ -4,3 +4,9 @@
 [submodule "core/lib/googletest"]
 	path = core/lib/googletest
 	url = https://github.com/google/googletest.git
+[submodule "core/lib/libuv-cmake"]
+	path = core/lib/libuv-cmake
+	url = https://github.com/Pkshields/libuv-cmake.git
+[submodule "core/lib/uvw"]
+	path = core/lib/uvw
+	url = https://github.com/skypjack/uvw.git

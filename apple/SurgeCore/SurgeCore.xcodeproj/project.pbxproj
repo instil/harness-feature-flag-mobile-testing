@@ -90,6 +90,44 @@
 		42D674791D30847400D42C35 /* testrunner.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674781D30847400D42C35 /* testrunner.cc */; };
 		42D676351D3084B200D42C35 /* gmock-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674E71D3084B100D42C35 /* gmock-all.cc */; };
 		42D677241D30857B00D42C35 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D6771A1D30857B00D42C35 /* gtest-all.cc */; };
+		F45BC2501DD9C32C00DC0B38 /* UvwTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F45BC24E1DD9C32C00DC0B38 /* UvwTransport.cc */; };
+		F45BC2511DD9C32C00DC0B38 /* UvwTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC24F1DD9C32C00DC0B38 /* UvwTransport.h */; };
+		F45BC2891DD9DE6B00DC0B38 /* fs-poll.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2591DD9DE6A00DC0B38 /* fs-poll.c */; };
+		F45BC28A1DD9DE6B00DC0B38 /* heap-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC25A1DD9DE6A00DC0B38 /* heap-inl.h */; };
+		F45BC28B1DD9DE6B00DC0B38 /* inet.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC25B1DD9DE6A00DC0B38 /* inet.c */; };
+		F45BC28C1DD9DE6B00DC0B38 /* loop-watcher.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC25C1DD9DE6A00DC0B38 /* loop-watcher.c */; };
+		F45BC28D1DD9DE6B00DC0B38 /* queue.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC25D1DD9DE6A00DC0B38 /* queue.h */; };
+		F45BC28E1DD9DE6B00DC0B38 /* threadpool.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC25E1DD9DE6A00DC0B38 /* threadpool.c */; };
+		F45BC28F1DD9DE6B00DC0B38 /* timer.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC25F1DD9DE6A00DC0B38 /* timer.c */; };
+		F45BC2921DD9DE6B00DC0B38 /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2631DD9DE6A00DC0B38 /* async.c */; };
+		F45BC2931DD9DE6B00DC0B38 /* atomic-ops.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC2641DD9DE6A00DC0B38 /* atomic-ops.h */; };
+		F45BC2941DD9DE6B00DC0B38 /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2651DD9DE6A00DC0B38 /* core.c */; };
+		F45BC2951DD9DE6B00DC0B38 /* darwin-proctitle.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2661DD9DE6A00DC0B38 /* darwin-proctitle.c */; };
+		F45BC2961DD9DE6B00DC0B38 /* darwin.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2671DD9DE6A00DC0B38 /* darwin.c */; };
+		F45BC2971DD9DE6B00DC0B38 /* dl.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2681DD9DE6A00DC0B38 /* dl.c */; };
+		F45BC2991DD9DE6B00DC0B38 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC26A1DD9DE6A00DC0B38 /* fs.c */; };
+		F45BC29A1DD9DE6B00DC0B38 /* fsevents.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC26B1DD9DE6A00DC0B38 /* fsevents.c */; };
+		F45BC29B1DD9DE6B00DC0B38 /* getaddrinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC26C1DD9DE6A00DC0B38 /* getaddrinfo.c */; };
+		F45BC29C1DD9DE6B00DC0B38 /* getnameinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC26D1DD9DE6A00DC0B38 /* getnameinfo.c */; };
+		F45BC29D1DD9DE6B00DC0B38 /* internal.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC26E1DD9DE6A00DC0B38 /* internal.h */; };
+		F45BC29E1DD9DE6B00DC0B38 /* kqueue.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC26F1DD9DE6A00DC0B38 /* kqueue.c */; };
+		F45BC2A31DD9DE6B00DC0B38 /* loop.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2741DD9DE6B00DC0B38 /* loop.c */; };
+		F45BC2A71DD9DE6B00DC0B38 /* pipe.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2781DD9DE6B00DC0B38 /* pipe.c */; };
+		F45BC2A81DD9DE6B00DC0B38 /* poll.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2791DD9DE6B00DC0B38 /* poll.c */; };
+		F45BC2A91DD9DE6B00DC0B38 /* process.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC27A1DD9DE6B00DC0B38 /* process.c */; };
+		F45BC2AA1DD9DE6B00DC0B38 /* proctitle.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC27B1DD9DE6B00DC0B38 /* proctitle.c */; };
+		F45BC2AB1DD9DE6B00DC0B38 /* pthread-barrier.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC27C1DD9DE6B00DC0B38 /* pthread-barrier.c */; };
+		F45BC2AC1DD9DE6B00DC0B38 /* pthread-fixes.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC27D1DD9DE6B00DC0B38 /* pthread-fixes.c */; };
+		F45BC2AD1DD9DE6B00DC0B38 /* signal.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC27E1DD9DE6B00DC0B38 /* signal.c */; };
+		F45BC2AE1DD9DE6B00DC0B38 /* spinlock.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC27F1DD9DE6B00DC0B38 /* spinlock.h */; };
+		F45BC2AF1DD9DE6B00DC0B38 /* stream.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2801DD9DE6B00DC0B38 /* stream.c */; };
+		F45BC2B11DD9DE6B00DC0B38 /* tcp.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2821DD9DE6B00DC0B38 /* tcp.c */; };
+		F45BC2B21DD9DE6B00DC0B38 /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2831DD9DE6B00DC0B38 /* thread.c */; };
+		F45BC2B31DD9DE6B00DC0B38 /* tty.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2841DD9DE6B00DC0B38 /* tty.c */; };
+		F45BC2B41DD9DE6B00DC0B38 /* udp.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2851DD9DE6B00DC0B38 /* udp.c */; };
+		F45BC2B51DD9DE6B00DC0B38 /* uv-common.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2861DD9DE6B00DC0B38 /* uv-common.c */; };
+		F45BC2B61DD9DE6B00DC0B38 /* uv-common.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC2871DD9DE6B00DC0B38 /* uv-common.h */; };
+		F45BC2B71DD9DE6B00DC0B38 /* version.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2881DD9DE6B00DC0B38 /* version.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +228,44 @@
 		42D674781D30847400D42C35 /* testrunner.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testrunner.cc; path = ../../../core/test/testrunner.cc; sourceTree = "<group>"; };
 		42D674E71D3084B100D42C35 /* gmock-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gmock-all.cc"; sourceTree = "<group>"; };
 		42D6771A1D30857B00D42C35 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
+		F45BC24E1DD9C32C00DC0B38 /* UvwTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UvwTransport.cc; path = ../../core/src/UvwTransport.cc; sourceTree = "<group>"; };
+		F45BC24F1DD9C32C00DC0B38 /* UvwTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UvwTransport.h; path = ../../core/src/UvwTransport.h; sourceTree = "<group>"; };
+		F45BC2591DD9DE6A00DC0B38 /* fs-poll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "fs-poll.c"; path = "../../core/lib/libuv-cmake/libuv/src/fs-poll.c"; sourceTree = "<group>"; };
+		F45BC25A1DD9DE6A00DC0B38 /* heap-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "heap-inl.h"; path = "../../core/lib/libuv-cmake/libuv/src/heap-inl.h"; sourceTree = "<group>"; };
+		F45BC25B1DD9DE6A00DC0B38 /* inet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inet.c; path = "../../core/lib/libuv-cmake/libuv/src/inet.c"; sourceTree = "<group>"; };
+		F45BC25C1DD9DE6A00DC0B38 /* loop-watcher.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "loop-watcher.c"; path = "../../core/lib/libuv-cmake/libuv/src/loop-watcher.c"; sourceTree = "<group>"; };
+		F45BC25D1DD9DE6A00DC0B38 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = queue.h; path = "../../core/lib/libuv-cmake/libuv/src/queue.h"; sourceTree = "<group>"; };
+		F45BC25E1DD9DE6A00DC0B38 /* threadpool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = threadpool.c; path = "../../core/lib/libuv-cmake/libuv/src/threadpool.c"; sourceTree = "<group>"; };
+		F45BC25F1DD9DE6A00DC0B38 /* timer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = timer.c; path = "../../core/lib/libuv-cmake/libuv/src/timer.c"; sourceTree = "<group>"; };
+		F45BC2631DD9DE6A00DC0B38 /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
+		F45BC2641DD9DE6A00DC0B38 /* atomic-ops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "atomic-ops.h"; sourceTree = "<group>"; };
+		F45BC2651DD9DE6A00DC0B38 /* core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = core.c; sourceTree = "<group>"; };
+		F45BC2661DD9DE6A00DC0B38 /* darwin-proctitle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "darwin-proctitle.c"; sourceTree = "<group>"; };
+		F45BC2671DD9DE6A00DC0B38 /* darwin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = darwin.c; sourceTree = "<group>"; };
+		F45BC2681DD9DE6A00DC0B38 /* dl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dl.c; sourceTree = "<group>"; };
+		F45BC26A1DD9DE6A00DC0B38 /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fs.c; sourceTree = "<group>"; };
+		F45BC26B1DD9DE6A00DC0B38 /* fsevents.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fsevents.c; sourceTree = "<group>"; };
+		F45BC26C1DD9DE6A00DC0B38 /* getaddrinfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getaddrinfo.c; sourceTree = "<group>"; };
+		F45BC26D1DD9DE6A00DC0B38 /* getnameinfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getnameinfo.c; sourceTree = "<group>"; };
+		F45BC26E1DD9DE6A00DC0B38 /* internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = internal.h; sourceTree = "<group>"; };
+		F45BC26F1DD9DE6A00DC0B38 /* kqueue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kqueue.c; sourceTree = "<group>"; };
+		F45BC2741DD9DE6B00DC0B38 /* loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = loop.c; sourceTree = "<group>"; };
+		F45BC2781DD9DE6B00DC0B38 /* pipe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pipe.c; sourceTree = "<group>"; };
+		F45BC2791DD9DE6B00DC0B38 /* poll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = poll.c; sourceTree = "<group>"; };
+		F45BC27A1DD9DE6B00DC0B38 /* process.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = process.c; sourceTree = "<group>"; };
+		F45BC27B1DD9DE6B00DC0B38 /* proctitle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = proctitle.c; sourceTree = "<group>"; };
+		F45BC27C1DD9DE6B00DC0B38 /* pthread-barrier.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "pthread-barrier.c"; sourceTree = "<group>"; };
+		F45BC27D1DD9DE6B00DC0B38 /* pthread-fixes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "pthread-fixes.c"; sourceTree = "<group>"; };
+		F45BC27E1DD9DE6B00DC0B38 /* signal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = signal.c; sourceTree = "<group>"; };
+		F45BC27F1DD9DE6B00DC0B38 /* spinlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spinlock.h; sourceTree = "<group>"; };
+		F45BC2801DD9DE6B00DC0B38 /* stream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stream.c; sourceTree = "<group>"; };
+		F45BC2821DD9DE6B00DC0B38 /* tcp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tcp.c; sourceTree = "<group>"; };
+		F45BC2831DD9DE6B00DC0B38 /* thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = thread.c; sourceTree = "<group>"; };
+		F45BC2841DD9DE6B00DC0B38 /* tty.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tty.c; sourceTree = "<group>"; };
+		F45BC2851DD9DE6B00DC0B38 /* udp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udp.c; sourceTree = "<group>"; };
+		F45BC2861DD9DE6B00DC0B38 /* uv-common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "uv-common.c"; path = "../../core/lib/libuv-cmake/libuv/src/uv-common.c"; sourceTree = "<group>"; };
+		F45BC2871DD9DE6B00DC0B38 /* uv-common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "uv-common.h"; path = "../../core/lib/libuv-cmake/libuv/src/uv-common.h"; sourceTree = "<group>"; };
+		F45BC2881DD9DE6B00DC0B38 /* version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = version.c; path = "../../core/lib/libuv-cmake/libuv/src/version.c"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,6 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				42D672591D306A5400D42C35 /* src */,
+				F45BC2561DD9DE1C00DC0B38 /* libs */,
 			);
 			name = SurgeCore;
 			sourceTree = "<group>";
@@ -311,6 +388,8 @@
 				42D6720A1D3069BB00D42C35 /* Url.h */,
 				42D6720B1D3069BB00D42C35 /* WaitableEvent.h */,
 				42D6720C1D3069BB00D42C35 /* WaitableEvents.cc */,
+				F45BC24E1DD9C32C00DC0B38 /* UvwTransport.cc */,
+				F45BC24F1DD9C32C00DC0B38 /* UvwTransport.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -393,6 +472,74 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		F45BC2561DD9DE1C00DC0B38 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				F45BC2571DD9DE2900DC0B38 /* libuv */,
+			);
+			name = libs;
+			sourceTree = "<group>";
+		};
+		F45BC2571DD9DE2900DC0B38 /* libuv */ = {
+			isa = PBXGroup;
+			children = (
+				F45BC2581DD9DE4C00DC0B38 /* src */,
+			);
+			name = libuv;
+			sourceTree = "<group>";
+		};
+		F45BC2581DD9DE4C00DC0B38 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				F45BC2591DD9DE6A00DC0B38 /* fs-poll.c */,
+				F45BC25A1DD9DE6A00DC0B38 /* heap-inl.h */,
+				F45BC25B1DD9DE6A00DC0B38 /* inet.c */,
+				F45BC25C1DD9DE6A00DC0B38 /* loop-watcher.c */,
+				F45BC25D1DD9DE6A00DC0B38 /* queue.h */,
+				F45BC25E1DD9DE6A00DC0B38 /* threadpool.c */,
+				F45BC25F1DD9DE6A00DC0B38 /* timer.c */,
+				F45BC2601DD9DE6A00DC0B38 /* unix */,
+				F45BC2861DD9DE6B00DC0B38 /* uv-common.c */,
+				F45BC2871DD9DE6B00DC0B38 /* uv-common.h */,
+				F45BC2881DD9DE6B00DC0B38 /* version.c */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		F45BC2601DD9DE6A00DC0B38 /* unix */ = {
+			isa = PBXGroup;
+			children = (
+				F45BC2631DD9DE6A00DC0B38 /* async.c */,
+				F45BC2641DD9DE6A00DC0B38 /* atomic-ops.h */,
+				F45BC2651DD9DE6A00DC0B38 /* core.c */,
+				F45BC2661DD9DE6A00DC0B38 /* darwin-proctitle.c */,
+				F45BC2671DD9DE6A00DC0B38 /* darwin.c */,
+				F45BC2681DD9DE6A00DC0B38 /* dl.c */,
+				F45BC26A1DD9DE6A00DC0B38 /* fs.c */,
+				F45BC26B1DD9DE6A00DC0B38 /* fsevents.c */,
+				F45BC26C1DD9DE6A00DC0B38 /* getaddrinfo.c */,
+				F45BC26D1DD9DE6A00DC0B38 /* getnameinfo.c */,
+				F45BC26E1DD9DE6A00DC0B38 /* internal.h */,
+				F45BC26F1DD9DE6A00DC0B38 /* kqueue.c */,
+				F45BC2741DD9DE6B00DC0B38 /* loop.c */,
+				F45BC2781DD9DE6B00DC0B38 /* pipe.c */,
+				F45BC2791DD9DE6B00DC0B38 /* poll.c */,
+				F45BC27A1DD9DE6B00DC0B38 /* process.c */,
+				F45BC27B1DD9DE6B00DC0B38 /* proctitle.c */,
+				F45BC27C1DD9DE6B00DC0B38 /* pthread-barrier.c */,
+				F45BC27D1DD9DE6B00DC0B38 /* pthread-fixes.c */,
+				F45BC27E1DD9DE6B00DC0B38 /* signal.c */,
+				F45BC27F1DD9DE6B00DC0B38 /* spinlock.h */,
+				F45BC2801DD9DE6B00DC0B38 /* stream.c */,
+				F45BC2821DD9DE6B00DC0B38 /* tcp.c */,
+				F45BC2831DD9DE6B00DC0B38 /* thread.c */,
+				F45BC2841DD9DE6B00DC0B38 /* tty.c */,
+				F45BC2851DD9DE6B00DC0B38 /* udp.c */,
+			);
+			name = unix;
+			path = "../../core/lib/libuv-cmake/libuv/src/unix";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -403,11 +550,14 @@
 				42D672491D3069BB00D42C35 /* Surge.h in Headers */,
 				42D6720E1D3069BB00D42C35 /* Base64.h in Headers */,
 				42D672261D3069BB00D42C35 /* InterleavedRtspTransport.h in Headers */,
+				F45BC29D1DD9DE6B00DC0B38 /* internal.h in Headers */,
 				42D6722F1D3069BB00D42C35 /* MP4VDepacketizer.h in Headers */,
 				42D6721A1D3069BB00D42C35 /* Describe.h in Headers */,
 				42D672121D3069BB00D42C35 /* BitstreamReader.h in Headers */,
+				F45BC28D1DD9DE6B00DC0B38 /* queue.h in Headers */,
 				42D672241D3069BB00D42C35 /* ILoggingDelegate.h in Headers */,
 				42D672151D3069BB00D42C35 /* Constants.h in Headers */,
+				F45BC2931DD9DE6B00DC0B38 /* atomic-ops.h in Headers */,
 				42D672291D3069BB00D42C35 /* ITransportInterface.h in Headers */,
 				42D6722D1D3069BB00D42C35 /* MJPEGDepacketizer.h in Headers */,
 				42D6723E1D3069BB00D42C35 /* RtspCommandFactory.h in Headers */,
@@ -432,8 +582,11 @@
 				42D672231D3069BB00D42C35 /* Helpers.h in Headers */,
 				42D672501D3069BB00D42C35 /* Url.h in Headers */,
 				42D6722A1D3069BB00D42C35 /* Logging.h in Headers */,
+				F45BC2AE1DD9DE6B00DC0B38 /* spinlock.h in Headers */,
 				42D672511D3069BB00D42C35 /* WaitableEvent.h in Headers */,
+				F45BC2B61DD9DE6B00DC0B38 /* uv-common.h in Headers */,
 				42D672271D3069BB00D42C35 /* IRtspClientDelegate.h in Headers */,
+				F45BC28A1DD9DE6B00DC0B38 /* heap-inl.h in Headers */,
 				42D672351D3069BB00D42C35 /* Play.h in Headers */,
 				42D6721B1D3069BB00D42C35 /* DescribeResponse.h in Headers */,
 				42D672341D3069BB00D42C35 /* Pause.h in Headers */,
@@ -447,6 +600,7 @@
 				42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */,
 				42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */,
 				42D6724C1D3069BB00D42C35 /* Thread.h in Headers */,
+				F45BC2511DD9C32C00DC0B38 /* UvwTransport.h in Headers */,
 				42D6724D1D3069BB00D42C35 /* Transport.h in Headers */,
 				42D6723C1D3069BB00D42C35 /* RtspCommand.h in Headers */,
 			);
@@ -542,26 +696,57 @@
 			buildActionMask = 2147483647;
 			files = (
 				42D672481D3069BB00D42C35 /* Surge.cc in Sources */,
+				F45BC2B41DD9DE6B00DC0B38 /* udp.c in Sources */,
 				42D6724E1D3069BB00D42C35 /* UdpTransport.cc in Sources */,
 				42D672411D3069BB00D42C35 /* SessionDescriptionFactory.cc in Sources */,
 				42D6721C1D3069BB00D42C35 /* ErrorDispatcher.cc in Sources */,
+				F45BC2B31DD9DE6B00DC0B38 /* tty.c in Sources */,
 				42D672251D3069BB00D42C35 /* InterleavedRtspTransport.cc in Sources */,
 				42D6722C1D3069BB00D42C35 /* MJPEGDepacketizer.cc in Sources */,
+				F45BC28C1DD9DE6B00DC0B38 /* loop-watcher.c in Sources */,
 				42D672221D3069BB00D42C35 /* Helpers.cc in Sources */,
+				F45BC2B71DD9DE6B00DC0B38 /* version.c in Sources */,
+				F45BC2961DD9DE6B00DC0B38 /* darwin.c in Sources */,
 				42D6723D1D3069BB00D42C35 /* RtspCommandFactory.cc in Sources */,
 				42D672171D3069BB00D42C35 /* DateTime.cc in Sources */,
+				F45BC2A31DD9DE6B00DC0B38 /* loop.c in Sources */,
+				F45BC2951DD9DE6B00DC0B38 /* darwin-proctitle.c in Sources */,
 				42D6723A1D3069BB00D42C35 /* RtspClient.cc in Sources */,
+				F45BC2501DD9C32C00DC0B38 /* UvwTransport.cc in Sources */,
+				F45BC2AF1DD9DE6B00DC0B38 /* stream.c in Sources */,
 				42D672131D3069BB00D42C35 /* BitstreamWriter.cc in Sources */,
+				F45BC2971DD9DE6B00DC0B38 /* dl.c in Sources */,
+				F45BC2A81DD9DE6B00DC0B38 /* poll.c in Sources */,
 				42D672431D3069BB00D42C35 /* SessionDescriptionV0.cc in Sources */,
+				F45BC29A1DD9DE6B00DC0B38 /* fsevents.c in Sources */,
 				42D672521D3069BB00D42C35 /* WaitableEvents.cc in Sources */,
+				F45BC28E1DD9DE6B00DC0B38 /* threadpool.c in Sources */,
 				42D6724B1D3069BB00D42C35 /* Thread.cc in Sources */,
+				F45BC29B1DD9DE6B00DC0B38 /* getaddrinfo.c in Sources */,
 				42D672111D3069BB00D42C35 /* BitstreamReader.cc in Sources */,
+				F45BC2B11DD9DE6B00DC0B38 /* tcp.c in Sources */,
+				F45BC29E1DD9DE6B00DC0B38 /* kqueue.c in Sources */,
+				F45BC28F1DD9DE6B00DC0B38 /* timer.c in Sources */,
+				F45BC2B51DD9DE6B00DC0B38 /* uv-common.c in Sources */,
+				F45BC2A91DD9DE6B00DC0B38 /* process.c in Sources */,
+				F45BC2AB1DD9DE6B00DC0B38 /* pthread-barrier.c in Sources */,
 				42D672301D3069BB00D42C35 /* Mutex.cc in Sources */,
+				F45BC29C1DD9DE6B00DC0B38 /* getnameinfo.c in Sources */,
+				F45BC2AD1DD9DE6B00DC0B38 /* signal.c in Sources */,
+				F45BC2AC1DD9DE6B00DC0B38 /* pthread-fixes.c in Sources */,
+				F45BC2891DD9DE6B00DC0B38 /* fs-poll.c in Sources */,
+				F45BC2A71DD9DE6B00DC0B38 /* pipe.c in Sources */,
+				F45BC2AA1DD9DE6B00DC0B38 /* proctitle.c in Sources */,
+				F45BC2B21DD9DE6B00DC0B38 /* thread.c in Sources */,
+				F45BC2941DD9DE6B00DC0B38 /* core.c in Sources */,
 				42D672201D3069BB00D42C35 /* H264Depacketizer.cc in Sources */,
+				F45BC2921DD9DE6B00DC0B38 /* async.c in Sources */,
+				F45BC2991DD9DE6B00DC0B38 /* fs.c in Sources */,
 				42D672381D3069BB00D42C35 /* RtpPacket.cc in Sources */,
 				42D6722E1D3069BB00D42C35 /* MP4VDepacketizer.cc in Sources */,
 				42D6721E1D3069BB00D42C35 /* FireableEvent.cc in Sources */,
 				42D6720D1D3069BB00D42C35 /* Base64.cc in Sources */,
+				F45BC28B1DD9DE6B00DC0B38 /* inet.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,7 +863,7 @@
 		42D671BE1D30684A00D42C35 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CODE_SIGN_IDENTITY = "";
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -686,7 +871,11 @@
 					"$(inherited)",
 					"BINDING_BUILD=1",
 				);
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
+					"$(PROJECT_DIR)/../../core/lib/uvw/src",
+					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = NO;
@@ -699,11 +888,15 @@
 		42D671BF1D30684A00D42C35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CODE_SIGN_IDENTITY = "";
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = "BINDING_BUILD=1";
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
+					"$(PROJECT_DIR)/../../core/lib/uvw/src",
+					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = NO;
@@ -728,6 +921,8 @@
 					"$(PROJECT_DIR)/../../core/lib/googletest/googletest",
 					"$(PROJECT_DIR)/../../core/lib/googletest/googlemock/include",
 					"$(PROJECT_DIR)/../../core/lib/googletest/googlemock",
+					"$(PROJECT_DIR)/../../core/lib/uvw/src",
+					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
 				);
 				INFOPLIST_FILE = SurgeCoreUnitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
@@ -749,6 +944,8 @@
 					"$(PROJECT_DIR)/../../core/lib/googletest/googletest",
 					"$(PROJECT_DIR)/../../core/lib/googletest/googlemock/include",
 					"$(PROJECT_DIR)/../../core/lib/googletest/googlemock",
+					"$(PROJECT_DIR)/../../core/lib/uvw/src",
+					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
 				);
 				INFOPLIST_FILE = SurgeCoreUnitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";

@@ -42,7 +42,7 @@ using SurgeUtil::Constants::DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE;
 
 
 Surge::InterleavedRtspTransport::InterleavedRtspTransport(ISocketHandlerDelegate * const delegate):
-    Transport(delegate),
+    UvwTransport(delegate),
     m_readBufferSize(DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE),
     m_rtpInterleavedChannel(DEFAULT_RTP_INTERLEAVED_CHANNEL),
     m_rtcpInterleavedChannel(DEFAULT_RTCP_INTERLEAVED_CHANNEL) { }
@@ -57,9 +57,11 @@ Surge::InterleavedRtspTransport::~InterleavedRtspTransport() { }
  *
  * Because we read in chunks trailing packet data must be held onto to ensure RTP/RTSP/RTCP consistency.
  **/
-void Surge::InterleavedRtspTransport::RtspHandleReceive(const SurgeUtil::WaitableEvent& event) {
+void Surge::InterleavedRtspTransport::RtspHandleReceive(const char* buffer, size_t size) {
     std::vector<unsigned char> response;
     
+    /* LIBUV CHANGES */
+
     if (m_receivedBuffer.size() > 0) {
         // copy trailing data into response
         response.resize(m_receivedBuffer.size());
@@ -69,31 +71,44 @@ void Surge::InterleavedRtspTransport::RtspHandleReceive(const SurgeUtil::Waitabl
     }
 
     size_t total_buffer_size = response.size();
-    unsigned char *buffer = (unsigned char *) malloc(m_readBufferSize);
-    do {
-        memset((void*)buffer, 0, m_readBufferSize);
-        
-        size_t received = recv(event.FD(), buffer, m_readBufferSize, 0);
-        if (received == -1) {
-            int errorNo = errno;
-            ERROR("Failed to recv: error (" << errorNo << ") " << strerror(errorNo));
-            // Notify Delegate of Socket Failure...
-            NotifyDelegateOfReadFailure();
-            m_running = false;
-            break;
+//    unsigned char *buffer = (unsigned char *) malloc(m_readBufferSize);
+//    do {
+//        memset((void*)buffer, 0, m_readBufferSize);
+//        
+//        size_t received = recv(event.FD(), buffer, m_readBufferSize, 0);
+//        if (received == -1) {
+//            int errorNo = errno;
+//            ERROR("Failed to recv: error (" << errorNo << ") " << strerror(errorNo));
+//            // Notify Delegate of Socket Failure...
+//            NotifyDelegateOfReadFailure();
+//            m_running = false;
+//            break;
+//        }
+//        else if (received > 0) {
+//            // Append received data to 'response'.
+//            size_t old_size = response.size();
+//            if (old_size < (old_size + received)) {
+//                response.resize(old_size + received);
+//            }
+//            copy(buffer, buffer + received, response.begin() + old_size);
+//            total_buffer_size += received;
+//        }
+//    } while (event.IsFired() && m_running);
+//    free(buffer);
+    
+    if (size > 0) {
+        // Append received data to 'response'.
+        size_t old_size = response.size();
+        if (old_size < (old_size + size)) {
+            response.resize(old_size + size);
         }
-        else if (received > 0) {
-            // Append received data to 'response'.
-            size_t old_size = response.size();
-            if (old_size < (old_size + received)) {
-                response.resize(old_size + received);
-            }
-            copy(buffer, buffer + received, response.begin() + old_size);
-            total_buffer_size += received;
-        }
-    } while (event.IsFired() && m_running);
-    free(buffer);
+        copy(buffer, buffer + size, response.begin() + old_size);
+        total_buffer_size += size;
+    }
 
+    /* ~LIBUV CHANGES */
+
+    
     if (!m_running) {
         return;
     }

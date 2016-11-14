@@ -4,15 +4,23 @@
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "0236D641C54501584C8420D7866740E13CED18EA" : 0,
+    "BC09C09DC2853BA9B3A84860F78F2E9FD790D8C3" : 9223372036854775807,
+    "CDB10B46BE9A02AB62345DBBCD61C34310F8DA55" : 9223372036854775807,
+    "18F29A6448205DFBB861D8C263D7297E862B4DCC" : 0,
+    "90C00904F36E6ADB57A7313E998815D255B0DEAF" : 9223372036854775807,
+    "BA9627E7F5519A7C7682F8079928B1A503365F3A" : 9223372036854775807,
     "76A15575C5B740800EF8E92EA66B97A276AEF659" : 0,
-    "18F29A6448205DFBB861D8C263D7297E862B4DCC" : 0
+    "0236D641C54501584C8420D7866740E13CED18EA" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D8894CFA-FC25-44DA-81FF-D8275202570C",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "0236D641C54501584C8420D7866740E13CED18EA" : "Surge\/core\/lib\/RxCpp\/",
+    "BC09C09DC2853BA9B3A84860F78F2E9FD790D8C3" : "Surge\/core\/lib\/libuv-cmake\/libuv\/",
+    "CDB10B46BE9A02AB62345DBBCD61C34310F8DA55" : "Surge\/core\/lib\/uvpp\/",
+    "18F29A6448205DFBB861D8C263D7297E862B4DCC" : "Surge\/",
+    "90C00904F36E6ADB57A7313E998815D255B0DEAF" : "Surge\/core\/lib\/RxCpp\/ext\/catch\/",
+    "BA9627E7F5519A7C7682F8079928B1A503365F3A" : "Surge\/core\/lib\/libuv-cmake\/",
     "76A15575C5B740800EF8E92EA66B97A276AEF659" : "Surge\/core\/lib\/googletest\/",
-    "18F29A6448205DFBB861D8C263D7297E862B4DCC" : "Surge\/"
+    "0236D641C54501584C8420D7866740E13CED18EA" : "Surge\/core\/lib\/RxCpp\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Surge",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -32,6 +40,26 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/google\/googletest.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "76A15575C5B740800EF8E92EA66B97A276AEF659"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/philsquared\/Catch.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "90C00904F36E6ADB57A7313E998815D255B0DEAF"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/redbrain\/libuv-cmake.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BA9627E7F5519A7C7682F8079928B1A503365F3A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/libuv\/libuv.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BC09C09DC2853BA9B3A84860F78F2E9FD790D8C3"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/redbrain\/uvpp.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CDB10B46BE9A02AB62345DBBCD61C34310F8DA55"
     }
   ]
 }

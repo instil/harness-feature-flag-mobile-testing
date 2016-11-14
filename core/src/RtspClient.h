@@ -48,11 +48,13 @@ namespace Surge {
 
         ~RtspClient();
 
-        DescribeResponse* Describe(const std::string& url);
+        void Describe(const std::string& url,
+                                   std::function<void(Surge::DescribeResponse*)> callback);
 
-        DescribeResponse* Describe(const std::string& url,
+        void Describe(const std::string& url,
                                    const std::string& user,
-                                   const std::string& password);
+                                   const std::string& password,
+                                   std::function<void(Surge::DescribeResponse*)> callback);
 
         SetupResponse* Setup(const SessionDescription& sessionDescription, bool serverAllowsAggregate = true);
 
@@ -62,7 +64,8 @@ namespace Surge {
 
         RtspResponse* Options();
 
-        RtspResponse* Options(const std::string& url);
+        void Options(const std::string& url,
+                     std::function<void(Surge::RtspResponse*)> callback);
 
         RtspResponse* Teardown(bool waitForResponse = false);
 
@@ -174,7 +177,7 @@ namespace Surge {
             frameBuffer->resize(0);
         }
 
-        int SetupRtspConnection(const std::string& url);
+        void SetupRtspConnection(const std::string& url, std::function<void(int)> callback);
 
         bool m_isPlaying;
         SurgeUtil::FireableEvent m_abortWait;

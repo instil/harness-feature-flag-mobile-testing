@@ -171,6 +171,8 @@ private:
                andEndingAt:(nullable NSDate *)endDate {
     SurgeLogDebug(@"Initating playback of %@", url);
     
+    __block BOOL result = NULL;
+    
     self.url = url;
     self.username = username;
     self.password = password;
@@ -179,18 +181,23 @@ private:
     self.endTime = endDate;
     
     [self setRangeWithStartTime:startDate andEndTime:endDate];
-    [self describe];
+    [self describe:^{
+        if (self.sessionDescriptions.size() == 0) {
+            result = NO;
+        }
+        
+        Surge::SessionDescription currentSessionDescription = [self selectPreferredSessionDescription];
+        
+        [self setupStream:currentSessionDescription];
+        [self play];
+        
+        result = YES;
+    }];
     
-    if (self.sessionDescriptions.size() == 0) {
-        return NO;
-    }
+    // Bah.
+    while (result == NULL) ;
     
-    Surge::SessionDescription currentSessionDescription = [self selectPreferredSessionDescription];
-    
-    [self setupStream:currentSessionDescription];
-    [self play];
-    
-    return YES;
+    return result;
 }
 
 - (void)seekToStartTime:(nullable NSDate *)startTime
@@ -224,13 +231,15 @@ private:
     [self play];
 }
 
-- (void)describe {
-    Surge::DescribeResponse *describeResponse = self.client->Describe(std::string(self.url.absoluteString.UTF8String),
-                                                                      std::string(self.username.UTF8String),
-                                                                      std::string(self.password.UTF8String));
-    self.sessionDescriptions = describeResponse->GetSessionDescriptions();
-    
-    delete describeResponse;
+- (void)describe:(void (^)(void)) callback {
+    self.client->Describe(std::string(self.url.absoluteString.UTF8String),
+                                      std::string(self.username.UTF8String),
+                                      std::string(self.password.UTF8String),
+                                      [&](Surge::DescribeResponse *describeResponse) {
+                                          self.sessionDescriptions = describeResponse->GetSessionDescriptions();
+                                          delete describeResponse;
+                                          callback();
+      });
 }
 
 - (void)setupStream:(Surge::SessionDescription)sessionDescription {

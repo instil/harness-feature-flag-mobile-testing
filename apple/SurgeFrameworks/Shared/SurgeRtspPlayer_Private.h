@@ -34,7 +34,7 @@
 /**
  * Send a DESCRIBE mesage to the RTSP stream
  */
-- (void)describe;
+- (void)describe:(void (^)(void)) callback;
 
 /**
  * Send a SETUP mesage to the RTSP stream

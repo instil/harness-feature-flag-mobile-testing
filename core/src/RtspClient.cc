@@ -50,7 +50,7 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
     if (forceInterleavedTransport) {
         m_transport = new InterleavedRtspTransport(nullptr);
     } else {
-        m_transport = new UdpTransport(nullptr);
+//        m_transport = new UdpTransport(nullptr);
     }
     m_transport->SetDelegate(this);
     frameBuffer = new std::vector<unsigned char>();
@@ -71,59 +71,66 @@ Surge::RtspClient::~RtspClient() {
     delete factory;
 }
 
-Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url) {
-    return Describe(url, "", "");
+void Surge::RtspClient::Describe(const std::string& url,
+                                 std::function<void(Surge::DescribeResponse*)> callback) {
+    Describe(url, "", "", callback);
 }
 
-Surge::DescribeResponse* Surge::RtspClient::Describe(const std::string& url,
+void Surge::RtspClient::Describe(const std::string& url,
                                                      const std::string& user,
-                                                     const std::string& password) {
+                                                     const std::string& password,
+                                                     std::function<void(Surge::DescribeResponse*)> callback) {
     m_url = url;
     m_isPlaying = false;
 
-    int retval = SetupRtspConnection(url);
-    if (retval != 0) {
-        return nullptr;
-    }
+    SetupRtspConnection(url, [&](int result) {
+        if (result != 0) {
+            callback(nullptr);
+        }
+        
+        if (user.length() > 0 && password.length() > 0) {
+            RtspCommandFactory::SetBasicAuthCredentials(user.c_str(), password.c_str());
+        }
+        
+        RtspCommand* describe;
+        if (startTimeSet) {
+            describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber(), startDate);
+        }
+        else {
+            describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber());
+        }
+        
+        Response* raw_resp = m_transport->RtspTransaction(describe, true);
+        delete describe;
+        
+        bool received_response = raw_resp != nullptr;
+        if (!received_response) {
+            ERROR("Failed to get response to DESCRIBE!");
+            callback(nullptr);
+        }
+        
+        
+        DescribeResponse *resp = nullptr;
+        try {
+            resp = new DescribeResponse(raw_resp, factory);
+        }
+        catch (const std::exception& e) {
+            ERROR("Invalid DescribeResponse: " << e.what());
+            resp = nullptr;
+        }
+        
+        if (!resp->Ok()) {
+            NotifyDelegateTimeout();
+        }
+        
+        delete raw_resp;
+        
+        callback(resp);
+    });
     
-    if (user.length() > 0 && password.length() > 0) {
-        RtspCommandFactory::SetBasicAuthCredentials(user.c_str(), password.c_str());
-    }
-
-    RtspCommand* describe;
-    if (startTimeSet) {
-        describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber(), startDate);
-    }
-    else {
-        describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber());
-    }
     
-    Response* raw_resp = m_transport->RtspTransaction(describe, true);
-    delete describe;
     
-    bool received_response = raw_resp != nullptr;
-    if (!received_response) {
-        ERROR("Failed to get response to DESCRIBE!");
-        return nullptr;
-    }
-
     
-    DescribeResponse *resp = nullptr;
-    try {
-        resp = new DescribeResponse(raw_resp, factory);
-    }
-    catch (const std::exception& e) {
-        ERROR("Invalid DescribeResponse: " << e.what());
-        resp = nullptr;
-    }
-    
-    if (!resp->Ok()) {
-        NotifyDelegateTimeout();
-    }
-    
-    delete raw_resp;
-
-    return resp;
 }
 
 Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& sessionDescription, bool serverAllowsAggregate) {
@@ -287,33 +294,37 @@ Surge::RtspResponse* Surge::RtspClient::Options() {
     return resp;
 }
 
-Surge::RtspResponse* Surge::RtspClient::Options(const std::string& url) {
-    int retval = SetupRtspConnection(url);
-    if (retval != 0) {
-        return nullptr;
-    }
+void Surge::RtspClient::Options(const std::string& url,
+                                std::function<void(Surge::RtspResponse*)> callback) {
     
-    RtspCommand* options = RtspCommandFactory::OptionsRequest(url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_transport->RtspTransaction(options, true);
-    delete options;
-
-    bool received_response = raw_resp != nullptr;
-    if (!received_response) {
-        ERROR("Failed to get response to OPTIONS!");
-        return nullptr;
-    }
-
-    RtspResponse* resp = nullptr;
-    try {
-        resp = new RtspResponse(raw_resp);
-    }
-    catch (const std::exception& e) {
-        ERROR("Invalid OptionsResponse: " << e.what());
-        resp = nullptr;
-    }
-    delete raw_resp;
-
-    return resp;
+    SetupRtspConnection(url, [&](int result) {
+        if (result != 0) {
+            callback(nullptr);
+        }
+        
+        RtspCommand* options = RtspCommandFactory::OptionsRequest(url, m_session, GetNextSequenceNumber());
+        Response* raw_resp = m_transport->RtspTransaction(options, true);
+        delete options;
+        
+        bool received_response = raw_resp != nullptr;
+        if (!received_response) {
+            ERROR("Failed to get response to OPTIONS!");
+            callback(nullptr);
+        }
+        
+        RtspResponse* resp = nullptr;
+        try {
+            resp = new RtspResponse(raw_resp);
+        }
+        catch (const std::exception& e) {
+            ERROR("Invalid OptionsResponse: " << e.what());
+            resp = nullptr;
+        }
+        delete raw_resp;
+        
+        callback(resp);
+    });
+    
 }
 
 Surge::RtspResponse* Surge::RtspClient::Teardown(bool waitForResponse) {
@@ -505,7 +516,7 @@ void Surge::RtspClient::CreateDepacketizer() {
     }
 }
 
-int Surge::RtspClient::SetupRtspConnection(const std::string& url) {
+void Surge::RtspClient::SetupRtspConnection(const std::string& url, std::function<void(int)> callback) {
     if (m_transport->IsRunning()) {
         WARNING("Trying to setup RTSP connection on already running transport - resetting connection.");
         m_transport->StopRunning();
@@ -517,13 +528,13 @@ int Surge::RtspClient::SetupRtspConnection(const std::string& url) {
     
     std::string host = url_model.GetHost();
     int port = url_model.GetPort();
-    int retval = m_transport->RtspTcpOpen(host, port, m_abortWait);
-
-    if (retval == 0) {
-        m_transport->StartRunning();
-    } else {
-        ERROR("Did not start the Transport thread.");
-    }
-    
-    return retval;
+    m_transport->RtspTcpOpen(host, port, [&](int result) {
+        if (result == 0) {
+            m_transport->StartRunning();
+        } else {
+            ERROR("Did not start the Transport thread.");
+        }
+        
+        callback(result);
+    });
 }

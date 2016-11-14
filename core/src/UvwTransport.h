@@ -32,7 +32,7 @@ namespace Surge {
         UvwTransport(ISocketHandlerDelegate *delegate);
         ~UvwTransport();
 
-        int RtspTcpOpen (const std::string& host, int port, const SurgeUtil::FireableEvent& abort) override;
+        void RtspTcpOpen(const std::string&, int, std::function<void(int)>) override;
         
         void StartRunning () override;
         void StopRunning() override;
@@ -63,8 +63,6 @@ namespace Surge {
         virtual std::string GetTransportHeaderString() const override = 0;
         
     public:
-        // REMOVE
-        virtual void RtspHandleReceive(const SurgeUtil::WaitableEvent& event) = 0;
         virtual void RtspHandleReceive(const char* buffer, size_t size) = 0;
         
         void NotifyDelegateOfReadFailure() {

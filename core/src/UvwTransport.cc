@@ -48,26 +48,21 @@ void Surge::UvwTransport::StopRunning() {
 }
 
 
-int Surge::UvwTransport::RtspTcpOpen(const std::string& host, int port, const SurgeUtil::FireableEvent& abort) {
-    int result = -1;
+void Surge::UvwTransport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
     
     m_tcp->once<uvw::ErrorEvent>([&](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("Error occured on connect");
-        result = error.code();
+        callback(error.code());
     });
     
     m_tcp->once<uvw::ConnectEvent>([&](const uvw::ConnectEvent &connectEvent, uvw::TcpHandle &tcp) mutable {
         INFO("Connected");
-        result = 0;
+        callback(0);
     });
     
     INFO("Connecting to TCP port");
     m_tcp->connect(host, port);
     m_loop->run<uvw::Loop::Mode::ONCE>();
-    
-    while (result == -1) { }
-    
-    return result;
 }
 
 Surge::Response* Surge::UvwTransport::RtspTransaction(const RtspCommand* command, bool waitForResponse) {

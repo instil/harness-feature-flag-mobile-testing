@@ -42,7 +42,7 @@ namespace Surge {
 
         virtual bool IsRtpTransportTCP() = 0;
         
-        virtual int RtspTcpOpen(const std::string& host, int port, const SurgeUtil::FireableEvent& abort) = 0;
+        virtual void RtspTcpOpen(const std::string&, int, std::function<void(int)>) = 0;
 
         virtual void StartRunning() = 0;
         

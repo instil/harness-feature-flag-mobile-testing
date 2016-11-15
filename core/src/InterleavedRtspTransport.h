@@ -22,8 +22,7 @@
 #ifndef __RTSP_INTERLEAVED_TRANSPORT_H__
 #define __RTSP_INTERLEAVED_TRANSPORT_H__
 
-//#include "Transport.h"
-#include "UvwTransport.h"
+#include "Transport.h"
 
 #include <cstdlib>
 #include <vector>
@@ -31,7 +30,7 @@
 
 namespace Surge {
     
-    class InterleavedRtspTransport : public UvwTransport {
+    class InterleavedRtspTransport : public Transport {
     public:
         InterleavedRtspTransport(ISocketHandlerDelegate * const delegate);
 
@@ -62,7 +61,7 @@ namespace Surge {
         
         void RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
             m_receivedBuffer.clear();
-            UvwTransport::RtspTcpOpen(host, port, callback);
+            Transport::RtspTcpOpen(host, port, callback);
         }
 
     protected:

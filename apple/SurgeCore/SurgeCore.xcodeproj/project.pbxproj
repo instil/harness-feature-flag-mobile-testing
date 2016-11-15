@@ -71,7 +71,6 @@
 		42D6724A1D3069BB00D42C35 /* Teardown.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D672041D3069BB00D42C35 /* Teardown.h */; };
 		42D6724B1D3069BB00D42C35 /* Thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D672051D3069BB00D42C35 /* Thread.cc */; };
 		42D6724C1D3069BB00D42C35 /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D672061D3069BB00D42C35 /* Thread.h */; };
-		42D6724D1D3069BB00D42C35 /* Transport.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D672071D3069BB00D42C35 /* Transport.h */; };
 		42D6724E1D3069BB00D42C35 /* UdpTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D672081D3069BB00D42C35 /* UdpTransport.cc */; };
 		42D6724F1D3069BB00D42C35 /* UdpTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D672091D3069BB00D42C35 /* UdpTransport.h */; };
 		42D672501D3069BB00D42C35 /* Url.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D6720A1D3069BB00D42C35 /* Url.h */; };
@@ -90,8 +89,8 @@
 		42D674791D30847400D42C35 /* testrunner.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674781D30847400D42C35 /* testrunner.cc */; };
 		42D676351D3084B200D42C35 /* gmock-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674E71D3084B100D42C35 /* gmock-all.cc */; };
 		42D677241D30857B00D42C35 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D6771A1D30857B00D42C35 /* gtest-all.cc */; };
-		F45BC2501DD9C32C00DC0B38 /* UvwTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F45BC24E1DD9C32C00DC0B38 /* UvwTransport.cc */; };
-		F45BC2511DD9C32C00DC0B38 /* UvwTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC24F1DD9C32C00DC0B38 /* UvwTransport.h */; };
+		F45BC2501DD9C32C00DC0B38 /* Transport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F45BC24E1DD9C32C00DC0B38 /* Transport.cc */; };
+		F45BC2511DD9C32C00DC0B38 /* Transport.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC24F1DD9C32C00DC0B38 /* Transport.h */; };
 		F45BC2891DD9DE6B00DC0B38 /* fs-poll.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC2591DD9DE6A00DC0B38 /* fs-poll.c */; };
 		F45BC28A1DD9DE6B00DC0B38 /* heap-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BC25A1DD9DE6A00DC0B38 /* heap-inl.h */; };
 		F45BC28B1DD9DE6B00DC0B38 /* inet.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BC25B1DD9DE6A00DC0B38 /* inet.c */; };
@@ -207,7 +206,6 @@
 		42D672041D3069BB00D42C35 /* Teardown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Teardown.h; path = ../../core/src/Teardown.h; sourceTree = "<group>"; };
 		42D672051D3069BB00D42C35 /* Thread.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cc; path = ../../core/src/Thread.cc; sourceTree = "<group>"; };
 		42D672061D3069BB00D42C35 /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../core/src/Thread.h; sourceTree = "<group>"; };
-		42D672071D3069BB00D42C35 /* Transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transport.h; path = ../../core/src/Transport.h; sourceTree = "<group>"; };
 		42D672081D3069BB00D42C35 /* UdpTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpTransport.cc; path = ../../core/src/UdpTransport.cc; sourceTree = "<group>"; };
 		42D672091D3069BB00D42C35 /* UdpTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpTransport.h; path = ../../core/src/UdpTransport.h; sourceTree = "<group>"; };
 		42D6720A1D3069BB00D42C35 /* Url.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Url.h; path = ../../core/src/Url.h; sourceTree = "<group>"; };
@@ -228,8 +226,8 @@
 		42D674781D30847400D42C35 /* testrunner.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testrunner.cc; path = ../../../core/test/testrunner.cc; sourceTree = "<group>"; };
 		42D674E71D3084B100D42C35 /* gmock-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gmock-all.cc"; sourceTree = "<group>"; };
 		42D6771A1D30857B00D42C35 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
-		F45BC24E1DD9C32C00DC0B38 /* UvwTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UvwTransport.cc; path = ../../core/src/UvwTransport.cc; sourceTree = "<group>"; };
-		F45BC24F1DD9C32C00DC0B38 /* UvwTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UvwTransport.h; path = ../../core/src/UvwTransport.h; sourceTree = "<group>"; };
+		F45BC24E1DD9C32C00DC0B38 /* Transport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Transport.cc; path = ../../core/src/Transport.cc; sourceTree = "<group>"; };
+		F45BC24F1DD9C32C00DC0B38 /* Transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transport.h; path = ../../core/src/Transport.h; sourceTree = "<group>"; };
 		F45BC2591DD9DE6A00DC0B38 /* fs-poll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "fs-poll.c"; path = "../../core/lib/libuv-cmake/libuv/src/fs-poll.c"; sourceTree = "<group>"; };
 		F45BC25A1DD9DE6A00DC0B38 /* heap-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "heap-inl.h"; path = "../../core/lib/libuv-cmake/libuv/src/heap-inl.h"; sourceTree = "<group>"; };
 		F45BC25B1DD9DE6A00DC0B38 /* inet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inet.c; path = "../../core/lib/libuv-cmake/libuv/src/inet.c"; sourceTree = "<group>"; };
@@ -317,6 +315,7 @@
 		42D672591D306A5400D42C35 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F4EFCEA61DDB53250060D39F /* Transport */,
 				42D671C51D3069BB00D42C35 /* Base64.cc */,
 				42D671C61D3069BB00D42C35 /* Base64.h */,
 				42D671C71D3069BB00D42C35 /* BaseWaitableEvent.h */,
@@ -342,11 +341,8 @@
 				42D671DC1D3069BB00D42C35 /* Helpers.cc */,
 				42D671DD1D3069BB00D42C35 /* Helpers.h */,
 				42D671DE1D3069BB00D42C35 /* ILoggingDelegate.h */,
-				42D671DF1D3069BB00D42C35 /* InterleavedRtspTransport.cc */,
-				42D671E01D3069BB00D42C35 /* InterleavedRtspTransport.h */,
 				42D671E11D3069BB00D42C35 /* IRtspClientDelegate.h */,
 				42D671E21D3069BB00D42C35 /* ISocketHandlerDelegate.h */,
-				42D671E31D3069BB00D42C35 /* ITransportInterface.h */,
 				42D671E41D3069BB00D42C35 /* Logging.h */,
 				42D671E51D3069BB00D42C35 /* MimeTypes.h */,
 				42D671E61D3069BB00D42C35 /* MJPEGDepacketizer.cc */,
@@ -382,14 +378,9 @@
 				42D672041D3069BB00D42C35 /* Teardown.h */,
 				42D672051D3069BB00D42C35 /* Thread.cc */,
 				42D672061D3069BB00D42C35 /* Thread.h */,
-				42D672071D3069BB00D42C35 /* Transport.h */,
-				42D672081D3069BB00D42C35 /* UdpTransport.cc */,
-				42D672091D3069BB00D42C35 /* UdpTransport.h */,
 				42D6720A1D3069BB00D42C35 /* Url.h */,
 				42D6720B1D3069BB00D42C35 /* WaitableEvent.h */,
 				42D6720C1D3069BB00D42C35 /* WaitableEvents.cc */,
-				F45BC24E1DD9C32C00DC0B38 /* UvwTransport.cc */,
-				F45BC24F1DD9C32C00DC0B38 /* UvwTransport.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -540,6 +531,20 @@
 			path = "../../core/lib/libuv-cmake/libuv/src/unix";
 			sourceTree = "<group>";
 		};
+		F4EFCEA61DDB53250060D39F /* Transport */ = {
+			isa = PBXGroup;
+			children = (
+				42D671DF1D3069BB00D42C35 /* InterleavedRtspTransport.cc */,
+				42D671E01D3069BB00D42C35 /* InterleavedRtspTransport.h */,
+				42D671E31D3069BB00D42C35 /* ITransportInterface.h */,
+				F45BC24E1DD9C32C00DC0B38 /* Transport.cc */,
+				F45BC24F1DD9C32C00DC0B38 /* Transport.h */,
+				42D672081D3069BB00D42C35 /* UdpTransport.cc */,
+				42D672091D3069BB00D42C35 /* UdpTransport.h */,
+			);
+			name = Transport;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -600,8 +605,7 @@
 				42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */,
 				42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */,
 				42D6724C1D3069BB00D42C35 /* Thread.h in Headers */,
-				F45BC2511DD9C32C00DC0B38 /* UvwTransport.h in Headers */,
-				42D6724D1D3069BB00D42C35 /* Transport.h in Headers */,
+				F45BC2511DD9C32C00DC0B38 /* Transport.h in Headers */,
 				42D6723C1D3069BB00D42C35 /* RtspCommand.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -712,7 +716,7 @@
 				F45BC2A31DD9DE6B00DC0B38 /* loop.c in Sources */,
 				F45BC2951DD9DE6B00DC0B38 /* darwin-proctitle.c in Sources */,
 				42D6723A1D3069BB00D42C35 /* RtspClient.cc in Sources */,
-				F45BC2501DD9C32C00DC0B38 /* UvwTransport.cc in Sources */,
+				F45BC2501DD9C32C00DC0B38 /* Transport.cc in Sources */,
 				F45BC2AF1DD9DE6B00DC0B38 /* stream.c in Sources */,
 				42D672131D3069BB00D42C35 /* BitstreamWriter.cc in Sources */,
 				F45BC2971DD9DE6B00DC0B38 /* dl.c in Sources */,

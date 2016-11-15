@@ -6,20 +6,23 @@
 //  Copyright © 2016 Instil. All rights reserved.
 //
 
-#include "UvwTransport.h"
+#include "Transport.h"
 
-Surge::UvwTransport::UvwTransport(ISocketHandlerDelegate *delegate) : m_running(false),
+Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_running(false),
                                                         m_delegate(delegate),
                                                         m_connectTimeoutMs(DEFAULT_CONNECT_TIMEOUT_MS),
                                                         m_transactionTimeoutMs(DEFAULT_TRANSACTION_TIMEOUT_MS),
-                                                        m_timeoutMs(DEFAULT_SOCKET_HANDLER_TIMEOUT_MS) {
+                                                        m_timeoutMs(DEFAULT_SOCKET_HANDLER_TIMEOUT_MS)
+{
     m_loop = uvw::Loop::getDefault();
     
     m_tcp = uvw::TcpHandle::create(m_loop);
     m_tcp->init();
+    
+    std::shared_ptr<uvw::UDPHandle> test = m_loop->resource<uvw::UDPHandle>();
 }
 
-Surge::UvwTransport::~UvwTransport() {
+Surge::Transport::~Transport() {
     StopRunning();
     
     m_rtspOutputQueue.Flush([&] (Response* resp) {
@@ -31,7 +34,7 @@ Surge::UvwTransport::~UvwTransport() {
 }
 
 
-void Surge::UvwTransport::StartRunning() {
+void Surge::Transport::StartRunning() {
     if (IsRunning()) {
         return;
     }
@@ -39,7 +42,7 @@ void Surge::UvwTransport::StartRunning() {
     m_thread.Execute(*this);
 }
 
-void Surge::UvwTransport::StopRunning() {
+void Surge::Transport::StopRunning() {
     if (!IsRunning()) {
         return;
     }
@@ -48,7 +51,7 @@ void Surge::UvwTransport::StopRunning() {
 }
 
 
-void Surge::UvwTransport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
+void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
     
     m_tcp->once<uvw::ErrorEvent>([&](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("Error occured on connect");
@@ -65,7 +68,7 @@ void Surge::UvwTransport::RtspTcpOpen(const std::string& host, int port, std::fu
     m_loop->run<uvw::Loop::Mode::ONCE>();
 }
 
-Surge::Response* Surge::UvwTransport::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
+Surge::Response* Surge::Transport::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
     DEBUG("Sending command to server");
   
     m_tcp->write(generateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
@@ -85,14 +88,14 @@ Surge::Response* Surge::UvwTransport::RtspTransaction(const RtspCommand* command
     return response;
 }
 
-std::unique_ptr<char[]> Surge::UvwTransport::generateRtspDataPtr(char *data, size_t length) {
+std::unique_ptr<char[]> Surge::Transport::generateRtspDataPtr(char *data, size_t length) {
     char *dataCopy = new char[length];
     memcpy(dataCopy, data, length);
     return std::unique_ptr<char[]>(dataCopy);
 }
 
 
-void Surge::UvwTransport::Run() {
+void Surge::Transport::Run() {
     m_tcp->on<uvw::ErrorEvent>([](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("ERROR");
     });

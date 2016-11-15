@@ -127,10 +127,6 @@ void Surge::RtspClient::Describe(const std::string& url,
         
         callback(resp);
     });
-    
-    
-    
-    
 }
 
 Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& sessionDescription, bool serverAllowsAggregate) {

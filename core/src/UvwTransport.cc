@@ -68,11 +68,10 @@ void Surge::UvwTransport::RtspTcpOpen(const std::string& host, int port, std::fu
 Surge::Response* Surge::UvwTransport::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
     DEBUG("Sending command to server");
   
-    char *hackyFix = new char[command->PointerLength()];
-    memcpy(hackyFix, command->BytesPointer(), command->PointerLength());
-    m_tcp->write(std::unique_ptr<char[]>(hackyFix), command->PointerLength());
-
-    // To be replaced by a callback instead
+    m_tcp->write(generateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
+                 command->PointerLength());
+    
+    // To be replaced by a callback instead?
     
     Surge::Response *response;
     
@@ -86,6 +85,11 @@ Surge::Response* Surge::UvwTransport::RtspTransaction(const RtspCommand* command
     return response;
 }
 
+std::unique_ptr<char[]> Surge::UvwTransport::generateRtspDataPtr(char *data, size_t length) {
+    char *dataCopy = new char[length];
+    memcpy(dataCopy, data, length);
+    return std::unique_ptr<char[]>(dataCopy);
+}
 
 
 void Surge::UvwTransport::Run() {
@@ -102,7 +106,7 @@ void Surge::UvwTransport::Run() {
     });
     
     m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) mutable {
-        INFO("Write");
+        DEBUG("Sent request to stream, wait for a response");
         tcp.read();
     });
     

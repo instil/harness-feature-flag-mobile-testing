@@ -101,6 +101,8 @@ namespace Surge {
         SurgeUtil::DataEventQueue<Response*> m_rtspOutputQueue;
         ISocketHandlerDelegate *m_delegate;
    
+    private:
+        std::unique_ptr<char[]> generateRtspDataPtr(char *, size_t);
     };
 }
 

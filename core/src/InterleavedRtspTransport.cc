@@ -58,39 +58,18 @@ Surge::InterleavedRtspTransport::~InterleavedRtspTransport() { }
  * Because we read in chunks trailing packet data must be held onto to ensure RTP/RTSP/RTCP consistency.
  **/
 void Surge::InterleavedRtspTransport::RtspHandleReceive(const char* buffer, size_t size) {
-    std::vector<unsigned char> response;
-    
-    if (m_receivedBuffer.size() > 0) {
-        // copy trailing data into response
-        response.resize(m_receivedBuffer.size());
-        response = m_receivedBuffer;
-        m_receivedBuffer.clear();
-        m_receivedBuffer.resize(0);
-    }
-
-    size_t total_buffer_size = response.size();
-
-    if (size > 0) {
-        // Append received data to 'response'.
-        size_t old_size = response.size();
-        if (old_size < (old_size + size)) {
-            response.resize(old_size + size);
-        }
-        copy(buffer, buffer + size, response.begin() + old_size);
-        total_buffer_size += size;
-    }
-    
     if (!m_running) {
         return;
     }
     
-    size_t offs = 0;
+    AppendDataToBuffer(buffer, size);
+    
     do {
-        bool is_rtp = response.size() >= 4 && response[offs] == '$';
-        bool is_rtsp = response.size() >= 8 && strncmp((char*)&(response[offs]), "RTSP/1.0", 8) == 0;
-        bool is_announce = response.size() >= 8 && strncmp((char*)&(response[offs]), "ANNOUNCE", 8) == 0;
-        bool is_redirect = response.size() >= 8 && strncmp((char*)&(response[offs]), "REDIRECT", 8) == 0;
-
+        bool is_rtp = m_receivedBuffer.size() >= 4 && m_receivedBuffer[0] == '$';
+        bool is_rtsp = m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "RTSP/1.0", 8) == 0;
+        bool is_announce = m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "ANNOUNCE", 8) == 0;
+        bool is_redirect = m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "REDIRECT", 8) == 0;
+        
         if (is_announce) {
             NotifyDelegateOfAnnounce();
             break;
@@ -100,68 +79,72 @@ void Surge::InterleavedRtspTransport::RtspHandleReceive(const char* buffer, size
             break;
         }
         else if (is_rtp) {
-            int channel = static_cast<int>(response[offs + 1]);
-
+            int channel = static_cast<int>(m_receivedBuffer[1]);
+            
             uint16_t network_order_packet_length = 0;
-            memcpy(&network_order_packet_length, &(response[offs + 2]), 2);
+            memcpy(&network_order_packet_length, &(m_receivedBuffer[2]), 2);
             uint16_t packet_length = ntohs(network_order_packet_length);
-
-            bool have_whole_packet = (total_buffer_size - (offs + 4)) >= packet_length;
-
+            
+            bool have_whole_packet = (m_receivedBuffer.size() - (4)) >= packet_length;
+            
             if (have_whole_packet && channel == m_rtpInterleavedChannel) {
                 try {
-                    RtpPacket* pack = new RtpPacket(&(response[offs + 4]), packet_length);
+                    RtpPacket* pack = new RtpPacket(&(m_receivedBuffer[4]), packet_length);
                     m_rtpPacketSubject.get_subscriber().on_next(pack);
                 } catch (const std::exception& e) {
                     ERROR("Invalid Rtp Packet: " << e.what());
                 }
             } else if (!have_whole_packet) {
-                // copy into received buffer
-                size_t trailing_length = total_buffer_size - offs;
-                m_receivedBuffer.resize(trailing_length);
-                std::copy(response.begin() + offs, response.end(), m_receivedBuffer.begin());
                 break;
             }
-            offs += packet_length + 4;
+            RemoveDataFromStartOfBuffer(packet_length + 4);
         }
         else if (is_rtsp) {
             std::string string_response;
-            string_response.resize(total_buffer_size - offs);
-            std::copy(response.begin() + offs, response.end(), string_response.begin());
-
-            size_t body_pos; 
+            string_response.resize(m_receivedBuffer.size());
+            std::copy(m_receivedBuffer.begin(), m_receivedBuffer.end(), string_response.begin());
+            
+            size_t body_pos;
             if ((body_pos = string_response.find("\r\n\r\n")) != std::string::npos) {
                 size_t pos = string_response.find("Content-Length:");
                 size_t content_length = (pos != std::string::npos) ?
-                    static_cast<size_t>(atoi(&string_response[pos + 16])) :
-                    0;
+                static_cast<size_t>(atoi(&string_response[pos + 16])) :
+                0;
                 
                 size_t headers_length = body_pos;
                 
-                const unsigned char *rtsp_buffer = &(response[offs]);
+                const unsigned char *rtsp_buffer = &(m_receivedBuffer[0]);
                 size_t rtsp_buffer_length = content_length + 4 + headers_length;
-
-                if ((total_buffer_size - offs) < rtsp_buffer_length) {
-                    size_t trailing_length = total_buffer_size - offs;
-                    m_receivedBuffer.resize(trailing_length);
-                    std::copy(response.begin() + offs, response.end(), m_receivedBuffer.begin());
+                
+                if ((m_receivedBuffer.size()) < rtsp_buffer_length) {
                     break;
-                } 
+                }
                 
                 m_rtspOutputQueue.AddItem(new Response(rtsp_buffer, rtsp_buffer_length));
-                offs += rtsp_buffer_length;
+                
+                RemoveDataFromStartOfBuffer(rtsp_buffer_length);
             } else {
-                size_t trailing_length = total_buffer_size - offs;
-                m_receivedBuffer.resize(trailing_length);
-                std::copy(response.begin() + offs, response.end(), m_receivedBuffer.begin());
                 break;
             }
         }
         else {
-            size_t trailing_length = total_buffer_size - offs;
-            m_receivedBuffer.resize(trailing_length);
-            std::copy(response.begin() + offs, response.end(), m_receivedBuffer.begin());
             break;
         }
-    } while (offs < total_buffer_size && m_running);
+    } while (0 < m_receivedBuffer.size() && m_running);
 }
+
+void Surge::InterleavedRtspTransport::AppendDataToBuffer(const char* buffer, size_t size) {
+    if (size > 0) {
+        // Append received data to 'response'.
+        size_t old_size = m_receivedBuffer.size();
+        if (old_size < (old_size + size)) {
+            m_receivedBuffer.resize(old_size + size);
+        }
+        copy(buffer, buffer + size, m_receivedBuffer.begin() + old_size);
+    }
+}
+
+void Surge::InterleavedRtspTransport::RemoveDataFromStartOfBuffer(int count) {
+    m_receivedBuffer.erase(m_receivedBuffer.begin(), m_receivedBuffer.begin() + count);
+}
+

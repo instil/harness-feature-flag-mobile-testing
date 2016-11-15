@@ -69,6 +69,10 @@ namespace Surge {
         void RtspHandleReceive(const SurgeUtil::WaitableEvent& event) {};
 
     private:
+        void AppendDataToBuffer(const char*, size_t);
+        void RemoveDataFromStartOfBuffer(int);
+        
+    private:
         std::vector<unsigned char> m_receivedBuffer;
         size_t m_readBufferSize;
         

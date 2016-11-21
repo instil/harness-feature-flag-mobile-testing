@@ -50,6 +50,7 @@ namespace Surge {
         void StopRunning() override;
 
         Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true) override;
+        void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;
         
         
         virtual bool IsInterleavedTransport() override = 0;
@@ -108,6 +109,7 @@ namespace Surge {
         long m_timeoutMs;
         
         rxcpp::subjects::subject<RtpPacket*> m_rtpPacketSubject;
+        rxcpp::subjects::subject<Response*> m_rtspResponseSubject;
         SurgeUtil::DataEventQueue<Response*> m_rtspOutputQueue;
         ISocketHandlerDelegate *m_delegate;
    

@@ -81,10 +81,9 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
 }
 
 Surge::Response* Surge::Transport::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
-    DEBUG("Sending command to server");
-  
-    m_tcp->write(generateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
-                 command->PointerLength());
+    RtspTransaction(command, [&](Response *response) {
+        m_rtspOutputQueue.AddItem(response);
+    });
     
     // To be replaced by a callback instead?
     
@@ -98,6 +97,21 @@ Surge::Response* Surge::Transport::RtspTransaction(const RtspCommand* command, b
         DEBUG("TRANSACTION RESPONSE: " << response->StringDump());
     }
     return response;
+}
+
+void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) {
+    DEBUG("Sending command to server");
+    
+    m_rtspResponseSubject.get_observable()
+        .take(1)
+        .subscribe([&](Response *response) {
+            callback(response);
+        }, [](std::exception_ptr error) {
+            ERROR("BROKEN");
+        });
+    
+    m_tcp->write(generateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
+                 command->PointerLength());
 }
 
 std::unique_ptr<char[]> Surge::Transport::generateRtspDataPtr(char *data, size_t length) {

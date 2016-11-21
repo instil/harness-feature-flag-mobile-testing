@@ -119,8 +119,9 @@ void Surge::InterleavedRtspTransport::RtspHandleReceive(const char* buffer, size
                 if ((m_receivedBuffer.size()) < rtsp_buffer_length) {
                     break;
                 }
-                
-                m_rtspOutputQueue.AddItem(new Response(rtsp_buffer, rtsp_buffer_length));
+
+                m_rtspResponseSubject.get_subscriber().on_next(new Response(rtsp_buffer, rtsp_buffer_length));
+//                m_rtspOutputQueue.AddItem(new Response(rtsp_buffer, rtsp_buffer_length));
                 
                 RemoveDataFromStartOfBuffer(rtsp_buffer_length);
             } else {

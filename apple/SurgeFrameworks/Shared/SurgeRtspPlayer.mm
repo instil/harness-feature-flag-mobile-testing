@@ -232,13 +232,14 @@ private:
 }
 
 - (void)describe:(void (^)(void)) callback {
+    
     self.client->Describe(std::string(self.url.absoluteString.UTF8String),
-                                      std::string(self.username.UTF8String),
-                                      std::string(self.password.UTF8String),
-                                      [&](Surge::DescribeResponse *describeResponse) {
-                                          self.sessionDescriptions = describeResponse->GetSessionDescriptions();
-                                          delete describeResponse;
-                                          callback();
+                          std::string(self.username.UTF8String),
+                          std::string(self.password.UTF8String),
+                          [&](Surge::DescribeResponse *describeResponse) {
+                              self.sessionDescriptions = describeResponse->GetSessionDescriptions();
+                              delete describeResponse;
+                              callback();
       });
 }
 

@@ -188,14 +188,15 @@ private:
         
         Surge::SessionDescription currentSessionDescription = [self selectPreferredSessionDescription];
         
-        [self setupStream:currentSessionDescription];
-        [self play];
-        
-        result = YES;
+        [self setupStream:currentSessionDescription withCallback:^{
+            [self play:^{
+                result = YES;
+            }];
+        }];
     }];
     
     // Bah.
-    while (result == NULL) ;
+    while (result == NULL) std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     
     return result;
 }
@@ -236,20 +237,24 @@ private:
     self.client->Describe(std::string(self.url.absoluteString.UTF8String),
                           std::string(self.username.UTF8String),
                           std::string(self.password.UTF8String),
-                          [&](Surge::DescribeResponse *describeResponse) {
+                          [=](Surge::DescribeResponse *describeResponse) {
                               self.sessionDescriptions = describeResponse->GetSessionDescriptions();
                               delete describeResponse;
                               callback();
       });
 }
 
-- (void)setupStream:(Surge::SessionDescription)sessionDescription {
+- (void)setupStream:(Surge::SessionDescription)sessionDescription withCallback:(void (^)(void)) callback {
     SurgeLogInfo(@"Setting up stream with SessionDescription; %@",
                  [NSString stringWithUTF8String:sessionDescription.GetFmtp().c_str()]);
     
     [self initialiseDecoderForStream:sessionDescription];
-    Surge::RtspResponse *setupResponse = self.client->Setup(sessionDescription, false);
-    delete setupResponse;
+    self.client->Setup(sessionDescription,
+                       false,
+                       [=](Surge::SetupResponse *setupResponse) {
+                           delete setupResponse;
+                           callback();
+                       });
 }
 
 - (void)initialiseDecoderForStream:(Surge::SessionDescription)sessionDescription {
@@ -262,13 +267,17 @@ private:
     }
 }
 
-- (void)play {
+- (void)play:(void (^)(void)) callback {
     SurgeLogInfo(@"Starting/resuming playback of %@", self.url);
-    Surge::RtspResponse *playResponse = self.client->Play(false);
-    if (playResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
-        [self.delegate rtspPlayerDidBeginPlayback:self];
-    }
-    delete playResponse;
+    self.client->Play(false,
+                      [=](Surge::RtspResponse *playResponse) {
+                          if (playResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
+                              [self.delegate rtspPlayerDidBeginPlayback:self];
+                          }
+                          delete playResponse;
+                          
+                          callback();
+                      });
 }
 
 - (void)pause {

@@ -77,12 +77,12 @@ void Surge::RtspClient::Describe(const std::string& url,
 }
 
 void Surge::RtspClient::Describe(const std::string& url,
-                                                     const std::string& user,
-                                                     const std::string& password,
-                                                     std::function<void(Surge::DescribeResponse*)> callback) {
+                                 const std::string& user,
+                                 const std::string& password,
+                                 std::function<void(Surge::DescribeResponse*)> callback) {
     m_url = url;
     m_isPlaying = false;
-
+    
     SetupRtspConnection(url, [&](int result) {
         if (result != 0) {
             callback(nullptr);
@@ -100,36 +100,39 @@ void Surge::RtspClient::Describe(const std::string& url,
             describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber());
         }
         
-        Response* raw_resp = m_transport->RtspTransaction(describe, true);
+        m_transport->RtspTransaction(describe, [=](Response *raw_resp) {
+            bool received_response = raw_resp != nullptr;
+            if (!received_response) {
+                ERROR("Failed to get response to DESCRIBE!");
+                callback(nullptr);
+            }
+            
+            
+            DescribeResponse *resp = nullptr;
+            try {
+                resp = new DescribeResponse(raw_resp, factory);
+            }
+            catch (const std::exception& e) {
+                ERROR("Invalid DescribeResponse: " << e.what());
+                resp = nullptr;
+            }
+            
+            if (!resp->Ok()) {
+                NotifyDelegateTimeout();
+            }
+            
+            delete raw_resp;
+            
+            callback(resp);
+        });
+        
         delete describe;
-        
-        bool received_response = raw_resp != nullptr;
-        if (!received_response) {
-            ERROR("Failed to get response to DESCRIBE!");
-            callback(nullptr);
-        }
-        
-        
-        DescribeResponse *resp = nullptr;
-        try {
-            resp = new DescribeResponse(raw_resp, factory);
-        }
-        catch (const std::exception& e) {
-            ERROR("Invalid DescribeResponse: " << e.what());
-            resp = nullptr;
-        }
-        
-        if (!resp->Ok()) {
-            NotifyDelegateTimeout();
-        }
-        
-        delete raw_resp;
-        
-        callback(resp);
     });
 }
 
-Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& sessionDescription, bool serverAllowsAggregate) {
+void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
+                              bool serverAllowsAggregate,
+                              std::function<void(Surge::SetupResponse*)> callback) {
     
     // control url is where we put any more requests to
     std::string setup_url = (sessionDescription.IsControlUrlComplete()) ?
@@ -155,50 +158,51 @@ Surge::SetupResponse* Surge::RtspClient::Setup(const SessionDescription& session
     processedFirstPayload = false;
     
     RtspCommand* setup = RtspCommandFactory::SetupRequest(setup_url, GetNextSequenceNumber(), m_transport);
-    Response* raw_resp = m_transport->RtspTransaction(setup, true);
-    delete setup;
-
-    bool received_response = raw_resp != nullptr;
-    if (!received_response) {
-        ERROR("Failed to get response to SETUP!");
-        return nullptr;
-    }
-
-    SetupResponse* resp = nullptr;
-    try {
-        resp = new SetupResponse(raw_resp);
-    }
-    catch (const std::exception& e) {
-        ERROR("Invalid SetupResponse: " << e.what());
-        resp = nullptr;
-    }
-    
-    delete raw_resp;
-
-    if (resp != nullptr && resp->Ok()) {
-        m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
-        m_keeepAliveIntervalInSeconds = resp->GetTimeoutSeconds();
-        m_session = resp->GetSession();
-
-        DEBUG("RtspClient Session set to: " << m_session);
-        DEBUG("RtspClient KeepAlive Interval set to: " << m_keeepAliveIntervalInSeconds);
-
-        if (m_transport->IsInterleavedTransport() && resp->IsInterleaved()) {
-            ((InterleavedRtspTransport*)m_transport)->
-                SetRtpInterleavedChannel(resp->GetRtpInterleavedChannel());
-            ((InterleavedRtspTransport*)m_transport)->
-                SetRtcpInterleavedChannel(resp->GetRtcpInterleavedChannel());
-
-            DEBUG("Rtp Interleaved Channel set to: " << resp->GetRtpInterleavedChannel());
-            DEBUG("Rtcp Interleaved Channel set to: " << resp->GetRtcpInterleavedChannel());
+    m_transport->RtspTransaction(setup, [=](Response *raw_resp) {
+        bool received_response = raw_resp != nullptr;
+        if (!received_response) {
+            ERROR("Failed to get response to SETUP!");
+            callback(nullptr);
         }
         
-    }
+        SetupResponse* resp = nullptr;
+        try {
+            resp = new SetupResponse(raw_resp);
+        }
+        catch (const std::exception& e) {
+            ERROR("Invalid SetupResponse: " << e.what());
+            resp = nullptr;
+        }
+        
+        delete raw_resp;
+        
+        if (resp != nullptr && resp->Ok()) {
+            m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
+            m_keeepAliveIntervalInSeconds = resp->GetTimeoutSeconds();
+            m_session = resp->GetSession();
+            
+            DEBUG("RtspClient Session set to: " << m_session);
+            DEBUG("RtspClient KeepAlive Interval set to: " << m_keeepAliveIntervalInSeconds);
+            
+            if (m_transport->IsInterleavedTransport() && resp->IsInterleaved()) {
+                ((InterleavedRtspTransport*)m_transport)->
+                SetRtpInterleavedChannel(resp->GetRtpInterleavedChannel());
+                ((InterleavedRtspTransport*)m_transport)->
+                SetRtcpInterleavedChannel(resp->GetRtcpInterleavedChannel());
+                
+                DEBUG("Rtp Interleaved Channel set to: " << resp->GetRtpInterleavedChannel());
+                DEBUG("Rtcp Interleaved Channel set to: " << resp->GetRtcpInterleavedChannel());
+            }
+        }
+        
+        callback(resp);
+    });
     
-    return resp;
+    delete setup;
 }
 
-Surge::RtspResponse* Surge::RtspClient::Play(bool waitForResponse) {
+void Surge::RtspClient::Play(bool waitForResponse,
+                             std::function<void(Surge::RtspResponse*)> callback) {
     RtspCommand* play;
     
     if (endTimeSet) {
@@ -211,33 +215,34 @@ Surge::RtspResponse* Surge::RtspClient::Play(bool waitForResponse) {
         play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber());
     }
     
-    Response* raw_resp = m_transport->RtspTransaction(play, true);
-    delete play;
-
-    bool received_response = raw_resp != nullptr;
-    if (!received_response && waitForResponse) {
-        ERROR("Failed to get response to PLAY!");
-        return nullptr;
-    }
-
-    RtspResponse* resp = nullptr;
-    if (waitForResponse) {
-        try {
-            resp = new RtspResponse(raw_resp);
+    m_transport->RtspTransaction(play, [=](Response *raw_resp) {
+        bool received_response = raw_resp != nullptr;
+        if (!received_response && waitForResponse) {
+            ERROR("Failed to get response to PLAY!");
+            callback(nullptr);
         }
-        catch (const std::exception& e) {
-            ERROR("Invalid PlayResponse: " << e.what());
-            resp = nullptr;
+        
+        RtspResponse* resp = nullptr;
+        if (waitForResponse) {
+            try {
+                resp = new RtspResponse(raw_resp);
+            }
+            catch (const std::exception& e) {
+                ERROR("Invalid PlayResponse: " << e.what());
+                resp = nullptr;
+            }
+            delete raw_resp;
+        } else {
+            resp = new RtspResponse(200, "");
         }
-        delete raw_resp;
-    } else {
-        resp = new RtspResponse(200, "");
-    }
-
-    m_isPlaying = resp != nullptr && resp->Ok();
-    StartSession();
+        
+        m_isPlaying = resp != nullptr && resp->Ok();
+        StartSession();
+        
+        callback(resp);
+    });
     
-    return resp;
+    delete play;
 }
 
 Surge::RtspResponse* Surge::RtspClient::Pause() {

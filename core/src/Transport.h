@@ -49,7 +49,9 @@ namespace Surge {
         void StartRunning () override;
         void StopRunning() override;
 
+        [[deprecated]]
         Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true) override;
+        
         void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;
         
         

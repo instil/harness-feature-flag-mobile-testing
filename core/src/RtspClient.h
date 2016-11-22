@@ -49,16 +49,19 @@ namespace Surge {
         ~RtspClient();
 
         void Describe(const std::string& url,
-                                   std::function<void(Surge::DescribeResponse*)> callback);
+                      std::function<void(Surge::DescribeResponse*)> callback);
 
         void Describe(const std::string& url,
-                                   const std::string& user,
-                                   const std::string& password,
-                                   std::function<void(Surge::DescribeResponse*)> callback);
+                      const std::string& user,
+                      const std::string& password,
+                      std::function<void(Surge::DescribeResponse*)> callback);
 
-        SetupResponse* Setup(const SessionDescription& sessionDescription, bool serverAllowsAggregate = true);
+        void Setup(const SessionDescription& sessionDescription,
+                   bool serverAllowsAggregate,
+                   std::function<void(Surge::SetupResponse*)> callback);
 
-        RtspResponse* Play(bool waitForResponse = true);
+        void Play(bool waitForResponse,
+                  std::function<void(Surge::RtspResponse*)> callback);
 
         RtspResponse* Pause();
 

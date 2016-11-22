@@ -80,6 +80,7 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
     m_loop->run<uvw::Loop::Mode::ONCE>();
 }
 
+[[deprecated]]
 Surge::Response* Surge::Transport::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
     RtspTransaction(command, [&](Response *response) {
         m_rtspOutputQueue.AddItem(response);
@@ -104,10 +105,16 @@ void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function
     
     m_rtspResponseSubject.get_observable()
         .take(1)
-        .subscribe([&](Response *response) {
+        .subscribe([callback](Response *response) {
             callback(response);
         }, [](std::exception_ptr error) {
-            ERROR("BROKEN");
+            try {
+                if (error) {
+                    std::rethrow_exception(error);
+                }
+            } catch(const std::exception& e) {
+                std::cout << "Caught exception \"" << e.what() << "\"\n";
+            }
         });
     
     m_tcp->write(generateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
@@ -134,7 +141,7 @@ void Surge::Transport::Run() {
         INFO("Shutdown");
     });
     
-    m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) mutable {
+    m_tcp->on<uvw::WriteEvent>([&](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) mutable {
         DEBUG("Sent request to stream, wait for a response");
         tcp.read();
     });

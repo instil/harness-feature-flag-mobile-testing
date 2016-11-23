@@ -58,8 +58,6 @@ namespace Surge {
 
         virtual rxcpp::observable<RtpPacket*> GetRtpPacketObservable() const = 0;
 
-        [[deprecated]]
-        virtual Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true) = 0;
         virtual void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) = 0;
 
         virtual void SetDelegate(ISocketHandlerDelegate * const delegate) = 0;

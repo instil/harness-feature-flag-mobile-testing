@@ -28,18 +28,13 @@ Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_running(false)
 {
     m_loop = uvw::Loop::getDefault();
     
-    m_tcp = uvw::TcpHandle::create(m_loop);
-    m_tcp->init();
+    m_tcp = m_loop->resource<uvw::TcpHandle>();
     
     std::shared_ptr<uvw::UDPHandle> test = m_loop->resource<uvw::UDPHandle>();
 }
 
 Surge::Transport::~Transport() {
     StopRunning();
-    
-    m_rtspOutputQueue.Flush([&] (Response* resp) {
-        delete resp;
-    });
     
     m_tcp->close();
     m_loop->close();
@@ -80,26 +75,6 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
     m_loop->run<uvw::Loop::Mode::ONCE>();
 }
 
-[[deprecated]]
-Surge::Response* Surge::Transport::RtspTransaction(const RtspCommand* command, bool waitForResponse) {
-    RtspTransaction(command, [&](Response *response) {
-        m_rtspOutputQueue.AddItem(response);
-    });
-    
-    // To be replaced by a callback instead?
-    
-    Surge::Response *response;
-    
-    auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({&m_rtspOutputQueue.GetNonEmptyEvent()},
-                                                          m_transactionTimeoutMs);
-    if (SurgeUtil::WaitableEvents::IsContainedIn(firedEvents, m_rtspOutputQueue.GetNonEmptyEvent())) {
-        response = m_rtspOutputQueue.RemoveItem();
-        
-        DEBUG("TRANSACTION RESPONSE: " << response->StringDump());
-    }
-    return response;
-}
-
 void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) {
     DEBUG("Sending command to server");
     
@@ -113,7 +88,7 @@ void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function
                     std::rethrow_exception(error);
                 }
             } catch(const std::exception& e) {
-                std::cout << "Caught exception \"" << e.what() << "\"\n";
+                ERROR("Caught exception \"" << e.what() << "\"\n");
             }
         });
     
@@ -141,7 +116,7 @@ void Surge::Transport::Run() {
         INFO("Shutdown");
     });
     
-    m_tcp->on<uvw::WriteEvent>([&](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) mutable {
+    m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) mutable {
         DEBUG("Sent request to stream, wait for a response");
         tcp.read();
     });
@@ -161,5 +136,7 @@ void Surge::Transport::Run() {
         m_loop->run();
     }
     
+    
+    INFO("Closing transport");
     m_tcp->close();
 }

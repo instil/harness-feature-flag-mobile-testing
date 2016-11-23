@@ -245,72 +245,16 @@ void Surge::RtspClient::Play(bool waitForResponse,
     delete play;
 }
 
-Surge::RtspResponse* Surge::RtspClient::Pause() {
+void Surge::RtspClient::Pause(std::function<void(Surge::RtspResponse*)> callback) {
     RtspCommand* pause = RtspCommandFactory::PauseRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_transport->RtspTransaction(pause, true);
-    delete pause;
-
-    bool received_response = raw_resp != nullptr;
-    if (!received_response) {
-        ERROR("Failed to get response to PAUSE!");
-        return nullptr;
-    }
-
-    RtspResponse* resp = nullptr;
-    try {
-        resp = new RtspResponse(raw_resp);
-    }
-    catch (const std::exception& e) {
-        ERROR("Invalid PauseResponse: " << e.what());
-        resp = nullptr;
-    }
-    delete raw_resp;
-
-    m_isPlaying = false;
-    
-    return resp;
-}
-
-Surge::RtspResponse* Surge::RtspClient::Options() {
-    RtspCommand* options = RtspCommandFactory::OptionsRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_transport->RtspTransaction(options, true);
-    delete options;
-
-    bool received_response = raw_resp != nullptr;
-    if (!received_response) {
-        ERROR("Failed to get response to OPTIONS!");
-        return nullptr;
-    }
-
-    RtspResponse* resp = nullptr;
-    try {
-        resp = new RtspResponse(raw_resp);
-    }
-    catch (const std::exception& e) {
-        ERROR("Invalid OptionsResponse: " << e.what());
-        resp = nullptr;
-    }
-    delete raw_resp;
-
-    return resp;
-}
-
-void Surge::RtspClient::Options(const std::string& url,
-                                std::function<void(Surge::RtspResponse*)> callback) {
-    
-    SetupRtspConnection(url, [&](int result) {
-        if (result != 0) {
-            callback(nullptr);
-        }
-        
-        RtspCommand* options = RtspCommandFactory::OptionsRequest(url, m_session, GetNextSequenceNumber());
-        Response* raw_resp = m_transport->RtspTransaction(options, true);
-        delete options;
-        
+    m_transport->RtspTransaction(pause, [=](Response *raw_resp) {
         bool received_response = raw_resp != nullptr;
         if (!received_response) {
-            ERROR("Failed to get response to OPTIONS!");
-            callback(nullptr);
+            ERROR("Failed to get response to PAUSE!");
+            
+            if (callback != NULL) {
+                callback(nullptr);
+            }
         }
         
         RtspResponse* resp = nullptr;
@@ -318,66 +262,137 @@ void Surge::RtspClient::Options(const std::string& url,
             resp = new RtspResponse(raw_resp);
         }
         catch (const std::exception& e) {
-            ERROR("Invalid OptionsResponse: " << e.what());
+            ERROR("Invalid PauseResponse: " << e.what());
             resp = nullptr;
         }
+        delete raw_resp;
+        
+        m_isPlaying = false;
+        
+        if (callback != NULL) {
+            callback(resp);
+        }
+    });
+    
+    delete pause;
+}
+
+//Surge::RtspResponse* Surge::RtspClient::Options() {
+//    RtspCommand* options = RtspCommandFactory::OptionsRequest(m_url, m_session, GetNextSequenceNumber());
+//    Response* raw_resp = m_transport->RtspTransaction(options, true);
+//    delete options;
+//
+//    bool received_response = raw_resp != nullptr;
+//    if (!received_response) {
+//        ERROR("Failed to get response to OPTIONS!");
+//        return nullptr;
+//    }
+//
+//    RtspResponse* resp = nullptr;
+//    try {
+//        resp = new RtspResponse(raw_resp);
+//    }
+//    catch (const std::exception& e) {
+//        ERROR("Invalid OptionsResponse: " << e.what());
+//        resp = nullptr;
+//    }
+//    delete raw_resp;
+//
+//    return resp;
+//}
+//
+//void Surge::RtspClient::Options(const std::string& url,
+//                                std::function<void(Surge::RtspResponse*)> callback) {
+//    
+//    SetupRtspConnection(url, [&](int result) {
+//        if (result != 0) {
+//            callback(nullptr);
+//        }
+//        
+//        RtspCommand* options = RtspCommandFactory::OptionsRequest(url, m_session, GetNextSequenceNumber());
+//        Response* raw_resp = m_transport->RtspTransaction(options, true);
+//        delete options;
+//        
+//        bool received_response = raw_resp != nullptr;
+//        if (!received_response) {
+//            ERROR("Failed to get response to OPTIONS!");
+//            callback(nullptr);
+//        }
+//        
+//        RtspResponse* resp = nullptr;
+//        try {
+//            resp = new RtspResponse(raw_resp);
+//        }
+//        catch (const std::exception& e) {
+//            ERROR("Invalid OptionsResponse: " << e.what());
+//            resp = nullptr;
+//        }
+//        delete raw_resp;
+//        
+//        callback(resp);
+//    });
+//    
+//}
+
+void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callback,
+                                 bool waitForResponse) {
+    RtspCommand* teardown = RtspCommandFactory::TeardownRequest(m_url, m_session, GetNextSequenceNumber());
+    m_transport->RtspTransaction(teardown, [&](Response *raw_resp) {
+        bool received_response = raw_resp != nullptr;
+        if (!received_response && waitForResponse) {
+            ERROR("Failed to get response to TEARDOWN!");
+            if (callback) {
+                callback(nullptr);
+            }
+        }
+        
+        RtspResponse* resp = nullptr;
+        if (waitForResponse) {
+            try {
+                resp = new RtspResponse(raw_resp);
+            }
+            catch (const std::exception& e) {
+                ERROR("Invalid TeardownResponse: " << e.what());
+                resp = nullptr;
+            }
+            delete raw_resp;
+        } else {
+            resp = new RtspResponse(200, "");
+        }
+        
+        if (callback) {
+            callback(resp);
+        } else {
+            delete resp;
+        }
+    });
+    
+    delete teardown;
+}
+
+void Surge::RtspClient::KeepAlive(std::function<void(Surge::RtspResponse*)> callback) {
+    RtspCommand* keep_alive = RtspCommandFactory::KeepAliveRequest(m_url, m_session, GetNextSequenceNumber());
+    m_transport->RtspTransaction(keep_alive, [&](Response *raw_resp) {
+        bool received_response = raw_resp != nullptr;
+        if (!received_response) {
+            ERROR("Failed to get response to Keep-Alive!");
+            callback(nullptr);
+        }
+        
+        RtspResponse* resp = nullptr;
+        try {
+            resp = new RtspResponse(raw_resp);
+        } catch (const std::exception& e) {
+            ERROR("Invalid KeepaliveResponse: " << e.what());
+            resp = nullptr;
+        }
+        
         delete raw_resp;
         
         callback(resp);
     });
     
-}
-
-Surge::RtspResponse* Surge::RtspClient::Teardown(bool waitForResponse) {
-    RtspCommand* teardown = RtspCommandFactory::TeardownRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_transport->RtspTransaction(teardown, waitForResponse);
-    delete teardown;
-
-    bool received_response = raw_resp != nullptr;
-    if (!received_response && waitForResponse) {
-        ERROR("Failed to get response to TEARDOWN!");
-        return nullptr;
-    }
-    
-    RtspResponse* resp = nullptr;
-    if (waitForResponse) {
-        try {
-            resp = new RtspResponse(raw_resp);
-        }
-        catch (const std::exception& e) {
-            ERROR("Invalid TeardownResponse: " << e.what());
-            resp = nullptr;
-        }
-        delete raw_resp;
-    } else {
-        resp = new RtspResponse(200, "");
-    }
-    
-    return resp;
-}
-
-Surge::RtspResponse* Surge::RtspClient::KeepAlive() {
-    RtspCommand* keep_alive = RtspCommandFactory::KeepAliveRequest(m_url, m_session, GetNextSequenceNumber());
-    Response* raw_resp = m_transport->RtspTransaction(keep_alive, true);
     delete keep_alive;
-
-    bool received_response = raw_resp != nullptr;
-    if (!received_response) {
-        ERROR("Failed to get response to Keep-Alive!");
-        return nullptr;
-    }
-
-    RtspResponse* resp = nullptr;
-    try {
-        resp = new RtspResponse(raw_resp);
-    } catch (const std::exception& e) {
-        ERROR("Invalid KeepaliveResponse: " << e.what());
-        resp = nullptr;
-    }
-    
-    delete raw_resp;
-    
-    return resp;
 }
 
 void Surge::RtspClient::StopClient() {
@@ -387,10 +402,7 @@ void Surge::RtspClient::StopClient() {
 
         // non empty session token we should teardown
         if (!m_session.empty()) {
-            RtspResponse* teardown_response = Teardown(false);
-            if (teardown_response != nullptr) {
-                delete teardown_response;
-            }
+            Teardown();
         }
         
         m_transport->StopRunning();
@@ -457,21 +469,22 @@ void Surge::RtspClient::Run() {
         if (need_keep_alive) {
             DEBUG("Sending Keep Alive for session: " << m_url);
 
-            RtspResponse* resp = KeepAlive();
-            if (resp == nullptr) {
-                // notify delegate via error dispatcher
-                ERROR("Failed to get response to keep alive");
-                NotifyDelegateTimeout();
-                break;
-            } else if (!resp->Ok()) {
-                ERROR("Failed Keep-Alive request: " << resp->GetCode());
-                delete resp;
-                NotifyDelegateTimeout();
-                break;
-            } else {
-                m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
-                delete resp;
-            }
+            KeepAlive([&](RtspResponse *resp) {
+                if (resp == nullptr) {
+                    // notify delegate via error dispatcher
+                    ERROR("Failed to get response to keep alive");
+                    NotifyDelegateTimeout();
+                    m_thread.Stop();
+                } else if (!resp->Ok()) {
+                    ERROR("Failed Keep-Alive request: " << resp->GetCode());
+                    delete resp;
+                    NotifyDelegateTimeout();
+                    m_thread.Stop();
+                } else {
+                    m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
+                    delete resp;
+                }
+            });
         }
     }    
     INFO("Rtsp Client is Finished");

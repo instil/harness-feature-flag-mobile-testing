@@ -48,9 +48,6 @@ namespace Surge {
         
         void StartRunning () override;
         void StopRunning() override;
-
-        [[deprecated]]
-        Response* RtspTransaction(const RtspCommand* command, bool waitForResponse = true) override;
         
         void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;
         
@@ -112,7 +109,6 @@ namespace Surge {
         
         rxcpp::subjects::subject<RtpPacket*> m_rtpPacketSubject;
         rxcpp::subjects::subject<Response*> m_rtspResponseSubject;
-        SurgeUtil::DataEventQueue<Response*> m_rtspOutputQueue;
         ISocketHandlerDelegate *m_delegate;
    
     private:

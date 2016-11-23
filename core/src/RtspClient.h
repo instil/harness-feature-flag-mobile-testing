@@ -63,16 +63,17 @@ namespace Surge {
         void Play(bool waitForResponse,
                   std::function<void(Surge::RtspResponse*)> callback);
 
-        RtspResponse* Pause();
+        void Pause(std::function<void(Surge::RtspResponse*)> callback = NULL);
 
-        RtspResponse* Options();
+//        RtspResponse* Options();
+//
+//        void Options(const std::string& url,
+//                     std::function<void(Surge::RtspResponse*)> callback);
 
-        void Options(const std::string& url,
-                     std::function<void(Surge::RtspResponse*)> callback);
+        void Teardown(std::function<void(Surge::RtspResponse*)> callback = NULL,
+                      bool waitForResponse = false);
 
-        RtspResponse* Teardown(bool waitForResponse = false);
-
-        RtspResponse* KeepAlive();
+        void KeepAlive(std::function<void(Surge::RtspResponse*)> callback);
 
         void StopClient();
         

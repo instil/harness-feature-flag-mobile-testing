@@ -272,21 +272,33 @@ private:
     self.client->Play(false,
                       [=](Surge::RtspResponse *playResponse) {
                           if (playResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
-                              [self.delegate rtspPlayerDidBeginPlayback:self];
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  [self.delegate rtspPlayerDidBeginPlayback:self];
+                              });
                           }
                           delete playResponse;
                           
-                          callback();
+                          if (callback) {
+                              callback();
+                          }
                       });
+}
+
+- (void)play {
+    [self play:nil];
 }
 
 - (void)pause {
     SurgeLogInfo(@"Pausing playback of %@", self.url);
-    Surge::RtspResponse *pauseResponse = self.client->Pause();
-    if (pauseResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
-        [self.delegate rtspPlayerDidStopPlayback:self];
-    }
-    delete pauseResponse;
+    self.client->Pause([=](Surge::RtspResponse *pauseResponse) {
+        if (pauseResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate rtspPlayerDidStopPlayback:self];
+            });
+        }
+        delete pauseResponse;
+    });
+    
 }
 
 - (void)stop {

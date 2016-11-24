@@ -65,10 +65,10 @@ namespace Surge {
 
         void Pause(std::function<void(Surge::RtspResponse*)> callback = NULL);
 
-//        RtspResponse* Options();
-//
-//        void Options(const std::string& url,
-//                     std::function<void(Surge::RtspResponse*)> callback);
+        void Options(std::function<void(RtspResponse*)> callback);
+
+        void Options(const std::string& url,
+                     std::function<void(Surge::RtspResponse*)> callback);
 
         void Teardown(std::function<void(Surge::RtspResponse*)> callback = NULL,
                       bool waitForResponse = false);

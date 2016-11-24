@@ -277,62 +277,63 @@ void Surge::RtspClient::Pause(std::function<void(Surge::RtspResponse*)> callback
     delete pause;
 }
 
-//Surge::RtspResponse* Surge::RtspClient::Options() {
-//    RtspCommand* options = RtspCommandFactory::OptionsRequest(m_url, m_session, GetNextSequenceNumber());
-//    Response* raw_resp = m_transport->RtspTransaction(options, true);
-//    delete options;
-//
-//    bool received_response = raw_resp != nullptr;
-//    if (!received_response) {
-//        ERROR("Failed to get response to OPTIONS!");
-//        return nullptr;
-//    }
-//
-//    RtspResponse* resp = nullptr;
-//    try {
-//        resp = new RtspResponse(raw_resp);
-//    }
-//    catch (const std::exception& e) {
-//        ERROR("Invalid OptionsResponse: " << e.what());
-//        resp = nullptr;
-//    }
-//    delete raw_resp;
-//
-//    return resp;
-//}
-//
-//void Surge::RtspClient::Options(const std::string& url,
-//                                std::function<void(Surge::RtspResponse*)> callback) {
-//    
-//    SetupRtspConnection(url, [&](int result) {
-//        if (result != 0) {
-//            callback(nullptr);
-//        }
-//        
-//        RtspCommand* options = RtspCommandFactory::OptionsRequest(url, m_session, GetNextSequenceNumber());
-//        Response* raw_resp = m_transport->RtspTransaction(options, true);
-//        delete options;
-//        
-//        bool received_response = raw_resp != nullptr;
-//        if (!received_response) {
-//            ERROR("Failed to get response to OPTIONS!");
-//            callback(nullptr);
-//        }
-//        
-//        RtspResponse* resp = nullptr;
-//        try {
-//            resp = new RtspResponse(raw_resp);
-//        }
-//        catch (const std::exception& e) {
-//            ERROR("Invalid OptionsResponse: " << e.what());
-//            resp = nullptr;
-//        }
-//        delete raw_resp;
-//        
-//        callback(resp);
-//    });
-//    
-//}
+void Surge::RtspClient::Options(std::function<void(Surge::RtspResponse*)> callback) {
+    RtspCommand* options = RtspCommandFactory::OptionsRequest(m_url, m_session, GetNextSequenceNumber());
+    m_transport->RtspTransaction(options, [&](Response *raw_resp) {
+        bool received_response = raw_resp != nullptr;
+        if (!received_response) {
+            ERROR("Failed to get response to OPTIONS!");
+            callback(nullptr);
+        }
+        
+        RtspResponse* resp = nullptr;
+        try {
+            resp = new RtspResponse(raw_resp);
+        }
+        catch (const std::exception& e) {
+            ERROR("Invalid OptionsResponse: " << e.what());
+            resp = nullptr;
+        }
+        delete raw_resp;
+        
+        callback(resp);
+    });
+    
+    delete options;
+}
+
+void Surge::RtspClient::Options(const std::string& url,
+                                std::function<void(Surge::RtspResponse*)> callback) {
+    
+    SetupRtspConnection(url, [&](int result) {
+        if (result != 0) {
+            callback(nullptr);
+        }
+        
+        RtspCommand* options = RtspCommandFactory::OptionsRequest(url, m_session, GetNextSequenceNumber());
+        m_transport->RtspTransaction(options, [&](Response *raw_resp) {
+            bool received_response = raw_resp != nullptr;
+            if (!received_response) {
+                ERROR("Failed to get response to OPTIONS!");
+                callback(nullptr);
+            }
+            
+            RtspResponse* resp = nullptr;
+            try {
+                resp = new RtspResponse(raw_resp);
+            }
+            catch (const std::exception& e) {
+                ERROR("Invalid OptionsResponse: " << e.what());
+                resp = nullptr;
+            }
+            delete raw_resp;
+            
+            callback(resp);
+        });
+        delete options;
+    });
+    
+}
 
 void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callback,
                                  bool waitForResponse) {

@@ -71,20 +71,20 @@
  * Initiate playback of the RTSP stream - this will issue the required
  * describe, setup and play RTSP requests.
  */
-- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url;
+- (void)initiatePlaybackOf:(nonnull NSURL *)url;
 
 
 /**
  * Initiate playback of a basic auth protected RTSP stream -
  * this will issue the required describe, setup and play RTSP requests.
  */
-- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url withUsername:(nonnull NSString *)username andPassword:(nonnull NSString *)password;
+- (void)initiatePlaybackOf:(nonnull NSURL *)url withUsername:(nonnull NSString *)username andPassword:(nonnull NSString *)password;
 
 /**
  * Initiate playback of a basic auth protected RTSP stream at a specific start and end time -
  * this will issue the required describe, setup and play RTSP requests.
  */
-- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url
+- (void)initiatePlaybackOf:(nonnull NSURL *)url
               withUsername:(nonnull NSString *)username
                andPassword:(nonnull NSString *)password
                 startingAt:(nullable NSDate *)startDate

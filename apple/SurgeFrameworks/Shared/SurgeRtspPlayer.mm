@@ -156,22 +156,20 @@ private:
 
 #pragma mark - Public API
 
-- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url {
+- (void)initiatePlaybackOf:(nonnull NSURL *)url {
     return [self initiatePlaybackOf:url withUsername:@"" andPassword:@""];
 }
 
-- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url withUsername:(nonnull NSString *)username andPassword:(nonnull NSString *)password {
+- (void)initiatePlaybackOf:(nonnull NSURL *)url withUsername:(nonnull NSString *)username andPassword:(nonnull NSString *)password {
     return [self initiatePlaybackOf:url withUsername:username andPassword:password startingAt:nil andEndingAt:nil];
 }
 
-- (BOOL)initiatePlaybackOf:(nonnull NSURL *)url
+- (void)initiatePlaybackOf:(nonnull NSURL *)url
               withUsername:(nonnull NSString *)username
                andPassword:(nonnull NSString *)password
                 startingAt:(nullable NSDate *)startDate
                andEndingAt:(nullable NSDate *)endDate {
     SurgeLogDebug(@"Initating playback of %@", url);
-    
-    __block BOOL result = NULL;
     
     self.url = url;
     self.username = username;
@@ -183,22 +181,17 @@ private:
     [self setRangeWithStartTime:startDate andEndTime:endDate];
     [self describe:^{
         if (self.sessionDescriptions.size() == 0) {
-            result = NO;
         }
         
         Surge::SessionDescription currentSessionDescription = [self selectPreferredSessionDescription];
         
         [self setupStream:currentSessionDescription withCallback:^{
             [self play:^{
-                result = YES;
+                // Note: Return of the success is currently removed.
+                // Client currently gets notified of playback started via the rtspPlayerDidBeginPlayback delegate method
             }];
         }];
     }];
-    
-    // Bah.
-    while (result == NULL) std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    
-    return result;
 }
 
 - (void)seekToStartTime:(nullable NSDate *)startTime

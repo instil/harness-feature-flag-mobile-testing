@@ -26,7 +26,7 @@ Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_running(false)
                                                         m_transactionTimeoutMs(DEFAULT_TRANSACTION_TIMEOUT_MS),
                                                         m_timeoutMs(DEFAULT_SOCKET_HANDLER_TIMEOUT_MS)
 {
-    m_loop = uvw::Loop::getDefault();
+    m_loop = uvw::Loop::create();
     
     m_tcp = m_loop->resource<uvw::TcpHandle>();
     
@@ -37,6 +37,7 @@ Surge::Transport::~Transport() {
     StopRunning();
     
     m_tcp->close();
+    m_loop->stop();
     m_loop->close();
 }
 

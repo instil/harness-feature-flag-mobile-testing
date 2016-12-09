@@ -37,11 +37,8 @@ namespace Surge {
         ~InterleavedRtspTransport();
 
         bool IsInterleavedTransport() override { return true; };
-
         bool IsRtpTransportTCP() override { return true; };
-
         void SetRtpInterleavedChannel(int channel) { m_rtpInterleavedChannel = channel; }
-
         void SetRtcpInterleavedChannel(int channel) { m_rtcpInterleavedChannel = channel; }
 
         std::string GetTransportHeaderString() const override {
@@ -66,11 +63,29 @@ namespace Surge {
 
     protected:
         void RtspHandleReceive(const char*, size_t) override;
-        void RtspHandleReceive(const SurgeUtil::WaitableEvent& event) {};
 
     private:
         void AppendDataToBuffer(const char*, size_t);
         void RemoveDataFromStartOfBuffer(int);
+        
+        bool HandleRtpPacket();
+        bool HandleRtspPacket();
+        
+        bool BufferContainsRtpPacket() {
+            return m_receivedBuffer.size() >= 4 && m_receivedBuffer[0] == '$';
+        }
+        
+        bool BufferContainsRtspPacket() {
+            return m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "RTSP/1.0", 8) == 0;
+        }
+        
+        bool BufferContainsAnnouncePacket() {
+            return m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "ANNOUNCE", 8) == 0;
+        }
+        
+        bool BufferContainsRedirectPacket() {
+            return m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "REDIRECT", 8) == 0;
+        }
         
     private:
         std::vector<unsigned char> m_receivedBuffer;

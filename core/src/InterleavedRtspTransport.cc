@@ -65,65 +65,23 @@ void Surge::InterleavedRtspTransport::RtspHandleReceive(const char* buffer, size
     AppendDataToBuffer(buffer, size);
     
     do {
-        bool is_rtp = m_receivedBuffer.size() >= 4 && m_receivedBuffer[0] == '$';
-        bool is_rtsp = m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "RTSP/1.0", 8) == 0;
-        bool is_announce = m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "ANNOUNCE", 8) == 0;
-        bool is_redirect = m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "REDIRECT", 8) == 0;
-        
-        if (is_announce) {
+        if (BufferContainsAnnouncePacket()) {
             NotifyDelegateOfAnnounce();
             break;
         }
-        else if (is_redirect) {
+        else if (BufferContainsRedirectPacket()) {
             NotifyDelegateOfRedirect();
             break;
         }
-        else if (is_rtp) {
-            int channel = static_cast<int>(m_receivedBuffer[1]);
-            
-            uint16_t network_order_packet_length = 0;
-            memcpy(&network_order_packet_length, &(m_receivedBuffer[2]), 2);
-            uint16_t packet_length = ntohs(network_order_packet_length);
-            
-            bool have_whole_packet = (m_receivedBuffer.size() - (4)) >= packet_length;
-            
-            if (have_whole_packet && channel == m_rtpInterleavedChannel) {
-                try {
-                    RtpPacket* pack = new RtpPacket(&(m_receivedBuffer[4]), packet_length);
-                    m_rtpPacketSubject.get_subscriber().on_next(pack);
-                } catch (const std::exception& e) {
-                    ERROR("Invalid Rtp Packet: " << e.what());
-                }
-            } else if (!have_whole_packet) {
+        else if (BufferContainsRtpPacket()) {
+            bool result = HandleRtpPacket();
+            if (!result) {
                 break;
             }
-            RemoveDataFromStartOfBuffer(packet_length + 4);
         }
-        else if (is_rtsp) {
-            std::string string_response;
-            string_response.resize(m_receivedBuffer.size());
-            std::copy(m_receivedBuffer.begin(), m_receivedBuffer.end(), string_response.begin());
-            
-            size_t body_pos;
-            if ((body_pos = string_response.find("\r\n\r\n")) != std::string::npos) {
-                size_t pos = string_response.find("Content-Length:");
-                size_t content_length = (pos != std::string::npos) ?
-                static_cast<size_t>(atoi(&string_response[pos + 16])) :
-                0;
-                
-                size_t headers_length = body_pos;
-                
-                const unsigned char *rtsp_buffer = &(m_receivedBuffer[0]);
-                size_t rtsp_buffer_length = content_length + 4 + headers_length;
-                
-                if ((m_receivedBuffer.size()) < rtsp_buffer_length) {
-                    break;
-                }
-
-                m_rtspResponseSubject.get_subscriber().on_next(new Response(rtsp_buffer, rtsp_buffer_length));
-                
-                RemoveDataFromStartOfBuffer(rtsp_buffer_length);
-            } else {
+        else if (BufferContainsRtspPacket()) {
+            bool result = HandleRtspPacket();
+            if (!result) {
                 break;
             }
         }
@@ -131,6 +89,61 @@ void Surge::InterleavedRtspTransport::RtspHandleReceive(const char* buffer, size
             break;
         }
     } while (0 < m_receivedBuffer.size() && m_running);
+}
+
+bool Surge::InterleavedRtspTransport::HandleRtpPacket() {
+    int channel = static_cast<int>(m_receivedBuffer[1]);
+    
+    uint16_t network_order_packet_length = 0;
+    memcpy(&network_order_packet_length, &(m_receivedBuffer[2]), 2);
+    uint16_t packet_length = ntohs(network_order_packet_length);
+    
+    bool have_whole_packet = (m_receivedBuffer.size() - (4)) >= packet_length;
+    
+    if (have_whole_packet && channel == m_rtpInterleavedChannel) {
+        try {
+            RtpPacket* pack = new RtpPacket(&(m_receivedBuffer[4]), packet_length);
+            m_rtpPacketSubject.get_subscriber().on_next(pack);
+        } catch (const std::exception& e) {
+            ERROR("Invalid Rtp Packet: " << e.what());
+        }
+    } else if (!have_whole_packet) {
+        return false;
+    }
+    RemoveDataFromStartOfBuffer(packet_length + 4);
+    
+    return true;
+}
+
+bool Surge::InterleavedRtspTransport::HandleRtspPacket() {
+    std::string string_response;
+    string_response.resize(m_receivedBuffer.size());
+    std::copy(m_receivedBuffer.begin(), m_receivedBuffer.end(), string_response.begin());
+    
+    size_t body_pos;
+    if ((body_pos = string_response.find("\r\n\r\n")) != std::string::npos) {
+        size_t pos = string_response.find("Content-Length:");
+        size_t content_length = (pos != std::string::npos) ?
+        static_cast<size_t>(atoi(&string_response[pos + 16])) :
+        0;
+        
+        size_t headers_length = body_pos;
+        
+        const unsigned char *rtsp_buffer = &(m_receivedBuffer[0]);
+        size_t rtsp_buffer_length = content_length + 4 + headers_length;
+        
+        if (m_receivedBuffer.size() < rtsp_buffer_length) {
+            return false;
+        }
+        
+        m_rtspResponseSubject.get_subscriber().on_next(new Response(rtsp_buffer, rtsp_buffer_length));
+        
+        RemoveDataFromStartOfBuffer(rtsp_buffer_length);
+    } else {
+        return false;
+    }
+    
+    return true;
 }
 
 void Surge::InterleavedRtspTransport::AppendDataToBuffer(const char* buffer, size_t size) {

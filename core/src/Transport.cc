@@ -29,8 +29,6 @@ Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_running(false)
     m_loop = uvw::Loop::create();
     
     m_tcp = m_loop->resource<uvw::TcpHandle>();
-    
-    std::shared_ptr<uvw::UDPHandle> test = m_loop->resource<uvw::UDPHandle>();
 }
 
 Surge::Transport::~Transport() {

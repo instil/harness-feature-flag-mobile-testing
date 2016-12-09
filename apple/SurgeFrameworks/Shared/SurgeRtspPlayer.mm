@@ -181,14 +181,15 @@ private:
     [self setRangeWithStartTime:startDate andEndTime:endDate];
     [self describe:^{
         if (self.sessionDescriptions.size() == 0) {
+            [self.delegate rtspPlayerFailedToInitiatePlayback:self];
+            return;
         }
         
         Surge::SessionDescription currentSessionDescription = [self selectPreferredSessionDescription];
         
         [self setupStream:currentSessionDescription withCallback:^{
             [self play:^{
-                // Note: Return of the success is currently removed.
-                // Client currently gets notified of playback started via the rtspPlayerDidBeginPlayback delegate method
+                [self.delegate rtspPlayerDidInitiatedPlayback:self];
             }];
         }];
     }];

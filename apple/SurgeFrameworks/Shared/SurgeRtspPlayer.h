@@ -33,6 +33,16 @@
 @optional
 
 /**
+ *
+ */
+- (void)rtspPlayerDidInitiatedPlayback:(nonnull SurgeRtspPlayer *)player;
+
+/**
+ *
+ */
+- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player;
+
+/**
  * Called when the player begins or resumes playback of a stream.
  */
 - (void)rtspPlayerDidBeginPlayback:(nonnull SurgeRtspPlayer *)player;

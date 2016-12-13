@@ -28,7 +28,6 @@
 #include "RtpPacket.h"
 #include "ISocketHandlerDelegate.h"
 
-#include <rxcpp/rx.hpp>
 #include <string>
 
 namespace Surge {
@@ -56,7 +55,7 @@ namespace Surge {
 
         virtual void SetTransactionTimeout(long timeout) = 0;
 
-        virtual rxcpp::observable<RtpPacket*> GetRtpPacketObservable() const = 0;
+        virtual void SetRtpCallback(std::function<void(RtpPacket*)> callback) = 0;
 
         virtual void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) = 0;
 

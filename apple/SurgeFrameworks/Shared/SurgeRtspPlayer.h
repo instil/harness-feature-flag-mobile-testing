@@ -35,7 +35,7 @@
 /**
  *
  */
-- (void)rtspPlayerDidInitiatedPlayback:(nonnull SurgeRtspPlayer *)player;
+- (void)rtspPlayerInitiatedPlayback:(nonnull SurgeRtspPlayer *)player;
 
 /**
  *

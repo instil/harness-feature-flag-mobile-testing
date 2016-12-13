@@ -102,8 +102,10 @@ bool Surge::InterleavedRtspTransport::HandleRtpPacket() {
     
     if (have_whole_packet && channel == m_rtpInterleavedChannel) {
         try {
-            RtpPacket* pack = new RtpPacket(&(m_receivedBuffer[4]), packet_length);
-            m_rtpPacketSubject.get_subscriber().on_next(pack);
+            if (rtpCallback != nullptr) {
+                RtpPacket* pack = new RtpPacket(&(m_receivedBuffer[4]), packet_length);
+                rtpCallback(pack);
+            }
         } catch (const std::exception& e) {
             ERROR("Invalid Rtp Packet: " << e.what());
         }
@@ -136,8 +138,10 @@ bool Surge::InterleavedRtspTransport::HandleRtspPacket() {
             return false;
         }
         
-        m_rtspResponseSubject.get_subscriber().on_next(new Response(rtsp_buffer, rtsp_buffer_length));
-        
+        if (rtspCallback != nullptr) {
+            rtspCallback(new Response(rtsp_buffer, rtsp_buffer_length));
+        }
+            
         RemoveDataFromStartOfBuffer(rtsp_buffer_length);
     } else {
         return false;
@@ -157,7 +161,7 @@ void Surge::InterleavedRtspTransport::AppendDataToBuffer(const char* buffer, siz
     }
 }
 
-void Surge::InterleavedRtspTransport::RemoveDataFromStartOfBuffer(int count) {
+void Surge::InterleavedRtspTransport::RemoveDataFromStartOfBuffer(size_t count) {
     m_receivedBuffer.erase(m_receivedBuffer.begin(), m_receivedBuffer.begin() + count);
 }
 

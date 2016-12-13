@@ -56,7 +56,7 @@ namespace Surge {
                 + std::string(rtcp_channel);
         }
         
-        void RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
+        void RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) override {
             m_receivedBuffer.clear();
             Transport::RtspTcpOpen(host, port, callback);
         }
@@ -66,7 +66,7 @@ namespace Surge {
 
     private:
         void AppendDataToBuffer(const char*, size_t);
-        void RemoveDataFromStartOfBuffer(int);
+        void RemoveDataFromStartOfBuffer(size_t);
         
         bool HandleRtpPacket();
         bool HandleRtspPacket();

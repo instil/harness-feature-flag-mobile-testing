@@ -4,14 +4,6 @@ project(Surge)
 set(LIBRARY_TYPE STATIC)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall")
 
-include_directories(./lib/RxCpp/Rx/v2/src/)
-file(GLOB RX_CPP_SRCS
-  ./lib/RxCpp/Rx/v2/src/rxcpp/operators/*.hpp
-  ./lib/RxCpp/Rx/v2/src/rxcpp/schedulers/*.hpp
-  ./lib/RxCpp/Rx/v2/src/rxcpp/sources/*.hpp
-  ./lib/RxCpp/Rx/v2/src/rxcpp/subjects/*.hpp
-)
-
 include_directories(./lib/libuv-cmake/libuv/include)
 add_subdirectory(./lib/libuv-cmake)
 

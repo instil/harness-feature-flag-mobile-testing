@@ -64,7 +64,7 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
         callback(error.code());
     });
     
-    m_tcp->once<uvw::ConnectEvent>([&](const uvw::ConnectEvent &connectEvent, uvw::TcpHandle &tcp) mutable {
+    m_tcp->once<uvw::ConnectEvent>([&](const uvw::ConnectEvent &connectEvent, uvw::TcpHandle &tcp) {
         INFO("Connected");
         callback(0);
     });
@@ -77,19 +77,7 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
 void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) {
     DEBUG("Sending command to server");
     
-    m_rtspResponseSubject.get_observable()
-        .take(1)
-        .subscribe([callback](Response *response) {
-            callback(response);
-        }, [](std::exception_ptr error) {
-            try {
-                if (error) {
-                    std::rethrow_exception(error);
-                }
-            } catch(const std::exception& e) {
-                ERROR("Caught exception \"" << e.what() << "\"\n");
-            }
-        });
+    rtspCallback = callback;
     
     m_tcp->write(generateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
                  command->PointerLength());
@@ -103,36 +91,39 @@ std::unique_ptr<char[]> Surge::Transport::generateRtspDataPtr(char *data, size_t
 
 
 void Surge::Transport::Run() {
-    m_tcp->on<uvw::ErrorEvent>([](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
+    m_tcp->on<uvw::ErrorEvent>([this](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("ERROR");
+        NotifyDelegateOfReadFailure();
     });
     
-    m_tcp->on<uvw::ListenEvent>([](const uvw::ListenEvent &listenEvent, uvw::TcpHandle &tcp) mutable {
+    m_tcp->on<uvw::ListenEvent>([](const uvw::ListenEvent &listenEvent, uvw::TcpHandle &tcp) {
         INFO("Listening");
     });
     
-    m_tcp->on<uvw::ShutdownEvent>([](const uvw::ShutdownEvent &shutdownEvent, uvw::TcpHandle &tcp) mutable {
+    m_tcp->on<uvw::ShutdownEvent>([](const uvw::ShutdownEvent &shutdownEvent, uvw::TcpHandle &tcp) {
         INFO("Shutdown");
     });
     
-    m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) mutable {
+    m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) {
         DEBUG("Sent request to stream, wait for a response");
         tcp.read();
     });
     
-    m_tcp->on<uvw::DataEvent>([&](const uvw::DataEvent &dataEvent, uvw::TcpHandle &tcp) mutable {
+    m_tcp->on<uvw::DataEvent>([this](const uvw::DataEvent &dataEvent, uvw::TcpHandle &tcp) {
         DEBUG("Data received, handing received data");
         RtspHandleReceive(dataEvent.data.get(), dataEvent.length);
     });
     
-    m_tcp->on<uvw::EndEvent>([](const uvw::EndEvent &endEvent, uvw::TcpHandle &tcp) mutable {
-        INFO("Loop ended, closing TCP port");
+    m_tcp->on<uvw::EndEvent>([this](const uvw::EndEvent &endEvent, uvw::TcpHandle &tcp) {
+        INFO("Loop ended prematurely, closing TCP port");
         tcp.close();
+        
+        NotifyDelegateOfReadFailure();
     });
     
     while (m_running) {
         INFO("RUNNING");
-        m_loop->run();
+        m_loop->run<uvw::Loop::Mode::NOWAIT>();
     }
     
     

@@ -430,20 +430,15 @@ void Surge::RtspClient::Run() {
 
     uint64_t time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
 
-    auto rtp_packet_obs = m_transport->GetRtpPacketObservable().subscribe(
-        [&](RtpPacket* packet) {
-            if (packet != nullptr) {
-                ProcessRtpPacket(packet);
-                
-                delete packet;
-                
-                time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
-            }
-        },
-        [](std::exception_ptr){
-            // TODO
+    m_transport->SetRtpCallback([&](RtpPacket* packet) {
+        if (packet != nullptr) {
+            ProcessRtpPacket(packet);
+        
+            delete packet;
+
+            time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
         }
-    );
+    });
     
     while (true) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({m_thread.StopRequested()}, 1000);        
@@ -489,7 +484,6 @@ void Surge::RtspClient::Run() {
         }
     }    
     INFO("Rtsp Client is Finished");
-    rtp_packet_obs.unsubscribe();
 }
 
 void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {

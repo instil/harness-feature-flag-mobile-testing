@@ -66,8 +66,8 @@ namespace Surge {
         
         void SetTransactionTimeout(long timeout) override { m_connectTimeoutMs = timeout; }
         
-        rxcpp::observable<RtpPacket*> GetRtpPacketObservable() const override {
-            return m_rtpPacketSubject.get_observable();
+        void SetRtpCallback(std::function<void(RtpPacket*)> callback) override {
+            rtpCallback = callback;
         }
         
         void SetDelegate(ISocketHandlerDelegate * const delegate) override {
@@ -107,8 +107,8 @@ namespace Surge {
         long m_transactionTimeoutMs;
         long m_timeoutMs;
         
-        rxcpp::subjects::subject<RtpPacket*> m_rtpPacketSubject;
-        rxcpp::subjects::subject<Response*> m_rtspResponseSubject;
+        std::function<void(RtpPacket*)> rtpCallback;
+        std::function<void(Response*)> rtspCallback;
         ISocketHandlerDelegate *m_delegate;
    
     private:

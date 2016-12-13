@@ -189,7 +189,9 @@ private:
         
         [self setupStream:currentSessionDescription withCallback:^{
             [self play:^{
-                [self.delegate rtspPlayerDidInitiatedPlayback:self];
+                if ([self.delegate respondsToSelector:@selector(rtspPlayerInitiatedPlayback:)]) {
+                    [self.delegate rtspPlayerInitiatedPlayback:self];
+                }
             }];
         }];
     }];
@@ -226,7 +228,7 @@ private:
     [self play];
 }
 
-- (void)describe:(void (^)(void)) callback {
+- (void)describe:(void (^)(void))callback {
     
     self.client->Describe(std::string(self.url.absoluteString.UTF8String),
                           std::string(self.username.UTF8String),
@@ -238,7 +240,7 @@ private:
       });
 }
 
-- (void)setupStream:(Surge::SessionDescription)sessionDescription withCallback:(void (^)(void)) callback {
+- (void)setupStream:(Surge::SessionDescription)sessionDescription withCallback:(void (^)(void))callback {
     SurgeLogInfo(@"Setting up stream with SessionDescription; %@",
                  [NSString stringWithUTF8String:sessionDescription.GetFmtp().c_str()]);
     

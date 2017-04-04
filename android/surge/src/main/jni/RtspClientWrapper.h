@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_load
-        (JNIEnv *, jclass);
+  (JNIEnv *, jclass);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_load
  * Signature: (Lco/instil/surge/client/RtspClientDelegate;)J
  */
 JNIEXPORT jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClientInstance
-        (JNIEnv *, jobject, jobject);
+  (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -29,7 +29,7 @@ JNIEXPORT jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClien
  * Signature: ()Lco/instil/surge/client/Response;
  */
 JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_options__
-        (JNIEnv *, jobject);
+  (JNIEnv *, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -37,7 +37,7 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_options__
  * Signature: (Ljava/lang/String;)Lco/instil/surge/client/Response;
  */
 JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_options__Ljava_lang_String_2
-        (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -45,7 +45,7 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_options__Ljava_
  * Signature: (Ljava/lang/String;)Lco/instil/surge/client/DescribeResponse;
  */
 JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2
-        (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -53,7 +53,7 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lco/instil/surge/client/DescribeResponse;
  */
 JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2
-        (JNIEnv *, jobject, jstring, jstring, jstring);
+  (JNIEnv *, jobject, jstring, jstring, jstring);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -61,7 +61,7 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava
  * Signature: (Lco/instil/surge/client/SessionDescription;)Lco/instil/surge/client/Response;
  */
 JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_setup
-        (JNIEnv *, jobject, jobject);
+  (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -69,7 +69,7 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_setup
  * Signature: ()Lco/instil/surge/client/Response;
  */
 JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_play
-        (JNIEnv *, jobject);
+  (JNIEnv *, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -77,15 +77,39 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_play
  * Signature: ()Lco/instil/surge/client/Response;
  */
 JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_pause
-        (JNIEnv *, jobject);
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    setTimeRange
+ * Signature: (Ljava/util/Date;Ljava/util/Date;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTimeRange
+  (JNIEnv *, jobject, jobject, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    setStartTime
+ * Signature: (Ljava/util/Date;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setStartTime
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    setEndTime
+ * Signature: (Ljava/util/Date;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setEndTime
+  (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    tearDown
- * Signature: ()Lco/instil/surge/client/Response;
+ * Signature: ()V
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_tearDown
-        (JNIEnv *, jobject);
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_tearDown
+  (JNIEnv *, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -93,7 +117,7 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_tearDown
  * Signature: ()Lco/instil/surge/client/Response;
  */
 JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_keepAlive
-        (JNIEnv *, jobject);
+  (JNIEnv *, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -101,7 +125,15 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_keepAlive
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_close
-        (JNIEnv *, jobject);
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    stopStream
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_stopStream
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

@@ -34,7 +34,7 @@
     if (self.playbackUrlString) {
         [self.activityIndicator startAnimating];
         self.urlLabel.text = self.playbackUrlString;
-        [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:self.playbackUrlString]];
+        [self playUrl:self.playbackUrlString];
         self.playbackUrlString = nil;
     }
     else {
@@ -49,8 +49,23 @@
     if (![rtspAddress isKindOfClass:[NSString class]]) {
         return;
     }
-    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:rtspAddress]];
+    [self playUrl:rtspAddress];
 }
+
+- (void)playUrl:(NSString *)urlString {
+    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:urlString] withUsername:@"admin" andPassword:@"admin"];
+}
+
+- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops"
+                                                                   message:@"Failed to start stream"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 
 #pragma mark - Playback Controls
 

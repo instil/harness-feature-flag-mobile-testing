@@ -21,18 +21,20 @@
 package co.instil.surge.player;
 
 import android.view.Surface;
-import co.instil.surge.client.DescribeResponse;
-import co.instil.surge.client.RtspClient;
-import co.instil.surge.client.RtspClientDelegate;
-import co.instil.surge.client.SessionDescription;
-import co.instil.surge.decoders.Decoder;
-import co.instil.surge.decoders.h264.AsyncH264Decoder;
-import co.instil.surge.decoders.mjpeg.MjpegDecoder;
-import co.instil.surge.decoders.mp4v.AsyncMp4vDecoder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+import java.util.Date;
+
+import co.instil.surge.client.DescribeResponse;
+import co.instil.surge.client.ExtendedHeader;
+import co.instil.surge.client.RtspClient;
+import co.instil.surge.client.RtspClientDelegate;
+import co.instil.surge.client.SessionDescription;
+import co.instil.surge.decoders.Decoder;
+import co.instil.surge.decoders.DecoderFactory;
 
 import static co.instil.surge.client.SessionType.H264;
 import static co.instil.surge.client.SessionType.MJPEG;
@@ -45,33 +47,78 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     private static Logger logger = LoggerFactory.getLogger(RtspPlayer.class);
 
-    private final RtspClient rtspClient;
+    protected final RtspClient rtspClient;
 
-    private String url;
-    private Surface surface;
+    protected String url;
+    protected String username;
+    protected String password;
+    protected SessionDescription[] sessionDescriptions;
+    protected SessionDescription sessionDescription;
+
+    protected ExtendedHeader extendedHeader;
+
+    public RtspPlayerDelegate delegate;
+
+    private Surface surface = null;
     private Decoder decoder;
-    private SessionDescription sessionDescription;
+
 
     public RtspPlayer() {
-        rtspClient = new RtspClient(this);
+        rtspClient = generateRtspClient();
     }
 
-    public void initiatePlaybackOf(String url, Surface surface) {
+    protected RtspClient generateRtspClient() {
+        return new RtspClient(this);
+    }
+
+    public boolean initiatePlaybackOf(String url, Surface surface) {
+        return initiatePlaybackOf(url, surface, "", "", null, null);
+    }
+
+    public boolean initiatePlaybackOf(String url, Surface surface, String username, String password) {
+        return initiatePlaybackOf(url, surface, username, password, null, null);
+    }
+
+    public boolean initiatePlaybackOf(String url, Surface surface, String username, String password, Date startTime, Date endTime) {
         this.url = url;
-        this.surface = surface;
+        this.username = username;
+        this.password = password;
+
+        if (surface != null) {
+            this.surface = surface;
+        }
+
         logger.debug("Initating playback of {}", url);
 
-        DescribeResponse response = rtspClient.describe(url);
+        if (startTime != null) {
+            rtspClient.setStartTime(startTime);
+        }
+        if (endTime != null) {
+            rtspClient.setEndTime(endTime);
+        }
+
+        DescribeResponse response = rtspClient.describe(url, username, password);
+
+        if (response == null ||
+                response.getSessionDescriptions() == null ||
+                response.getSessionDescriptions().length == 0) {
+            return false;
+        }
+
         for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
             logger.debug(sessionDescription.toString());
         }
 
-        SessionDescription[] sessionDescriptions = response.getSessionDescriptions();
+        setSessionDescriptions(response.getSessionDescriptions());
         if (sessionDescriptions.length > 0) {
-            setupStream(sessionDescriptions[0]);
+            setupStream(selectPreferredSessionDescription(getSessionDescriptions()));
         } else {
             throw new RuntimeException("No session description available, is the stream active?");
         }
+
+        startFpsCounter();
+
+        return true;
     }
 
     private void setupStream(SessionDescription sessionDescription) {
@@ -82,12 +129,25 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     }
 
     private void initialiseDecoder(SessionDescription sessionDescription) {
-        if (sessionDescription.getType() == H264) {
-            decoder = new AsyncH264Decoder(surface);
-        } else if (sessionDescription.getType() == MP4V) {
-            decoder = new AsyncMp4vDecoder(surface);
-        } else if (sessionDescription.getType() == MJPEG) {
-            decoder = new MjpegDecoder(surface);
+
+        System.out.println("Initializing new decoders");
+
+        if (surface != null) {
+            if (decoder != null) {
+                try {
+                    decoder.close();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (sessionDescription.getType() == H264) {
+                decoder = DecoderFactory.generateH264Decoder(surface);
+            } else if (sessionDescription.getType() == MP4V) {
+                decoder = DecoderFactory.generateMP4VDecoder(surface);
+            } else if (sessionDescription.getType() == MJPEG) {
+                decoder = DecoderFactory.generateMJPEGDecoder(surface);
+            }
         }
     }
 
@@ -106,15 +166,53 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         rtspClient.tearDown();
     }
 
+    public void seek(Date startTime, Date endTime) {
+        rtspClient.pause();
+
+        if (startTime != null) {
+            rtspClient.setStartTime(startTime);
+        }
+
+        if (endTime != null) {
+            rtspClient.setEndTime(endTime);
+        }
+
+        rtspClient.play();
+    }
+
+    protected SessionDescription selectPreferredSessionDescription(SessionDescription[] sessionDescriptions) {
+        return sessionDescriptions[0];
+    }
+
+    public void setSurface(Surface surface) {
+        this.surface = surface;
+
+        if (sessionDescription != null) {
+            initialiseDecoder(sessionDescription);
+        }
+
+    }
+
     @Override
     public void close() throws Exception {
-        rtspClient.close();
-        decoder.close();
+        try {
+            rtspClient.close();
+        } catch (Exception e) {
+            System.out.println("Failed to close and clean up the native RTSP Client");
+        }
+
+        if (decoder != null) {
+            decoder.close();
+        }
     }
 
     @Override
     public void clientDidTimeout() {
-        logger.error("RTSP client timed out");
+        logger.error("RTSP client timed out - calling delegate");
+
+        if (delegate != null) {
+            delegate.rtspPlayerDidTimeout();
+        }
     }
 
     @Override
@@ -124,12 +222,68 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
                                     int presentationTime,
                                     int duration) {
 
-        decoder.decodeFrameBuffer(sessionDescription,
-                                  byteBuffer,
-                                  width,
-                                  height,
-                                  presentationTime,
-                                  duration);
+        if (decoder != null) {
+            decoder.decodeFrameBuffer(sessionDescription,
+                    byteBuffer,
+                    width,
+                    height,
+                    presentationTime,
+                    duration);
+        }
+
+        framesPerSecondCounter++;
     }
 
+    @Override
+    public void clientReceivedExtendedHeader(ByteBuffer buffer, int length) {
+        System.out.println("Received extended header");
+    }
+
+
+
+    private int framesPerSecond = 0;
+    private int framesPerSecondCounter = 0;
+
+
+    private void startFpsCounter() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    framesPerSecond = framesPerSecondCounter;
+                    framesPerSecondCounter = 0;
+                    if (delegate != null) {
+                        delegate.rtspPlayerDidUpdateFps(framesPerSecond);
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+
+
+    public SessionDescription getCurrentSessionDescription() {
+        return sessionDescription;
+    }
+
+    public SessionDescription[] getSessionDescriptions() {
+        return sessionDescriptions;
+    }
+
+    protected void setSessionDescriptions(SessionDescription[] sessionDescriptions) {
+        this.sessionDescriptions = sessionDescriptions;
+    }
+
+    public ExtendedHeader getExtendedHeader() {
+        return extendedHeader;
+    }
+
+    public int getFramesPerSecond() {
+        return framesPerSecond;
+    }
 }

@@ -17,8 +17,10 @@ model {
 
     android.sources {
         main {
-            jni.source {
-                srcDirs = ["../../core/src", "../../core/lib/RxCpp/Rx/v2/src", "src/main/jni"]
+            jni {
+                source {
+                    srcDirs = ["../../core/src", "../../core/lib/RxCpp/Rx/v2/src", "src/main/jni"]
+                }
             }
         }
     }

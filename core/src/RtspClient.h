@@ -93,18 +93,6 @@ namespace Surge {
             NotifyDelgateRedirect();
         }
 
-        void SetNoPacketTimeout(long timeout) {
-            m_noPacketTimeout = timeout;
-        }
-
-        void SetTransactionTimeout(long timeout) {
-            m_transport->SetTransactionTimeout(timeout);
-        }
-
-        void SetConnectTimeout(long timeout) {
-            m_transport->SetConnectTimeout(timeout);
-        }
-        
         void SetTimeRange(SurgeUtil::DateTime startDate, SurgeUtil::DateTime endDate) {
             this->startDate = startDate;
             this->startTimeSet = true;
@@ -191,7 +179,6 @@ namespace Surge {
 
         Depacketizer *depacketizer;
         IRtspClientDelegate * const m_delegate;
-        long m_noPacketTimeout;
         bool processedFirstPayload;
         std::uint64_t m_lastKeepAliveMs;
         int m_keeepAliveIntervalInSeconds;

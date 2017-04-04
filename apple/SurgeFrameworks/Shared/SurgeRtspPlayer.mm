@@ -181,7 +181,10 @@ private:
     [self setRangeWithStartTime:startDate andEndTime:endDate];
     [self describe:^{
         if (self.sessionDescriptions.size() == 0) {
-            [self.delegate rtspPlayerFailedToInitiatePlayback:self];
+            if ([self.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
+                [self.delegate rtspPlayerFailedToInitiatePlayback:self];
+            }
+
             return;
         }
         
@@ -234,8 +237,10 @@ private:
                           std::string(self.username.UTF8String),
                           std::string(self.password.UTF8String),
                           [=](Surge::DescribeResponse *describeResponse) {
-                              self.sessionDescriptions = describeResponse->GetSessionDescriptions();
-                              delete describeResponse;
+                              if (describeResponse != NULL) {
+                                  self.sessionDescriptions = describeResponse->GetSessionDescriptions();
+                                  delete describeResponse;
+                              }
                               callback();
       });
 }
@@ -304,6 +309,8 @@ private:
     if ([self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
         [self.delegate rtspPlayerDidStopPlayback:self];
     }
+    
+    [self.decoder deinit];
 }
 
 #pragma mark - Package API
@@ -330,7 +337,7 @@ private:
 }
 
 - (int) framesPerSecond {
-    SurgeLogDebug(@"Current FPS: %@", @(self.decoder.framesPerSecond));
+//    SurgeLogDebug(@"Current FPS: %@", @(self.decoder.framesPerSecond));
     return (int)self.decoder.framesPerSecond;
 }
 

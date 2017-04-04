@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -68,7 +69,21 @@ public class SyncH264Decoder extends H264Decoder {
 
     @Override
     protected void onReceiveH264Packet(H264Packet packet) {
-        consumer.queueEncodedPacket(packet);
+        if (isRunning) {
+            consumer.queueEncodedPacket(packet);
+        }
+    }
+
+    private volatile boolean isRunning = true;
+    @Override
+    public void close() throws InterruptedException {
+        isRunning = false;
+
+        while(decodedPacketConsumer.isAlive() || packetQueueConsumer.getState() == Thread.State.RUNNABLE) {
+            Thread.sleep(10);
+        }
+
+        super.close();
     }
 
     /**
@@ -77,12 +92,12 @@ public class SyncH264Decoder extends H264Decoder {
      */
     private class PacketQueueConsumer implements Runnable {
 
-        private final int timeout;
+        private final int millisecondsTimeout;
 
         private LinkedBlockingDeque<H264Packet> packetQueue;
 
-        public PacketQueueConsumer(int timeout) {
-            this.timeout = timeout;
+        public PacketQueueConsumer(int millisecondsTimeout) {
+            this.millisecondsTimeout = millisecondsTimeout;
             packetQueue = new LinkedBlockingDeque<>();
         }
 
@@ -94,22 +109,37 @@ public class SyncH264Decoder extends H264Decoder {
         @Override
         public void run() {
             H264Packet packet;
-            while (true) {
+            while (isRunning) {
                 packet = null;
                 try {
-                    packet = packetQueue.takeFirst();
+                    packet = packetQueue.pollFirst(millisecondsTimeout, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException ex) {}
 
                 if (packet != null) {
-                    int bufferId = getMediaCodec().dequeueInputBuffer(timeout);
+                    int bufferId = getMediaCodec().dequeueInputBuffer(0);
+
+                    if (bufferId == -1) {
+                        logger.error("Dropped frame: H264 codec not ready");
+                        continue;
+                    }
+
                     if (packet.segment == null) {
+                        logger.info("!");
                         return;
                     }
+
                     writePacketToInputBuffer(packet, bufferId);
+
                     logger.debug("Submitting to decoder: {}", packet.toString());
                     int flags = decoderFlagsForPacket(packet);
-                    getMediaCodec().queueInputBuffer(
-                            bufferId, 0, packet.segment.getPayloadLength(), packet.presentationTime, flags);
+
+                    try {
+                        getMediaCodec().queueInputBuffer(
+                                bufferId, 0, packet.segment.getPayloadLength(), packet.presentationTime, flags);
+
+                    } catch (IllegalStateException e) {
+                        logger.error("H264 Codec has stopped processing, exiting and closing decoder.");
+                    }
                 }
             }
         }
@@ -118,27 +148,32 @@ public class SyncH264Decoder extends H264Decoder {
 
     private class DecodedFrameConsumer implements Runnable {
 
-        private final int timeout;
+        private final int millisecondsTimeout;
 
-        public DecodedFrameConsumer(int timeout) {
-            this.timeout = timeout;
+        public DecodedFrameConsumer(int millisecondsTimeout) {
+            this.millisecondsTimeout = millisecondsTimeout;
         }
 
         @Override
         public void run() {
             MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
-            while (getMediaCodec() != null && true) {
-                int bufferId = getMediaCodec().dequeueOutputBuffer(bufferInfo, timeout);
-                if (bufferId >= 0) {
-                    logger.debug("DecodedFrameConsumer got buffer ID: {}", bufferId);
-                    getMediaCodec().releaseOutputBuffer(bufferId, bufferInfo.size > 0);
-                } else if (bufferId == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                    logger.debug("DecodedFrameConsumer got buffer ID: {}", bufferId);
-                    setMediaFormat(getMediaCodec().getOutputFormat());
+            try {
+                while (getMediaCodec() != null && isRunning) {
+                    int bufferId = getMediaCodec().dequeueOutputBuffer(bufferInfo, millisecondsTimeout);
+                    if (bufferId >= 0) {
+                        logger.warn("DecodedFrameConsumer got buffer ID: {}", bufferId);
+                        getMediaCodec().releaseOutputBuffer(bufferId, bufferInfo.size > 0);
+                    } else if (bufferId == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                        logger.debug("DecodedFrameConsumer got buffer ID: {}", bufferId);
+                        setMediaFormat(getMediaCodec().getOutputFormat());
+                    }
                 }
+
+            } catch (Exception e) {
+                System.out.println("Failed to release output buffer: " + e.toString());
+                e.printStackTrace();
             }
         }
-
     }
 
 }

@@ -22,6 +22,12 @@
 #include "Base64.h"
 
 void Surge::H264Depacketizer::ProcessPacket(const RtpPacket *packet, const bool isFirstPayload) {
+
+    if (packet == nullptr || !packet->HasPayload()) {
+        ERROR("No payload, skipping packet processing");
+        return;
+    }
+
     const unsigned char *payloadData = packet->PayloadData();
     size_t payloadLength = packet->PayloadLength();
 
@@ -72,13 +78,13 @@ void Surge::H264Depacketizer::ProcessPacket(const RtpPacket *packet, const bool 
         if (startBit) {
             unsigned char *payloadDataWithHeader = (unsigned char*)malloc(payloadLength - 1);
             memcpy(payloadDataWithHeader, payloadData + 1, payloadLength - 1);
-            
+
             unsigned char header = (payloadData[0] & 0xE0) + (payloadData[1] & 0x1F);
             payloadDataWithHeader[0] = header;
 
             AppendThreeByteNaluHeaderToFrame();
             AppendBytesToFrameBuffer(payloadDataWithHeader, payloadLength - 1);
-            
+
             free(payloadDataWithHeader);
         } else {
             AppendBytesToFrameBuffer(payloadData + 2, payloadLength - 2);

@@ -39,6 +39,10 @@ jobject SurgeJni::NativeTypeConverters::convertMap(JNIEnv *env, std::map<std::st
 }
 
 jobject SurgeJni::NativeTypeConverters::convertResponse(JNIEnv *env, Surge::RtspResponse *response) {
+    if (response == nullptr) {
+        return NULL;
+    }
+
     jclass responseClass = env->FindClass("co/instil/surge/client/Response");
     jmethodID constructor = env->GetMethodID(responseClass, "<init>", "(ILjava/util/Map;Ljava/lang/String;)V");
     jint statusCode = response->GetCode();
@@ -65,9 +69,17 @@ jobject SurgeJni::NativeTypeConverters::convertSessionDescription(JNIEnv *env, S
     jstring controlUrl = env->NewStringUTF(sessionDescription.GetControl().c_str());
     jstring formatParameters = env->NewStringUTF(sessionDescription.GetFmtp().c_str());
     jstring rtpMap = env->NewStringUTF(sessionDescription.GetRtpMap().c_str());
+
+    jboolean isNative = (jboolean)sessionDescription.IsNative();
+    jint framerate = sessionDescription.GetFramerate();
+    jint fpsFraction = sessionDescription.GetFpsFraction();
+    jint width = sessionDescription.GetWidth();
+    jint height = sessionDescription.GetHeight();
+    jint bitrate = sessionDescription.GetBitrate();
+
     jclass sessionDescriptionClass = env->FindClass("co/instil/surge/client/SessionDescription");
-    jmethodID constructor = env->GetMethodID(sessionDescriptionClass, "<init>", "(Lco/instil/surge/client/SessionType;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
-    return env->NewObject(sessionDescriptionClass, constructor, type, controlUrl, formatParameters, rtpMap);
+    jmethodID constructor = env->GetMethodID(sessionDescriptionClass, "<init>", "(Lco/instil/surge/client/SessionType;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZIIIII)V");
+    return env->NewObject(sessionDescriptionClass, constructor, type, controlUrl, formatParameters, rtpMap, isNative, framerate, fpsFraction, width, height, bitrate);
 }
 
 jobject SurgeJni::NativeTypeConverters::convertSessionDescriptions(JNIEnv *env, std::vector<Surge::SessionDescription> sessionDescriptions) {
@@ -80,6 +92,10 @@ jobject SurgeJni::NativeTypeConverters::convertSessionDescriptions(JNIEnv *env, 
 }
 
 jobject SurgeJni::NativeTypeConverters::convertDescribeResponse(JNIEnv *env, Surge::DescribeResponse *response) {
+    if (response == nullptr) {
+        return NULL;
+    }
+
     jclass cls = env->FindClass("co/instil/surge/client/DescribeResponse");
     jmethodID  constructor = env->GetMethodID(cls, "<init>", "(ILjava/util/Map;Ljava/lang/String;[Lco/instil/surge/client/SessionDescription;)V");
     jint statusCode = response->GetCode();
@@ -116,17 +132,62 @@ Surge::RtspSessionType SurgeJni::JavaTypeConverters::convertSessionType(JNIEnv *
     return type;
 }
 
-jstring callJSessionDescriptionGetter(JNIEnv *env, jobject jSessionDescription, const char * methodName) {
-    jclass sessionDescriptionClass = env->FindClass("co/instil/surge/client/SessionDescription");
-    jmethodID method = env->GetMethodID(sessionDescriptionClass, methodName, "()Ljava/lang/String;");
-    return (jstring)env->CallObjectMethod(jSessionDescription, method);
+
+jclass jSessionDescription(JNIEnv *env) {
+    return env->FindClass("co/instil/surge/client/SessionDescription");
 }
 
-Surge::SessionDescription SurgeJni::JavaTypeConverters::convertSessionDescription(JNIEnv *env, jobject jSessionDescription) {
-    Surge::RtspSessionType type = convertSessionType(env, jSessionDescription);
-    std::string controlUrl = convertString(env, callJSessionDescriptionGetter(env, jSessionDescription, "getControlUrl"));
-    std::string rtpMap = convertString(env, callJSessionDescriptionGetter(env, jSessionDescription, "getRtpMap"));
-    std::string formatParameters = convertString(env, callJSessionDescriptionGetter(env, jSessionDescription, "getFormatParameters"));
-    Surge::SessionDescription sessionDescription(type, controlUrl, rtpMap, formatParameters);
+std::string callAndConvertStringGetterOn(jclass javaClass, JNIEnv *env, const char * methodName, jobject jObjectToCall) {
+    jmethodID method = env->GetMethodID(javaClass, methodName, "()Ljava/lang/String;");
+    return SurgeJni::JavaTypeConverters::convertString(env, (jstring)env->CallObjectMethod(jObjectToCall, method));
+}
+
+bool callAndConvertBooleanGetterOn(jclass javaClass, JNIEnv *env, const char * methodName, jobject jObjectToCall) {
+    jmethodID method = env->GetMethodID(javaClass, methodName, "()Z");
+    return (bool)env->CallBooleanMethod(jObjectToCall, method);
+}
+
+int callAndConvertIntGetterOn(jclass javaClass, JNIEnv *env, const char * methodName, jobject jObjectToCall) {
+    jmethodID method = env->GetMethodID(javaClass, methodName, "()I");
+    return (int)env->CallIntMethod(jObjectToCall, method);
+}
+
+
+
+Surge::SessionDescription SurgeJni::JavaTypeConverters::convertSessionDescription(JNIEnv *env, jobject javaSessionDescription) {
+    Surge::RtspSessionType type = convertSessionType(env, javaSessionDescription);
+
+    std::string controlUrl = callAndConvertStringGetterOn(jSessionDescription(env), env, "getControlUrl", javaSessionDescription);
+    std::string rtpMap = callAndConvertStringGetterOn(jSessionDescription(env), env, "getRtpMap", javaSessionDescription);
+    std::string formatParameters = callAndConvertStringGetterOn(jSessionDescription(env), env, "getFormatParameters", javaSessionDescription);
+
+    bool isNative = callAndConvertBooleanGetterOn(jSessionDescription(env), env, "isNative", javaSessionDescription);
+    int framerate = callAndConvertIntGetterOn(jSessionDescription(env), env, "getFramerate", javaSessionDescription);
+    int fpsFraction = callAndConvertIntGetterOn(jSessionDescription(env), env, "getFpsFraction", javaSessionDescription);
+    int width = callAndConvertIntGetterOn(jSessionDescription(env), env, "getWidth", javaSessionDescription);
+    int height = callAndConvertIntGetterOn(jSessionDescription(env), env, "getHeight", javaSessionDescription);
+    int bitrate = callAndConvertIntGetterOn(jSessionDescription(env), env, "getBitrate", javaSessionDescription);
+
+    Surge::SessionDescription sessionDescription(type, controlUrl, rtpMap, formatParameters, isNative, framerate, fpsFraction, width, height, bitrate);
     return sessionDescription;
+}
+
+SurgeUtil::DateTime SurgeJni::JavaTypeConverters::convertDate(JNIEnv *env, jobject jDate) {
+    jclass dateClass = env->FindClass("java/util/Date");
+    jmethodID getTimeMethod = env->GetMethodID(dateClass, "getTime", "()J");
+    jlong jTimestamp = env->CallLongMethod(jDate, getTimeMethod);
+
+    time_t timestamp = (time_t)(jTimestamp / 1000);
+    struct tm *timeInfo = std::gmtime(&timestamp);
+
+    SurgeUtil::DateTime surgeDateTime = SurgeUtil::DateTime();
+    surgeDateTime.Year = timeInfo->tm_year + 1900;  // tm_year == years since 1900
+    surgeDateTime.Month = timeInfo->tm_mon + 1;     // tm_mon starts at 0, Java and Surge start at 1
+    surgeDateTime.Day = timeInfo->tm_mday;
+    surgeDateTime.Hour = timeInfo->tm_hour;
+    surgeDateTime.Minute = timeInfo->tm_min;
+    surgeDateTime.Second = timeInfo->tm_sec;
+    surgeDateTime.Nanosecond = 0;
+
+    return surgeDateTime;
 }

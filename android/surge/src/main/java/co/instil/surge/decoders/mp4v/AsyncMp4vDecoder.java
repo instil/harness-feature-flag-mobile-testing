@@ -134,7 +134,13 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
             return;
         }
         ByteBuffer frame = decodeQueue.remove(0);
-        submitFrameToBuffer(frame, 1, index, codec);
+
+        try {
+            submitFrameToBuffer(frame, 1, index, codec);
+        } catch (Exception e) {
+            System.out.println("Failed to decode MP4V frame: " + e.toString());
+            e.printStackTrace();
+        }
     }
 
     @Override

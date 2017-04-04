@@ -20,6 +20,10 @@
 
 #define BIG_ENDIAN (*(uint16_t *)"\0\xff" < 0x100)
 
+#ifdef __ANDROID__
+    #include <endian.h>
+#endif
+
 #include "RtpPacket.h"
 #include "Logging.h"
 
@@ -110,6 +114,7 @@ Surge::RtpPacket::RtpPacket(const unsigned char *buffer, uint16_t length): m_tim
               " - PAYLOAD_LENGTH: " << m_payloadLength <<
               " - OFFSET: " << payload_offset <<
               " - TOTAL: " << length);
+    } else {
+        memcpy(m_payload, buffer + payload_offset, m_payloadLength);
     }
-    memcpy(m_payload, buffer + payload_offset, m_payloadLength);
 }

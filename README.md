@@ -52,7 +52,18 @@ $ ./gradlew clean build
 
 ### Xamarin
 
-TODO
+Ensure you have built either or both of the frameworks you are wishing to target using the above steps per platform. Then execute one of the following build commands for the platform of your choice
+
+```bash
+$ cd xamarin
+$ ./build-ios.sh
+```
+
+```bash
+$ cd xamarin
+$ ./build-android.sh
+```
+
 
 ### Core
 

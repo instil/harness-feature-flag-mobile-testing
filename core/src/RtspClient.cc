@@ -30,19 +30,18 @@
 #include "MP4VDepacketizer.h"
 #include "MJPEGDepacketizer.h"
 
-using SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
 using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 
 
 Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool forceInterleavedTransport) :
         m_delegate(delegate),
-        m_noPacketTimeout(DEFAULT_NO_PACKET_TIMEOUT_MS),
         processedFirstPayload(false),
         m_lastKeepAliveMs(0),
         m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
         m_sequenceNumber(1),
         startTimeSet(false),
         endTimeSet(false),
+        depacketizer(nullptr),
         factory(new SessionDescriptionFactory()){
             
     StartErrorDispatcher();
@@ -66,9 +65,12 @@ Surge::RtspClient::~RtspClient() {
     }
 
     delete frameBuffer;
-    delete depacketizer;
     delete m_transport;
     delete factory;
+
+    if (depacketizer != nullptr) {
+        delete depacketizer;
+    }
 }
 
 void Surge::RtspClient::Describe(const std::string& url,
@@ -84,6 +86,8 @@ void Surge::RtspClient::Describe(const std::string& url,
     m_isPlaying = false;
     
     SetupRtspConnection(url, [&](int result) {
+        INFO("Sending DESCRIBE request");
+        
         if (result != 0) {
             callback(nullptr);
         }
@@ -101,6 +105,8 @@ void Surge::RtspClient::Describe(const std::string& url,
         }
         
         m_transport->RtspTransaction(describe, [=](Response *raw_resp) {
+            INFO("Received DESCRIBE response");
+            
             bool received_response = raw_resp != nullptr;
             if (!received_response) {
                 ERROR("Failed to get response to DESCRIBE!");
@@ -451,9 +457,9 @@ void Surge::RtspClient::Run() {
 
         // TIMEOUT
         int64_t timeout_delta_ms = SurgeUtil::currentTimeMilliseconds() - time_last_packet_was_processed;
-        bool client_did_timeout = m_isPlaying && timeout_delta_ms >= m_noPacketTimeout;
+        bool client_did_timeout = m_isPlaying && timeout_delta_ms >= m_sessionDescription.GetNoPacketTimeoutTimeForStream();
         if (client_did_timeout) {
-            ERROR("No processed packets in the last " << timeout_delta_ms << "(ms). Issueing timeout signal.");
+            ERROR("No processed packets in the last " << m_sessionDescription.GetNoPacketTimeoutTimeForStream() << "(ms). Issueing timeout signal.");
             NotifyDelegateTimeout();
             break;
         }
@@ -528,6 +534,8 @@ void Surge::RtspClient::CreateDepacketizer() {
 void Surge::RtspClient::SetupRtspConnection(const std::string& url, std::function<void(int)> callback) {
     if (m_transport->IsRunning()) {
         WARNING("Trying to setup RTSP connection on already running transport - resetting connection.");
+        
+        StopStream();
         m_transport->StopRunning();
     }
 
@@ -539,6 +547,7 @@ void Surge::RtspClient::SetupRtspConnection(const std::string& url, std::functio
     int port = url_model.GetPort();
     m_transport->RtspTcpOpen(host, port, [&](int result) {
         if (result == 0) {
+            INFO("RUNNING THREAD");
             m_transport->StartRunning();
         } else {
             ERROR("Did not start the Transport thread.");

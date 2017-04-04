@@ -4,6 +4,7 @@
 
 #include "MimeTypes.h"
 #include "Logging.h"
+#include "Constants.h"
 
 #include <string>
 #include <vector>
@@ -109,6 +110,14 @@ namespace Surge {
                 return MJPEG;
             }
             return UNKNOWN;
+        }
+        
+        const int GetNoPacketTimeoutTimeForStream() {
+            if (fpsFraction > 1) {
+                return (fpsFraction * 1000) + SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
+            }
+            
+            return SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
         }
 
     protected:

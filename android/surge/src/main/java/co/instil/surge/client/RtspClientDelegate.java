@@ -35,4 +35,7 @@ public interface RtspClientDelegate {
                              int presentationTime,
                              int duration);
 
+    void clientReceivedExtendedHeader(ByteBuffer buffer,
+                                      int length);
+
 }

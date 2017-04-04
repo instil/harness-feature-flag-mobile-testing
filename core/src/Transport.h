@@ -60,12 +60,6 @@ namespace Surge {
         
         bool IsRunning() override { return m_thread.IsRunning(); }
         
-        void SetTimeout(long timeout) override { m_timeoutMs = timeout; }
-        
-        void SetConnectTimeout(long timeout) override { m_connectTimeoutMs = timeout; }
-        
-        void SetTransactionTimeout(long timeout) override { m_connectTimeoutMs = timeout; }
-        
         void SetRtpCallback(std::function<void(RtpPacket*)> callback) override {
             rtpCallback = callback;
         }
@@ -102,10 +96,6 @@ namespace Surge {
         
         SurgeUtil::StoppableThread m_thread;
         std::atomic<bool> m_running;
-        
-        long m_connectTimeoutMs;
-        long m_transactionTimeoutMs;
-        long m_timeoutMs;
         
         std::function<void(RtpPacket*)> rtpCallback;
         std::function<void(Response*)> rtspCallback;

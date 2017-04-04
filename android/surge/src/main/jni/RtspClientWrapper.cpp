@@ -101,10 +101,32 @@ jobject JNICALL Java_co_instil_surge_client_RtspClient_pause(JNIEnv *env, jobjec
 }
 
 JNIEXPORT
-jobject JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobject callingObject) {
+void JNICALL Java_co_instil_surge_client_RtspClient_setStartTime(JNIEnv *env, jobject callingObject, jobject jStartDate) {
     Surge::RtspClient *client = getClient(env, callingObject);
-    Surge::RtspResponse *response = client->Teardown(true);
-    return convertResponse(env, response);
+    SurgeUtil::DateTime startDate = convertDate(env, jStartDate);
+    client->SetStartTime(startDate);
+}
+
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTimeRange (JNIEnv *env, jobject callingObject, jobject jStartDate, jobject jEndDate) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    SurgeUtil::DateTime startDate = convertDate(env, jStartDate);
+    SurgeUtil::DateTime endDate = convertDate(env, jEndDate);
+    client->SetTimeRange(startDate, endDate);
+}
+
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_setEndTime(JNIEnv *env, jobject callingObject, jobject jEndDate) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    SurgeUtil::DateTime endDate = convertDate(env, jEndDate);
+    client->SetEndTime(endDate);
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->StopStream();
+    client->StopClient();
 }
 
 JNIEXPORT
@@ -122,4 +144,10 @@ void JNICALL Java_co_instil_surge_client_RtspClient_close(JNIEnv *env, jobject c
     env->DeleteWeakGlobalRef(delegate->GetJavaDelegate());
     delete delegate;
     delete client;
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_stopStream(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->StopStream();
 }

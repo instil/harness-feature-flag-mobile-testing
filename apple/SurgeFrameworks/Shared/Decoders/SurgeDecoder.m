@@ -23,6 +23,7 @@
 
 @interface SurgeDecoder()
 @property (nonatomic, strong) dispatch_queue_t decoderQueue;
+@property (nonatomic, strong) dispatch_queue_t framerateQueue;
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDescription;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
 @property (nonatomic, assign) int framePerSecondCounter;
@@ -35,12 +36,17 @@
     if (self = [super init]) {
         self.delegate = delegate;
         self.decoderQueue = dispatch_queue_create("co.instil.decoder", DISPATCH_QUEUE_SERIAL);
+        self.framerateQueue = dispatch_queue_create("co.instil.decoder2", DISPATCH_QUEUE_SERIAL);
         [self updateFramesPerSecond];
     }
     return self;
 }
 
 - (void)dealloc {
+    [self deinit];
+}
+
+- (void)deinit {
     SurgeLogInfo("Dealloc called");
     [self freeFormatDescription];
     [self freeVideoDecompressionSession];
@@ -58,9 +64,9 @@
 }
 
 - (void)freeVideoDecompressionSession {
-    if (self.decompressionSession) {
+    if (_decompressionSession) {
         SurgeLogInfo("Decompression Session freed");
-        VTDecompressionSessionInvalidate(self.decompressionSession);
+        VTDecompressionSessionInvalidate(_decompressionSession);
         CFRelease(_decompressionSession);
         _decompressionSession = NULL;
     }
@@ -94,16 +100,12 @@
     if (!self.decompressionSession) {
         [self freeFormatDescription];
         self.formatDescription = formatDescription;
-        [self createDecompressionSession];
-    } else if (!VTDecompressionSessionCanAcceptFormatDescription(self.decompressionSession, formatDescription)) {
-        SurgeLogInfo("Decompression Session found to be replaced");
-        [self freeFormatDescription];
-        self.formatDescription = formatDescription;
-        [self createDecompressionSession];
+        [self createDecompressionSession:formatDescription];
     }
 }
 
-- (void)createDecompressionSession {
+//- (void)createDecompressionSession: {
+- (void)createDecompressionSession:(CMFormatDescriptionRef)formatDescription {
     [self freeVideoDecompressionSession];
     
     VTDecompressionOutputCallbackRecord callBackRecord;
@@ -123,7 +125,7 @@
 #endif
     
     OSStatus status =  VTDecompressionSessionCreate(NULL,
-                                                    self.formatDescription,
+                                                    formatDescription,
                                                     (__bridge CFDictionaryRef)decoderSpecification,
                                                     (__bridge CFDictionaryRef)destinationImageBufferAttributes,
                                                     &callBackRecord,
@@ -191,7 +193,7 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
 #pragma mark - Decoder statistics
 
 - (void)updateFramesPerSecond {
-   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), self.decoderQueue, ^{
+   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), self.framerateQueue, ^{
        self.framesPerSecond = self.framePerSecondCounter;
        self.framePerSecondCounter = 0;
        [self updateFramesPerSecond];

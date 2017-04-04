@@ -18,13 +18,13 @@
  * THE SOFTWARE.
  */
 
-package co.instil.surge.player;
+package co.instil.surge.client;
 
-/**
+import java.nio.ByteBuffer;
+
+/*
  *
  */
-public interface RtspPlayerDelegate {
-    void rtspPlayerDidTimeout();
-
-    void rtspPlayerDidUpdateFps(int fps);
+public interface ExtendedHeader {
+    void parseHeader(ByteBuffer buffer, int length);
 }

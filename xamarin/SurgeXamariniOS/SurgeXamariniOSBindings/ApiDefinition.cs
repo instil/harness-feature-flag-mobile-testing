@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using UIKit;
 using Foundation;
@@ -33,8 +33,14 @@ namespace SurgeXamariniOSBindings
     [Model][Protocol]
     public interface SurgeRtspPlayerDelegate
     {
-        [Abstract][Export("rtspPlayerDidTimeout")]
-        void RtspPlayerDidTimeout();
+        [Abstract][Export("rtspPlayerDidTimeout:")]
+        void RtspPlayerDidTimeout(SurgeRtspPlayer player);
+
+        [Abstract][Export("rtspPlayerInitiatedPlayback:")]
+        void RtspPlayerInitiatedPlayback(SurgeRtspPlayer player);
+
+        [Abstract][Export("rtspPlayerFailedToInitiatePlayback:")]
+        void RtspPlayerFailedToInitiatePlayback(SurgeRtspPlayer player);
     }
 }
 

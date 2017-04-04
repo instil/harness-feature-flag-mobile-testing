@@ -38,6 +38,8 @@
 
 - (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate;
 
+- (void)deinit;
+
 /**
  * Abstract method to be implemented by decoders. Implementations
  * should create a CMSampleBufferRef and enqueue for decoding.

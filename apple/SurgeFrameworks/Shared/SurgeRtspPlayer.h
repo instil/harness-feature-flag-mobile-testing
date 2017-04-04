@@ -133,7 +133,7 @@
 /**
  * Optional delegate used to receive notification of player events.
  */
-@property (nonatomic, weak, nullable) id<SurgeRtspPlayerDelegate> delegate;
+@property (nonatomic, strong, nullable) id<SurgeRtspPlayerDelegate> delegate;
 
 /*
  * Recorded FPS of the current stream.

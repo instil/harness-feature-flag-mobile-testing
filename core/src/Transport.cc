@@ -21,15 +21,8 @@
 #include "Transport.h"
 
 Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_running(false),
-                                                        m_delegate(delegate),
-                                                        m_connectTimeoutMs(DEFAULT_CONNECT_TIMEOUT_MS),
-                                                        m_transactionTimeoutMs(DEFAULT_TRANSACTION_TIMEOUT_MS),
-                                                        m_timeoutMs(DEFAULT_SOCKET_HANDLER_TIMEOUT_MS)
-{
-    m_loop = uvw::Loop::create();
-    
-    m_tcp = m_loop->resource<uvw::TcpHandle>();
-}
+                                                        m_delegate(delegate)
+{ }
 
 Surge::Transport::~Transport() {
     StopRunning();
@@ -53,11 +46,17 @@ void Surge::Transport::StopRunning() {
         return;
     }
     m_running = false;
+    m_loop->stop();
     m_thread.Stop();
 }
 
 
 void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
+    
+    if (!m_running) {
+        m_loop = uvw::Loop::create();
+        m_tcp = m_loop->resource<uvw::TcpHandle>();
+    }
     
     m_tcp->once<uvw::ErrorEvent>([&](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("Error occured on connect");
@@ -110,7 +109,7 @@ void Surge::Transport::Run() {
     });
     
     m_tcp->on<uvw::DataEvent>([this](const uvw::DataEvent &dataEvent, uvw::TcpHandle &tcp) {
-        DEBUG("Data received, handing received data");
+//        DEBUG("Data received, handing received data");
         RtspHandleReceive(dataEvent.data.get(), dataEvent.length);
     });
     
@@ -122,11 +121,12 @@ void Surge::Transport::Run() {
     });
     
     while (m_running) {
-        INFO("RUNNING");
         m_loop->run<uvw::Loop::Mode::NOWAIT>();
+    
     }
     
     
     INFO("Closing transport");
+    m_loop->close();
     m_tcp->close();
 }

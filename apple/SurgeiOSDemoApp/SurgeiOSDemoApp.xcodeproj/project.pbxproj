@@ -14,11 +14,11 @@
 		426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */; };
 		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
-		7C43DA161D9BBB9200E4D1CD /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */; };
-		7C43DA171D9BBB9200E4D1CD /* SurgeiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */; };
 		7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256731D9E71B700300A88 /* AddressesTableViewController.m */; };
 		7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256761D9E722C00300A88 /* PlaybackViewController.m */; };
+		F4FA48CF1E93E74F006554AC /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */; };
+		F4FA48D01E93E74F006554AC /* SurgeiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,13 +39,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		7C43DA181D9BBB9200E4D1CD /* Embed Frameworks */ = {
+		F4FA48D11E93E74F006554AC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7C43DA171D9BBB9200E4D1CD /* SurgeiOS.framework in Embed Frameworks */,
+				F4FA48D01E93E74F006554AC /* SurgeiOS.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +74,7 @@
 		7CD256731D9E71B700300A88 /* AddressesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesTableViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		7CD256751D9E722C00300A88 /* PlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackViewController.h; sourceTree = "<group>"; };
 		7CD256761D9E722C00300A88 /* PlaybackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackViewController.m; sourceTree = "<group>"; tabWidth = 4; };
+		F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SurgeiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C43DA161D9BBB9200E4D1CD /* SurgeiOS.framework in Frameworks */,
+				F4FA48CF1E93E74F006554AC /* SurgeiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +106,7 @@
 		426E88031CDA40AD00C7FF25 = {
 			isa = PBXGroup;
 			children = (
+				F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */,
 				426E880E1CDA40AE00C7FF25 /* SurgeiOSDemoApp */,
 				426E88281CDA40AE00C7FF25 /* SurgeiOSDemoAppTests */,
 				426E88331CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests */,
@@ -187,7 +189,7 @@
 				426E88081CDA40AE00C7FF25 /* Sources */,
 				426E88091CDA40AE00C7FF25 /* Frameworks */,
 				426E880A1CDA40AE00C7FF25 /* Resources */,
-				7C43DA181D9BBB9200E4D1CD /* Embed Frameworks */,
+				F4FA48D11E93E74F006554AC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

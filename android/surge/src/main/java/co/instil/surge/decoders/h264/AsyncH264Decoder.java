@@ -95,12 +95,23 @@ public class AsyncH264Decoder extends H264Decoder {
                 return;
             }
             H264Packet packet = decodeQueue.remove(0);
-            submitToDecoder(packet, index, codec);
+
+            try {
+                submitToDecoder(packet, index, codec);
+            } catch (Exception e) {
+                System.out.println("Failed to decode H264 frame: " + e.toString());
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onOutputBufferAvailable(MediaCodec codec, int index, MediaCodec.BufferInfo info) {
-            codec.releaseOutputBuffer(index, info.size > 0);
+            try {
+                codec.releaseOutputBuffer(index, info.size > 0);
+            } catch (Exception e) {
+                System.out.println("Failed to release output buffer: " + e.toString());
+                e.printStackTrace();
+            }
         }
 
         @Override

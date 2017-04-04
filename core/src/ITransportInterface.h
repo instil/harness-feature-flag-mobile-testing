@@ -49,12 +49,6 @@ namespace Surge {
 
         virtual bool IsRunning() = 0;
 
-        virtual void SetTimeout(long timeout) = 0;
-
-        virtual void SetConnectTimeout(long timeout) = 0;
-
-        virtual void SetTransactionTimeout(long timeout) = 0;
-
         virtual void SetRtpCallback(std::function<void(RtpPacket*)> callback) = 0;
 
         virtual void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) = 0;

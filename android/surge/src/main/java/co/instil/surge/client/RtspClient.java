@@ -20,6 +20,8 @@
 
 package co.instil.surge.client;
 
+import java.util.Date;
+
 /**
  *
  */
@@ -33,7 +35,11 @@ public class RtspClient implements AutoCloseable {
     private final long nativeClient;
 
     public RtspClient(RtspClientDelegate delegate) {
-        nativeClient = createNativeClientInstance(delegate);
+        nativeClient = generateNativeClientInstance(delegate);
+    }
+
+    protected long generateNativeClientInstance(RtspClientDelegate delegate) {
+        return createNativeClientInstance(delegate);
     }
 
     private static native void load();
@@ -54,10 +60,17 @@ public class RtspClient implements AutoCloseable {
 
     public native Response pause();
 
-    public native Response tearDown();
+    public native void setTimeRange(Date startTime, Date endtime);
+
+    public native void setStartTime(Date startTime);
+
+    public native void setEndTime(Date endTime);
+
+    public native void tearDown();
 
     public native Response keepAlive();
 
     public native void close();
 
+    public native void stopStream();
 }

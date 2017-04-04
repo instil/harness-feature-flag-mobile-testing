@@ -52,6 +52,8 @@ namespace SurgeJni {
 
         Surge::SessionDescription convertSessionDescription(JNIEnv *env, jobject jSessionDescription);
 
+        SurgeUtil::DateTime convertDate(JNIEnv *env, jobject jDate);
+
     }
 
 }

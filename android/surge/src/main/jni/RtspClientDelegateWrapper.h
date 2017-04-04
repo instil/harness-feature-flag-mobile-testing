@@ -42,7 +42,10 @@ namespace SurgeJni {
                                  int32_t presentationTime,
                                  int32_t duration);
 
-        jobject GetJavaDelegate() {
+        void ClientReceivedExtendedHeader(const unsigned char *buffer,
+                                          size_t size);
+
+            jobject GetJavaDelegate() {
             return jDelegate;
         }
 

@@ -111,6 +111,7 @@ public abstract class H264Decoder implements Decoder {
 
                 codec = createMediaCodec();
                 setMediaCodec(codec);
+                onCreatedMediaCodec(codec);
                 codec.start();
                 if (deviceExaminer.isPreLollipopDevice()) {
                     inputBuffers = codec.getInputBuffers();
@@ -202,7 +203,7 @@ public abstract class H264Decoder implements Decoder {
             return;
         }
         if (deviceExaminer.isPreLollipopDevice()) {
-            buffer = inputBuffers[inputBufferId];
+            buffer = mediaCodec.getInputBuffers()[inputBufferId]; //inputBuffers[inputBufferId];
         } else {
             buffer = mediaCodec.getInputBuffer(inputBufferId);
         }

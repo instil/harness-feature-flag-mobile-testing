@@ -25,16 +25,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.Surface;
-import co.instil.surge.client.SessionDescription;
-import co.instil.surge.decoders.Decoder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+
+import co.instil.surge.client.SessionDescription;
+import co.instil.surge.decoders.Decoder;
 
 /**
  * Decoder which renders a MJPEG stream to a {@link android.view.Surface}.
  */
 @TargetApi(19)
 public class MjpegDecoder implements Decoder {
+
+    private static Logger logger = LoggerFactory.getLogger(MjpegDecoder.class);
 
     private final Surface surface;
 
@@ -50,12 +56,16 @@ public class MjpegDecoder implements Decoder {
                                   int presentationTime,
                                   int duration) {
 
-        byte[] imageBytes = new byte[frameBuffer.limit()];
-        frameBuffer.get(imageBytes);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        Canvas canvas = surface.lockCanvas(null);
-        canvas.drawBitmap(bitmap, 0, 0, null);
-        surface.unlockCanvasAndPost(canvas);
+        try {
+            byte[] imageBytes = new byte[frameBuffer.limit()];
+            frameBuffer.get(imageBytes);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            Canvas canvas = surface.lockCanvas(null);
+            canvas.drawBitmap(bitmap, 0, 0, null);
+            surface.unlockCanvasAndPost(canvas);
+        } catch (Exception e) {
+            logger.error("Failed to decode frame", e);
+        }
     }
 
     @Override

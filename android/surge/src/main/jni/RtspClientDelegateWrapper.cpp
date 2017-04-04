@@ -27,6 +27,7 @@ void SurgeJni::RtspClientDelegateWrapper::ClientDidTimeout() {
     jclass cls = env->GetObjectClass(jDelegate);
     jmethodID method = env->GetMethodID(cls, "clientDidTimeout", "()V");
     env->CallVoidMethod(jDelegate, method);
+    jvm->DetachCurrentThread();
 }
 
 void SurgeJni::RtspClientDelegateWrapper::StreamConfigChanged(bool wasRedirect) {
@@ -47,4 +48,18 @@ void SurgeJni::RtspClientDelegateWrapper::ClientReceivedFrame(const unsigned cha
     env->CallVoidMethod(jDelegate, method, framebuffer, width, height, presentationTime, duration);
     env->DeleteLocalRef(framebuffer);
     env->DeleteLocalRef(cls);
+    jvm->DetachCurrentThread();
 }
+void SurgeJni::RtspClientDelegateWrapper::ClientReceivedExtendedHeader(const unsigned char *buffer, size_t size) {
+
+    JNIEnv *env;
+    jvm->AttachCurrentThread(&env, NULL);
+    jclass cls = env->GetObjectClass(jDelegate);
+    jmethodID method = env->GetMethodID(cls, "clientReceivedExtendedHeader", "(Ljava/nio/ByteBuffer;I)V");
+    jobject framebuffer = env->NewDirectByteBuffer((void*)buffer, size);
+    env->CallVoidMethod(jDelegate, method, framebuffer, size);
+    env->DeleteLocalRef(framebuffer);
+    env->DeleteLocalRef(cls);
+    jvm->DetachCurrentThread();
+}
+

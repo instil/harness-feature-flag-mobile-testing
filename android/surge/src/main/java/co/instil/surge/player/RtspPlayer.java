@@ -28,10 +28,11 @@ import org.slf4j.LoggerFactory;
 import java.nio.ByteBuffer;
 import java.util.Date;
 
+import co.instil.surge.callbacks.PlayerCallback;
+import co.instil.surge.callbacks.ResponseCallback;
 import co.instil.surge.client.DescribeResponse;
 import co.instil.surge.client.ExtendedHeader;
 import co.instil.surge.client.Response;
-import co.instil.surge.client.ResponseCallback;
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
@@ -73,15 +74,15 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         return new RtspClient(this);
     }
 
-    public boolean initiatePlaybackOf(String url, Surface surface) {
-        return initiatePlaybackOf(url, surface, "", "", null, null);
+    public void initiatePlaybackOf(String url, Surface surface, final PlayerCallback callback) {
+        initiatePlaybackOf(url, surface, "", "", null, null, callback);
     }
 
-    public boolean initiatePlaybackOf(String url, Surface surface, String username, String password) {
-        return initiatePlaybackOf(url, surface, username, password, null, null);
+    public void initiatePlaybackOf(String url, Surface surface, String username, String password, final PlayerCallback callback) {
+        initiatePlaybackOf(url, surface, username, password, null, null, callback);
     }
 
-    public boolean initiatePlaybackOf(String url, Surface surface, String username, String password, Date startTime, Date endTime) {
+    public void initiatePlaybackOf(String url, Surface surface, String username, String password, Date startTime, Date endTime, final PlayerCallback callback) {
         this.url = url;
         this.username = username;
         this.password = password;
@@ -104,11 +105,12 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
             public void response(Response rawResponse) {
                 DescribeResponse response = (DescribeResponse)rawResponse;
 
-//                if (response == null ||
-//                        response.getSessionDescriptions() == null ||
-//                        response.getSessionDescriptions().length == 0) {
-//                    return false;
-//                }
+                if (response == null ||
+                        response.getSessionDescriptions() == null ||
+                        response.getSessionDescriptions().length == 0) {
+                    callback.response(false);
+                    return;
+                }
 
                 for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
                     logger.debug(sessionDescription.toString());
@@ -116,7 +118,12 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
                 setSessionDescriptions(response.getSessionDescriptions());
                 if (sessionDescriptions.length > 0) {
-                    setupStream(selectPreferredSessionDescription(getSessionDescriptions()));
+                    setupStream(selectPreferredSessionDescription(getSessionDescriptions()), new PlayerCallback() {
+                        @Override
+                        public void response(boolean result) {
+                            callback.response(true);
+                        }
+                    });
                 } else {
                     throw new RuntimeException("No session description available, is the stream active?");
                 }
@@ -124,17 +131,16 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
                 startFpsCounter();
             }
         });
-
-        return true;
     }
 
-    private void setupStream(SessionDescription sessionDescription) {
+    private void setupStream(SessionDescription sessionDescription, final PlayerCallback callback) {
         this.sessionDescription = sessionDescription;
         initialiseDecoder(sessionDescription);
         rtspClient.setup(sessionDescription, new ResponseCallback() {
             @Override
             public void response(Response rawResponse) {
                 rtspClient.play();
+                callback.response(true);
             }
         });
     }

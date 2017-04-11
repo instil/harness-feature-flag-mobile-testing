@@ -26,39 +26,39 @@ JNIEXPORT jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClien
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    options
- * Signature: ()Lco/instil/surge/client/Response;
+ * Signature: (Lco/instil/surge/callbacks/ResponseCallback;)V
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_options__
-  (JNIEnv *, jobject);
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_options__Lco_instil_surge_callbacks_ResponseCallback_2
+  (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    options
- * Signature: (Ljava/lang/String;)Lco/instil/surge/client/Response;
+ * Signature: (Ljava/lang/String;Lco/instil/surge/callbacks/ResponseCallback;)V
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_options__Ljava_lang_String_2
-  (JNIEnv *, jobject, jstring);
-
-/*
- * Class:     co_instil_surge_client_RtspClient
- * Method:    describe
- * Signature: (Ljava/lang/String;Lco/instil/surge/client/ResponseCallback;)V
- */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Lco_instil_surge_client_ResponseCallback_2
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_options__Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2
   (JNIEnv *, jobject, jstring, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    describe
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lco/instil/surge/client/ResponseCallback;)V
+ * Signature: (Ljava/lang/String;Lco/instil/surge/callbacks/ResponseCallback;)V
  */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Lco_instil_surge_client_ResponseCallback_2
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2
+  (JNIEnv *, jobject, jstring, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    describe
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lco/instil/surge/callbacks/ResponseCallback;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2
   (JNIEnv *, jobject, jstring, jstring, jstring, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    setup
- * Signature: (Lco/instil/surge/client/SessionDescription;Lco/instil/surge/client/ResponseCallback;)V
+ * Signature: (Lco/instil/surge/client/SessionDescription;Lco/instil/surge/callbacks/ResponseCallback;)V
  */
 JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setup
   (JNIEnv *, jobject, jobject, jobject);
@@ -68,16 +68,32 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setup
  * Method:    play
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_play
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_play__
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    play
+ * Signature: (Lco/instil/surge/callbacks/ResponseCallback;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_play__Lco_instil_surge_callbacks_ResponseCallback_2
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    pause
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_pause__
   (JNIEnv *, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    pause
- * Signature: ()Lco/instil/surge/client/Response;
+ * Signature: (Lco/instil/surge/callbacks/ResponseCallback;)V
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_pause
-  (JNIEnv *, jobject);
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_pause__Lco_instil_surge_callbacks_ResponseCallback_2
+  (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -114,10 +130,10 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_tearDown
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    keepAlive
- * Signature: ()Lco/instil/surge/client/Response;
+ * Signature: (Lco/instil/surge/callbacks/ResponseCallback;)V
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_keepAlive
-  (JNIEnv *, jobject);
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_keepAlive
+  (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient

@@ -18,7 +18,9 @@
  * THE SOFTWARE.
  */
 
-package co.instil.surge.client;
+package co.instil.surge.callbacks;
+
+import co.instil.surge.client.Response;
 
 /**
  * Created by paulshields on 05/04/2017.

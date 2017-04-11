@@ -42,33 +42,33 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_options__Ljava_
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    describe
- * Signature: (Ljava/lang/String;)Lco/instil/surge/client/DescribeResponse;
+ * Signature: (Ljava/lang/String;Lco/instil/surge/client/ResponseCallback;)V
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2
-  (JNIEnv *, jobject, jstring);
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Lco_instil_surge_client_ResponseCallback_2
+  (JNIEnv *, jobject, jstring, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    describe
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lco/instil/surge/client/DescribeResponse;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lco/instil/surge/client/ResponseCallback;)V
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2
-  (JNIEnv *, jobject, jstring, jstring, jstring);
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Lco_instil_surge_client_ResponseCallback_2
+  (JNIEnv *, jobject, jstring, jstring, jstring, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    setup
- * Signature: (Lco/instil/surge/client/SessionDescription;)Lco/instil/surge/client/Response;
+ * Signature: (Lco/instil/surge/client/SessionDescription;Lco/instil/surge/client/ResponseCallback;)V
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_setup
-  (JNIEnv *, jobject, jobject);
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setup
+  (JNIEnv *, jobject, jobject, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    play
- * Signature: ()Lco/instil/surge/client/Response;
+ * Signature: ()V
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_play
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_play
   (JNIEnv *, jobject);
 
 /*

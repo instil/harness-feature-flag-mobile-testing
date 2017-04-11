@@ -30,6 +30,8 @@ import java.util.Date;
 
 import co.instil.surge.client.DescribeResponse;
 import co.instil.surge.client.ExtendedHeader;
+import co.instil.surge.client.Response;
+import co.instil.surge.client.ResponseCallback;
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
@@ -97,26 +99,31 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
             rtspClient.setEndTime(endTime);
         }
 
-        DescribeResponse response = rtspClient.describe(url, username, password);
+        rtspClient.describe(url, username, password, new ResponseCallback() {
+            @Override
+            public void response(Response rawResponse) {
+                DescribeResponse response = (DescribeResponse)rawResponse;
 
-        if (response == null ||
-                response.getSessionDescriptions() == null ||
-                response.getSessionDescriptions().length == 0) {
-            return false;
-        }
+//                if (response == null ||
+//                        response.getSessionDescriptions() == null ||
+//                        response.getSessionDescriptions().length == 0) {
+//                    return false;
+//                }
 
-        for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
-            logger.debug(sessionDescription.toString());
-        }
+                for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
+                    logger.debug(sessionDescription.toString());
+                }
 
-        setSessionDescriptions(response.getSessionDescriptions());
-        if (sessionDescriptions.length > 0) {
-            setupStream(selectPreferredSessionDescription(getSessionDescriptions()));
-        } else {
-            throw new RuntimeException("No session description available, is the stream active?");
-        }
+                setSessionDescriptions(response.getSessionDescriptions());
+                if (sessionDescriptions.length > 0) {
+                    setupStream(selectPreferredSessionDescription(getSessionDescriptions()));
+                } else {
+                    throw new RuntimeException("No session description available, is the stream active?");
+                }
 
-        startFpsCounter();
+                startFpsCounter();
+            }
+        });
 
         return true;
     }
@@ -124,8 +131,12 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     private void setupStream(SessionDescription sessionDescription) {
         this.sessionDescription = sessionDescription;
         initialiseDecoder(sessionDescription);
-        rtspClient.setup(sessionDescription);
-        rtspClient.play();
+        rtspClient.setup(sessionDescription, new ResponseCallback() {
+            @Override
+            public void response(Response rawResponse) {
+                rtspClient.play();
+            }
+        });
     }
 
     private void initialiseDecoder(SessionDescription sessionDescription) {

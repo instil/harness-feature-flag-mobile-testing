@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.player.RtspPlayer;
 import co.instil.surge.player.RtspPlayerDelegate;
 
 /**
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     public void iteratePalette(View view) {
         currentPaletteIndex = ++currentPaletteIndex % palettes.length;
         System.out.println(palettes[currentPaletteIndex].getType());
-        player.changePalette(palettes[currentPaletteIndex]);
+//        player.changePalette(palettes[currentPaletteIndex]);
         palettes = player.getSessionDescriptions();
     }
 
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
     @Override
     public void rtspPlayerDidUpdateFps(int fps) {
-        SessionDescription descrip = palettes[currentPaletteIndex];
-        logger.debug("Updated fps: " + fps + "/" + descrip.getFramerate());
+//        SessionDescription descrip = palettes[currentPaletteIndex];
+//        logger.debug("Updated fps: " + fps + "/" + descrip.getFramerate());
     }
 }

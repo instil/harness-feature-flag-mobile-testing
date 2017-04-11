@@ -25,17 +25,19 @@ import android.graphics.SurfaceTexture;
 import android.media.MediaCodec;
 import android.os.Build;
 import android.view.Surface;
-import co.instil.surge.decoders.MediaCodecFactory;
-import co.instil.surge.decoders.h264.nalu.NaluParser;
-import co.instil.surge.decoders.h264.nalu.NaluSegment;
-import co.instil.surge.decoders.h264.nalu.NaluType;
-import co.instil.surge.device.DeviceExaminer;
+
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+
+import co.instil.surge.decoders.MediaCodecFactory;
+import co.instil.surge.decoders.h264.nalu.NaluParser;
+import co.instil.surge.decoders.h264.nalu.NaluSegment;
+import co.instil.surge.decoders.h264.nalu.NaluType;
+import co.instil.surge.device.DeviceExaminer;
 
 import static co.instil.surge.decoders.h264.H264TestUtils.generateNalUnits;
 import static org.easymock.EasyMock.anyInt;
@@ -161,7 +163,7 @@ public class H264DecoderTest {
 
     private void mockInitialisationOfH264MediaCodecOnPreLollipopDevice() {
         mockDeviceVersionToBePreLollipop();
-        expect(mockH264Codec.getInputBuffers()).andReturn(new ByteBuffer[] {mockBuffer});
+        expect(mockH264Codec.getInputBuffers()).andReturn(new ByteBuffer[] {mockBuffer}).times(2);
         mockH264Codec.start();
         expectLastCall();
     }

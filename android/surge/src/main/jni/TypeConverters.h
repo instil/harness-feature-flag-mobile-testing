@@ -23,6 +23,7 @@
 
 #include <jni.h>
 #include <Surge.h>
+#include "ClassLoader.h"
 
 namespace SurgeJni {
 
@@ -30,17 +31,17 @@ namespace SurgeJni {
 
         jstring convertString(JNIEnv *env, std::string string);
 
-        jobject convertMap(JNIEnv *env, std::map<std::string, std::string> map);
+        jobject convertMap(SurgeJni::ClassLoader *classLoader, std::map<std::string, std::string> map);
 
-        jobject convertResponse(JNIEnv *env, Surge::RtspResponse *response);
+        jobject convertResponse(SurgeJni::ClassLoader *classLoader, Surge::RtspResponse *response);
 
-        jobject convertSessionType(JNIEnv *env, Surge::RtspSessionType type);
+        jobject convertSessionType(SurgeJni::ClassLoader *classLoader, Surge::RtspSessionType type);
 
-        jobject convertSessionDescription(JNIEnv *env, Surge::SessionDescription sessionDescription);
+        jobject convertSessionDescription(SurgeJni::ClassLoader *classLoader, Surge::SessionDescription sessionDescription);
 
-        jobject convertSessionDescriptions(JNIEnv *env, std::vector<Surge::SessionDescription> sessionDescriptions);
+        jobject convertSessionDescriptions(SurgeJni::ClassLoader *classLoader, std::vector<Surge::SessionDescription> sessionDescriptions);
 
-        jobject convertDescribeResponse(JNIEnv *env, Surge::DescribeResponse *response);
+        jobject convertDescribeResponse(SurgeJni::ClassLoader *classLoader, Surge::DescribeResponse *response);
 
     }
 
@@ -53,7 +54,6 @@ namespace SurgeJni {
         Surge::SessionDescription convertSessionDescription(JNIEnv *env, jobject jSessionDescription);
 
         SurgeUtil::DateTime convertDate(JNIEnv *env, jobject jDate);
-
     }
 
 }

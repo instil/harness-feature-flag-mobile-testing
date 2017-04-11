@@ -20,11 +20,10 @@
 
 package co.instil.surge.client;
 
-import java.nio.ByteBuffer;
-
-/*
- * Interface to define how the extended header information should be parsed with in Surge.
+/**
+ * Created by paulshields on 05/04/2017.
  */
-public interface ExtendedHeader {
-    void parseHeader(ByteBuffer buffer, int length);
+
+public interface ResponseCallback {
+    void response(Response response);
 }

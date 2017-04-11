@@ -79,7 +79,7 @@ public class SyncH264Decoder extends H264Decoder {
     public void close() throws InterruptedException {
         isRunning = false;
 
-        while(decodedPacketConsumer.isAlive() || packetQueueConsumer.getState() == Thread.State.RUNNABLE) {
+        while (decodedPacketConsumer.isAlive() || packetQueueConsumer.getState() == Thread.State.RUNNABLE) {
             Thread.sleep(10);
         }
 

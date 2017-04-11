@@ -25,7 +25,9 @@ jstring SurgeJni::NativeTypeConverters::convertString(JNIEnv *env, std::string s
     return env->NewStringUTF(string.c_str());
 }
 
-jobject SurgeJni::NativeTypeConverters::convertMap(JNIEnv *env, std::map<std::string, std::string> map) {
+jobject SurgeJni::NativeTypeConverters::convertMap(SurgeJni::ClassLoader *classLoader, std::map<std::string, std::string> map) {
+    JNIEnv *env = classLoader->getEnv();
+
     jclass mapClass = env->FindClass("java/util/HashMap");
     jmethodID constructor = env->GetMethodID(mapClass, "<init>", "()V");
     jobject jMap = env->NewObject(mapClass, constructor);
@@ -38,20 +40,24 @@ jobject SurgeJni::NativeTypeConverters::convertMap(JNIEnv *env, std::map<std::st
     return jMap;
 }
 
-jobject SurgeJni::NativeTypeConverters::convertResponse(JNIEnv *env, Surge::RtspResponse *response) {
+jobject SurgeJni::NativeTypeConverters::convertResponse(SurgeJni::ClassLoader *classLoader, Surge::RtspResponse *response) {
     if (response == nullptr) {
         return NULL;
     }
 
-    jclass responseClass = env->FindClass("co/instil/surge/client/Response");
+    JNIEnv *env = classLoader->getEnv();
+
+    jclass responseClass = classLoader->findClass("co/instil/surge/client/Response");
     jmethodID constructor = env->GetMethodID(responseClass, "<init>", "(ILjava/util/Map;Ljava/lang/String;)V");
     jint statusCode = response->GetCode();
-    jobject headers = convertMap(env, response->GetHeaders());
+    jobject headers = convertMap(classLoader, response->GetHeaders());
     jstring body = convertString(env, response->GetBodyString());
     return env->NewObject(responseClass, constructor, statusCode, headers, body);
 }
 
-jobject SurgeJni::NativeTypeConverters::convertSessionType(JNIEnv *env, Surge::RtspSessionType type) {
+jobject SurgeJni::NativeTypeConverters::convertSessionType(SurgeJni::ClassLoader *classLoader, Surge::RtspSessionType type) {
+    JNIEnv *env = classLoader->getEnv();
+
     const char *typeName;
     switch (type) {
         case Surge::RtspSessionType::H264: typeName = "H264"; break;
@@ -59,13 +65,15 @@ jobject SurgeJni::NativeTypeConverters::convertSessionType(JNIEnv *env, Surge::R
         case Surge::RtspSessionType::MJPEG: typeName = "MJPEG"; break;
         default: typeName = "UNKNOWN"; break;
     }
-    jclass sessionTypeClass = env->FindClass("co/instil/surge/client/SessionType");
+    jclass sessionTypeClass = classLoader->findClass("co/instil/surge/client/SessionType");
     jfieldID sessionType = env->GetStaticFieldID(sessionTypeClass , typeName, "Lco/instil/surge/client/SessionType;");
     return env->GetStaticObjectField(sessionTypeClass, sessionType);
 }
 
-jobject SurgeJni::NativeTypeConverters::convertSessionDescription(JNIEnv *env, Surge::SessionDescription sessionDescription) {
-    jobject type = convertSessionType(env, sessionDescription.GetType());
+jobject SurgeJni::NativeTypeConverters::convertSessionDescription(SurgeJni::ClassLoader *classLoader, Surge::SessionDescription sessionDescription) {
+    JNIEnv *env = classLoader->getEnv();
+
+    jobject type = convertSessionType(classLoader, sessionDescription.GetType());
     jstring controlUrl = env->NewStringUTF(sessionDescription.GetControl().c_str());
     jstring formatParameters = env->NewStringUTF(sessionDescription.GetFmtp().c_str());
     jstring rtpMap = env->NewStringUTF(sessionDescription.GetRtpMap().c_str());
@@ -77,31 +85,35 @@ jobject SurgeJni::NativeTypeConverters::convertSessionDescription(JNIEnv *env, S
     jint height = sessionDescription.GetHeight();
     jint bitrate = sessionDescription.GetBitrate();
 
-    jclass sessionDescriptionClass = env->FindClass("co/instil/surge/client/SessionDescription");
+    jclass sessionDescriptionClass = classLoader->findClass("co/instil/surge/client/SessionDescription");
     jmethodID constructor = env->GetMethodID(sessionDescriptionClass, "<init>", "(Lco/instil/surge/client/SessionType;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZIIIII)V");
     return env->NewObject(sessionDescriptionClass, constructor, type, controlUrl, formatParameters, rtpMap, isNative, framerate, fpsFraction, width, height, bitrate);
 }
 
-jobject SurgeJni::NativeTypeConverters::convertSessionDescriptions(JNIEnv *env, std::vector<Surge::SessionDescription> sessionDescriptions) {
-    jclass sessionDescriptionClass = env->FindClass("co/instil/surge/client/SessionDescription");
+jobject SurgeJni::NativeTypeConverters::convertSessionDescriptions(SurgeJni::ClassLoader *classLoader, std::vector<Surge::SessionDescription> sessionDescriptions) {
+    JNIEnv *env = classLoader->getEnv();
+
+    jclass sessionDescriptionClass = classLoader->findClass("co/instil/surge/client/SessionDescription");
     jobjectArray jSessionDescriptions = env->NewObjectArray(sessionDescriptions.size(), sessionDescriptionClass, nullptr);
     for (int i = 0; i < sessionDescriptions.size(); i++) {
-        env->SetObjectArrayElement(jSessionDescriptions, i, convertSessionDescription(env, sessionDescriptions[i]));
+        env->SetObjectArrayElement(jSessionDescriptions, i, convertSessionDescription(classLoader, sessionDescriptions[i]));
     }
     return jSessionDescriptions;
 }
 
-jobject SurgeJni::NativeTypeConverters::convertDescribeResponse(JNIEnv *env, Surge::DescribeResponse *response) {
+jobject SurgeJni::NativeTypeConverters::convertDescribeResponse(SurgeJni::ClassLoader *classLoader, Surge::DescribeResponse *response) {
     if (response == nullptr) {
         return NULL;
     }
 
-    jclass cls = env->FindClass("co/instil/surge/client/DescribeResponse");
+    JNIEnv *env = classLoader->getEnv();
+
+    jclass cls = classLoader->findClass("co/instil/surge/client/DescribeResponse");
     jmethodID  constructor = env->GetMethodID(cls, "<init>", "(ILjava/util/Map;Ljava/lang/String;[Lco/instil/surge/client/SessionDescription;)V");
     jint statusCode = response->GetCode();
-    jobject headers = convertMap(env, response->GetHeaders());
+    jobject headers = convertMap(classLoader, response->GetHeaders());
     jstring body = convertString(env, response->GetBodyString());
-    return env->NewObject(cls, constructor, statusCode, headers, body, convertSessionDescriptions(env, response->GetSessionDescriptions()));
+    return env->NewObject(cls, constructor, statusCode, headers, body, convertSessionDescriptions(classLoader, response->GetSessionDescriptions()));
 }
 
 std::string SurgeJni::JavaTypeConverters::convertString(JNIEnv *env, jstring jString) {

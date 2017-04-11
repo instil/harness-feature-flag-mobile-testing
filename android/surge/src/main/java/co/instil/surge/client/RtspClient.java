@@ -50,13 +50,13 @@ public class RtspClient implements AutoCloseable {
 
     public native Response options(String url);
 
-    public native DescribeResponse describe(String url);
+    public native void describe(String url, ResponseCallback callback);
 
-    public native DescribeResponse describe(String url, String username, String password);
+    public native void describe(String url, String username, String password, ResponseCallback callback);
 
-    public native Response setup(SessionDescription sessionDescription);
+    public native void setup(SessionDescription sessionDescription, ResponseCallback callback);
 
-    public native Response play();
+    public native void play();
 
     public native Response pause();
 

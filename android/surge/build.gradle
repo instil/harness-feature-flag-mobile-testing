@@ -19,7 +19,27 @@ model {
         main {
             jni {
                 source {
-                    srcDirs = ["../../core/src", "../../core/lib/RxCpp/Rx/v2/src", "src/main/jni"]
+                    srcDirs = ["../../core/src",
+                               "../../core/lib/libuv-cmake/libuv/src",
+                               "../../core/lib/uvw/src",
+                               "src/main/jni"]
+
+                    exclude "**/aix.c"
+                    exclude "**/darwin-proctitle.c"
+                    exclude "**/darwin.c"
+                    exclude "**/freebsd.c"
+                    exclude "**/fsevents.c"
+                    exclude "**/kqueue.c"
+                    exclude "**/netbsd.c"
+                    exclude "**/openbsd.c"
+                    exclude "**/os390.c"
+                    exclude "**/sunos.c"
+                    exclude "**/win/**"
+                }
+                exportedHeaders {
+                    srcDirs = ["../../core/lib/libuv-cmake/libuv/include",
+                               "../../core/lib/libuv-cmake/libuv/src",
+                               "../../core/lib/uvw/src"]
                 }
             }
         }
@@ -27,12 +47,12 @@ model {
 
     android.ndk {
         moduleName "surge"
-        cppFlags.add("-std=c++11")
+        cppFlags.add("-std=c++14")
         cppFlags.add("-fexceptions")
-        cppFlags.add("-I" + file("../../core/lib/RxCpp/Rx/v2/src"))
         cppFlags.add("-I" + file("../../core/src"))
         ldLibs.addAll(["log"])
         stl "c++_shared"
+        toolchain "clang"
     }
 
     android.buildTypes {

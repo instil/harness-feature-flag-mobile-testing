@@ -5,7 +5,7 @@ apply from: "${project.rootDir}/gradle/static-analysis.gradle"
 model {
     android {
         compileSdkVersion = 23
-        buildToolsVersion = "23.0.3"
+        buildToolsVersion = "25.0.1"
 
         defaultConfig {
             minSdkVersion.apiLevel 19

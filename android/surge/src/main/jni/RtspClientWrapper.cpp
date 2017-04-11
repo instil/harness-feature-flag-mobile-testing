@@ -31,7 +31,6 @@ SurgeJni::ClassLoader *classLoader;
 /* Helper Functions */
 
 void callResponseCallback(JNIEnv *env, jobject jResponseCallback, jobject jResponse) {
-//    jclass cls = classLoader->getClass(jResponseCallback);
     jclass cls = classLoader->findClass("co/instil/surge/callbacks/ResponseCallback");
     jmethodID method = env->GetMethodID(cls, "response", "(Lco/instil/surge/client/Response;)V");
     env->CallVoidMethod(jResponseCallback, method, jResponse);

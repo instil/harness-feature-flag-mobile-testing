@@ -61,19 +61,21 @@ Surge::RtspClient* getClient(JNIEnv *env, jobject callingObject) {
 //jint JNI_OnLoad(JavaVM *vm, void *reserved);
 //void JNI_OnUnload(JavaVM *vm, void *reserved);
 
+static JavaVM *jvm;
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_load(JNIEnv *, jclass) {
+void JNICALL Java_co_instil_surge_client_RtspClient_load(JNIEnv *env, jclass callingClass) {
+    classLoader = new SurgeJni::ClassLoader(env);
+
+    env->GetJavaVM(&jvm);
+
     static SurgeJni::RtspLoggingDelegateWrapper *delegate = new SurgeJni::RtspLoggingDelegateWrapper();
     SurgeUtil::Logger& logger = SurgeUtil::Logger::GetInstance();
     logger.SetLoggingDelegate(delegate);
 }
 
-static JavaVM *jvm;
 JNIEXPORT
 jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClientInstance(JNIEnv *env, jobject callingObject, jobject delegate) {
-    classLoader = new SurgeJni::ClassLoader(env);
 
-    env->GetJavaVM(&jvm);
     Surge::RtspClient *client = new Surge::RtspClient(new SurgeJni::RtspClientDelegateWrapper(jvm, env->NewWeakGlobalRef(delegate)));
     return reinterpret_cast<jlong>(client);
 }

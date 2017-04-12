@@ -23,11 +23,11 @@
 SurgeJni::ClassLoader::ClassLoader(JNIEnv *jniEnv) {
     jniEnv->GetJavaVM(&this->jvm);
 
-    auto randomClass = jniEnv->FindClass("co/instil/surge/player/RtspPlayer");
+    jclass randomClass = jniEnv->FindClass("co/instil/surge/player/RtspPlayer");
     jclass classClass = jniEnv->GetObjectClass(randomClass);
 
-    auto classLoaderClass = jniEnv->FindClass("java/lang/ClassLoader");
-    auto getClassLoaderMethod = jniEnv->GetMethodID(classClass, "getClassLoader", "()Ljava/lang/ClassLoader;");
+    jclass classLoaderClass = jniEnv->FindClass("java/lang/ClassLoader");
+    jmethodID getClassLoaderMethod = jniEnv->GetMethodID(classClass, "getClassLoader", "()Ljava/lang/ClassLoader;");
     this->classLoader = jniEnv->NewGlobalRef(jniEnv->CallObjectMethod(randomClass, getClassLoaderMethod));
 
     this->findClassMethod = jniEnv->GetMethodID(classLoaderClass, "findClass", "(Ljava/lang/String;)Ljava/lang/Class;");

@@ -203,3 +203,11 @@ SurgeUtil::DateTime SurgeJni::JavaTypeConverters::convertDate(JNIEnv *env, jobje
 
     return surgeDateTime;
 }
+
+void SurgeJni::JavaTypeConverters::callResponseCallback(SurgeJni::ClassLoader *classLoader, jobject jResponseCallback, jobject jResponse) {
+    JNIEnv *env = classLoader->getEnv();
+
+    jclass cls = classLoader->findClass("co/instil/surge/callbacks/ResponseCallback");
+    jmethodID method = env->GetMethodID(cls, "response", "(Lco/instil/surge/client/Response;)V");
+    env->CallVoidMethod(jResponseCallback, method, jResponse);
+}

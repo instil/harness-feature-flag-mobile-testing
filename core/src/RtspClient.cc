@@ -103,7 +103,7 @@ void Surge::RtspClient::Describe(const std::string& url,
         else {
             describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber());
         }
-        
+
         m_transport->RtspTransaction(describe, [=](Response *raw_resp) {
             INFO("Received DESCRIBE response");
             
@@ -139,7 +139,7 @@ void Surge::RtspClient::Describe(const std::string& url,
 void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
                               bool serverAllowsAggregate,
                               std::function<void(Surge::SetupResponse*)> callback) {
-    
+
     // control url is where we put any more requests to
     std::string setup_url = (sessionDescription.IsControlUrlComplete()) ?
         sessionDescription.GetControl():
@@ -162,7 +162,7 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
 
     // new session = no processed payloads
     processedFirstPayload = false;
-    
+
     RtspCommand* setup = RtspCommandFactory::SetupRequest(setup_url, GetNextSequenceNumber(), m_transport);
     m_transport->RtspTransaction(setup, [=](Response *raw_resp) {
         bool received_response = raw_resp != nullptr;
@@ -220,7 +220,7 @@ void Surge::RtspClient::Play(bool waitForResponse,
     else {
         play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber());
     }
-    
+
     m_transport->RtspTransaction(play, [=](Response *raw_resp) {
         bool received_response = raw_resp != nullptr;
         if (!received_response && waitForResponse) {
@@ -464,7 +464,7 @@ void Surge::RtspClient::Run() {
             break;
         }
 
-        // KEEP ALIVE        
+        // KEEP ALIVE
         int64_t delta = SurgeUtil::currentTimeMilliseconds() - m_lastKeepAliveMs;
         int64_t delta_seconds = delta / 1000;
         bool need_keep_alive = delta_seconds >= static_cast<int64_t>(m_keeepAliveIntervalInSeconds * 0.9);

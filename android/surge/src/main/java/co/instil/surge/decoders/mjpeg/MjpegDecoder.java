@@ -60,9 +60,11 @@ public class MjpegDecoder implements Decoder {
             byte[] imageBytes = new byte[frameBuffer.limit()];
             frameBuffer.get(imageBytes);
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            Canvas canvas = surface.lockCanvas(null);
-            canvas.drawBitmap(bitmap, 0, 0, null);
-            surface.unlockCanvasAndPost(canvas);
+            if (bitmap != null) {
+                Canvas canvas = surface.lockCanvas(null);
+                canvas.drawBitmap(bitmap, 0, 0, null);
+                surface.unlockCanvasAndPost(canvas);
+            }
         } catch (Exception e) {
             logger.error("Failed to decode frame", e);
         }

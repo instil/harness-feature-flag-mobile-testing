@@ -5,6 +5,7 @@ using Android.Views;
 using Android.Graphics;
 using System;
 using CO.Instil.Surge.Player;
+using CO.Instil.Surge.Callbacks;
 
 namespace SurgeXamarinAndroid
 {
@@ -37,14 +38,15 @@ namespace SurgeXamarinAndroid
 
 		public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
 		{
-			//player.InitiatePlaybackOf("rtsp://192.168.1.52:8554/test", new Surface(surface));
-			player.InitiatePlaybackOf("rtsp://192.168.1.24:8554/test", new Surface(surface));
-		}
+            player.InitiatePlaybackOf("rtsp://192.168.1.36:8554/test", new Surface(surface), delegate(bool result) {
+                Console.WriteLine(result);
+            });
+   		}
 
 		public bool OnSurfaceTextureDestroyed(SurfaceTexture surface)
 		{
 			player.Stop();
-			return false;
+            return false;
 		}
 
 		public void OnSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height)

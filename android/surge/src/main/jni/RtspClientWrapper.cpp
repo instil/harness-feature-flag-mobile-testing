@@ -116,13 +116,10 @@ JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_setup(JNIEnv *env, jobject callingObject, jobject jSessionDescription, jobject callback) {
     Surge::RtspClient *client = getClient(env, callingObject);
 
-    jobject globalCallback = env->NewGlobalRef(callback);
+    jobject globalCallback = env->NewWeakGlobalRef(callback);
 
     client->Setup(convertSessionDescription(env, jSessionDescription), false, [=](Surge::SetupResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
-
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
-        env->DeleteGlobalRef(globalCallback);
     });
 }
 

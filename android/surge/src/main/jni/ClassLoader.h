@@ -41,6 +41,7 @@ namespace SurgeJni {
         jclass findClass(const char* name);
 
         JNIEnv* getEnv();
+        void detatchJniEnv();
 
     private:
         JavaVM *jvm;

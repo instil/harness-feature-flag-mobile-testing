@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.Widget;
 using Android.OS;
 using Android.Views;
@@ -6,6 +6,7 @@ using Android.Graphics;
 using System;
 using CO.Instil.Surge.Player;
 using CO.Instil.Surge.Callbacks;
+using CO.Instil.Surge.Client;
 
 namespace SurgeXamarinAndroid
 {
@@ -38,7 +39,7 @@ namespace SurgeXamarinAndroid
 
 		public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
 		{
-            player.InitiatePlaybackOf("rtsp://192.168.1.36:8554/test", new Surface(surface), delegate(bool result) {
+            player.InitiatePlaybackOf("rtsp://localhost:8554/test", new SurgeSurface(surface, width, height), (bool result) => {
                 Console.WriteLine(result);
             });
    		}

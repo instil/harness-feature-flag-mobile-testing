@@ -52,7 +52,7 @@ namespace SurgeUtil {
     * @note   This is measured with a "steady" clock, so it
     *         will not be affected by system time adjustments.
     */
-    std::int_least64_t currentTimeMilliseconds();
+   long long int currentTimeMilliseconds();
     
     /**
      * Convert a DateTime object into an ISO 8601 string

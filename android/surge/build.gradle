@@ -14,9 +14,10 @@ model {
             versionName "1.0"
         }
 
-//        compileOptions.with {
-//            sourceCompatibility JavaVersion.VERSION_1_8
-//            targetCompatibility JavaVersion.VERSION_1_8
+//        externalNativeBuild {
+//            cmake {
+//                path "../../core/lib/libuv-cmake/CMakeLists.txt"
+//            }
 //        }
     }
 
@@ -38,6 +39,7 @@ model {
                     exclude "**/netbsd.c"
                     exclude "**/openbsd.c"
                     exclude "**/os390.c"
+                    exclude "**/os390-syscalls.c"
                     exclude "**/sunos.c"
                     exclude "**/win/**"
                 }
@@ -55,6 +57,7 @@ model {
         cppFlags.add("-std=c++14")
         cppFlags.add("-fexceptions")
         cppFlags.add("-I" + file("../../core/src"))
+        cppFlags.add("-O0");
         ldLibs.addAll(["log"])
         stl "c++_shared"
         toolchain "clang"

@@ -34,9 +34,6 @@ namespace Surge {
         // TIMEOUT
         virtual void ClientDidTimeout() = 0;
 
-        // ANNOUNCE / REDIRECT
-        virtual void StreamConfigChanged(bool wasRedirect) = 0;
-
         // VIDEO
         virtual void ClientReceivedFrame(const unsigned char * frameBuffer,
                                          size_t length,
@@ -44,7 +41,10 @@ namespace Surge {
                                          int32_t height,
                                          int32_t presentationTime,
                                          int32_t duration) = 0;
-        
+
+        // ANNOUNCE / REDIRECT
+        virtual void StreamConfigChanged(bool wasRedirect) = 0;
+
         virtual void ClientReceivedExtendedHeader(const unsigned char * buffer,
                                          size_t length) = 0;
 

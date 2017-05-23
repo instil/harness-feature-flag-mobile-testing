@@ -243,6 +243,12 @@ void Surge::RtspClient::Play(bool waitForResponse,
         }
         
         m_isPlaying = resp != nullptr && resp->Ok();
+
+        if (!resp->Ok()) {
+            int code = resp->GetCode();
+            INFO(code);
+        }
+
         StartSession();
         
         callback(resp);
@@ -434,7 +440,7 @@ void Surge::RtspClient::StartSession() {
 
 void Surge::RtspClient::Run() {
 
-    uint64_t time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
+    long long int time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
 
     m_transport->SetRtpCallback([&](RtpPacket* packet) {
         if (packet != nullptr) {
@@ -442,7 +448,8 @@ void Surge::RtspClient::Run() {
         
             delete packet;
 
-            time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
+            long long int test = SurgeUtil::currentTimeMilliseconds();
+            time_last_packet_was_processed = test;
         }
     });
     
@@ -488,7 +495,9 @@ void Surge::RtspClient::Run() {
                 }
             });
         }
-    }    
+    }
+
+    m_transport->SetRtpCallback([&](RtpPacket* packet) { });
     INFO("Rtsp Client is Finished");
 }
 

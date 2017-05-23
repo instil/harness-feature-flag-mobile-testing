@@ -40,7 +40,7 @@ SurgeUtil::DateTime SurgeUtil::currentDateTime()
     return result;
 }
 
-std::int_least64_t SurgeUtil::currentTimeMilliseconds()
+long long int SurgeUtil::currentTimeMilliseconds()
 {
     return std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::steady_clock::now().time_since_epoch()).count();

@@ -13,4 +13,4 @@ $SURGE_DIR/build-release.sh
 cp -r $SURGE_DIR/build/frameworks/iOS/SurgeiOS.framework $BUILD_DIR/
 cp -r $SURGE_DIR/build/frameworks/iOS/libSurgeCore.a $BUILD_DIR/
 
-"/Applications/Xamarin Studio.app/Contents/MacOS/mdtool" -v build "--configuration:Release" $XAMARIN_DIR/SurgeXamariniOS/SurgeXamariniOS.sln
+msbuild /t:Rebuild /p:Configuration=Release $XAMARIN_DIR/SurgeXamariniOS/SurgeXamariniOS.sln

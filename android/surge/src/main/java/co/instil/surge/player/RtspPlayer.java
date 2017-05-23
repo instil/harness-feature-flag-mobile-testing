@@ -36,6 +36,7 @@ import co.instil.surge.client.Response;
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.client.SurgeSurface;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.decoders.DecoderFactory;
 
@@ -62,7 +63,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     public RtspPlayerDelegate delegate;
 
-    private Surface surface = null;
+    protected SurgeSurface surface = null;
     private Decoder decoder;
 
 
@@ -74,15 +75,15 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         return new RtspClient(this);
     }
 
-    public void initiatePlaybackOf(String url, Surface surface, final PlayerCallback callback) {
+    public synchronized void initiatePlaybackOf(String url, SurgeSurface surface, final PlayerCallback callback) {
         initiatePlaybackOf(url, surface, "", "", null, null, callback);
     }
 
-    public void initiatePlaybackOf(String url, Surface surface, String username, String password, final PlayerCallback callback) {
+    public synchronized void initiatePlaybackOf(String url, SurgeSurface surface, String username, String password, final PlayerCallback callback) {
         initiatePlaybackOf(url, surface, username, password, null, null, callback);
     }
 
-    public void initiatePlaybackOf(String url, Surface surface, String username, String password, Date startTime, Date endTime, final PlayerCallback callback) {
+    public synchronized void initiatePlaybackOf(String url, SurgeSurface surface, String username, String password, Date startTime, Date endTime, final PlayerCallback callback) {
         this.url = url;
         this.username = username;
         this.password = password;
@@ -140,31 +141,37 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         rtspClient.setup(sessionDescription, new ResponseCallback() {
             @Override
             public void response(Response response) {
+                if (response == null) {
+                    callback.response(false);
+                }
                 rtspClient.play();
                 callback.response(true);
             }
         });
     }
 
-    private void initialiseDecoder(SessionDescription sessionDescription) {
+    protected void initialiseDecoder(SessionDescription sessionDescription) {
 
         System.out.println("Initializing new decoders");
 
         if (surface != null) {
-            if (decoder != null) {
+            Decoder currentDecoder = decoder;
+            decoder = null;
+
+            if (sessionDescription.getType() == H264) {
+                decoder = DecoderFactory.generateH264Decoder(surface.getSurface());
+            } else if (sessionDescription.getType() == MP4V) {
+                decoder = DecoderFactory.generateMP4VDecoder(surface.getSurface());
+            } else if (sessionDescription.getType() == MJPEG) {
+                decoder = DecoderFactory.generateMJPEGDecoder(surface.getSurface());
+            }
+
+            if (currentDecoder != null) {
                 try {
-                    decoder.close();
+                    currentDecoder.close();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-
-            if (sessionDescription.getType() == H264) {
-                decoder = DecoderFactory.generateH264Decoder(surface);
-            } else if (sessionDescription.getType() == MP4V) {
-                decoder = DecoderFactory.generateMP4VDecoder(surface);
-            } else if (sessionDescription.getType() == MJPEG) {
-                decoder = DecoderFactory.generateMJPEGDecoder(surface);
             }
         }
     }
@@ -202,11 +209,17 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         return sessionDescriptions[0];
     }
 
-    public void setSurface(Surface surface) {
+    public void setSurface(Surface surface, int width, int height) {
+        setSurface(new SurgeSurface(surface, width, height));
+    }
+
+    public void setSurface(SurgeSurface surface) {
         this.surface = surface;
 
         if (sessionDescription != null) {
             initialiseDecoder(sessionDescription);
+        } else {
+            logger.error("No decoder generated as there are no available SessionDescriptions");
         }
 
     }
@@ -243,8 +256,8 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         if (decoder != null) {
             decoder.decodeFrameBuffer(sessionDescription,
                     byteBuffer,
-                    width,
-                    height,
+                    surface.getWidth(),
+                    surface.getHeight(),
                     presentationTime,
                     duration);
         }

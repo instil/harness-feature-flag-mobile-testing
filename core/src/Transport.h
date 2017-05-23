@@ -103,6 +103,8 @@ namespace Surge {
    
     private:
         std::unique_ptr<char[]> generateRtspDataPtr(char *, size_t);
+
+        bool executingRtspCommand = true;
     };
 }
 

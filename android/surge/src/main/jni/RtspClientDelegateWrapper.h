@@ -29,7 +29,19 @@ namespace SurgeJni {
     class RtspClientDelegateWrapper : public Surge::IRtspClientDelegate {
 
     public:
-        RtspClientDelegateWrapper(JavaVM *jvm, jobject jDelegate) : jvm(jvm), jDelegate(jDelegate) {}
+        pthread_key_t key;
+        static JavaVM *staticJvm;
+
+        static void detatchJvmThread(void *rawEnv) {
+            DEBUG("Detachign JVM Thread");
+            staticJvm->DetachCurrentThread();
+        }
+
+    public:
+        RtspClientDelegateWrapper(JavaVM *jvm, jobject jDelegate) : jvm(jvm), jDelegate(jDelegate) {
+            staticJvm = jvm;
+            pthread_key_create(&key, detatchJvmThread);
+        }
 
         void ClientDidTimeout();
 
@@ -52,6 +64,16 @@ namespace SurgeJni {
     private:
         JavaVM *jvm;
         jobject jDelegate;
+
+
+        void getEnv(JNIEnv **env) {
+            int status = jvm->GetEnv((void **) env, JNI_VERSION_1_6);
+            if (status < 0) {
+                INFO("ATTACHING CURRENT THREAD");
+                status = jvm->AttachCurrentThread(env, NULL);
+                pthread_setspecific(key, &env);
+            }
+        }
     };
 
 }

@@ -180,7 +180,7 @@ namespace Surge {
         Depacketizer *depacketizer;
         IRtspClientDelegate * const m_delegate;
         bool processedFirstPayload;
-        std::uint64_t m_lastKeepAliveMs;
+        long long int m_lastKeepAliveMs;
         int m_keeepAliveIntervalInSeconds;
         int m_sequenceNumber;
         std::string m_url;

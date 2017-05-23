@@ -14,4 +14,4 @@ cd $SURGE_DIR
 
 cp $SURGE_DIR/surge/build/outputs/aar/surge-release.aar $BUILD_DIR/SurgeAndroid.aar
 
-xbuild /p:Configuration=Release $XAMARIN_DIR/SurgeXamarinAndroid/SurgeXamarinAndroid.sln
+msbuild /p:Configuration=Release $XAMARIN_DIR/SurgeXamarinAndroid/SurgeXamarinAndroid.sln

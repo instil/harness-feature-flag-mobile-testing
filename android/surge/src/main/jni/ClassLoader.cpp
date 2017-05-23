@@ -35,7 +35,10 @@ SurgeJni::ClassLoader::ClassLoader(JNIEnv *jniEnv) {
 
 jclass SurgeJni::ClassLoader::findClass(const char* name) {
     JNIEnv *env = this->getEnv();
-    return static_cast<jclass>(env->CallObjectMethod(this->classLoader, this->findClassMethod, env->NewStringUTF(name)));
+    jstring className = env->NewStringUTF(name);
+    jclass result = static_cast<jclass>(env->CallObjectMethod(this->classLoader, this->findClassMethod, className));
+    env->DeleteLocalRef(className);
+    return result;
 }
 
 JNIEnv* SurgeJni::ClassLoader::getEnv() {
@@ -49,4 +52,8 @@ JNIEnv* SurgeJni::ClassLoader::getEnv() {
     }
 
     return env;
+}
+
+void SurgeJni::ClassLoader::detatchJniEnv() {
+    jvm->DetachCurrentThread();
 }

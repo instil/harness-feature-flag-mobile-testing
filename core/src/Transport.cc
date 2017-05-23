@@ -47,7 +47,9 @@ void Surge::Transport::StopRunning() {
     }
     m_running = false;
     m_loop->stop();
-    m_thread.Stop();
+    if (m_thread.IsRunning()) {
+        m_thread.WaitUntilStopped();
+    }
 }
 
 
@@ -77,9 +79,14 @@ void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function
     DEBUG("Sending command to server");
     
     rtspCallback = callback;
-    
-    m_tcp->write(generateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
+
+
+    executingRtspCommand = false;
+    m_loop->stop();
+    m_tcp->write(generateRtspDataPtr((char *) command->BytesPointer(), command->PointerLength()),
                  command->PointerLength());
+    m_tcp->read();
+    executingRtspCommand = true;
 }
 
 std::unique_ptr<char[]> Surge::Transport::generateRtspDataPtr(char *data, size_t length) {
@@ -90,6 +97,9 @@ std::unique_ptr<char[]> Surge::Transport::generateRtspDataPtr(char *data, size_t
 
 
 void Surge::Transport::Run() {
+
+    m_tcp->clear();
+
     m_tcp->on<uvw::ErrorEvent>([this](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("ERROR");
         NotifyDelegateOfReadFailure();
@@ -100,12 +110,11 @@ void Surge::Transport::Run() {
     });
     
     m_tcp->on<uvw::ShutdownEvent>([](const uvw::ShutdownEvent &shutdownEvent, uvw::TcpHandle &tcp) {
-        INFO("Shutdown");
+        ERROR("Shutdown");
     });
     
     m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) {
         DEBUG("Sent request to stream, wait for a response");
-        tcp.read();
     });
     
     m_tcp->on<uvw::DataEvent>([this](const uvw::DataEvent &dataEvent, uvw::TcpHandle &tcp) {
@@ -114,19 +123,20 @@ void Surge::Transport::Run() {
     });
     
     m_tcp->on<uvw::EndEvent>([this](const uvw::EndEvent &endEvent, uvw::TcpHandle &tcp) {
-        INFO("Loop ended prematurely, closing TCP port");
-        tcp.close();
+        ERROR("Loop ended prematurely, closing TCP port");
+        m_running = false;
         
         NotifyDelegateOfReadFailure();
     });
-    
+
     while (m_running) {
-        m_loop->run<uvw::Loop::Mode::NOWAIT>();
-    
+        if (executingRtspCommand) {
+            m_loop->run();
+        }
     }
     
     
-    INFO("Closing transport");
+    ERROR("Closing transport");
     m_loop->close();
     m_tcp->close();
 }

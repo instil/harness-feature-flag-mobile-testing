@@ -24,6 +24,7 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.view.Surface;
 
 import org.slf4j.Logger;
@@ -62,7 +63,10 @@ public class MjpegDecoder implements Decoder {
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
             if (bitmap != null) {
                 Canvas canvas = surface.lockCanvas(null);
-                canvas.drawBitmap(bitmap, 0, 0, null);
+                canvas.drawBitmap(bitmap,
+                        new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
+                        new Rect(0, 0, width, height),
+                        null);
                 surface.unlockCanvasAndPost(canvas);
             }
         } catch (Exception e) {

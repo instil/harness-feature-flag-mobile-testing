@@ -24,6 +24,14 @@ import android.annotation.TargetApi;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.view.Surface;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.List;
+
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.decoders.MediaCodecFactory;
@@ -31,12 +39,6 @@ import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
 import co.instil.surge.device.DeviceExaminer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.List;
 
 /**
  * Abstract superclass for all H264 decoders which implements common operations e.g. parsing
@@ -132,8 +134,12 @@ public abstract class H264Decoder implements Decoder {
     public void close() throws InterruptedException {
         MediaCodec mediaCodec = getMediaCodec();
         if (mediaCodec != null) {
-            mediaCodec.stop();
-            mediaCodec.release();
+            try {
+                mediaCodec.stop();
+                mediaCodec.release();
+            } catch (Exception e) {
+                logger.error("Failed to close MediaCodec", e);
+            }
         }
     }
 

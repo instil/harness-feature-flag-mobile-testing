@@ -111,4 +111,8 @@ public class SessionDescription {
     public int hashCode() {
         return Objects.hashCode(this.getFormatParameters());
     }
+
+    public boolean isHighResolution() {
+        return (width >= 1080 || height >= 1080);
+    }
 }

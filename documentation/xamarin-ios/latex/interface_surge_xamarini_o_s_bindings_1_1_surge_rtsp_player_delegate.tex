@@ -1,0 +1,159 @@
+\hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate}{}\section{Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate Interface Reference}
+\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate}\index{Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate}}
+
+
+Surge R\+T\+SP Delegate interface used to provide a notification of Surge library events.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a090498b65f3da84477fc9486e24235a4}{Rtsp\+Player\+Did\+Timeout} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
+\begin{DoxyCompactList}\small\item\em Called once a stream has not received a frame from the R\+T\+SP stream in the last 5000ms. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a086947a6da6d523853a8cfacd4be654a}{Rtsp\+Player\+Initiated\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
+\begin{DoxyCompactList}\small\item\em Called once stream playback has successfully started. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a50991332700fd45a8a2771e35bd6016c}{Rtsp\+Player\+Failed\+To\+Initiate\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
+\begin{DoxyCompactList}\small\item\em Called if a stream has failed to successfully start playback. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_ad4dabfca0a807a5d2e5edb1c0325379d}{Rtsp\+Player\+Did\+Begin\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
+\begin{DoxyCompactList}\small\item\em Called when the player begins or resumes playback of a stream. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_acbda4e7146444810d2800ad8e6a90d88}{Rtsp\+Player\+Did\+Stop\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
+\begin{DoxyCompactList}\small\item\em Called when the player stops or pauses playback of a stream. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a60aaf86b1f006e37c387d6dbe710977f}{Rtsp\+Player\+Did\+Begin\+Buffering} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
+\begin{DoxyCompactList}\small\item\em Called when the player enters the buffering state. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_ac178f502817c60bfe3a57b7393d66232}{Rtsp\+Player\+Did\+Stop\+Buffering} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
+\begin{DoxyCompactList}\small\item\em Called when the player exits the buffering state. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a96ebb6b82e20ba68d1b91bee632efd06}{Rtsp\+Player\+Did\+Observe\+Playback\+Framerate} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player, int framerate)
+\begin{DoxyCompactList}\small\item\em Guaranteed to be called at most once per second with the current player frame rate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Surge R\+T\+SP Delegate interface used to provide a notification of Surge library events. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a60aaf86b1f006e37c387d6dbe710977f}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a60aaf86b1f006e37c387d6dbe710977f}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}!Rtsp\+Player\+Did\+Begin\+Buffering@{Rtsp\+Player\+Did\+Begin\+Buffering}}
+\index{Rtsp\+Player\+Did\+Begin\+Buffering@{Rtsp\+Player\+Did\+Begin\+Buffering}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}}
+\subsubsection{\texorpdfstring{Rtsp\+Player\+Did\+Begin\+Buffering()}{RtspPlayerDidBeginBuffering()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Did\+Begin\+Buffering (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player }\end{DoxyParamCaption})}
+
+
+
+Called when the player enters the buffering state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_ad4dabfca0a807a5d2e5edb1c0325379d}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_ad4dabfca0a807a5d2e5edb1c0325379d}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}!Rtsp\+Player\+Did\+Begin\+Playback@{Rtsp\+Player\+Did\+Begin\+Playback}}
+\index{Rtsp\+Player\+Did\+Begin\+Playback@{Rtsp\+Player\+Did\+Begin\+Playback}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}}
+\subsubsection{\texorpdfstring{Rtsp\+Player\+Did\+Begin\+Playback()}{RtspPlayerDidBeginPlayback()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Did\+Begin\+Playback (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player }\end{DoxyParamCaption})}
+
+
+
+Called when the player begins or resumes playback of a stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a96ebb6b82e20ba68d1b91bee632efd06}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a96ebb6b82e20ba68d1b91bee632efd06}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}!Rtsp\+Player\+Did\+Observe\+Playback\+Framerate@{Rtsp\+Player\+Did\+Observe\+Playback\+Framerate}}
+\index{Rtsp\+Player\+Did\+Observe\+Playback\+Framerate@{Rtsp\+Player\+Did\+Observe\+Playback\+Framerate}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}}
+\subsubsection{\texorpdfstring{Rtsp\+Player\+Did\+Observe\+Playback\+Framerate()}{RtspPlayerDidObservePlaybackFramerate()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Did\+Observe\+Playback\+Framerate (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player,  }\item[{int}]{framerate }\end{DoxyParamCaption})}
+
+
+
+Guaranteed to be called at most once per second with the current player frame rate. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_ac178f502817c60bfe3a57b7393d66232}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_ac178f502817c60bfe3a57b7393d66232}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}!Rtsp\+Player\+Did\+Stop\+Buffering@{Rtsp\+Player\+Did\+Stop\+Buffering}}
+\index{Rtsp\+Player\+Did\+Stop\+Buffering@{Rtsp\+Player\+Did\+Stop\+Buffering}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}}
+\subsubsection{\texorpdfstring{Rtsp\+Player\+Did\+Stop\+Buffering()}{RtspPlayerDidStopBuffering()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Did\+Stop\+Buffering (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player }\end{DoxyParamCaption})}
+
+
+
+Called when the player exits the buffering state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_acbda4e7146444810d2800ad8e6a90d88}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_acbda4e7146444810d2800ad8e6a90d88}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}!Rtsp\+Player\+Did\+Stop\+Playback@{Rtsp\+Player\+Did\+Stop\+Playback}}
+\index{Rtsp\+Player\+Did\+Stop\+Playback@{Rtsp\+Player\+Did\+Stop\+Playback}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}}
+\subsubsection{\texorpdfstring{Rtsp\+Player\+Did\+Stop\+Playback()}{RtspPlayerDidStopPlayback()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Did\+Stop\+Playback (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player }\end{DoxyParamCaption})}
+
+
+
+Called when the player stops or pauses playback of a stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a090498b65f3da84477fc9486e24235a4}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a090498b65f3da84477fc9486e24235a4}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}!Rtsp\+Player\+Did\+Timeout@{Rtsp\+Player\+Did\+Timeout}}
+\index{Rtsp\+Player\+Did\+Timeout@{Rtsp\+Player\+Did\+Timeout}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}}
+\subsubsection{\texorpdfstring{Rtsp\+Player\+Did\+Timeout()}{RtspPlayerDidTimeout()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Did\+Timeout (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player }\end{DoxyParamCaption})}
+
+
+
+Called once a stream has not received a frame from the R\+T\+SP stream in the last 5000ms. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a50991332700fd45a8a2771e35bd6016c}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a50991332700fd45a8a2771e35bd6016c}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}!Rtsp\+Player\+Failed\+To\+Initiate\+Playback@{Rtsp\+Player\+Failed\+To\+Initiate\+Playback}}
+\index{Rtsp\+Player\+Failed\+To\+Initiate\+Playback@{Rtsp\+Player\+Failed\+To\+Initiate\+Playback}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}}
+\subsubsection{\texorpdfstring{Rtsp\+Player\+Failed\+To\+Initiate\+Playback()}{RtspPlayerFailedToInitiatePlayback()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Failed\+To\+Initiate\+Playback (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player }\end{DoxyParamCaption})}
+
+
+
+Called if a stream has failed to successfully start playback. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a086947a6da6d523853a8cfacd4be654a}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a086947a6da6d523853a8cfacd4be654a}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}!Rtsp\+Player\+Initiated\+Playback@{Rtsp\+Player\+Initiated\+Playback}}
+\index{Rtsp\+Player\+Initiated\+Playback@{Rtsp\+Player\+Initiated\+Playback}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}}
+\subsubsection{\texorpdfstring{Rtsp\+Player\+Initiated\+Playback()}{RtspPlayerInitiatedPlayback()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Initiated\+Playback (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player }\end{DoxyParamCaption})}
+
+
+
+Called once stream playback has successfully started. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_api_definition_8cs}{Api\+Definition.\+cs}\end{DoxyCompactItemize}

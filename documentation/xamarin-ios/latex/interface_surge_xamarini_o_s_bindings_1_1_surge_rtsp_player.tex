@@ -1,0 +1,185 @@
+\hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{}\section{Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player Interface Reference}
+\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}\index{Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player}}
+
+
+The core class used to start and control playback of an R\+T\+SP stream on i\+OS.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a7c2572b559c1758415a21c0bde4417be}{Initiate\+Playback\+Of} (N\+S\+Url url)
+\begin{DoxyCompactList}\small\item\em Initiate playback of the R\+T\+SP stream. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_aed2fc640fe87633d54ba35a618b1240d}{Initiate\+Playback\+Of} (N\+S\+Url url, N\+S\+String username, N\+S\+String password)
+\begin{DoxyCompactList}\small\item\em Initiate playback of the a basic auth protected R\+T\+SP stream. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a618a2429722fc8264e546c64155ad7b3}{Initiate\+Playback\+Of} (N\+S\+Url url, N\+S\+String username, N\+S\+String password, N\+S\+Date start\+Time, \mbox{[}Null\+Allowed\mbox{]} N\+S\+Date end\+Time)
+\begin{DoxyCompactList}\small\item\em Initiate playback of the a basic auth protected R\+T\+SP stream. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ac4cb8b34437ee896e4529cddca339bed}{Stop} ()
+\begin{DoxyCompactList}\small\item\em Stop playback of the stream, issuing the T\+E\+A\+R\+D\+O\+WN R\+T\+SP request. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_aeca3aa0d7ea965edc178403416694c5b}{Pause} ()
+\begin{DoxyCompactList}\small\item\em Pause playback of the stream. \end{DoxyCompactList}\item 
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a3f7d8277f7aa65454732afd623ee53af}{Play} ()
+\begin{DoxyCompactList}\small\item\em Resumes playback of a paused stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+U\+I\+Image\+View \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ab629f9303d6b427a8213e1dee03a3810}{Player\+View}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The Image\+View that Surge will use to play the R\+T\+SP video stream on. \end{DoxyCompactList}\item 
+\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate}{Surge\+Rtsp\+Player\+Delegate} \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a6c7ed65f9656542894f0ccfe7e728b0e}{Client\+Delegate}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Delegate object that will receive the notifications of events from the Surge library. \end{DoxyCompactList}\item 
+int \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a84dbe2b6b5456cbe5e261057e027eb40}{Frames\+Per\+Second}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Frames per second measured from the currently playing stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The core class used to start and control playback of an R\+T\+SP stream on i\+OS. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a7c2572b559c1758415a21c0bde4417be}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a7c2572b559c1758415a21c0bde4417be}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Initiate\+Playback\+Of@{Initiate\+Playback\+Of}}
+\index{Initiate\+Playback\+Of@{Initiate\+Playback\+Of}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
+\subsubsection{\texorpdfstring{Initiate\+Playback\+Of()}{InitiatePlaybackOf()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Initiate\+Playback\+Of (\begin{DoxyParamCaption}\item[{N\+S\+Url}]{url }\end{DoxyParamCaption})}
+
+
+
+Initiate playback of the R\+T\+SP stream. 
+
+This will issue the required D\+E\+S\+C\+R\+I\+BE, S\+E\+T\+UP and P\+L\+AY R\+T\+SP requests to start stream playback. Once completed, Surge will notify the user of the requests result via the Surge R\+T\+SP delegate. If successful, the video stream will start playing on the provided Image\+View associated with the \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ab629f9303d6b427a8213e1dee03a3810}{Surge\+Rtsp\+Player\+::\+Player\+View} property.
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate}{Surge\+Rtsp\+Player\+Delegate} 
+\end{DoxySeeAlso}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em url} & The R\+T\+SP stream U\+RL.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_aed2fc640fe87633d54ba35a618b1240d}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_aed2fc640fe87633d54ba35a618b1240d}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Initiate\+Playback\+Of@{Initiate\+Playback\+Of}}
+\index{Initiate\+Playback\+Of@{Initiate\+Playback\+Of}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
+\subsubsection{\texorpdfstring{Initiate\+Playback\+Of()}{InitiatePlaybackOf()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Initiate\+Playback\+Of (\begin{DoxyParamCaption}\item[{N\+S\+Url}]{url,  }\item[{N\+S\+String}]{username,  }\item[{N\+S\+String}]{password }\end{DoxyParamCaption})}
+
+
+
+Initiate playback of the a basic auth protected R\+T\+SP stream. 
+
+This will issue the required D\+E\+S\+C\+R\+I\+BE, S\+E\+T\+UP and P\+L\+AY R\+T\+SP requests to start stream playback. Once completed, Surge will notify the user of the requests result via the Surge R\+T\+SP delegate. If successful, the video stream will start playing on the provided Image\+View associated with the \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ab629f9303d6b427a8213e1dee03a3810}{Surge\+Rtsp\+Player\+::\+Player\+View} property.
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate}{Surge\+Rtsp\+Player\+Delegate} 
+\end{DoxySeeAlso}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em url} & The R\+T\+SP stream U\+RL.\\
+\hline
+{\em username} & Username used to authenticate the stream.\\
+\hline
+{\em password} & Password associated with the provided username.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a618a2429722fc8264e546c64155ad7b3}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a618a2429722fc8264e546c64155ad7b3}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Initiate\+Playback\+Of@{Initiate\+Playback\+Of}}
+\index{Initiate\+Playback\+Of@{Initiate\+Playback\+Of}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
+\subsubsection{\texorpdfstring{Initiate\+Playback\+Of()}{InitiatePlaybackOf()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Initiate\+Playback\+Of (\begin{DoxyParamCaption}\item[{N\+S\+Url}]{url,  }\item[{N\+S\+String}]{username,  }\item[{N\+S\+String}]{password,  }\item[{N\+S\+Date}]{start\+Time,  }\item[{\mbox{[}\+Null\+Allowed\mbox{]} N\+S\+Date}]{end\+Time }\end{DoxyParamCaption})}
+
+
+
+Initiate playback of the a basic auth protected R\+T\+SP stream. 
+
+This will issue the required D\+E\+S\+C\+R\+I\+BE, S\+E\+T\+UP and P\+L\+AY R\+T\+SP requests to start stream playback. Once completed, Surge will notify the user of the requests result via the Surge R\+T\+SP delegate. If successful, the video stream will start playing on the provided Image\+View associated with the \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ab629f9303d6b427a8213e1dee03a3810}{Surge\+Rtsp\+Player\+::\+Player\+View} property.
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate}{Surge\+Rtsp\+Player\+Delegate} 
+\end{DoxySeeAlso}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em url} & The R\+T\+SP stream U\+RL.\\
+\hline
+{\em username} & Username used to authenticate the stream.\\
+\hline
+{\em password} & Password associated with the provided username.\\
+\hline
+{\em start\+Time} & If the R\+T\+SP stream supports recorded video, timestamp to start playing video from.\\
+\hline
+{\em end\+Time} & If the R\+T\+SP stream supports recorded video, timestamp to finish playing video at.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_aeca3aa0d7ea965edc178403416694c5b}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_aeca3aa0d7ea965edc178403416694c5b}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Pause@{Pause}}
+\index{Pause@{Pause}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
+\subsubsection{\texorpdfstring{Pause()}{Pause()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Pause (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Pause playback of the stream. 
+
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a3f7d8277f7aa65454732afd623ee53af}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a3f7d8277f7aa65454732afd623ee53af}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Play@{Play}}
+\index{Play@{Play}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
+\subsubsection{\texorpdfstring{Play()}{Play()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Play (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Resumes playback of a paused stream. 
+
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ac4cb8b34437ee896e4529cddca339bed}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ac4cb8b34437ee896e4529cddca339bed}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Stop@{Stop}}
+\index{Stop@{Stop}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
+\subsubsection{\texorpdfstring{Stop()}{Stop()}}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Stop playback of the stream, issuing the T\+E\+A\+R\+D\+O\+WN R\+T\+SP request. 
+
+Once Stop has been requrested, the stream canno tbe restarted via the \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a3f7d8277f7aa65454732afd623ee53af}{Play()} command. To restart a stream, plese re-\/execute the \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a7c2572b559c1758415a21c0bde4417be}{Initiate\+Playback\+Of()} command 
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a6c7ed65f9656542894f0ccfe7e728b0e}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a6c7ed65f9656542894f0ccfe7e728b0e}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Client\+Delegate@{Client\+Delegate}}
+\index{Client\+Delegate@{Client\+Delegate}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
+\subsubsection{\texorpdfstring{Client\+Delegate}{ClientDelegate}}
+{\footnotesize\ttfamily \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate}{Surge\+Rtsp\+Player\+Delegate} Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Client\+Delegate\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Delegate object that will receive the notifications of events from the Surge library. 
+
+This is a weak property. A reference to the delegate object must be stored on the client side to ensure it does not get garbage collected. \mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a84dbe2b6b5456cbe5e261057e027eb40}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a84dbe2b6b5456cbe5e261057e027eb40}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Frames\+Per\+Second@{Frames\+Per\+Second}}
+\index{Frames\+Per\+Second@{Frames\+Per\+Second}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
+\subsubsection{\texorpdfstring{Frames\+Per\+Second}{FramesPerSecond}}
+{\footnotesize\ttfamily int Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Frames\+Per\+Second\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Frames per second measured from the currently playing stream. 
+
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ab629f9303d6b427a8213e1dee03a3810}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ab629f9303d6b427a8213e1dee03a3810}} 
+\index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Player\+View@{Player\+View}}
+\index{Player\+View@{Player\+View}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
+\subsubsection{\texorpdfstring{Player\+View}{PlayerView}}
+{\footnotesize\ttfamily U\+I\+Image\+View Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Player\+View\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+The Image\+View that Surge will use to play the R\+T\+SP video stream on. 
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_api_definition_8cs}{Api\+Definition.\+cs}\end{DoxyCompactItemize}

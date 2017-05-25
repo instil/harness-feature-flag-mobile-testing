@@ -1,3 +1,8 @@
+// Copyright (c) 2017 Instil Software.
+//
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
 #include "SessionDescriptionV0.h"
 
 Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string& rawSessionDescription): SessionDescription()

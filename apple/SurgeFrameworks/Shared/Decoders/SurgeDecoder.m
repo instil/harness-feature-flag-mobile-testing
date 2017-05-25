@@ -196,6 +196,8 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), self.framerateQueue, ^{
        self.framesPerSecond = self.framePerSecondCounter;
        self.framePerSecondCounter = 0;
+
+       [self.delegate decoderFramerateUpdated:self.framesPerSecond];
        [self updateFramesPerSecond];
     });
 }

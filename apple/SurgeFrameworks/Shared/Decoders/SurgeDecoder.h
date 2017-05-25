@@ -31,6 +31,8 @@
  */
 - (void)decoderFrameAvailable:(CGImageRef)image withTimeStamp:(NSTimeInterval)timestamp;
 
+- (void)decoderFramerateUpdated:(NSInteger) framerate;
+
 @end
 
 

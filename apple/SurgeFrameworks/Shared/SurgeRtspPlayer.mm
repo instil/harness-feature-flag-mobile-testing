@@ -377,6 +377,12 @@ private:
     });
 }
 
+- (void)decoderFramerateUpdated:(NSInteger)framerate {
+    if ([self.delegate respondsToSelector:@selector(rtspPlayer:didObservePlaybackFrameRate:)]) {
+        [self.delegate rtspPlayer:self didObservePlaybackFrameRate:framerate];
+    }
+}
+
 - (void)decoderDidBeginBuffering {
     if ([self.delegate respondsToSelector:@selector(rtspPlayerDidBeginBuffering:)]) {
         [self.delegate rtspPlayerDidBeginBuffering:self];

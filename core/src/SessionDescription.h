@@ -8,7 +8,6 @@
 
 #include "MimeTypes.h"
 #include "Logging.h"
-#include "Constants.h"
 
 #include <string>
 #include <vector>
@@ -116,12 +115,12 @@ namespace Surge {
             return UNKNOWN;
         }
         
-        const int GetNoPacketTimeoutTimeForStream() {
+        const int GetTimeoutOffset() {
             if (fpsFraction > 1) {
-                return (fpsFraction * 1000) + SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
+                return (fpsFraction * 1000);
             }
             
-            return SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
+            return 0;
         }
 
     protected:

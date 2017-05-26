@@ -326,6 +326,15 @@ private:
     return (int)self.decoder.framesPerSecond;
 }
 
+- (int)timeout {
+    return self.client->GetTimeout();
+}
+
+- (void)setTimeout:(int)timeout {
+    self.client->SetTimeout(timeout);
+}
+
+
 #pragma mark - RTSP client delegate
 
 - (void)rtspClientDidTimeout {

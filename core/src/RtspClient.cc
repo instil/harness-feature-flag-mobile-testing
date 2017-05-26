@@ -24,6 +24,7 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         m_lastKeepAliveMs(0),
         m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
         m_sequenceNumber(1),
+        m_timeout(SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS),
         startTimeSet(false),
         endTimeSet(false),
         depacketizer(nullptr),
@@ -449,9 +450,10 @@ void Surge::RtspClient::Run() {
 
         // TIMEOUT
         int64_t timeout_delta_ms = SurgeUtil::currentTimeMilliseconds() - time_last_packet_was_processed;
-        bool client_did_timeout = m_isPlaying && timeout_delta_ms >= m_sessionDescription.GetNoPacketTimeoutTimeForStream();
+        int maxTimeBetweenFrames = m_timeout + m_sessionDescription.GetTimeoutOffset();
+        bool client_did_timeout = m_isPlaying && timeout_delta_ms >= maxTimeBetweenFrames;
         if (client_did_timeout) {
-            ERROR("No processed packets in the last " << m_sessionDescription.GetNoPacketTimeoutTimeForStream() << "(ms). Issueing timeout signal.");
+            ERROR("No processed packets in the last " << maxTimeBetweenFrames << "(ms). Issueing timeout signal.");
             NotifyDelegateTimeout();
             break;
         }

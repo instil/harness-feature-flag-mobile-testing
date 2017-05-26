@@ -70,7 +70,7 @@ namespace SurgeXamariniOSBindings
         /// <summary>
         /// Stop playback of the stream, issuing the TEARDOWN RTSP request.
         /// 
-        /// Once Stop has been requrested, the stream canno tbe restarted via the Play() command. To restart a stream, plese re-execute the InitiatePlaybackOf() command
+        /// Once Stop has been requested, the stream canno tbe restarted via the Play() command. To restart a stream, plese re-execute the InitiatePlaybackOf() command
         /// </summary>
 		[Export("stop")]
         void Stop();
@@ -100,13 +100,21 @@ namespace SurgeXamariniOSBindings
         /// side to ensure it does not get garbage collected.
         /// </summary>
         [Export("delegate")]
-        SurgeRtspPlayerDelegate ClientDelegate { get; set; }
+		SurgeRtspPlayerDelegate ClientDelegate { get; set; }
 
-        /// <summary>
-        /// Frames per second measured from the currently playing stream.
-        /// </summary>
+		/// <summary>
+		/// Frames per second measured from the currently playing stream.
+		/// </summary>
 		[Export("framesPerSecond")]
-		int FramesPerSecond { get; set; }
+		int FramesPerSecond { get; }
+
+		/// <summary>
+		/// Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal.
+        /// 
+        /// Default value: 5000ms
+		/// </summary>
+		[Export("timeout")]
+		int Timeout { get; set; }
     }
 
     /// <summary>
@@ -116,11 +124,11 @@ namespace SurgeXamariniOSBindings
     [Model][Protocol]
     public interface SurgeRtspPlayerDelegate
     {
-        /// <summary>
-        /// Called once a stream has not received a frame from the RTSP stream in the last 5000ms.
-        /// </summary>
-        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
-        [Abstract]
+		/// <summary>
+		/// Called once a stream has not received a frame from the RTSP stream within the defined timeout peroid as defined by SurgeRtspPlayer#Timeout.
+		/// </summary>
+		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+		[Abstract]
         [Export("rtspPlayerDidTimeout:")]
         void RtspPlayerDidTimeout(SurgeRtspPlayer player);
 

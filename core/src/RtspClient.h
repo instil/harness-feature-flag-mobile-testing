@@ -105,6 +105,14 @@ namespace Surge {
             this->factory = factory;
         }
 
+        int GetTimeout() {
+            return this->m_timeout;
+        }
+
+        void SetTimeout(int timeout) {
+            this->m_timeout = timeout;
+        }
+
     private:
         void Run() override;
 
@@ -168,6 +176,7 @@ namespace Surge {
         long long int m_lastKeepAliveMs;
         int m_keeepAliveIntervalInSeconds;
         int m_sequenceNumber;
+        int m_timeout;
         std::string m_url;
         std::string m_session;
         Surge::ITransportInterface *m_transport;

@@ -120,6 +120,11 @@
  */
 @property (nonatomic, strong, nullable) id<SurgeRtspPlayerDelegate> delegate;
 
+/**
+ * Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal
+ */
+@property (nonatomic, assign) int timeout;
+
 /*
  * Recorded FPS of the current stream.
  */

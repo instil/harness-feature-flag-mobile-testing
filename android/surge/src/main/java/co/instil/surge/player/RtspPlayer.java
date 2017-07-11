@@ -53,7 +53,6 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     protected SurgeSurface surface = null;
     private Decoder decoder;
 
-
     public RtspPlayer() {
         rtspClient = generateRtspClient();
     }
@@ -70,7 +69,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         initiatePlaybackOf(url, surface, username, password, null, null, callback);
     }
 
-    public synchronized void initiatePlaybackOf(String url, SurgeSurface surface, String username, String password, Date startTime, Date endTime, final PlayerCallback callback) {
+    public synchronized void initiatePlaybackOf(final String url, SurgeSurface surface, final String username, final String password, Date startTime, Date endTime, final PlayerCallback callback) {
         this.url = url;
         this.username = username;
         this.password = password;
@@ -89,36 +88,36 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         }
 
         rtspClient.describe(url, username, password, new ResponseCallback() {
-                    @Override
-                    public void response(Response rawResponse) {
-                        DescribeResponse response = (DescribeResponse) rawResponse;
+            @Override
+            public void response(Response rawResponse) {
+                DescribeResponse response = (DescribeResponse) rawResponse;
 
-                        if (response == null ||
-                                response.getSessionDescriptions() == null ||
-                                response.getSessionDescriptions().length == 0) {
-                            callback.response(false);
-                            return;
-                        }
+                if (response == null ||
+                        response.getSessionDescriptions() == null ||
+                        response.getSessionDescriptions().length == 0) {
+                    callback.response(false);
+                    return;
+                }
 
-                        for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
-                            logger.debug(sessionDescription.toString());
-                        }
+                for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
+                    logger.debug(sessionDescription.toString());
+                }
 
-                        setSessionDescriptions(response.getSessionDescriptions());
-                        if (sessionDescriptions.length > 0) {
-                            setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
-                                    new PlayerCallback() {
-                                        @Override
-                                        public void response(boolean result) {
-                                            callback.response(result);
-                                        }
-                                    });
-                        } else {
-                            throw new RuntimeException("No session description available, is the stream active?");
-                        }
+                setSessionDescriptions(response.getSessionDescriptions());
+                if (sessionDescriptions.length > 0) {
+                    setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
+                            new PlayerCallback() {
+                                @Override
+                                public void response(boolean result) {
+                                    callback.response(result);
+                                }
+                            });
+                } else {
+                    throw new RuntimeException("No session description available, is the stream active?");
+                }
 
-                        startFpsCounter();
-                    }
+                startFpsCounter();
+            }
         });
     }
 
@@ -128,7 +127,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
         rtspClient.setup(sessionDescription, new ResponseCallback() {
             @Override
             public void response(Response response) {
-                if (response == null) {
+                if (response == null || response.getStatusCode() != 200) {
                     callback.response(false);
                 }
                 rtspClient.play();
@@ -176,6 +175,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     public void stop() {
         logger.debug("Stopping playback of {}", url);
         rtspClient.tearDown();
+        decoder = null;
     }
 
     public void seek(Date startTime, Date endTime) {
@@ -215,6 +215,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     public void close() throws Exception {
         try {
             rtspClient.close();
+            stopFpsCounter();
         } catch (Exception e) {
             System.out.println("Failed to close and clean up the native RTSP Client");
         }
@@ -261,26 +262,35 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     private int framesPerSecond = 0;
     private int framesPerSecondCounter = 0;
+    private boolean fpsThreadIsRunning = false;
 
 
     private void startFpsCounter() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    framesPerSecond = framesPerSecondCounter;
-                    framesPerSecondCounter = 0;
-                    if (delegate != null) {
-                        delegate.rtspPlayerDidUpdateFps(framesPerSecond);
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+        if (!fpsThreadIsRunning) {
+            fpsThreadIsRunning = true;
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (fpsThreadIsRunning) {
+                        framesPerSecond = framesPerSecondCounter;
+                        framesPerSecondCounter = 0;
+                        if (delegate != null) {
+                            delegate.rtspPlayerDidUpdateFps(framesPerSecond);
+                        }
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
-        }).start();
+            }).start();
+        }
+    }
+
+    private void stopFpsCounter() {
+        fpsThreadIsRunning = false;
     }
 
 

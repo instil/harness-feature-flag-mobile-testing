@@ -33,6 +33,7 @@ namespace SurgeJni {
         jobject classLoader;
         jmethodID findClassMethod;
 
+        bool jvmToBeDetatched = false;
     };
 }
 

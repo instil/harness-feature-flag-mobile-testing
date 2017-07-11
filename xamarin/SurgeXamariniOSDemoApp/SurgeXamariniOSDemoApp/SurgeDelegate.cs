@@ -59,13 +59,13 @@ namespace SurgeXamariniOSDemoApp {
 
         public override void RtspPlayerFailedToInitiatePlayback(SurgeRtspPlayer player) {
 			InvokeOnMainThread(() => {
-				statusLabel.Text = "Failed to initiate playback for URL <URL>";
+				statusLabel.Text = "Failed to initiate playback";
 			});
 		}
 
         public override void RtspPlayerInitiatedPlayback(SurgeRtspPlayer player) {
 			InvokeOnMainThread(() => {
-				statusLabel.Text = "Playback has started for URL <URL>";
+				statusLabel.Text = "Playback has started";
 			});
 		}
     }

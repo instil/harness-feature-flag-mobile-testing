@@ -108,9 +108,10 @@ void Surge::RtspClient::Describe(const std::string& url,
                 ERROR("Invalid DescribeResponse: " << e.what());
                 resp = nullptr;
             }
-            
+
             if (!resp->Ok()) {
-                NotifyDelegateTimeout();
+                ERROR("DESCRIBE command failed");
+                ERROR(raw_resp->StringDump());
             }
             
             delete raw_resp;
@@ -185,8 +186,11 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
                 DEBUG("Rtp Interleaved Channel set to: " << resp->GetRtpInterleavedChannel());
                 DEBUG("Rtcp Interleaved Channel set to: " << resp->GetRtcpInterleavedChannel());
             }
+        } else {
+            ERROR("SETUP command failed");
+            ERROR(raw_resp->StringDump());
         }
-        
+
         callback(resp);
     });
     
@@ -231,8 +235,8 @@ void Surge::RtspClient::Play(bool waitForResponse,
         m_isPlaying = resp != nullptr && resp->Ok();
 
         if (!resp->Ok()) {
-            int code = resp->GetCode();
-            INFO(code);
+            ERROR("PLAY command failed");
+            ERROR(raw_resp->StringDump());
         }
 
         StartSession();

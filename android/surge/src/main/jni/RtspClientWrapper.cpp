@@ -221,8 +221,12 @@ JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_close(JNIEnv *env, jobject callingObject) {
     Surge::RtspClient *client = getClient(env, callingObject);
     SurgeJni::RtspClientDelegateWrapper *delegate = (SurgeJni::RtspClientDelegateWrapper *)client->GetDelegate();
+
     client->StopClient();
-    env->DeleteWeakGlobalRef(delegate->GetJavaDelegate());
+
+    if (delegate->GetJavaDelegate() != NULL) {
+        env->DeleteWeakGlobalRef(delegate->GetJavaDelegate());
+    }
     delete delegate;
     delete client;
 }

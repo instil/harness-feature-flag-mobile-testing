@@ -11,10 +11,14 @@ Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_running(false)
 
 Surge::Transport::~Transport() {
     StopRunning();
-    
-    m_tcp->close();
-    m_loop->stop();
-    m_loop->close();
+
+    if (m_tcp != nullptr) {
+        m_tcp->close();
+    }
+
+    if (m_loop != nullptr) {
+        m_loop->stop();
+    }
 }
 
 

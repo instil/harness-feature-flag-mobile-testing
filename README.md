@@ -147,7 +147,7 @@ If a camera is not available, we can also use the Gstreamer RTSP server with a t
 Firstly, install GStreamer and the required dependencies.
 
 ```bash
-$ brew install gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly homebrew/versions/gst-ffmpeg010
+$ brew install gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
 ```
 
 Then build the RTSP server library and sample code we'll be using for testing.

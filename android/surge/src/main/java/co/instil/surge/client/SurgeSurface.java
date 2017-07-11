@@ -14,6 +14,8 @@ import android.view.Surface;
  * Created by paulshields on 12/05/2017.
  */
 public class SurgeSurface {
+    public static final SurgeSurface NONE = new SurgeSurface((Surface)null, 0, 0);
+
     private Surface surface;
     private int width;
     private int height;

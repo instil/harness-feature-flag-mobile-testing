@@ -29,8 +29,12 @@ jclass SurgeJni::ClassLoader::findClass(const char* name) {
 JNIEnv* SurgeJni::ClassLoader::getEnv() {
     JNIEnv *env;
     int status = jvm->GetEnv((void **) &env, JNI_VERSION_1_6);
+    jvmToBeDetatched = false;
+
     if (status < 0) {
         status = jvm->AttachCurrentThread(&env, NULL);
+        jvmToBeDetatched = true;
+
         if (status < 0) {
             return nullptr;
         }
@@ -40,5 +44,7 @@ JNIEnv* SurgeJni::ClassLoader::getEnv() {
 }
 
 void SurgeJni::ClassLoader::detatchJniEnv() {
-    jvm->DetachCurrentThread();
+    if (jvmToBeDetatched) {
+        jvm->DetachCurrentThread();
+    }
 }

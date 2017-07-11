@@ -10,6 +10,8 @@ package co.instil.surge.decoders.h264;
 import android.annotation.TargetApi;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Surface;
 
 import org.slf4j.Logger;
@@ -119,15 +121,20 @@ public abstract class H264Decoder implements Decoder {
 
     @Override
     public void close() throws InterruptedException {
-        MediaCodec mediaCodec = getMediaCodec();
-        if (mediaCodec != null) {
-            try {
-                mediaCodec.stop();
-                mediaCodec.release();
-            } catch (Exception e) {
-                logger.error("Failed to close MediaCodec", e);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                MediaCodec mediaCodec = getMediaCodec();
+                if (mediaCodec != null) {
+                    try {
+                        mediaCodec.stop();
+                        mediaCodec.release();
+                    } catch (Exception e) {
+                        logger.error("Failed to close MediaCodec", e);
+                    }
+                }
             }
-        }
+        });
     }
 
     /**

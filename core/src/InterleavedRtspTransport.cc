@@ -105,6 +105,8 @@ bool Surge::InterleavedRtspTransport::HandleRtpPacket() {
             if (rtpCallback != nullptr) {
                 RtpPacket* pack = new RtpPacket(&(m_receivedBuffer[4]), packet_length);
                 rtpCallback(pack);
+            } else {
+                ERROR("RTP packet available but callback is null!");
             }
         } catch (const std::exception& e) {
             ERROR("Invalid Rtp Packet: " << e.what());

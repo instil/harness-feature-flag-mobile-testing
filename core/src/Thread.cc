@@ -10,7 +10,9 @@ using std::system_error;
 using std::move;
 
 #include "Thread.h"
-  using SurgeUtil::Runnable;
+#include "Logging.h"
+
+using SurgeUtil::Runnable;
   using SurgeUtil::Thread;
   using std::thread;         // from included <thread>
 
@@ -80,7 +82,8 @@ void Thread::WaitUntilStopped()
         ostringstream message;
         message << "Thread::WaitUntilStopped(): failed: "
                    "error code = " << e.what();
-        throw runtime_error{message.str()};
+//        throw runtime_error{message.str()};
+        ERROR(message.str());
     }
 }
 

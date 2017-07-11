@@ -34,7 +34,7 @@ namespace SurgeXamariniOSDemoApp
             UrlBar.ShouldReturn += (textField) => {
 				textField.ResignFirstResponder();
 
-				PlayStream(textField.Text);
+				InitiatePlaybackOfStream(textField.Text);
 
 				return true;
             };
@@ -42,7 +42,7 @@ namespace SurgeXamariniOSDemoApp
 		}
 
         partial void StartStreamButton_TouchUpInside(UIButton sender) {
-            PlayStream(UrlBar.Text);
+            InitiatePlaybackOfStream(UrlBar.Text);
 			this.View.EndEditing(true);
         }
 
@@ -56,7 +56,7 @@ namespace SurgeXamariniOSDemoApp
 			PauseButtonEnabled();
 		}
 
-        private void PlayStream(String url) {
+        private void InitiatePlaybackOfStream(String url) {
 			player.InitiatePlaybackOf(NSUrl.FromString(url));
 			PauseButtonEnabled();
 			SaveUrl(url);

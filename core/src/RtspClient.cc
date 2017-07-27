@@ -35,7 +35,7 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
     if (forceInterleavedTransport) {
         m_transport = new InterleavedRtspTransport(nullptr);
     } else {
-//        m_transport = new UdpTransport(nullptr);
+        m_transport = new UdpTransport(nullptr);
     }
     m_transport->SetDelegate(this);
     frameBuffer = new std::vector<unsigned char>();
@@ -300,7 +300,6 @@ void Surge::RtspClient::Options(std::function<void(Surge::RtspResponse*)> callba
         
         callback(resp);
     });
-    
     delete options;
 }
 

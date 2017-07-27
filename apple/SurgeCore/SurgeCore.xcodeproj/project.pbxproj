@@ -89,10 +89,13 @@
 		42D674791D30847400D42C35 /* testrunner.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674781D30847400D42C35 /* testrunner.cc */; };
 		42D676351D3084B200D42C35 /* gmock-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674E71D3084B100D42C35 /* gmock-all.cc */; };
 		42D677241D30857B00D42C35 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D6771A1D30857B00D42C35 /* gtest-all.cc */; };
+		F43FB4D31F18CDDE0004AA19 /* InterleavedRtspTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F43FB4D01F18CDDE0004AA19 /* InterleavedRtspTransport.cc */; };
+		F43FB4D41F18CDDE0004AA19 /* InterleavedRtspTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F43FB4D11F18CDDE0004AA19 /* InterleavedRtspTransport.h */; };
+		F43FB4D51F18CDDE0004AA19 /* ITransportInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = F43FB4D21F18CDDE0004AA19 /* ITransportInterface.h */; };
+		F43FB4D81F18CE730004AA19 /* UdpTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F43FB4D61F18CE730004AA19 /* UdpTransport.cc */; };
+		F43FB4D91F18CE730004AA19 /* UdpTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F43FB4D71F18CE730004AA19 /* UdpTransport.h */; };
 		F452072A1E1FB6A5007683AE /* Transport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F45207261E1FB6A5007683AE /* Transport.cc */; };
 		F452072B1E1FB6A5007683AE /* Transport.h in Headers */ = {isa = PBXBuildFile; fileRef = F45207271E1FB6A5007683AE /* Transport.h */; };
-		F452072C1E1FB6A5007683AE /* UdpTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F45207281E1FB6A5007683AE /* UdpTransport.cc */; };
-		F452072D1E1FB6A5007683AE /* UdpTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F45207291E1FB6A5007683AE /* UdpTransport.h */; };
 		F4589E041ED85627004F023D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A51ED8427A001B56E0 /* async.c */; };
 		F4589E051ED85627004F023D /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A71ED8427A001B56E0 /* core.c */; };
 		F4589E061ED85627004F023D /* darwin-proctitle.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A81ED8427A001B56E0 /* darwin-proctitle.c */; };
@@ -118,8 +121,6 @@
 		F4589E1A1ED85627004F023D /* timer.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24BE1ED8427A001B56E0 /* timer.c */; };
 		F4589E1B1ED85627004F023D /* tty.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24BF1ED8427A001B56E0 /* tty.c */; };
 		F4589E1C1ED85627004F023D /* udp.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24C01ED8427A001B56E0 /* udp.c */; };
-		F4589E1D1ED85716004F023D /* SessionDescriptionV1.cc in Sources */ = {isa = PBXBuildFile; fileRef = F43AAF841D3FD3C3006D61F8 /* SessionDescriptionV1.cc */; };
-		F4589E1E1ED85716004F023D /* TycoSessionDescriptionFactory.cc in Sources */ = {isa = PBXBuildFile; fileRef = F42AE7FD1D953F6E00C6FBDE /* TycoSessionDescriptionFactory.cc */; };
 		F45BDA9C1E1FB88F00496E62 /* fs-poll.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BDA6C1E1FB88F00496E62 /* fs-poll.c */; };
 		F45BDA9D1E1FB88F00496E62 /* heap-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = F45BDA6D1E1FB88F00496E62 /* heap-inl.h */; };
 		F45BDA9E1E1FB88F00496E62 /* inet.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BDA6E1E1FB88F00496E62 /* inet.c */; };
@@ -230,10 +231,13 @@
 		42D674781D30847400D42C35 /* testrunner.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testrunner.cc; path = ../../../core/test/testrunner.cc; sourceTree = "<group>"; };
 		42D674E71D3084B100D42C35 /* gmock-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gmock-all.cc"; sourceTree = "<group>"; };
 		42D6771A1D30857B00D42C35 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
+		F43FB4D01F18CDDE0004AA19 /* InterleavedRtspTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InterleavedRtspTransport.cc; path = ../../core/src/InterleavedRtspTransport.cc; sourceTree = "<group>"; };
+		F43FB4D11F18CDDE0004AA19 /* InterleavedRtspTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterleavedRtspTransport.h; path = ../../core/src/InterleavedRtspTransport.h; sourceTree = "<group>"; };
+		F43FB4D21F18CDDE0004AA19 /* ITransportInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ITransportInterface.h; path = ../../core/src/ITransportInterface.h; sourceTree = "<group>"; };
+		F43FB4D61F18CE730004AA19 /* UdpTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpTransport.cc; path = ../../core/src/UdpTransport.cc; sourceTree = "<group>"; };
+		F43FB4D71F18CE730004AA19 /* UdpTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpTransport.h; path = ../../core/src/UdpTransport.h; sourceTree = "<group>"; };
 		F45207261E1FB6A5007683AE /* Transport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Transport.cc; path = ../../core/src/Transport.cc; sourceTree = "<group>"; };
 		F45207271E1FB6A5007683AE /* Transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transport.h; path = ../../core/src/Transport.h; sourceTree = "<group>"; };
-		F45207281E1FB6A5007683AE /* UdpTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpTransport.cc; path = ../../core/src/UdpTransport.cc; sourceTree = "<group>"; };
-		F45207291E1FB6A5007683AE /* UdpTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpTransport.h; path = ../../core/src/UdpTransport.h; sourceTree = "<group>"; };
 		F45BDA6C1E1FB88F00496E62 /* fs-poll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "fs-poll.c"; path = "../../core/lib/libuv-cmake/libuv/src/fs-poll.c"; sourceTree = "<group>"; };
 		F45BDA6D1E1FB88F00496E62 /* heap-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "heap-inl.h"; path = "../../core/lib/libuv-cmake/libuv/src/heap-inl.h"; sourceTree = "<group>"; };
 		F45BDA6E1E1FB88F00496E62 /* inet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inet.c; path = "../../core/lib/libuv-cmake/libuv/src/inet.c"; sourceTree = "<group>"; };
@@ -242,9 +246,6 @@
 		F45BDA991E1FB88F00496E62 /* uv-common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "uv-common.c"; path = "../../core/lib/libuv-cmake/libuv/src/uv-common.c"; sourceTree = "<group>"; };
 		F45BDA9A1E1FB88F00496E62 /* uv-common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "uv-common.h"; path = "../../core/lib/libuv-cmake/libuv/src/uv-common.h"; sourceTree = "<group>"; };
 		F45BDA9B1E1FB88F00496E62 /* version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = version.c; path = "../../core/lib/libuv-cmake/libuv/src/version.c"; sourceTree = "<group>"; };
-		F471F0691ED83C7000E6D8D0 /* InterleavedRtspTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InterleavedRtspTransport.cc; path = ../../core/src/InterleavedRtspTransport.cc; sourceTree = "<group>"; };
-		F471F06A1ED83C7000E6D8D0 /* InterleavedRtspTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterleavedRtspTransport.h; path = ../../core/src/InterleavedRtspTransport.h; sourceTree = "<group>"; };
-		F471F06B1ED83C7000E6D8D0 /* ITransportInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ITransportInterface.h; path = ../../core/src/ITransportInterface.h; sourceTree = "<group>"; };
 		F4FA24A51ED8427A001B56E0 /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
 		F4FA24A61ED8427A001B56E0 /* atomic-ops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "atomic-ops.h"; sourceTree = "<group>"; };
 		F4FA24A71ED8427A001B56E0 /* core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = core.c; sourceTree = "<group>"; };
@@ -324,10 +325,9 @@
 		42D672591D306A5400D42C35 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				F45207261E1FB6A5007683AE /* Transport.cc */,
-				F45207271E1FB6A5007683AE /* Transport.h */,
-				F45207281E1FB6A5007683AE /* UdpTransport.cc */,
-				F45207291E1FB6A5007683AE /* UdpTransport.h */,
+				F43FB4D21F18CDDE0004AA19 /* ITransportInterface.h */,
+				F43FB4CE1F18CD690004AA19 /* TCP */,
+				F43FB4CF1F18CD710004AA19 /* UDP */,
 				42D671C51D3069BB00D42C35 /* Base64.cc */,
 				42D671C61D3069BB00D42C35 /* Base64.h */,
 				42D671C71D3069BB00D42C35 /* BaseWaitableEvent.h */,
@@ -475,6 +475,26 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		F43FB4CE1F18CD690004AA19 /* TCP */ = {
+			isa = PBXGroup;
+			children = (
+				F45207261E1FB6A5007683AE /* Transport.cc */,
+				F45207271E1FB6A5007683AE /* Transport.h */,
+				F43FB4D01F18CDDE0004AA19 /* InterleavedRtspTransport.cc */,
+				F43FB4D11F18CDDE0004AA19 /* InterleavedRtspTransport.h */,
+			);
+			name = TCP;
+			sourceTree = "<group>";
+		};
+		F43FB4CF1F18CD710004AA19 /* UDP */ = {
+			isa = PBXGroup;
+			children = (
+				F43FB4D61F18CE730004AA19 /* UdpTransport.cc */,
+				F43FB4D71F18CE730004AA19 /* UdpTransport.h */,
+			);
+			name = UDP;
+			sourceTree = "<group>";
+		};
 		F45BC2561DD9DE1C00DC0B38 /* libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -559,12 +579,12 @@
 				42D6721A1D3069BB00D42C35 /* Describe.h in Headers */,
 				42D672121D3069BB00D42C35 /* BitstreamReader.h in Headers */,
 				F4FA24CC1ED8427A001B56E0 /* internal.h in Headers */,
-				F43AAF871D3FD3C3006D61F8 /* SessionDescriptionV1.h in Headers */,
 				F45BDAC91E1FB88F00496E62 /* uv-common.h in Headers */,
 				42D672241D3069BB00D42C35 /* ILoggingDelegate.h in Headers */,
 				42D672151D3069BB00D42C35 /* Constants.h in Headers */,
 				42D672291D3069BB00D42C35 /* ITransportInterface.h in Headers */,
 				42D6722D1D3069BB00D42C35 /* MJPEGDepacketizer.h in Headers */,
+				F43FB4D41F18CDDE0004AA19 /* InterleavedRtspTransport.h in Headers */,
 				42D6723E1D3069BB00D42C35 /* RtspCommandFactory.h in Headers */,
 				42D6720F1D3069BB00D42C35 /* BaseWaitableEvent.h in Headers */,
 				42D672471D3069BB00D42C35 /* StoppableThread.h in Headers */,
@@ -573,7 +593,6 @@
 				42D672141D3069BB00D42C35 /* BitstreamWriter.h in Headers */,
 				42D6721F1D3069BB00D42C35 /* FireableEvent.h in Headers */,
 				42D6724F1D3069BB00D42C35 /* UdpTransport.h in Headers */,
-				F452072D1E1FB6A5007683AE /* UdpTransport.h in Headers */,
 				42D6724A1D3069BB00D42C35 /* Teardown.h in Headers */,
 				42D672281D3069BB00D42C35 /* ISocketHandlerDelegate.h in Headers */,
 				42D672211D3069BB00D42C35 /* H264Depacketizer.h in Headers */,
@@ -588,6 +607,7 @@
 				42D672101D3069BB00D42C35 /* BasicFDEvent.h in Headers */,
 				42D672461D3069BB00D42C35 /* SetupResponse.h in Headers */,
 				42D672231D3069BB00D42C35 /* Helpers.h in Headers */,
+				F43FB4D91F18CE730004AA19 /* UdpTransport.h in Headers */,
 				42D672501D3069BB00D42C35 /* Url.h in Headers */,
 				42D6722A1D3069BB00D42C35 /* Logging.h in Headers */,
 				42D672511D3069BB00D42C35 /* WaitableEvent.h in Headers */,
@@ -602,6 +622,7 @@
 				42D6723B1D3069BB00D42C35 /* RtspClient.h in Headers */,
 				42D672311D3069BB00D42C35 /* Mutex.h in Headers */,
 				42D672441D3069BB00D42C35 /* SessionDescriptionV0.h in Headers */,
+				F43FB4D51F18CDDE0004AA19 /* ITransportInterface.h in Headers */,
 				42D672321D3069BB00D42C35 /* MutexLocker.h in Headers */,
 				42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */,
 				42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */,
@@ -699,6 +720,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4589E051ED85627004F023D /* core.c in Sources */,
 				F4589E091ED85627004F023D /* fs.c in Sources */,
 				F4589E0E1ED85627004F023D /* loop-watcher.c in Sources */,
 				F4589E111ED85627004F023D /* poll.c in Sources */,
@@ -723,20 +745,18 @@
 				F4589E121ED85627004F023D /* process.c in Sources */,
 				42D672431D3069BB00D42C35 /* SessionDescriptionV0.cc in Sources */,
 				F4589E1B1ED85627004F023D /* tty.c in Sources */,
+				F43FB4D31F18CDDE0004AA19 /* InterleavedRtspTransport.cc in Sources */,
 				F45BDAC81E1FB88F00496E62 /* uv-common.c in Sources */,
 				F4589E1A1ED85627004F023D /* timer.c in Sources */,
 				F45BDAA11E1FB88F00496E62 /* threadpool.c in Sources */,
 				42D672521D3069BB00D42C35 /* WaitableEvents.cc in Sources */,
-				F452072C1E1FB6A5007683AE /* UdpTransport.cc in Sources */,
 				F4589E1C1ED85627004F023D /* udp.c in Sources */,
 				F4589E0C1ED85627004F023D /* getnameinfo.c in Sources */,
 				42D6724B1D3069BB00D42C35 /* Thread.cc in Sources */,
-				F4589E1E1ED85716004F023D /* TycoSessionDescriptionFactory.cc in Sources */,
 				42D672111D3069BB00D42C35 /* BitstreamReader.cc in Sources */,
 				F4589E0F1ED85627004F023D /* loop.c in Sources */,
 				F4589E141ED85627004F023D /* pthread-barrier.c in Sources */,
 				F45BDA9C1E1FB88F00496E62 /* fs-poll.c in Sources */,
-				F4589E051ED85627004F023D /* core.c in Sources */,
 				F4589E041ED85627004F023D /* async.c in Sources */,
 				F45BDACA1E1FB88F00496E62 /* version.c in Sources */,
 				42D672301D3069BB00D42C35 /* Mutex.cc in Sources */,
@@ -744,12 +764,12 @@
 				F4589E181ED85627004F023D /* tcp.c in Sources */,
 				42D672381D3069BB00D42C35 /* RtpPacket.cc in Sources */,
 				42D6722E1D3069BB00D42C35 /* MP4VDepacketizer.cc in Sources */,
-				F4589E1D1ED85716004F023D /* SessionDescriptionV1.cc in Sources */,
 				42D6721E1D3069BB00D42C35 /* FireableEvent.cc in Sources */,
 				F4589E081ED85627004F023D /* dl.c in Sources */,
 				42D6720D1D3069BB00D42C35 /* Base64.cc in Sources */,
 				F4589E161ED85627004F023D /* signal.c in Sources */,
 				F4589E101ED85627004F023D /* pipe.c in Sources */,
+				F43FB4D81F18CE730004AA19 /* UdpTransport.cc in Sources */,
 				F4589E0B1ED85627004F023D /* getaddrinfo.c in Sources */,
 				F4589E071ED85627004F023D /* darwin.c in Sources */,
 				F4589E131ED85627004F023D /* proctitle.c in Sources */,

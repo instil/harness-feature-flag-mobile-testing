@@ -31,13 +31,13 @@ struct _RTPHeader {
 	uint8_t padding:1;
 	uint8_t version:2;
 	
-	uint8_t payloadtype:7;
+    uint8_t payloadtype:7;
 	uint8_t marker:1;
 #endif // RTP_BIG_ENDIAN
-	
-	uint16_t sequencenumber;
-	uint32_t timestamp;
-	uint32_t ssrc;
+    
+    uint16_t sequencenumber;
+    uint32_t timestamp;
+    uint32_t ssrc;
 } __attribute__((packed)) ;
 
 struct _RTPExtensionHeader {

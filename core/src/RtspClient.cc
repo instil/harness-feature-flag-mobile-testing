@@ -18,7 +18,7 @@
 using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 
 
-Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool forceInterleavedTransport) :
+Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool useInterleavedTcpTransport) :
         m_delegate(delegate),
         processedFirstPayload(false),
         m_lastKeepAliveMs(0),
@@ -32,7 +32,7 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
             
     StartErrorDispatcher();
 
-    if (forceInterleavedTransport) {
+    if (useInterleavedTcpTransport) {
         m_transport = new InterleavedRtspTransport(nullptr);
     } else {
         m_transport = new UdpTransport(nullptr);
@@ -164,6 +164,7 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
         }
         catch (const std::exception& e) {
             ERROR("Invalid SetupResponse: " << e.what());
+            
             resp = nullptr;
         }
         
@@ -300,6 +301,7 @@ void Surge::RtspClient::Options(std::function<void(Surge::RtspResponse*)> callba
         
         callback(resp);
     });
+     
     delete options;
 }
 
@@ -499,18 +501,39 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 
     depacketizer->ProcessPacket(packet, !processedFirstPayload);
     processedFirstPayload = true;
-    
+
     if (packet->HasExtension()) {
         NotifyDelegateOfExtendedRtpHeader(packet->GetExtensionData(),
                                           packet->GetExtensionLength());
     }
+    
+    CheckIfFrameShouldBeDropped(packet);
     
     if (!packet->IsMarked()) {
         return;
     }
 
     NotifyDelegateOfAvailableFrame();
+    
     ClearFrameBuffer();
+}
+
+void Surge::RtspClient::CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet) {
+    if (m_sessionDescription.GetType() == H264) {
+        return;
+    }
+    
+    if (packet->GetSequenceNumber() != ++lastPacket) {
+        if (lastPacket != 1) {
+            ERROR("PACKET LOST, FRAME DROPPED");
+            DropNextFrame();
+        }
+
+        lastPacket = packet->GetSequenceNumber();
+        missedPackets++;
+    } else {
+        successfulPackets++;
+    }
 }
 
 void Surge::RtspClient::CreateDepacketizer() {

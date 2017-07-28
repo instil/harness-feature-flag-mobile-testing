@@ -94,6 +94,8 @@ private:
 @property (nonatomic, assign) Surge::IRtspClientDelegate *clientDelegate;
 @property (nonatomic, strong) SurgeDecoder *decoder;
 
+@property (nonatomic, assign) bool isInterleavedTransport;
+
 @end
 
 @implementation SurgeRtspPlayer
@@ -108,7 +110,7 @@ private:
     self = [super init];
     if (self) {
         self.clientDelegate = new RtspClientDelegateWrapper(self);
-        self.client = new Surge::RtspClient(self.clientDelegate);
+        self.client = new Surge::RtspClient(self.clientDelegate, false);
         [self configurePlayerView];
         SurgeLogInfo("Initiating RTSP stream via Surge");
     }
@@ -166,18 +168,38 @@ private:
     self.endTime = endDate;
     
     [self setRangeWithStartTime:startDate andEndTime:endDate];
+    
+    [self describeSetupPlay];
+}
+
+- (void) describeSetupPlay {
     [self describe:^{
         if (self.sessionDescriptions.size() == 0) {
             if ([self.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
                 [self.delegate rtspPlayerFailedToInitiatePlayback:self];
             }
-
+            
             return;
         }
         
         Surge::SessionDescription currentSessionDescription = [self selectPreferredSessionDescription];
         
-        [self setupStream:currentSessionDescription withCallback:^{
+        [self setupStream:currentSessionDescription withCallback:^(bool result) {
+            if (!result) {
+                if (!self.isInterleavedTransport) {
+                    SurgeLogInfo(@"Failed to connect to stream via UDP, trying Interleaved TCP");
+                    
+                    self.isInterleavedTransport = true;
+                    [self describeSetupPlay];
+                } else {
+                    if ([self.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
+                        [self.delegate rtspPlayerFailedToInitiatePlayback:self];
+                    }
+                    
+                    return;
+                }
+            }
+            
             [self play:^{
                 if ([self.delegate respondsToSelector:@selector(rtspPlayerInitiatedPlayback:)]) {
                     [self.delegate rtspPlayerInitiatedPlayback:self];
@@ -185,6 +207,7 @@ private:
             }];
         }];
     }];
+
 }
 
 - (void)seekToStartTime:(nullable NSDate *)startTime
@@ -232,7 +255,7 @@ private:
       });
 }
 
-- (void)setupStream:(Surge::SessionDescription)sessionDescription withCallback:(void (^)(void))callback {
+- (void)setupStream:(Surge::SessionDescription)sessionDescription withCallback:(void (^)(bool))callback {
     SurgeLogInfo(@"Setting up stream with SessionDescription; %@",
                  [NSString stringWithUTF8String:sessionDescription.GetFmtp().c_str()]);
     
@@ -240,8 +263,8 @@ private:
     self.client->Setup(sessionDescription,
                        false,
                        [=](Surge::SetupResponse *setupResponse) {
+                           callback(setupResponse != nullptr);
                            delete setupResponse;
-                           callback();
                        });
 }
 
@@ -334,6 +357,17 @@ private:
 
 - (void)setTimeout:(int)timeout {
     self.client->SetTimeout(timeout);
+}
+
+- (bool)isInterleavedTransport {
+    return self.client->IsInterleavedTransport();
+}
+
+- (void)setIsInterleavedTransport: (bool)isInterleavedTransport {
+    if (isInterleavedTransport != self.client->IsInterleavedTransport()) {
+        delete self.client;
+        self.client = new Surge::RtspClient(self.clientDelegate, isInterleavedTransport);
+    }
 }
 
 

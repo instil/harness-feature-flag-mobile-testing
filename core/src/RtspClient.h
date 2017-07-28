@@ -29,7 +29,7 @@ namespace Surge {
 
     class RtspClient : public ISocketHandlerDelegate, private SurgeUtil::Runnable {
     public:
-        RtspClient(IRtspClientDelegate * const delegate, bool forceInterleavedTransport = true);
+        RtspClient(IRtspClientDelegate * const delegate, bool useInterleavedTcpTransport = true);
 
         ~RtspClient();
 
@@ -112,6 +112,10 @@ namespace Surge {
         void SetTimeout(int timeout) {
             this->m_timeout = timeout;
         }
+        
+        bool IsInterleavedTransport() {
+            return m_transport->IsInterleavedTransport();
+        }
 
     private:
         void Run() override;
@@ -129,6 +133,11 @@ namespace Surge {
         int GetNextSequenceNumber() { return m_sequenceNumber++; }
 
         void NotifyDelegateOfAvailableFrame() {
+            if (dropFrame) {
+                ClearDroppedFrameFlag();
+                return;
+            }
+            
             if (m_delegate != nullptr) {
                 m_delegate->ClientReceivedFrame(frameBuffer->data(),
                                                 frameBuffer->size(),
@@ -137,6 +146,14 @@ namespace Surge {
                                                 1,
                                                 1);
             }
+        }
+        
+        void DropNextFrame() {
+            dropFrame = true;
+        }
+        
+        void ClearDroppedFrameFlag() {
+            dropFrame = false;
         }
         
         void NotifyDelegateOfExtendedRtpHeader(const unsigned char *extendedHeaderBuffer, size_t length) {
@@ -188,6 +205,16 @@ namespace Surge {
         bool endTimeSet;
         SurgeUtil::DateTime endDate;
         SessionDescriptionFactory *factory;
+        
+        ///////
+        
+    public:
+        void CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet);
+        int lastPacket = 0;
+        bool dropFrame = false;
+        
+        int successfulPackets = 0;
+        int missedPackets = 0;
     };
     
 }

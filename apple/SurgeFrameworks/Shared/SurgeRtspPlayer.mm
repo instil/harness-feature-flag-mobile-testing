@@ -94,8 +94,6 @@ private:
 @property (nonatomic, assign) Surge::IRtspClientDelegate *clientDelegate;
 @property (nonatomic, strong) SurgeDecoder *decoder;
 
-@property (nonatomic, assign) bool isInterleavedTransport;
-
 @end
 
 @implementation SurgeRtspPlayer
@@ -359,14 +357,14 @@ private:
     self.client->SetTimeout(timeout);
 }
 
-- (bool)isInterleavedTransport {
+- (bool)interleavedRtspTransport {
     return self.client->IsInterleavedTransport();
 }
 
-- (void)setIsInterleavedTransport: (bool)isInterleavedTransport {
-    if (isInterleavedTransport != self.client->IsInterleavedTransport()) {
+- (void)setInterleavedRtspTransport: (bool)interleavedRtspTransport {
+    if (interleavedRtspTransport != self.client->IsInterleavedTransport()) {
         delete self.client;
-        self.client = new Surge::RtspClient(self.clientDelegate, isInterleavedTransport);
+        self.client = new Surge::RtspClient(self.clientDelegate, interleavedRtspTransport);
     }
 }
 

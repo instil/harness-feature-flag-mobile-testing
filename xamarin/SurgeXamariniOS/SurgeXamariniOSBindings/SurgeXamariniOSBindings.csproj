@@ -9,6 +9,7 @@
     <RootNamespace>SurgeXamariniOSBindings</RootNamespace>
     <AssemblyName>SurgeXamariniOSBindings</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <ReleaseVersion>1.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

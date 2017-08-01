@@ -8,9 +8,7 @@
 #include "Logging.h"
 
 
-Surge::UdpTransport::UdpTransport(ISocketHandlerDelegate *delegate) : Surge::Transport(delegate) {
-    INFO("");
-}
+Surge::UdpTransport::UdpTransport(ISocketHandlerDelegate *delegate) : Surge::Transport(delegate) { }
 
 Surge::UdpTransport::~UdpTransport() {
     
@@ -110,8 +108,9 @@ bool Surge::UdpTransport::HandleRtspPacket() {
         }
         
         if (rtspCallback != nullptr) {
-            rtspCallback(new Response(rtsp_buffer, rtsp_buffer_length));
+            auto callback = rtspCallback;
             rtspCallback = nullptr;
+            callback(new Response(rtsp_buffer, rtsp_buffer_length));
         }
         
         RemoveDataFromStartOfBuffer(rtsp_buffer_length);

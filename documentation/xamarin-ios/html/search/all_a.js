@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['timestamp',['Timestamp',['../interface_surge_xamarini_o_s_bindings_1_1_tyco_surge_rtsp_player.html#ab0103301aa84abf0dc7b577baabd9a8c',1,'SurgeXamariniOSBindings::TycoSurgeRtspPlayer']]],
-  ['tycosurgertspplayer',['TycoSurgeRtspPlayer',['../interface_surge_xamarini_o_s_bindings_1_1_tyco_surge_rtsp_player.html',1,'SurgeXamariniOSBindings']]],
-  ['type',['Type',['../interface_surge_xamarini_o_s_bindings_1_1_palette.html#af1a3888051d080a0ecf11c13bad20db3',1,'SurgeXamariniOSBindings::Palette']]]
+  ['unknown',['UNKNOWN',['../namespace_surge_xamarini_o_s_bindings.html#ae265f95a36d7f788d0c279a0cd2da6c1a696b031073e74bf2cb98e5ef201d4aa3',1,'SurgeXamariniOSBindings']]]
 ];

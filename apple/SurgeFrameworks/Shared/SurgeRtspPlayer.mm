@@ -156,7 +156,7 @@ private:
                andEndingAt:(nullable NSDate *)endDate {
     SurgeLogDebug(@"Initating playback of %@", url);
     
-    [self stop];
+//    [self stop];
     
     self.url = url;
     self.username = username;

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Surge
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
    <div id="projectbrief">Surge is a high performance Real-Time Streaming Protocol (RTSP) and Real-Time Transport Protocol (RTP) implementation.</div>
   </td>
@@ -78,7 +78,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a090498b65f3da84477fc9486e24235a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#a090498b65f3da84477fc9486e24235a4">RtspPlayerDidTimeout</a> (<a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html">SurgeRtspPlayer</a> player)</td></tr>
-<tr class="memdesc:a090498b65f3da84477fc9486e24235a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called once a stream has not received a frame from the RTSP stream in the last 5000ms.  <a href="#a090498b65f3da84477fc9486e24235a4">More...</a><br /></td></tr>
+<tr class="memdesc:a090498b65f3da84477fc9486e24235a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called once a stream has not received a frame from the RTSP stream within the defined timeout peroid as defined by <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a5d41ebac63bbd4c26859615abcf1fa0e" title="Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal...">SurgeRtspPlayer::Timeout</a>.  <a href="#a090498b65f3da84477fc9486e24235a4">More...</a><br /></td></tr>
 <tr class="separator:a090498b65f3da84477fc9486e24235a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a086947a6da6d523853a8cfacd4be654a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#a086947a6da6d523853a8cfacd4be654a">RtspPlayerInitiatedPlayback</a> (<a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html">SurgeRtspPlayer</a> player)</td></tr>
 <tr class="memdesc:a086947a6da6d523853a8cfacd4be654a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called once stream playback has successfully started.  <a href="#a086947a6da6d523853a8cfacd4be654a">More...</a><br /></td></tr>
@@ -261,7 +261,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Called once a stream has not received a frame from the RTSP stream in the last 5000ms. </p>
+<p>Called once a stream has not received a frame from the RTSP stream within the defined timeout peroid as defined by <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a5d41ebac63bbd4c26859615abcf1fa0e" title="Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal...">SurgeRtspPlayer::Timeout</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The Surge RTSP Player that called the delegate method.</td></tr>

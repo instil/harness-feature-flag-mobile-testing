@@ -114,8 +114,16 @@ namespace SurgeXamariniOSBindings
         /// Default value: 5000ms
 		/// </summary>
 		[Export("timeout")]
-		int Timeout { get; set; }
-    }
+		int Timeout 
+        { get; set; }
+
+		/// <summary>
+		/// If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
+		/// </summary>
+		[Export("interleavedRtspTransport")]
+		bool InterleavedRtspTransport { get; set; }
+
+	}
 
     /// <summary>
     /// Surge RTSP Delegate interface used to provide a notification of Surge library events.

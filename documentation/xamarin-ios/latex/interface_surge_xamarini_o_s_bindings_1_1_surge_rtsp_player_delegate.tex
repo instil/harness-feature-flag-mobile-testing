@@ -9,7 +9,7 @@ Surge R\+T\+SP Delegate interface used to provide a notification of Surge librar
 \begin{DoxyCompactItemize}
 \item 
 void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a090498b65f3da84477fc9486e24235a4}{Rtsp\+Player\+Did\+Timeout} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
-\begin{DoxyCompactList}\small\item\em Called once a stream has not received a frame from the R\+T\+SP stream in the last 5000ms. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Called once a stream has not received a frame from the R\+T\+SP stream within the defined timeout peroid as defined by \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a5d41ebac63bbd4c26859615abcf1fa0e}{Surge\+Rtsp\+Player\+::\+Timeout}. \end{DoxyCompactList}\item 
 void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a086947a6da6d523853a8cfacd4be654a}{Rtsp\+Player\+Initiated\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
 \begin{DoxyCompactList}\small\item\em Called once stream playback has successfully started. \end{DoxyCompactList}\item 
 void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a50991332700fd45a8a2771e35bd6016c}{Rtsp\+Player\+Failed\+To\+Initiate\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
@@ -115,7 +115,7 @@ Called when the player stops or pauses playback of a stream.
 
 
 
-Called once a stream has not received a frame from the R\+T\+SP stream in the last 5000ms. 
+Called once a stream has not received a frame from the R\+T\+SP stream within the defined timeout peroid as defined by \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a5d41ebac63bbd4c26859615abcf1fa0e}{Surge\+Rtsp\+Player\+::\+Timeout}. 
 
 
 \begin{DoxyParams}{Parameters}

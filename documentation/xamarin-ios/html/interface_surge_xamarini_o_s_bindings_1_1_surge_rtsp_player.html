@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Surge
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
    <div id="projectbrief">Surge is a high performance Real-Time Streaming Protocol (RTSP) and Real-Time Transport Protocol (RTP) implementation.</div>
   </td>
@@ -105,9 +105,15 @@ Properties</h2></td></tr>
 <tr class="memitem:a6c7ed65f9656542894f0ccfe7e728b0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html">SurgeRtspPlayerDelegate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a6c7ed65f9656542894f0ccfe7e728b0e">ClientDelegate</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a6c7ed65f9656542894f0ccfe7e728b0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delegate object that will receive the notifications of events from the Surge library.  <a href="#a6c7ed65f9656542894f0ccfe7e728b0e">More...</a><br /></td></tr>
 <tr class="separator:a6c7ed65f9656542894f0ccfe7e728b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84dbe2b6b5456cbe5e261057e027eb40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a84dbe2b6b5456cbe5e261057e027eb40">FramesPerSecond</a><code> [get, set]</code></td></tr>
+<tr class="memitem:a84dbe2b6b5456cbe5e261057e027eb40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a84dbe2b6b5456cbe5e261057e027eb40">FramesPerSecond</a><code> [get]</code></td></tr>
 <tr class="memdesc:a84dbe2b6b5456cbe5e261057e027eb40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frames per second measured from the currently playing stream.  <a href="#a84dbe2b6b5456cbe5e261057e027eb40">More...</a><br /></td></tr>
 <tr class="separator:a84dbe2b6b5456cbe5e261057e027eb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d41ebac63bbd4c26859615abcf1fa0e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a5d41ebac63bbd4c26859615abcf1fa0e">Timeout</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a5d41ebac63bbd4c26859615abcf1fa0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal.  <a href="#a5d41ebac63bbd4c26859615abcf1fa0e">More...</a><br /></td></tr>
+<tr class="separator:a5d41ebac63bbd4c26859615abcf1fa0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a53fb4ef61b09ee4ffa0fc3a44fa9e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a4a53fb4ef61b09ee4ffa0fc3a44fa9e7">InterleavedRtspTransport</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a4a53fb4ef61b09ee4ffa0fc3a44fa9e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, Surge will stream video data via an interleaved TCP transport rather than via UDP  <a href="#a4a53fb4ef61b09ee4ffa0fc3a44fa9e7">More...</a><br /></td></tr>
+<tr class="separator:a4a53fb4ef61b09ee4ffa0fc3a44fa9e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The core class used to start and control playback of an RTSP stream on iOS. </p>
@@ -300,7 +306,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Stop playback of the stream, issuing the TEARDOWN RTSP request. </p>
-<p>Once Stop has been requrested, the stream canno tbe restarted via the <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a3f7d8277f7aa65454732afd623ee53af" title="Resumes playback of a paused stream. ">Play()</a> command. To restart a stream, plese re-execute the <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a7c2572b559c1758415a21c0bde4417be" title="Initiate playback of the RTSP stream. ">InitiatePlaybackOf()</a> command </p>
+<p>Once Stop has been requested, the stream canno tbe restarted via the <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a3f7d8277f7aa65454732afd623ee53af" title="Resumes playback of a paused stream. ">Play()</a> command. To restart a stream, plese re-execute the <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a7c2572b559c1758415a21c0bde4417be" title="Initiate playback of the RTSP stream. ">InitiatePlaybackOf()</a> command </p>
 
 </div>
 </div>
@@ -345,12 +351,36 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Frames per second measured from the currently playing stream. </p>
+
+</div>
+</div>
+<a id="a4a53fb4ef61b09ee4ffa0fc3a44fa9e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a53fb4ef61b09ee4ffa0fc3a44fa9e7">&#9670;&nbsp;</a></span>InterleavedRtspTransport</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SurgeXamariniOSBindings.SurgeRtspPlayer.InterleavedRtspTransport</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If true, Surge will stream video data via an interleaved TCP transport rather than via UDP </p>
 
 </div>
 </div>
@@ -375,6 +405,31 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The ImageView that Surge will use to play the RTSP video stream on. </p>
+
+</div>
+</div>
+<a id="a5d41ebac63bbd4c26859615abcf1fa0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d41ebac63bbd4c26859615abcf1fa0e">&#9670;&nbsp;</a></span>Timeout</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SurgeXamariniOSBindings.SurgeRtspPlayer.Timeout</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal. </p>
+<p>Default value: 5000ms </p>
 
 </div>
 </div>

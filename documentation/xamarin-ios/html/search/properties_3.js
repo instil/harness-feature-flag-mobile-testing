@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['height',['Height',['../interface_surge_xamarini_o_s_bindings_1_1_palette.html#a008a9018b67387ed688d4e8c5134f151',1,'SurgeXamariniOSBindings::Palette']]]
+  ['playerview',['PlayerView',['../interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#ab629f9303d6b427a8213e1dee03a3810',1,'SurgeXamariniOSBindings::SurgeRtspPlayer']]]
 ];

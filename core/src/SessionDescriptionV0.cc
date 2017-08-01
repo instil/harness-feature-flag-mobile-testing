@@ -11,11 +11,16 @@ Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string& rawSessionD
     for (auto it = lines.begin(); it != lines.end(); ++it) {
         const std::string current_line = *it;
 
+        bool is_audio = current_line.find("m=audio") != std::string::npos;
         bool is_rtpmap = current_line.find("a=rtpmap") != std::string::npos;
         bool is_fmtp = current_line.find("a=fmtp") != std::string::npos;
         bool is_control = current_line.find("a=control") != std::string::npos;
         bool is_mime = is_rtpmap;
 
+        if (is_audio) {
+            return;
+        }
+        
         if (is_rtpmap) {
             rtpMap = current_line;
         }

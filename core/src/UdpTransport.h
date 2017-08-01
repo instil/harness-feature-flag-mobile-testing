@@ -19,6 +19,8 @@ namespace Surge {
         UdpTransport(ISocketHandlerDelegate *delegate);
         ~UdpTransport();
         
+        void StopRunning() override;
+        
         void RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) override;
         
         bool IsInterleavedTransport() override { return false; };

@@ -89,7 +89,6 @@
     }
 }
 
-//- (void)createDecompressionSession: {
 - (void)createDecompressionSession:(CMFormatDescriptionRef)formatDescription {
     [self freeVideoDecompressionSession];
     

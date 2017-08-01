@@ -86,7 +86,7 @@ public:
     }
 
 private:
-    id<SurgeRtspClientDelegate> delegate;
+    __weak id<SurgeRtspClientDelegate> delegate;
 };
 
 @interface SurgeRtspPlayer () <SurgeRtspClientDelegate, SurgeDecoderDelegate>
@@ -184,10 +184,10 @@ private:
         
         [self setupStream:currentSessionDescription withCallback:^(bool result) {
             if (!result) {
-                if (!self.isInterleavedTransport) {
+                if (!self.interleavedRtspTransport) {
                     SurgeLogInfo(@"Failed to connect to stream via UDP, trying Interleaved TCP");
                     
-                    self.isInterleavedTransport = true;
+                    self.interleavedRtspTransport = true;
                     [self describeSetupPlay];
                 } else {
                     if ([self.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
@@ -361,10 +361,10 @@ private:
     return self.client->IsInterleavedTransport();
 }
 
-- (void)setInterleavedRtspTransport: (bool)interleavedRtspTransport {
-    if (interleavedRtspTransport != self.client->IsInterleavedTransport()) {
+- (void)setInterleavedRtspTransport: (bool)usingInterleavedRtspTransport {
+    if (usingInterleavedRtspTransport != self.client->IsInterleavedTransport()) {
         delete self.client;
-        self.client = new Surge::RtspClient(self.clientDelegate, interleavedRtspTransport);
+        self.client = new Surge::RtspClient(self.clientDelegate, usingInterleavedRtspTransport);
     }
 }
 

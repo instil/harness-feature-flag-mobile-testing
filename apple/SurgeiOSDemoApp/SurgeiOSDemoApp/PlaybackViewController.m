@@ -29,6 +29,10 @@
     [self setupInterfaceForPlaying:NO];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    self.rtspPlayer = nil;
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if (self.playbackUrlString) {

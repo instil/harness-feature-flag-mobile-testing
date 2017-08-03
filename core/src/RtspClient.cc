@@ -33,8 +33,10 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
     StartErrorDispatcher();
 
     if (useInterleavedTcpTransport) {
+        INFO("Using Interleaved TCP Transport");
         m_transport = new InterleavedRtspTransport(nullptr);
     } else {
+        INFO("Using UDP Transport");
         m_transport = new UdpTransport(nullptr);
     }
     m_transport->SetDelegate(this);
@@ -519,18 +521,18 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 }
 
 void Surge::RtspClient::CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet) {
-    if (m_sessionDescription.GetType() == H264) {
-        return;
-    }
-    
     if (packet->GetSequenceNumber() != ++lastPacket) {
         if (lastPacket != 1) {
-            ERROR("PACKET LOST, FRAME DROPPED");
-            DropNextFrame();
+            missedPackets++;
+            
+            DEBUG("Packet loss detected. Lost: " << missedPackets << " Successful: " << successfulPackets << ". Loss rate: " << ((float)(missedPackets * 100) / (successfulPackets + missedPackets)) << "%");
+            
+            if (m_sessionDescription.GetType() != H264) {
+                DropNextFrame();
+            }
         }
 
         lastPacket = packet->GetSequenceNumber();
-        missedPackets++;
     } else {
         successfulPackets++;
     }

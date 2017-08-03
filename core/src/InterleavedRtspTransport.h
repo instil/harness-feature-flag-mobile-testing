@@ -1,99 +1,59 @@
-// -*-c++-*-
-// Copyright (c) 2016 Instil Software.
+// Copyright (c) 2017 Instil Software.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
 
-#ifndef __RTSP_INTERLEAVED_TRANSPORT_H__
-#define __RTSP_INTERLEAVED_TRANSPORT_H__
+#ifndef InterleavedRtspTransport_h
+#define InterleavedRtspTransport_h
 
 #include "Transport.h"
-
-#include <cstdlib>
-#include <vector>
-
+#include "Constants.h"
 
 namespace Surge {
-    
-    class InterleavedRtspTransport : public Transport {
+    class InterleavedRtspTransport : public Surge::Transport {
     public:
         InterleavedRtspTransport(ISocketHandlerDelegate * const delegate);
-
-        ~InterleavedRtspTransport();
-
-        bool IsInterleavedTransport() override { return true; };
-        bool IsRtpTransportTCP() override { return true; };
-        void SetRtpInterleavedChannel(int channel) { m_rtpInterleavedChannel = channel; }
-        void SetRtcpInterleavedChannel(int channel) { m_rtcpInterleavedChannel = channel; }
-
+        
         std::string GetTransportHeaderString() const override {
             char rtp_channel[12];
             char rtcp_channel[12];
-
+            
             memset(rtp_channel, 0, sizeof(rtp_channel));
             memset(rtcp_channel, 0, sizeof(rtcp_channel));
             snprintf(rtp_channel, sizeof(rtp_channel), "%d", m_rtpInterleavedChannel);
             snprintf(rtcp_channel, sizeof(rtcp_channel), "%d", m_rtcpInterleavedChannel);
             
             return "RTP/AVP/TCP;unicast;interleaved="
-                + std::string(rtp_channel)
-                + "-"
-                + std::string(rtcp_channel);
+            + std::string(rtp_channel)
+            + "-"
+            + std::string(rtcp_channel);
         }
         
-        void RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) override {
-            m_receivedBuffer.clear();
-            Transport::RtspTcpOpen(host, port, callback);
+        void SetRtpInterleavedChannel(int rtpInterleavedChannel) {
+            m_rtpInterleavedChannel = rtpInterleavedChannel;
         }
-
+        
+        void SetRtcpInterleavedChannel(int rtcpInterleavedChannel) {
+            m_rtcpInterleavedChannel = rtcpInterleavedChannel;
+        }
+        
     protected:
-        void RtspHandleReceive(const char*, size_t) override;
-
+        bool IsInterleavedTransport() override {
+            return true;
+        }
+        
+        bool HandlePacket(const char* buffer, size_t size) override;
+        
     private:
-        void AppendDataToBuffer(const char*, size_t);
-        void RemoveDataFromStartOfBuffer(size_t);
-        
-        bool HandleRtpPacket();
-        bool HandleRtspPacket();
-        
         bool BufferContainsRtpPacket() {
             return m_receivedBuffer.size() >= 4 && m_receivedBuffer[0] == '$';
         }
         
-        bool BufferContainsRtspPacket() {
-            return m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "RTSP/1.0", 8) == 0;
-        }
-        
-        bool BufferContainsAnnouncePacket() {
-            return m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "ANNOUNCE", 8) == 0;
-        }
-        
-        bool BufferContainsRedirectPacket() {
-            return m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "REDIRECT", 8) == 0;
-        }
-        
     private:
-        std::vector<unsigned char> m_receivedBuffer;
-        size_t m_readBufferSize;
-        
+        int m_readBufferSize;
         int m_rtpInterleavedChannel;
         int m_rtcpInterleavedChannel;
     };
 }
 
-#endif //__RTSP_INTERLEAVED_TRANSPORT_H__
+#endif /* InterleavedRtspTransport_h */

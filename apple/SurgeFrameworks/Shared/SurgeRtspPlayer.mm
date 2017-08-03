@@ -156,8 +156,6 @@ private:
                andEndingAt:(nullable NSDate *)endDate {
     SurgeLogDebug(@"Initating playback of %@", url);
     
-//    [self stop];
-    
     self.url = url;
     self.username = username;
     self.password = password;
@@ -187,7 +185,7 @@ private:
                 if (!self.interleavedRtspTransport) {
                     SurgeLogInfo(@"Failed to connect to stream via UDP, trying Interleaved TCP");
                     
-                    self.interleavedRtspTransport = true;
+                    self.interleavedTcpTransport = true;
                     [self describeSetupPlay];
                 } else {
                     if ([self.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
@@ -361,10 +359,10 @@ private:
     return self.client->IsInterleavedTransport();
 }
 
-- (void)setInterleavedRtspTransport: (bool)usingInterleavedRtspTransport {
-    if (usingInterleavedRtspTransport != self.client->IsInterleavedTransport()) {
+- (void)setInterleavedTcpTransport: (bool)usingInterleavedTcpTransport {
+    if (usingInterleavedTcpTransport != self.client->IsInterleavedTransport()) {
         delete self.client;
-        self.client = new Surge::RtspClient(self.clientDelegate, usingInterleavedRtspTransport);
+        self.client = new Surge::RtspClient(self.clientDelegate, usingInterleavedTcpTransport);
     }
 }
 

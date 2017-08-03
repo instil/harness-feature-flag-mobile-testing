@@ -133,6 +133,6 @@
 /*
  * If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
  */
-@property (nonatomic, assign) bool interleavedRtspTransport;
+@property (nonatomic, assign) bool interleavedTcpTransport;
 
 @end

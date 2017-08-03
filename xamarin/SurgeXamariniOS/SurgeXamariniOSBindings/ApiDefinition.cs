@@ -120,8 +120,8 @@ namespace SurgeXamariniOSBindings
 		/// <summary>
 		/// If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
 		/// </summary>
-		[Export("interleavedRtspTransport")]
-		bool InterleavedRtspTransport { get; set; }
+		[Export("interleavedTcpTransport")]
+		bool InterleavedTcpTransport { get; set; }
 
 	}
 

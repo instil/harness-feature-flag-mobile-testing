@@ -18,10 +18,10 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_load
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    createNativeClientInstance
- * Signature: (Lco/instil/surge/client/RtspClientDelegate;)J
+ * Signature: (Lco/instil/surge/client/RtspClientDelegate;Z)J
  */
 JNIEXPORT jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClientInstance
-  (JNIEnv *, jobject, jobject);
+  (JNIEnv *, jobject, jobject, jboolean);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -149,6 +149,14 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_close
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_stopStream
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    isInterleavedTransport
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_co_instil_surge_client_RtspClient_isInterleavedTransport
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

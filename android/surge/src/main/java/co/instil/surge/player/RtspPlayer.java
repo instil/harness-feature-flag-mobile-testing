@@ -38,7 +38,7 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     private static Logger logger = LoggerFactory.getLogger(RtspPlayer.class);
 
-    protected final RtspClient rtspClient;
+    protected RtspClient rtspClient;
 
     protected String url;
     protected String username;
@@ -54,11 +54,11 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
     private Decoder decoder;
 
     public RtspPlayer() {
-        rtspClient = generateRtspClient();
+        rtspClient = generateRtspClient(false);
     }
 
-    protected RtspClient generateRtspClient() {
-        return new RtspClient(this);
+    protected RtspClient generateRtspClient(boolean interleavedTcpTransport) {
+        return new RtspClient(this, interleavedTcpTransport);
     }
 
     public synchronized void initiatePlaybackOf(String url, SurgeSurface surface, final PlayerCallback callback) {
@@ -313,5 +313,17 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     public int getFramesPerSecond() {
         return framesPerSecond;
+    }
+
+    public boolean isInterleavedTransport() {
+        return rtspClient.isInterleavedTransport();
+    }
+
+    public void setInterleavedTransport(boolean interleavedTcpTransport) {
+        if (rtspClient.isInterleavedTransport() == interleavedTcpTransport) {
+            return;
+        }
+
+        rtspClient = generateRtspClient(interleavedTcpTransport);
     }
 }

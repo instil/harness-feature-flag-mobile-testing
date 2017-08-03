@@ -33,11 +33,14 @@ void JNICALL Java_co_instil_surge_client_RtspClient_load(JNIEnv *env, jclass cal
 }
 
 JNIEXPORT
-jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClientInstance(JNIEnv *env, jobject callingObject, jobject delegate) {
+JNIEXPORT jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClientInstance(JNIEnv *env,
+                                                                                          jobject callingObject,
+                                                                                          jobject delegate,
+                                                                                          jboolean isInterleavedTcpTransport) {
     JavaVM *jvm;
     env->GetJavaVM(&jvm);
 
-    Surge::RtspClient *client = new Surge::RtspClient(new SurgeJni::RtspClientDelegateWrapper(jvm, env->NewWeakGlobalRef(delegate)));
+    Surge::RtspClient *client = new Surge::RtspClient(new SurgeJni::RtspClientDelegateWrapper(jvm, env->NewWeakGlobalRef(delegate)), isInterleavedTcpTransport);
     return reinterpret_cast<jlong>(client);
 }
 
@@ -237,3 +240,8 @@ void JNICALL Java_co_instil_surge_client_RtspClient_stopStream(JNIEnv *env, jobj
     client->StopStream();
 }
 
+JNIEXPORT
+jboolean JNICALL Java_co_instil_surge_client_RtspClient_isInterleavedTransport (JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    return (jboolean)client->IsInterleavedTransport();
+}

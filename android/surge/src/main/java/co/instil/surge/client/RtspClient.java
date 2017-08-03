@@ -24,16 +24,20 @@ public class RtspClient implements AutoCloseable {
     private final long nativeClient;
 
     public RtspClient(RtspClientDelegate delegate) {
-        nativeClient = generateNativeClientInstance(delegate);
+        this(delegate, false);
     }
 
-    protected long generateNativeClientInstance(RtspClientDelegate delegate) {
-        return createNativeClientInstance(delegate);
+    public RtspClient(RtspClientDelegate delegate, boolean isInterleavedTcpTransport) {
+        nativeClient = generateNativeClientInstance(delegate, isInterleavedTcpTransport);
+    }
+
+    protected long generateNativeClientInstance(RtspClientDelegate delegate, boolean isInterleavedTcpTransport) {
+        return createNativeClientInstance(delegate, isInterleavedTcpTransport);
     }
 
     private static native void load();
 
-    private native long createNativeClientInstance(RtspClientDelegate delegate);
+    private native long createNativeClientInstance(RtspClientDelegate delegate, boolean isInterleavedTcpTransport);
 
     public native void options(ResponseCallback callback);
 
@@ -66,4 +70,6 @@ public class RtspClient implements AutoCloseable {
     public native void close();
 
     public native void stopStream();
+
+    public native boolean isInterleavedTransport();
 }

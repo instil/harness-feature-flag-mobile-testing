@@ -11,7 +11,7 @@ node {
     dir("apple") {
         try {
             sh "./build-release.sh"
-            publishJunitTestResults "build/test-results/*.xml"
+            //publishJunitTestResults "build/test-results/*.xml"
             archive includes: "build/frameworks/apple-frameworks.zip"
         } catch(e) {
             slackNotifyError("Failed to build Apple frameworks, see ${env.BUILD_URL}console")
@@ -33,6 +33,8 @@ node {
             error "Build failed"
         }
     }
+
+    slackNotify("Build successful")
 }
 
 def slackNotify(message) {

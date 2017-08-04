@@ -76,6 +76,8 @@ namespace Surge {
             return m_receivedBuffer.size() >= 8 && strncmp((char*)&(m_receivedBuffer[0]), "REDIRECT", 8) == 0;
         }
         
+        std::string ResolveHostnameToIP(const std::string& host, const int port);
+        
     protected:
         virtual bool HandlePacket(const char* buffer, size_t size) = 0;
         

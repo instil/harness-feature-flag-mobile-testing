@@ -13,6 +13,19 @@ RTSP and RTP are currently a popular choice for use with IP video cameras both c
 
 Surge seeks to address these issues by being designed from the ground up to execute asynchronously whilst utilising non-blocking I/O and leveraging platform specific APIs to access hardware accelerated video decoding.
 
+## Release Notes
+
+### v1.1
+
+ * Added UDP support
+
+### v1.0
+
+ * Initial release
+ * Supports H264, MP4V-ES and MJPEG decoding
+ * Supports the Interleaved TCP transport protocol
+ * Can be built for iOS, Mac OS, Android, Xamarin iOS and Xamarin Android
+
 ## Development
 
 ### Apple Frameworks
@@ -21,7 +34,7 @@ A workspace is located at `apple/Surge.xcworkspace` for developing any Apple Sur
 
 ### Android Frameworks
 
-TBC
+A Gradle project is located under `android/build.gradle`, which contains the Android Surge project containing the decoder code and JNI bindings to the SurgeCore project. 
 
 
 ## Building
@@ -52,7 +65,7 @@ $ ./gradlew clean build
 
 ### Xamarin
 
-Ensure you have built either or both of the frameworks you are wishing to target using the above steps per platform. Then execute one of the following build commands for the platform of your choice
+Ensure you have built either or both of the frameworks you are wishing to target using the above steps per platform. Then execute one of the following build commands for the platform of your choice.
 
 ```bash
 $ cd xamarin

@@ -366,6 +366,14 @@ private:
     }
 }
 
+- (int)packetBufferDelay {
+    return self.client->GetPacketBufferDelay();
+}
+
+- (void)setPacketBufferDelay: (int)packetBufferDelay {
+    self.client->SetPacketBufferDelay(packetBufferDelay);
+}
+
 
 #pragma mark - RTSP client delegate
 

@@ -15,11 +15,13 @@ namespace SurgeUtil {
 
         static int DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS = 60;
 
-        static int DEFAULT_NO_PACKET_TIMEOUT_MS = 2000;
+        static int DEFAULT_NO_PACKET_TIMEOUT_MS = 10000;
 
         static int DEFAULT_CONNECT_TIMEOUT_MS = 5000;
 
         static int DEFAULT_TRANSACTION_TIMEOUT_MS = 5000;
+        
+        static int DEFAULT_PACKET_BUFFER_DELAY_MS = 200;
 
         static int DEFAULT_RTP_INTERLEAVED_CHANNEL = 0;
 

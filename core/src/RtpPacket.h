@@ -24,7 +24,7 @@ namespace Surge {
 
         int GetVersion() const { return m_version; }
 
-        int GetSequenceNumber() const { return m_sequenceNumber; }
+        long GetSequenceNumber() const { return m_sequenceNumber; }
 
         int GetType() const { return m_type; }
 
@@ -49,7 +49,7 @@ namespace Surge {
     private:
         uint32_t m_timestmap;
         int m_version;
-        int m_sequenceNumber;
+        long m_sequenceNumber;
         int m_type;
         bool m_marker;
         int m_extensionID;

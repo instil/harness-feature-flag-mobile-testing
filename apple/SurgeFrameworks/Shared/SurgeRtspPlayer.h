@@ -135,4 +135,9 @@
  */
 @property (nonatomic, assign) bool interleavedTcpTransport;
 
+/*
+ * Time delay, in milliseconds, between Surge receiving a packet containing video data and the frame data being decoded for viewing. Used for error correction and packet reordering purposes for the UDP transport. Default: 200ms
+ */
+@property (nonatomic, assign) int packetBufferDelay;
+
 @end

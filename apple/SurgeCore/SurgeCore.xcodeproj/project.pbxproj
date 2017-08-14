@@ -123,6 +123,8 @@
 		F46D0DDE1F3211C5000782DD /* Transport.h in Headers */ = {isa = PBXBuildFile; fileRef = F46D0DDC1F3211C5000782DD /* Transport.h */; };
 		F46D0DE11F322D36000782DD /* InterleavedRtspTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F46D0DDF1F322D36000782DD /* InterleavedRtspTransport.cc */; };
 		F46D0DE21F322D36000782DD /* InterleavedRtspTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F46D0DE01F322D36000782DD /* InterleavedRtspTransport.h */; };
+		F49A7E941F3B0D29007FCBD2 /* RtpPacketBuffer.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */; };
+		F49A7E951F3B0D29007FCBD2 /* RtpPacketBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */; };
 		F4FA24C31ED8427A001B56E0 /* atomic-ops.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24A61ED8427A001B56E0 /* atomic-ops.h */; };
 		F4FA24CC1ED8427A001B56E0 /* internal.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24AF1ED8427A001B56E0 /* internal.h */; };
 		F4FA24D71ED8427A001B56E0 /* spinlock.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24BA1ED8427A001B56E0 /* spinlock.h */; };
@@ -235,6 +237,8 @@
 		F46D0DDC1F3211C5000782DD /* Transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transport.h; path = ../../core/src/Transport.h; sourceTree = "<group>"; };
 		F46D0DDF1F322D36000782DD /* InterleavedRtspTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InterleavedRtspTransport.cc; path = ../../core/src/InterleavedRtspTransport.cc; sourceTree = "<group>"; };
 		F46D0DE01F322D36000782DD /* InterleavedRtspTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterleavedRtspTransport.h; path = ../../core/src/InterleavedRtspTransport.h; sourceTree = "<group>"; };
+		F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RtpPacketBuffer.cc; path = ../../core/src/RtpPacketBuffer.cc; sourceTree = "<group>"; };
+		F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtpPacketBuffer.h; path = ../../core/src/RtpPacketBuffer.h; sourceTree = "<group>"; };
 		F4FA24A51ED8427A001B56E0 /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
 		F4FA24A61ED8427A001B56E0 /* atomic-ops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "atomic-ops.h"; sourceTree = "<group>"; };
 		F4FA24A71ED8427A001B56E0 /* core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = core.c; sourceTree = "<group>"; };
@@ -314,6 +318,8 @@
 		42D672591D306A5400D42C35 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */,
+				F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */,
 				F46D0DD91F320425000782DD /* Transports */,
 				42D671C51D3069BB00D42C35 /* Base64.cc */,
 				42D671C61D3069BB00D42C35 /* Base64.h */,
@@ -593,6 +599,7 @@
 				F46D0DDE1F3211C5000782DD /* Transport.h in Headers */,
 				42D672351D3069BB00D42C35 /* Play.h in Headers */,
 				42D6721B1D3069BB00D42C35 /* DescribeResponse.h in Headers */,
+				F49A7E951F3B0D29007FCBD2 /* RtpPacketBuffer.h in Headers */,
 				42D672341D3069BB00D42C35 /* Pause.h in Headers */,
 				42D672451D3069BB00D42C35 /* Setup.h in Headers */,
 				42D672331D3069BB00D42C35 /* Options.h in Headers */,
@@ -710,6 +717,7 @@
 				42D6721C1D3069BB00D42C35 /* ErrorDispatcher.cc in Sources */,
 				42D6722C1D3069BB00D42C35 /* MJPEGDepacketizer.cc in Sources */,
 				42D672221D3069BB00D42C35 /* Helpers.cc in Sources */,
+				F49A7E941F3B0D29007FCBD2 /* RtpPacketBuffer.cc in Sources */,
 				42D6723D1D3069BB00D42C35 /* RtspCommandFactory.cc in Sources */,
 				42D672171D3069BB00D42C35 /* DateTime.cc in Sources */,
 				F4589E151ED85627004F023D /* pthread-fixes.c in Sources */,

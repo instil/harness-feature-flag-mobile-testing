@@ -114,8 +114,7 @@ namespace SurgeXamariniOSBindings
         /// Default value: 5000ms
 		/// </summary>
 		[Export("timeout")]
-		int Timeout 
-        { get; set; }
+		int Timeout { get; set; }
 
 		/// <summary>
 		/// If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
@@ -123,6 +122,15 @@ namespace SurgeXamariniOSBindings
 		[Export("interleavedTcpTransport")]
 		bool InterleavedTcpTransport { get; set; }
 
+		/// <summary>
+		/// Time delay, in milliseconds, between Surge receiving a packet containing video data and the 
+        /// frame data being decoded for viewing. Used for error correction and packet reordering 
+        /// purposes for the UDP transport. 
+        /// 
+        /// Default: 200ms
+		/// </summary>
+		[Export("packetBufferDelay")]
+		bool PacketBufferDelay { get; set; }
 	}
 
     /// <summary>

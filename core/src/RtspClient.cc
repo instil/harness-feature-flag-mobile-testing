@@ -16,6 +16,7 @@
 #include "MJPEGDepacketizer.h"
 
 using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
+using SurgeUtil::Constants::DEFAULT_PACKET_BUFFER_DELAY_MS;
 
 
 Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool useInterleavedTcpTransport) :
@@ -39,8 +40,15 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         INFO("Using UDP Transport");
         m_transport = new UdpTransport(nullptr);
     }
+            
     m_transport->SetDelegate(this);
     frameBuffer = new std::vector<unsigned char>();
+    
+    packetBuffer = new RtpPacketBuffer(DEFAULT_PACKET_BUFFER_DELAY_MS);
+    packetBuffer->SetPacketAvailableCallback([this](RtpPacket *packet) {
+        this->ProcessRtpPacket(packet);
+        delete packet;
+    });
 }
 
 Surge::RtspClient::~RtspClient() {
@@ -437,9 +445,7 @@ void Surge::RtspClient::Run() {
 
     m_transport->SetRtpCallback([&](RtpPacket* packet) {
         if (packet != nullptr) {
-            ProcessRtpPacket(packet);
-        
-            delete packet;
+            packetBuffer->AddPacketToBuffer(packet);
 
             long long int test = SurgeUtil::currentTimeMilliseconds();
             time_last_packet_was_processed = test;
@@ -521,32 +527,28 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 }
 
 void Surge::RtspClient::CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet) {
-    if (packet->GetSequenceNumber() != ++lastPacket) {
-        if (lastPacket != 1) {
-            missedPackets++;
-            
-            DEBUG("Packet loss detected. Lost: " << missedPackets << " Successful: " << successfulPackets << ". Loss rate: " << ((float)(missedPackets * 100) / (successfulPackets + missedPackets)) << "%");
-            
-            if (m_sessionDescription.GetType() != H264) {
-                DropNextFrame();
-            }
-        }
-
-        lastPacket = packet->GetSequenceNumber();
-    } else {
-        successfulPackets++;
+    if (m_sessionDescription.GetType() == H264) {
+        return;
+    }
+    
+    if (packet->GetSequenceNumber() != (++lastPacketSequenceNum % MAX_SEQ_NUM)) {
+        DropNextFrame();
+        lastPacketSequenceNum = packet->GetSequenceNumber();
     }
 }
 
 void Surge::RtspClient::CreateDepacketizer() {
     switch (m_sessionDescription.GetType()) {
         case H264:
+            INFO("H264 detected");
             depacketizer = new H264Depacketizer(m_sessionDescription, frameBuffer);
             break;
         case MP4V:
+            INFO("MP4V detected");
             depacketizer = new MP4VDepacketizer(m_sessionDescription, frameBuffer);
             break;
         case MJPEG:
+            INFO("MJPEG detected");
             depacketizer = new MJPEGDepacketizer(m_sessionDescription, frameBuffer);
             break;
         default:
@@ -571,7 +573,7 @@ void Surge::RtspClient::SetupRtspConnection(const std::string& url, std::functio
     int port = url_model.GetPort();
     m_transport->RtspTcpOpen(host, port, [&](int result) {
         if (result == 0) {
-            INFO("RUNNING THREAD");
+            INFO("Starting the Transport thread");
             m_transport->StartRunning();
         } else {
             ERROR("Did not start the Transport thread.");

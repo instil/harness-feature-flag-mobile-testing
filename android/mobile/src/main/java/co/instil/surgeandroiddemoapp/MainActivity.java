@@ -57,10 +57,8 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
         SurgeSurface surface = new SurgeSurface(new Surface(surfaceTexture), width, height);
 
-        player.initiatePlaybackOf("rtsp://192.168.1.40/media/1/video/1?commport=80&Warped=True",
+        player.initiatePlaybackOf("rtsp://192.168.1.52:8554/test",
                 surface,
-                "admin",
-                "admin",
                 new PlayerCallback() {
                     @Override
                     public void response(boolean result) {

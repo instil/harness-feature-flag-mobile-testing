@@ -70,7 +70,7 @@ namespace SurgeXamariniOSBindings
         /// <summary>
         /// Stop playback of the stream, issuing the TEARDOWN RTSP request.
         /// 
-        /// Once Stop has been requested, the stream canno tbe restarted via the Play() command. To restart a stream, plese re-execute the InitiatePlaybackOf() command
+        /// Once Stop has been requested, the stream cannot be restarted via the Play() command. To restart a stream, plese re-execute the InitiatePlaybackOf() command
         /// </summary>
 		[Export("stop")]
         void Stop();
@@ -130,7 +130,7 @@ namespace SurgeXamariniOSBindings
         /// Default: 200ms
 		/// </summary>
 		[Export("packetBufferDelay")]
-		bool PacketBufferDelay { get; set; }
+		int PacketBufferDelay { get; set; }
 	}
 
     /// <summary>

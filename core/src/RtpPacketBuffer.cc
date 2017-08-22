@@ -19,20 +19,21 @@ void Surge::RtpPacketBuffer::AddPacketToBuffer(RtpPacket *packet) {
 void Surge::RtpPacketBuffer::AddToBuffer(RtpPacket *packet) {
     if (buffer.size() == 0 ||
         (PacketIsInSequentialOrder(packet, buffer.back().packet) &&
-         !PacketNeedsRolledBack(packet, buffer.back().packet))) {
-            
-            LogSuccessfulPacket();
-            if (int numPacketsLost = NumberOfPacketsLost(packet, buffer)) {
-                LogMissedPackets(numPacketsLost);
-            }
-        
+        !PacketNeedsRolledBack(packet, buffer.back().packet))) {
+
+        LogSuccessfulPacket();
+        int numPacketsLost = NumberOfPacketsLost(packet, buffer);
+        if (numPacketsLost > 0) {
+            LogMissedPackets(numPacketsLost);
+        }
+
         RtpPacketBufferItem item(packet, SurgeUtil::currentTimeMilliseconds() + bufferDelayMilliseconds);
         buffer.push_back(item);
         return;
     }
-    
+
     LogOutOfOrderPacket();
-    
+
     std::deque<RtpPacketBufferItem>::reverse_iterator it = ++buffer.rbegin();
 
     while (it != buffer.rend()) {
@@ -44,12 +45,12 @@ void Surge::RtpPacketBuffer::AddToBuffer(RtpPacket *packet) {
             buffer.insert(it.base(), item);
             return;
         }
-        
+
         ++it;
     }
-    
+
     // Packet is too late, frame already sent to decoder. Delete packet.
-    INFO("Packet " << packet->GetSequenceNumber() << " arrived too late, frame already sent to decoder, deleting.");
+    DEBUG("Packet " << packet->GetSequenceNumber() << " arrived too late, frame already sent to decoder, deleting.");
     delete packet;
 }
 
@@ -63,17 +64,18 @@ bool Surge::RtpPacketBuffer::PacketNeedsRolledBack(const RtpPacket *packetToAdd,
 }
 
 int Surge::RtpPacketBuffer::NumberOfPacketsLost(const RtpPacket *packet, const std::deque<RtpPacketBufferItem>& buffer) {
+    
     if (buffer.size() == 0) {
         return 0;
     }
-    
+
     RtpPacket *endOfBufferPacket = buffer.back().packet;
-    
+
     if (packet->GetSequenceNumber() < MIN_ROLLOVER_THRESHOLD &&
         endOfBufferPacket->GetSequenceNumber() > MAX_ROLLOVER_THRESHOLD) {
-        return (int)((MAX_SEQ_NUM - buffer.back().packet->GetSequenceNumber()) + packet->GetSequenceNumber());
+        return (int)((MAX_SEQ_NUM - endOfBufferPacket->GetSequenceNumber()) + packet->GetSequenceNumber());
     }
-    
+
     return (int)(packet->GetSequenceNumber() - endOfBufferPacket->GetSequenceNumber() - 1);
 }
 

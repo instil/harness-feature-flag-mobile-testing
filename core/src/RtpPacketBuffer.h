@@ -63,7 +63,7 @@ namespace Surge {
             ++successfulPackets;
         }
         
-        void LogMissedPackets(int numMissedPackets) {
+        void LogMissedPackets(const int numMissedPackets) {
             missedPackets += numMissedPackets;
             DEBUG("Packet loss detected. Lost: " << missedPackets << "; Successful: " << successfulPackets << "; Out of order: " << oooPackets << ". Loss rate: " << ((float)(missedPackets * 100) / (successfulPackets + oooPackets + missedPackets)) << "%");
         }
@@ -80,7 +80,8 @@ namespace Surge {
         int bufferDelayMilliseconds;
         
         std::function<void(RtpPacket *)> packetAvailableCallback;
-    
+        
+        long calculatedSequenceNumber = -1;
         int successfulPackets = 0;
         int missedPackets = 0;
         int oooPackets = 0;

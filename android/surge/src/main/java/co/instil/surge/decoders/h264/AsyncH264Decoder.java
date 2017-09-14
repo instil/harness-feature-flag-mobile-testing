@@ -11,8 +11,9 @@ import android.annotation.TargetApi;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.view.Surface;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import co.instil.surge.logging.Logger;
+import co.instil.surge.logging.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;

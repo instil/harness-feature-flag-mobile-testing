@@ -13,20 +13,20 @@ import android.media.MediaCodec;
 import android.os.Build;
 import android.view.Surface;
 
-import org.easymock.Capture;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-
 import co.instil.surge.decoders.MediaCodecFactory;
 import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
 import co.instil.surge.device.DeviceExaminer;
-
 import static co.instil.surge.decoders.h264.H264TestUtils.generateNalUnits;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import org.easymock.Capture;
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.easymock.EasyMock.anyInt;
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.capture;

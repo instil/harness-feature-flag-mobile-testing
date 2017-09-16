@@ -14,6 +14,9 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -23,8 +26,6 @@ import co.instil.surge.client.SessionDescription;
 import co.instil.surge.player.RtspPlayer;
 import co.instil.surge.client.SurgeSurface;
 import co.instil.surge.player.RtspPlayerDelegate;
-import co.instil.surge.logging.Logger;
-import co.instil.surge.logging.LoggerFactory;
 
 /**
  *

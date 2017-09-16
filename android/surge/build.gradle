@@ -70,9 +70,11 @@ model {
     android.buildTypes {
         debug {
             testCoverageEnabled = true
+            minifyEnabled = true
+            proguardFiles.add(file("proguard-rules.pro"))
         }
         release {
-            minifyEnabled = false
+            minifyEnabled = true
             proguardFiles.add(file("proguard-rules.pro"))
         }
     }

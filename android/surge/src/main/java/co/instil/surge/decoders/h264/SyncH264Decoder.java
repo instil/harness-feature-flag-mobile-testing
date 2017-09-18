@@ -10,8 +10,9 @@ package co.instil.surge.decoders.h264;
 import android.annotation.TargetApi;
 import android.media.MediaCodec;
 import android.view.Surface;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import co.instil.surge.logging.Logger;
+import co.instil.surge.logging.LoggerFactory;
 
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;

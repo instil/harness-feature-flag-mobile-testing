@@ -9,7 +9,7 @@ package co.instil.surge.client;
 
 import java.nio.ByteBuffer;
 
-/*
+/**
  * Interface to define how the extended header information should be parsed with in Surge.
  */
 public interface ExtendedHeader {

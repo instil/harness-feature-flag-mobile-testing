@@ -13,10 +13,11 @@ import android.media.MediaCodec.BufferInfo;
 import android.media.MediaCodec.CodecException;
 import android.media.MediaFormat;
 import android.view.Surface;
+
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.Decoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import co.instil.surge.logging.Logger;
+import co.instil.surge.logging.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

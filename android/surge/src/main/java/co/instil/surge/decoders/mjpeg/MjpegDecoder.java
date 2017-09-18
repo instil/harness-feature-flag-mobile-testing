@@ -14,13 +14,12 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.view.Surface;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.nio.ByteBuffer;
-
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.Decoder;
+import co.instil.surge.logging.Logger;
+import co.instil.surge.logging.LoggerFactory;
+
+import java.nio.ByteBuffer;
 
 /**
  * Decoder which renders a MJPEG stream to a {@link android.view.Surface}.

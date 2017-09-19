@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const RtspAddressSelectionNotification;
+
 @interface AddressesTableViewController : UITableViewController
 
 @end

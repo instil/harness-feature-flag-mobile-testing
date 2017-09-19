@@ -17,8 +17,7 @@
 
 @implementation PlaybackCollectionViewCell
 
-- (instancetype)initWithCoder:(NSCoder *)coder
-{
+- (instancetype)initWithCoder:(NSCoder *)coder {
   self = [super initWithCoder:coder];
   if (self) {
     self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
@@ -27,6 +26,12 @@
     self.urlLabel.text = @"";
   }
   return self;
+}
+
+- (void)prepareForReuse {
+  [super prepareForReuse];
+  self.rtspPlayer.delegate = nil;
+  self.rtspPlayer = nil;
 }
 
 #pragma mark - Properties

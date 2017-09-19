@@ -7,6 +7,7 @@
 //
 
 #import "PlaybackViewController.h"
+#import "AddressesTableViewController.h"
 #import "PlaybackCollectionViewCell.h"
 
 @interface PlaybackViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
@@ -16,16 +17,34 @@
 
 @implementation PlaybackViewController
 
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(loadRtspStreamFromNotification:)
+                                                     name:RtspAddressSelectionNotification
+                                                   object:nil];
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RtspAddressSelectionNotification object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.urls = [NSMutableArray<NSString *> new];
+    
     UINib *nib = [UINib nibWithNibName:@"PlaybackCollectionViewCell" bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:@"PlaybackCollectionViewCell"];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self playUrl:@"rtsp://127.0.0.1/test"];
+#pragma mark - Segues
+
+- (IBAction)unwind:(UIStoryboardSegue *)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -48,6 +67,12 @@
 #pragma mark - UICollectionViewFlowLayoutDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (self.urls.count == 2) {
+        return CGSizeMake(CGRectGetWidth(collectionView.bounds) - collectionViewLayout.minimumInteritemSpacing,
+                          CGRectGetHeight(collectionView.bounds) * 0.5f - collectionViewLayout.minimumLineSpacing);
+    }
+    
     NSUInteger maxCols = 2;
     CGFloat colWidth = roundf(CGRectGetWidth(collectionView.bounds) / maxCols) - collectionViewLayout.minimumInteritemSpacing;
     
@@ -56,39 +81,20 @@
     
     BOOL uneven = self.urls.count % maxCols != 0;
     BOOL lastRow = self.urls.count - indexPath.item == 1;
-    
     return CGSizeMake(lastRow && uneven ? CGRectGetWidth(collectionView.bounds) : colWidth, rowHeight);
 }
 
-//- (void)viewDidDisappear:(BOOL)animated {
-//    self.rtspPlayer = nil;
-//}
-//
-//- (void)viewDidAppear:(BOOL)animated {
-//    [super viewDidAppear:animated];
-//    if (self.playbackUrlString) {
-//        [self.activityIndicator startAnimating];
-//        self.urlLabel.text = self.playbackUrlString;
-//        [self playUrl:self.playbackUrlString];
-//        self.playbackUrlString = nil;
-//    }
-//    else {
-//        self.playbackButton.enabled = NO;
-//    }
-//}
-//
-//#pragma mark - Actions
-//
-//- (void)loadRtspStreamFromNotification:(NSNotification *)notification {
-//    NSString *rtspAddress = notification.object;
-//    if (![rtspAddress isKindOfClass:[NSString class]]) {
-//        return;
-//    }
-//    [self playUrl:rtspAddress];
-//}
-//
+#pragma mark - Actions
+
+- (void)loadRtspStreamFromNotification:(NSNotification *)notification {
+    NSString *rtspAddress = notification.object;
+    if (![rtspAddress isKindOfClass:[NSString class]]) {
+        return;
+    }
+    [self playUrl:rtspAddress];
+}
+
 - (void)playUrl:(NSString *)urlString {
-    
     [self.urls addObject:urlString];
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
 //    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:urlString] withUsername:@"admin" andPassword:@"admin"];

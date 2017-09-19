@@ -7,8 +7,9 @@
 //
 
 #import "AddressesTableViewController.h"
-#import "PlaybackViewController.h"
 #import "NSArray+RtspAddressStorage.h"
+
+NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotification";
 
 @interface AddressesTableViewController () <UISearchBarDelegate>
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
@@ -54,16 +55,6 @@
     [self.tableView reloadData];
 }
 
-#pragma mark - Segues
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"AddressSelectionSegue"]) {
-        NSString *selection = self.storedAddressSearchResults[self.tableView.indexPathForSelectedRow.row];
-        PlaybackViewController *playbackViewController = (PlaybackViewController *)segue.destinationViewController;
-//        playbackViewController.playbackUrlString = selection;
-    }
-}
-
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -81,6 +72,11 @@
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [[NSNotificationCenter defaultCenter] postNotificationName:RtspAddressSelectionNotification
+                                                        object:self.storedAddressSearchResults[indexPath.row]];
+}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;

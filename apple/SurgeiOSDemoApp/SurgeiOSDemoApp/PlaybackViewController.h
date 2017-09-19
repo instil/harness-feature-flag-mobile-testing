@@ -9,5 +9,4 @@
 #import <UIKit/UIKit.h>
 
 @interface PlaybackViewController : UIViewController
-@property (copy, nonatomic) NSString *playbackUrlString;
 @end

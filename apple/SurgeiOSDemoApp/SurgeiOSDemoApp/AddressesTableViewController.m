@@ -60,7 +60,7 @@
     if ([segue.identifier isEqualToString:@"AddressSelectionSegue"]) {
         NSString *selection = self.storedAddressSearchResults[self.tableView.indexPathForSelectedRow.row];
         PlaybackViewController *playbackViewController = (PlaybackViewController *)segue.destinationViewController;
-        playbackViewController.playbackUrlString = selection;
+//        playbackViewController.playbackUrlString = selection;
     }
 }
 

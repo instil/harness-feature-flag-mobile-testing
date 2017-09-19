@@ -7,147 +7,103 @@
 //
 
 #import "PlaybackViewController.h"
-#import <SurgeiOS/SurgeiOS.h>
+#import "PlaybackCollectionViewCell.h"
 
-@interface PlaybackViewController () <SurgeRtspPlayerDelegate>
-@property (nonatomic, strong) SurgeRtspPlayer *rtspPlayer;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (weak, nonatomic) IBOutlet UIImageView *playbackView;
-@property (weak, nonatomic) IBOutlet UILabel *urlLabel;
-@property (weak, nonatomic) IBOutlet UIToolbar *playbackControlsToolbar;
-@property (weak, nonatomic, readonly) UIBarButtonItem *playbackButton;
+@interface PlaybackViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) NSMutableArray<NSString *> *urls;
 @end
 
 @implementation PlaybackViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.rtspPlayer = [[SurgeRtspPlayer alloc] init];
-    self.rtspPlayer.delegate = self;
-    self.rtspPlayer.playerView = self.playbackView;
-    self.urlLabel.text = @"";
-    [self setupInterfaceForPlaying:NO];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    self.rtspPlayer = nil;
+    self.urls = [NSMutableArray<NSString *> new];
+    UINib *nib = [UINib nibWithNibName:@"PlaybackCollectionViewCell" bundle:nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:@"PlaybackCollectionViewCell"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (self.playbackUrlString) {
-        [self.activityIndicator startAnimating];
-        self.urlLabel.text = self.playbackUrlString;
-        [self playUrl:self.playbackUrlString];
-        self.playbackUrlString = nil;
-    }
-    else {
-        self.playbackButton.enabled = NO;
-    }
+    [self playUrl:@"rtsp://127.0.0.1/test"];
 }
 
-#pragma mark - Actions
+#pragma mark - UICollectionViewDataSource
 
-- (void)loadRtspStreamFromNotification:(NSNotification *)notification {
-    NSString *rtspAddress = notification.object;
-    if (![rtspAddress isKindOfClass:[NSString class]]) {
-        return;
-    }
-    [self playUrl:rtspAddress];
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
 }
 
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.urls.count;
+}
+
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    PlaybackCollectionViewCell *cell = (PlaybackCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"PlaybackCollectionViewCell"
+                                                                                                               forIndexPath:indexPath];
+    cell.playbackUrlString = self.urls[indexPath.item];
+    return cell;
+}
+
+#pragma mark - UICollectionViewFlowLayoutDelegate
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSUInteger maxCols = 2;
+    CGFloat colWidth = roundf(CGRectGetWidth(collectionView.bounds) / maxCols) - collectionViewLayout.minimumInteritemSpacing;
+    
+    NSUInteger totalRows = ceil((self.urls.count * 1.0) / (maxCols * 1.0));
+    CGFloat rowHeight = roundf(CGRectGetHeight(collectionView.bounds) / totalRows) - collectionViewLayout.minimumLineSpacing;
+    
+    BOOL uneven = self.urls.count % maxCols != 0;
+    BOOL lastRow = self.urls.count - indexPath.item == 1;
+    
+    return CGSizeMake(lastRow && uneven ? CGRectGetWidth(collectionView.bounds) : colWidth, rowHeight);
+}
+
+//- (void)viewDidDisappear:(BOOL)animated {
+//    self.rtspPlayer = nil;
+//}
+//
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:animated];
+//    if (self.playbackUrlString) {
+//        [self.activityIndicator startAnimating];
+//        self.urlLabel.text = self.playbackUrlString;
+//        [self playUrl:self.playbackUrlString];
+//        self.playbackUrlString = nil;
+//    }
+//    else {
+//        self.playbackButton.enabled = NO;
+//    }
+//}
+//
+//#pragma mark - Actions
+//
+//- (void)loadRtspStreamFromNotification:(NSNotification *)notification {
+//    NSString *rtspAddress = notification.object;
+//    if (![rtspAddress isKindOfClass:[NSString class]]) {
+//        return;
+//    }
+//    [self playUrl:rtspAddress];
+//}
+//
 - (void)playUrl:(NSString *)urlString {
-    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:urlString] withUsername:@"admin" andPassword:@"admin"];
-}
-
-- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops"
-                                                                   message:@"Failed to start stream"
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }]];
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-
-#pragma mark - Playback Controls
-
-- (IBAction)tappedPauseButton:(id)sender {
-    [self.rtspPlayer pause];
-}
-
-- (IBAction)tappedPlayButton:(id)sender {
-    [self.rtspPlayer play];
-}
-
-- (void)setupInterfaceForPlaying:(BOOL)playing {
-    UIBarButtonSystemItem systemItem = playing ? UIBarButtonSystemItemPause : UIBarButtonSystemItemPlay;
-    SEL action = playing ? @selector(tappedPauseButton:) : @selector(tappedPlayButton:);
-    UIBarButtonItem *newItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem
-                                                                             target:self
-                                                                             action:action];
-    NSMutableArray *m_toolbarItems = self.playbackControlsToolbar.items.mutableCopy;
-    [m_toolbarItems replaceObjectAtIndex:1 withObject:newItem];
-    self.playbackControlsToolbar.items = m_toolbarItems;
     
-    if (playing) {
-        [self.activityIndicator stopAnimating];
-    }
+    [self.urls addObject:urlString];
+    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+//    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:urlString] withUsername:@"admin" andPassword:@"admin"];
 }
+//
+//- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player {
+//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops"
+//                                                                   message:@"Failed to start stream"
+//                                                            preferredStyle:UIAlertControllerStyleAlert];
+//    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+//    }]];
+//    [self presentViewController:alert animated:YES completion:nil];
+//}
 
-- (UIBarButtonItem *)playbackButton {
-    return self.playbackControlsToolbar.items.count >= 2 ? self.playbackControlsToolbar.items[1] : nil;
-}
-
-#pragma mark - SurgeRtspPlayerDelegate
-
-/**
- * Called when the player begins or resumes playback of a stream.
- */
-- (void)rtspPlayerDidBeginPlayback:(SurgeRtspPlayer *)player {
-    NSLog(@"Did begin playback...");
-    [self setupInterfaceForPlaying:YES];
-}
-
-/**
- * Called when the player stops or pauses playback of a stream.
- */
-- (void)rtspPlayerDidStopPlayback:(SurgeRtspPlayer *)player {
-    NSLog(@"Did stop playback...");
-    [self setupInterfaceForPlaying:NO];
-}
-
-/**
- * Called when the player enters the buffering state.
- */
-- (void)rtspPlayerDidBeginBuffering:(SurgeRtspPlayer *)player {
-    NSLog(@"Did begin buffering...");
-    [self.activityIndicator startAnimating];
-    [self setupInterfaceForPlaying:NO];
-}
-
-/**
- * Called when the player exits the buffering state.
- */
-- (void)rtspPlayerDidStopBuffering:(SurgeRtspPlayer *)player {
-    NSLog(@"Did stop buffering...");
-    [self setupInterfaceForPlaying:YES];
-}
-
-/**
- * Called when the player times out.
- */
-- (void)rtspPlayerDidTimeout:(SurgeRtspPlayer *)player {
-    
-}
-
-/**
- * Guaranteed to be call at most once per second with the current player frame rate.
- */
-- (void)rtspPlayer:(SurgeRtspPlayer *)player didObservePlaybackFrameRate:(NSUInteger)frameRate {
-    NSLog(@"Frame rate: %@", @(frameRate));
-}
 
 
 @end

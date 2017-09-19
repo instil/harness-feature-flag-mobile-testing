@@ -15,6 +15,8 @@
 		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
 		7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */; };
+		7C97111C1F7100FD004A8158 /* PlaybackCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */; };
+		7C97111E1F7105C0004A8158 /* PlaybackCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */; };
 		7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256731D9E71B700300A88 /* AddressesTableViewController.m */; };
 		7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256761D9E722C00300A88 /* PlaybackViewController.m */; };
 		F4FA48CF1E93E74F006554AC /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */; };
@@ -70,6 +72,9 @@
 		7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SurgeiOS.framework; path = "../DerivedData/Surge/Build/Products/Debug-iphoneos/SurgeiOS.framework"; sourceTree = "<group>"; };
 		7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
 		7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; tabWidth = 4; };
+		7C97111A1F7100FD004A8158 /* PlaybackCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackCollectionViewCell.h; sourceTree = "<group>"; };
+		7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackCollectionViewCell.m; sourceTree = "<group>"; };
+		7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaybackCollectionViewCell.xib; sourceTree = "<group>"; };
 		7CD256721D9E71B700300A88 /* AddressesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesTableViewController.h; sourceTree = "<group>"; };
 		7CD256731D9E71B700300A88 /* AddressesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesTableViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		7CD256751D9E722C00300A88 /* PlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackViewController.h; sourceTree = "<group>"; };
@@ -134,6 +139,8 @@
 				7CD256761D9E722C00300A88 /* PlaybackViewController.m */,
 				7CD256721D9E71B700300A88 /* AddressesTableViewController.h */,
 				7CD256731D9E71B700300A88 /* AddressesTableViewController.m */,
+				7C97111A1F7100FD004A8158 /* PlaybackCollectionViewCell.h */,
+				7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */,
 				426E88181CDA40AE00C7FF25 /* Main.storyboard */,
 				426E881B1CDA40AE00C7FF25 /* Assets.xcassets */,
 				426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */,
@@ -141,6 +148,7 @@
 				7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */,
 				7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */,
 				426E880F1CDA40AE00C7FF25 /* Supporting Files */,
+				7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */,
 			);
 			path = SurgeiOSDemoApp;
 			sourceTree = "<group>";
@@ -285,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */,
+				7C97111E1F7105C0004A8158 /* PlaybackCollectionViewCell.xib in Resources */,
 				426E881C1CDA40AE00C7FF25 /* Assets.xcassets in Resources */,
 				426E881A1CDA40AE00C7FF25 /* Main.storyboard in Resources */,
 			);
@@ -312,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				426E88141CDA40AE00C7FF25 /* AppDelegate.m in Sources */,
+				7C97111C1F7100FD004A8158 /* PlaybackCollectionViewCell.m in Sources */,
 				7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */,
 				7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */,
 				426E88111CDA40AE00C7FF25 /* main.m in Sources */,

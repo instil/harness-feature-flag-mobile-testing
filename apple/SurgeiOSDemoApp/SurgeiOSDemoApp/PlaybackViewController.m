@@ -24,12 +24,17 @@
                                                  selector:@selector(loadRtspStreamFromNotification:)
                                                      name:RtspAddressSelectionNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(removeRtspStreamFromNotification:)
+                                                     name:StreamRemovalRequestNotfication
+                                                   object:nil];
     }
     return self;
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RtspAddressSelectionNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:StreamRemovalRequestNotfication object:nil];
 }
 
 - (void)viewDidLoad {
@@ -39,6 +44,10 @@
     
     UINib *nib = [UINib nibWithNibName:@"PlaybackCollectionViewCell" bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:@"PlaybackCollectionViewCell"];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 #pragma mark - Segues
@@ -61,6 +70,7 @@
     PlaybackCollectionViewCell *cell = (PlaybackCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"PlaybackCollectionViewCell"
                                                                                                                forIndexPath:indexPath];
     cell.playbackUrlString = self.urls[indexPath.item];
+    cell.index = indexPath.item;
     return cell;
 }
 
@@ -91,25 +101,29 @@
     if (![rtspAddress isKindOfClass:[NSString class]]) {
         return;
     }
-    [self playUrl:rtspAddress];
-}
-
-- (void)playUrl:(NSString *)urlString {
-    [self.urls addObject:urlString];
+    [self.urls addObject:rtspAddress];
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-//    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:urlString] withUsername:@"admin" andPassword:@"admin"];
+    [self updateInterface];
 }
-//
-//- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player {
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops"
-//                                                                   message:@"Failed to start stream"
-//                                                            preferredStyle:UIAlertControllerStyleAlert];
-//    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//        [self.navigationController popToRootViewControllerAnimated:YES];
-//    }]];
-//    [self presentViewController:alert animated:YES completion:nil];
-//}
 
+- (void)removeRtspStreamFromNotification:(NSNotification *)notification {
+    NSNumber *rtspAddressIndex = notification.object;
+    if (![rtspAddressIndex isKindOfClass:[NSNumber class]]) {
+        return;
+    }
+    [self.urls removeObjectAtIndex:rtspAddressIndex.unsignedIntegerValue];
+    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    [self updateInterface];
+}
+
+#pragma mark - Interface
+
+- (void)updateInterface {
+    UIColor *bgColor = self.urls.count ? [UIColor blackColor] : [UIColor whiteColor];
+    [UIView animateWithDuration:0.35f animations:^{
+        self.view.backgroundColor = bgColor;
+    }];
+}
 
 
 @end

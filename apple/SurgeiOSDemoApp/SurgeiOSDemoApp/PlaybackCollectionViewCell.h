@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <SurgeiOS/SurgeiOS.h>
 
+extern NSString *const StreamRemovalRequestNotfication;
+
 @interface PlaybackCollectionViewCell : UICollectionViewCell
-@property (readonly, nonatomic, strong) SurgeRtspPlayer *rtspPlayer;
 @property (copy, nonatomic) NSString *playbackUrlString;
+@property (nonatomic) NSUInteger index;
 @end

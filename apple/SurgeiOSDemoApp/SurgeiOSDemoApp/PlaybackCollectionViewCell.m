@@ -52,8 +52,11 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
   _playbackUrlString = playbackUrlString;
   self.urlLabel.text = playbackUrlString;
   [self.activityIndicator startAnimating];
-  [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:playbackUrlString]];
   [self.playPauseButton setImage:nil forState:UIControlStateNormal];
+  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:playbackUrlString]];
+  });
 }
 
 #pragma mark - Interface

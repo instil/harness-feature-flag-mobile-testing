@@ -8,6 +8,7 @@
 
 #import "AddAddressViewController.h"
 #import "TextFieldCell.h"
+#import "RtspAddress.h"
 
 @interface AddAddressViewController ()
 
@@ -49,6 +50,11 @@
 }
 
 - (void)doneButtonAction:(id)sender {
+  if (_completionHandler) {
+    UITextField *addressField = [self textFieldAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    UITextField *nameField = [self textFieldAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    _completionHandler([RtspAddress withAddress:addressField.text name:nameField.text]);
+  }
   [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 

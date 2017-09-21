@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddAddressViewController : UITableViewController
+@class RtspAddress;
 
+typedef void(^AddAddressCompletionHandler)(RtspAddress *address);
+
+@interface AddAddressViewController : UITableViewController
+@property (nonatomic, copy) AddAddressCompletionHandler completionHandler;
 @end

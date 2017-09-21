@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -37,7 +36,8 @@
                         </userDefinedRuntimeAttributes>
                     </activityIndicatorView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcG-a4-0eW">
-                        <rect key="frame" x="8" y="8" width="398" height="421"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="437"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                         <state key="normal" image="pause-icon"/>
                         <connections>
                             <action selector="playPauseButtonAction:" destination="tay-Fm-7EA" eventType="touchUpInside" id="aWa-LN-Sa3"/>
@@ -68,19 +68,19 @@
             </view>
             <constraints>
                 <constraint firstItem="tF3-kz-kPy" firstAttribute="leading" secondItem="tay-Fm-7EA" secondAttribute="leading" id="5M0-MN-b1f"/>
+                <constraint firstAttribute="trailing" secondItem="NcG-a4-0eW" secondAttribute="trailing" id="6q5-vo-Vc2"/>
                 <constraint firstAttribute="bottom" secondItem="tF3-kz-kPy" secondAttribute="bottom" id="9GB-Tg-N3y"/>
-                <constraint firstAttribute="trailingMargin" secondItem="NcG-a4-0eW" secondAttribute="trailing" id="DDJ-Wh-ua3"/>
+                <constraint firstItem="NcG-a4-0eW" firstAttribute="leading" secondItem="tay-Fm-7EA" secondAttribute="leading" id="9hB-he-EmQ"/>
+                <constraint firstItem="NcG-a4-0eW" firstAttribute="top" secondItem="tay-Fm-7EA" secondAttribute="top" id="BEB-jY-Bmw"/>
                 <constraint firstItem="nf9-Ne-bSl" firstAttribute="centerY" secondItem="tay-Fm-7EA" secondAttribute="centerY" id="IZz-eG-vVL"/>
                 <constraint firstItem="m3B-RS-s7M" firstAttribute="top" secondItem="tay-Fm-7EA" secondAttribute="top" constant="8" id="N4I-Yb-XMA"/>
-                <constraint firstItem="NcG-a4-0eW" firstAttribute="top" secondItem="tay-Fm-7EA" secondAttribute="topMargin" id="OG4-H6-dU0"/>
                 <constraint firstItem="qJq-q9-WXX" firstAttribute="leading" secondItem="tay-Fm-7EA" secondAttribute="leading" id="PAK-8a-rO3"/>
                 <constraint firstItem="qJq-q9-WXX" firstAttribute="top" secondItem="tay-Fm-7EA" secondAttribute="top" id="SaE-kK-x8H"/>
-                <constraint firstItem="NcG-a4-0eW" firstAttribute="leading" secondItem="tay-Fm-7EA" secondAttribute="leadingMargin" id="VQq-1U-0H5"/>
                 <constraint firstAttribute="trailing" secondItem="m3B-RS-s7M" secondAttribute="trailing" constant="8" id="Vll-SV-8xI"/>
-                <constraint firstItem="NcG-a4-0eW" firstAttribute="bottom" secondItem="tay-Fm-7EA" secondAttribute="bottomMargin" id="aCe-yV-GRl"/>
                 <constraint firstAttribute="bottom" secondItem="qJq-q9-WXX" secondAttribute="bottom" id="hJZ-zC-Bn1"/>
                 <constraint firstAttribute="trailing" secondItem="tF3-kz-kPy" secondAttribute="trailing" id="lwo-wE-NTN"/>
                 <constraint firstItem="nf9-Ne-bSl" firstAttribute="centerX" secondItem="tay-Fm-7EA" secondAttribute="centerX" id="npv-cL-8r5"/>
+                <constraint firstAttribute="bottom" secondItem="NcG-a4-0eW" secondAttribute="bottom" id="uOu-Pl-IJB"/>
                 <constraint firstAttribute="trailing" secondItem="qJq-q9-WXX" secondAttribute="trailing" id="vle-RC-wxx"/>
             </constraints>
             <size key="customSize" width="414" height="437"/>

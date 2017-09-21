@@ -11,7 +11,9 @@
 
 extern NSString *const StreamRemovalRequestNotfication;
 
+@class RtspAddress;
+
 @interface PlaybackCollectionViewCell : UICollectionViewCell
-@property (copy, nonatomic) NSString *playbackUrlString;
+@property (copy, nonatomic) RtspAddress *rtspAddress;
 @property (nonatomic) NSUInteger index;
 @end

@@ -151,6 +151,8 @@
 		426E880E1CDA40AE00C7FF25 /* SurgeiOSDemoApp */ = {
 			isa = PBXGroup;
 			children = (
+				426E880F1CDA40AE00C7FF25 /* Supporting Files */,
+				426E88201CDA40AE00C7FF25 /* Info.plist */,
 				7C97111F1F712C7C004A8158 /* Assets.xcassets */,
 				426E88121CDA40AE00C7FF25 /* AppDelegate.h */,
 				426E88131CDA40AE00C7FF25 /* AppDelegate.m */,
@@ -158,16 +160,13 @@
 				7CD256761D9E722C00300A88 /* PlaybackViewController.m */,
 				7CD256721D9E71B700300A88 /* AddressesTableViewController.h */,
 				7CD256731D9E71B700300A88 /* AddressesTableViewController.m */,
+				7CC3D3951F73F97D00BE38E4 /* AddressSearchResultsTableViewController.h */,
+				7CC3D3961F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m */,
 				7C97111A1F7100FD004A8158 /* PlaybackCollectionViewCell.h */,
 				7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */,
-				426E88181CDA40AE00C7FF25 /* Main-iPhone.storyboard */,
-				7CC3D3821F73CE1400BE38E4 /* Main-iPad.storyboard */,
-				426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */,
-				426E88201CDA40AE00C7FF25 /* Info.plist */,
+				7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */,
 				7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */,
 				7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */,
-				426E880F1CDA40AE00C7FF25 /* Supporting Files */,
-				7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */,
 				7CC3D3881F73D18800BE38E4 /* AddAddressViewController.h */,
 				7CC3D3891F73D18800BE38E4 /* AddAddressViewController.m */,
 				7CC3D38A1F73D18800BE38E4 /* AddAddressViewController.xib */,
@@ -176,8 +175,9 @@
 				7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */,
 				7CC3D3921F73F5DA00BE38E4 /* RtspAddress.h */,
 				7CC3D3931F73F5DA00BE38E4 /* RtspAddress.m */,
-				7CC3D3951F73F97D00BE38E4 /* AddressSearchResultsTableViewController.h */,
-				7CC3D3961F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m */,
+				426E88181CDA40AE00C7FF25 /* Main-iPhone.storyboard */,
+				7CC3D3821F73CE1400BE38E4 /* Main-iPad.storyboard */,
+				426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */,
 			);
 			path = SurgeiOSDemoApp;
 			sourceTree = "<group>";

@@ -7,6 +7,7 @@
 //
 
 #import "PlaybackCollectionViewCell.h"
+#import "RtspAddress.h"
 
 NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotfication";
 
@@ -48,14 +49,20 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 
 #pragma mark - Properties
 
-- (void)setPlaybackUrlString:(NSString *)playbackUrlString {
-  _playbackUrlString = playbackUrlString;
-  self.urlLabel.text = playbackUrlString;
+- (void)setRtspAddress:(RtspAddress *)rtspAddress {
+  _rtspAddress = rtspAddress;
+  self.urlLabel.text = rtspAddress.address;
   [self.activityIndicator startAnimating];
   [self.playPauseButton setImage:nil forState:UIControlStateNormal];
   
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-    [self.rtspPlayer initiatePlaybackOf:[NSURL URLWithString:playbackUrlString]];
+    NSURL *url = [NSURL URLWithString:rtspAddress.address];
+    if (rtspAddress.username && rtspAddress.password) {
+      [self.rtspPlayer initiatePlaybackOf:url withUsername:rtspAddress.username andPassword:rtspAddress.password];
+    }
+    else {
+      [self.rtspPlayer initiatePlaybackOf:url];
+    }
   });
 }
 
@@ -63,24 +70,17 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 
 - (void)setupInterfaceForPlaying:(BOOL)playing {
   self.playing = playing;
-  if (playing) {
-    UIImage *oldImage = [UIImage imageNamed:@"play-icon"];
-    UIImage *newImage = nil;
-    CABasicAnimation *crossFade = [CABasicAnimation animationWithKeyPath:@"contents"];
-    crossFade.duration = 0.7;
-    crossFade.fromValue = (id)oldImage.CGImage;
-    crossFade.toValue = (id)newImage.CGImage;
-    crossFade.removedOnCompletion = NO;
-    crossFade.fillMode = kCAFillModeForwards;
-    [self.playPauseButton.imageView.layer addAnimation:crossFade forKey:@"animateContents"];
-    
-    //Make sure to add Image normally after so when the animation
-    //is done it is set to the new Image
-    [self.playPauseButton setImage:newImage forState:UIControlStateNormal];
-  }
-  else {
-    [self.playPauseButton setImage:[UIImage imageNamed:@"play-icon"] forState:UIControlStateNormal];
-  }
+  
+  UIImage *image = [UIImage imageNamed:playing ? @"play-icon" : @"pause-icon"];
+  [self.playPauseButton setImage:image forState:UIControlStateNormal];
+  
+  self.playPauseButton.alpha = 1;
+  [UIView animateWithDuration:1.5
+                   animations:^{
+                     self.playPauseButton.alpha = 0;
+                   } completion:^(BOOL finished) {
+                     [self.playPauseButton setImage:nil forState:UIControlStateNormal];
+                   }];
   
   if (playing) {
     [self.activityIndicator stopAnimating];

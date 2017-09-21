@@ -95,7 +95,7 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [[NSNotificationCenter defaultCenter] postNotificationName:RtspAddressSelectionNotification
-                                                        object:[self addressAtIndexPath:indexPath].address];
+                                                        object:[self addressAtIndexPath:indexPath]];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

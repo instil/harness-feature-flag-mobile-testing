@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		426E88111CDA40AE00C7FF25 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88101CDA40AE00C7FF25 /* main.m */; };
 		426E88141CDA40AE00C7FF25 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88131CDA40AE00C7FF25 /* AppDelegate.m */; };
-		426E881A1CDA40AE00C7FF25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E88181CDA40AE00C7FF25 /* Main.storyboard */; };
+		426E881A1CDA40AE00C7FF25 /* Main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E88181CDA40AE00C7FF25 /* Main-iPhone.storyboard */; };
 		426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */; };
 		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
@@ -17,6 +17,7 @@
 		7C97111C1F7100FD004A8158 /* PlaybackCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */; };
 		7C97111E1F7105C0004A8158 /* PlaybackCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */; };
 		7C9711201F712C7C004A8158 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C97111F1F712C7C004A8158 /* Assets.xcassets */; };
+		7CC3D3841F73CF2300BE38E4 /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CC3D3821F73CE1400BE38E4 /* Main-iPad.storyboard */; };
 		7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256731D9E71B700300A88 /* AddressesTableViewController.m */; };
 		7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256761D9E722C00300A88 /* PlaybackViewController.m */; };
 		F4FA48CF1E93E74F006554AC /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */; };
@@ -59,7 +60,7 @@
 		426E88101CDA40AE00C7FF25 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		426E88121CDA40AE00C7FF25 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		426E88131CDA40AE00C7FF25 /* AppDelegate.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; tabWidth = 4; };
-		426E88191CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		426E88191CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Main-iPhone.storyboard"; sourceTree = "<group>"; };
 		426E881E1CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		426E88201CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		426E88251CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeiOSDemoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +76,7 @@
 		7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackCollectionViewCell.m; sourceTree = "<group>"; };
 		7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaybackCollectionViewCell.xib; sourceTree = "<group>"; };
 		7C97111F1F712C7C004A8158 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7CC3D3831F73CE1400BE38E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Main-iPad.storyboard"; sourceTree = "<group>"; };
 		7CD256721D9E71B700300A88 /* AddressesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesTableViewController.h; sourceTree = "<group>"; };
 		7CD256731D9E71B700300A88 /* AddressesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesTableViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		7CD256751D9E722C00300A88 /* PlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackViewController.h; sourceTree = "<group>"; };
@@ -142,7 +144,8 @@
 				7CD256731D9E71B700300A88 /* AddressesTableViewController.m */,
 				7C97111A1F7100FD004A8158 /* PlaybackCollectionViewCell.h */,
 				7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */,
-				426E88181CDA40AE00C7FF25 /* Main.storyboard */,
+				426E88181CDA40AE00C7FF25 /* Main-iPhone.storyboard */,
+				7CC3D3821F73CE1400BE38E4 /* Main-iPad.storyboard */,
 				426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */,
 				426E88201CDA40AE00C7FF25 /* Info.plist */,
 				7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */,
@@ -294,8 +297,9 @@
 			files = (
 				426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */,
 				7C97111E1F7105C0004A8158 /* PlaybackCollectionViewCell.xib in Resources */,
+				7CC3D3841F73CF2300BE38E4 /* Main-iPad.storyboard in Resources */,
 				7C9711201F712C7C004A8158 /* Assets.xcassets in Resources */,
-				426E881A1CDA40AE00C7FF25 /* Main.storyboard in Resources */,
+				426E881A1CDA40AE00C7FF25 /* Main-iPhone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,12 +365,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		426E88181CDA40AE00C7FF25 /* Main.storyboard */ = {
+		426E88181CDA40AE00C7FF25 /* Main-iPhone.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				426E88191CDA40AE00C7FF25 /* Base */,
 			);
-			name = Main.storyboard;
+			name = "Main-iPhone.storyboard";
 			sourceTree = "<group>";
 		};
 		426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */ = {
@@ -375,6 +379,14 @@
 				426E881E1CDA40AE00C7FF25 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		7CC3D3821F73CE1400BE38E4 /* Main-iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7CC3D3831F73CE1400BE38E4 /* Base */,
+			);
+			name = "Main-iPad.storyboard";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

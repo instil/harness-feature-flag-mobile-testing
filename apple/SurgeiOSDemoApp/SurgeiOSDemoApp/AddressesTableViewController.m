@@ -11,9 +11,9 @@
 
 NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotification";
 
-@interface AddressesTableViewController () <UISearchBarDelegate>
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@interface AddressesTableViewController () <UISearchBarDelegate, UISearchResultsUpdating>
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *addButton;
+@property (strong, nonatomic) UISearchController *searchController;
 @property (nonatomic, copy) NSArray <NSString *> *allStoredAddresses;
 @property (nonatomic, copy) NSArray <NSString *> *storedAddressSearchResults;
 @end
@@ -24,14 +24,34 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
     [super viewDidLoad];
     self.allStoredAddresses = [NSArray<NSString *> storedRtspAddresses];
     self.storedAddressSearchResults = self.allStoredAddresses;
+    
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchBar.delegate = self;
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.searchBar.textContentType = UITextContentTypeURL;
+    self.searchController.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.searchController.searchBar.returnKeyType = UIReturnKeyDone;
+    [self.searchController.searchBar sizeToFit];
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.tintColor = [UIColor whiteColor];
+    
+    if (@available(iOS 11.0, *)) {
+        self.navigationItem.searchController = self.searchController;
+        self.navigationItem.hidesSearchBarWhenScrolling = NO;
+    }
+    else {
+        self.searchController.searchBar.barTintColor = self.navigationController.navigationBar.barTintColor;
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+        self.definesPresentationContext = YES;
+    }
 }
 
-#pragma mark - UISearchBarDelegate
+#pragma mark - UISearchResultsUpdating
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    self.addButton.enabled = searchText.length;
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    NSString *searchText = searchController.searchBar.text;
     if (searchText.length) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self CONTAINS[cd] %@", searchBar.text];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self CONTAINS[cd] %@", searchText];
         self.storedAddressSearchResults = [self.allStoredAddresses filteredArrayUsingPredicate:predicate];
     }
     else {
@@ -40,6 +60,8 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
     [self.tableView reloadData];
 }
 
+#pragma mark - UISearchBarDelegate
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
 }
@@ -47,12 +69,11 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
 #pragma mark - Actions
 
 - (IBAction)addButtonAction:(id)sender {
-    self.allStoredAddresses = [self.allStoredAddresses arrayByAddingObject:self.searchBar.text];
-    [self.allStoredAddresses saveAsStoredRtspAddresses];
-    self.searchBar.text = @"";
-    self.storedAddressSearchResults = self.allStoredAddresses;
-    [self.searchBar resignFirstResponder];
-    [self.tableView reloadData];
+//    self.allStoredAddresses = [self.allStoredAddresses arrayByAddingObject:self.searchController.searchBar.text];
+//    [self.allStoredAddresses saveAsStoredRtspAddresses];
+//    self.storedAddressSearchResults = self.allStoredAddresses;
+//    [self.searchController.searchBar resignFirstResponder];
+//    [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDataSource
@@ -62,12 +83,12 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.storedAddressSearchResults.count;
+    return self.searchController.isActive ? self.storedAddressSearchResults.count : self.allStoredAddresses.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddressTableViewCell"];
-    cell.textLabel.text = self.storedAddressSearchResults[indexPath.row];
+    cell.textLabel.text = [self addressAtIndexPath:indexPath];
     return cell;
 }
 
@@ -75,7 +96,7 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [[NSNotificationCenter defaultCenter] postNotificationName:RtspAddressSelectionNotification
-                                                        object:self.storedAddressSearchResults[indexPath.row]];
+                                                        object:[self addressAtIndexPath:indexPath]];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -101,6 +122,13 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
     [self.allStoredAddresses saveAsStoredRtspAddresses];
     
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+}
+
+#pragma mark - Helpers
+
+- (NSString *)addressAtIndexPath:(NSIndexPath *)indexPath {
+    NSArray *source = self.searchController.isActive ? self.storedAddressSearchResults : self.allStoredAddresses;
+    return source[indexPath.row];
 }
 
 @end

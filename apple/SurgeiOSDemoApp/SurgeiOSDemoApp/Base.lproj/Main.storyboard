@@ -35,6 +35,7 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Yek-Uh-dwu" firstAttribute="top" secondItem="zt2-oX-uNn" secondAttribute="top" id="BbZ-Sj-Rcf"/>
                             <constraint firstItem="zt2-oX-uNn" firstAttribute="trailing" secondItem="Yek-Uh-dwu" secondAttribute="trailing" id="TGZ-du-etW"/>
@@ -69,23 +70,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="747-db-GfA">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <color key="barTintColor" red="0.0" green="0.40000000000000002" blue="0.64313725489999995" alpha="1" colorSpace="calibratedRGB"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="done"/>
-                            <connections>
-                                <outlet property="delegate" destination="EBa-LH-R3Q" id="9rR-cQ-cmZ"/>
-                            </connections>
-                        </searchBar>
                         <view key="tableFooterView" contentMode="scaleToFill" id="bjF-9v-uJp" userLabel="Footer">
-                            <rect key="frame" x="0.0" y="690" width="375" height="44"/>
+                            <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressTableViewCell" textLabel="eyy-Fr-ZEJ" style="IBUITableViewCellStyleDefault" id="Wg3-fH-BvO">
-                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wg3-fH-BvO" id="qUA-pH-1Gt">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
@@ -116,7 +108,7 @@
                                 <segue destination="lAf-TW-Bui" kind="unwind" unwindAction="unwind:" id="VgY-dn-wZu"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="add" id="HBY-JA-x1E">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="HBY-JA-x1E">
                             <connections>
                                 <action selector="addButtonAction:" destination="EBa-LH-R3Q" id="TEL-Kh-K0O"/>
                             </connections>
@@ -125,7 +117,6 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="addButton" destination="HBY-JA-x1E" id="6RZ-nO-a53"/>
-                        <outlet property="searchBar" destination="747-db-GfA" id="CbU-rg-QEs"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3ew-c1-abb" userLabel="First Responder" sceneMemberID="firstResponder"/>

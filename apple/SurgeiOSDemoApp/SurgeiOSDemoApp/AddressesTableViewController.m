@@ -15,8 +15,8 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
 @interface AddressesTableViewController () <UISearchBarDelegate, UISearchResultsUpdating>
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *addButton;
 @property (strong, nonatomic) UISearchController *searchController;
-@property (nonatomic, copy) NSArray <NSString *> *allStoredAddresses;
-@property (nonatomic, copy) NSArray <NSString *> *storedAddressSearchResults;
+@property (nonatomic, copy) NSArray <RtspAddress *> *allStoredAddresses;
+@property (nonatomic, copy) NSArray <RtspAddress *> *storedAddressSearchResults;
 @end
 
 @implementation AddressesTableViewController
@@ -95,7 +95,9 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddressTableViewCell"];
-    cell.textLabel.text = [self addressAtIndexPath:indexPath];
+    RtspAddress *address = [self addressAtIndexPath:indexPath];
+    cell.textLabel.text = address.address;
+    cell.detailTextLabel.text = address.name;
     return cell;
 }
 
@@ -118,7 +120,7 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
     if (editingStyle != UITableViewCellEditingStyleDelete) {
         return;
     }
-    NSString *address = self.storedAddressSearchResults[indexPath.row];
+    RtspAddress *address = self.storedAddressSearchResults[indexPath.row];
     NSMutableArray *m_storedAddressSearchResults = self.storedAddressSearchResults.mutableCopy;
     [m_storedAddressSearchResults removeObject:address];
     self.storedAddressSearchResults = m_storedAddressSearchResults;
@@ -133,9 +135,8 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
 
 #pragma mark - Helpers
 
-- (NSString *)addressAtIndexPath:(NSIndexPath *)indexPath {
-    NSArray *source = self.searchController.isActive ? self.storedAddressSearchResults : self.allStoredAddresses;
-    return source[indexPath.row];
+- (RtspAddress *)addressAtIndexPath:(NSIndexPath *)indexPath {
+    return self.allStoredAddresses[indexPath.row];
 }
 
 @end

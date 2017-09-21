@@ -22,6 +22,7 @@
 		7CC3D38C1F73D18800BE38E4 /* AddAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC3D38A1F73D18800BE38E4 /* AddAddressViewController.xib */; };
 		7CC3D3901F73D3B600BE38E4 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3D38E1F73D3B600BE38E4 /* TextFieldCell.m */; };
 		7CC3D3911F73D3B600BE38E4 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */; };
+		7CC3D3941F73F5DA00BE38E4 /* RtspAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3D3931F73F5DA00BE38E4 /* RtspAddress.m */; };
 		7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256731D9E71B700300A88 /* AddressesTableViewController.m */; };
 		7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256761D9E722C00300A88 /* PlaybackViewController.m */; };
 		F4FA48CF1E93E74F006554AC /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */; };
@@ -87,6 +88,8 @@
 		7CC3D38D1F73D3B600BE38E4 /* TextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		7CC3D38E1F73D3B600BE38E4 /* TextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
+		7CC3D3921F73F5DA00BE38E4 /* RtspAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspAddress.h; sourceTree = "<group>"; };
+		7CC3D3931F73F5DA00BE38E4 /* RtspAddress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RtspAddress.m; sourceTree = "<group>"; };
 		7CD256721D9E71B700300A88 /* AddressesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesTableViewController.h; sourceTree = "<group>"; };
 		7CD256731D9E71B700300A88 /* AddressesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesTableViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		7CD256751D9E722C00300A88 /* PlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackViewController.h; sourceTree = "<group>"; };
@@ -168,6 +171,8 @@
 				7CC3D38D1F73D3B600BE38E4 /* TextFieldCell.h */,
 				7CC3D38E1F73D3B600BE38E4 /* TextFieldCell.m */,
 				7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */,
+				7CC3D3921F73F5DA00BE38E4 /* RtspAddress.h */,
+				7CC3D3931F73F5DA00BE38E4 /* RtspAddress.m */,
 			);
 			path = SurgeiOSDemoApp;
 			sourceTree = "<group>";
@@ -343,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				426E88141CDA40AE00C7FF25 /* AppDelegate.m in Sources */,
+				7CC3D3941F73F5DA00BE38E4 /* RtspAddress.m in Sources */,
 				7C97111C1F7100FD004A8158 /* PlaybackCollectionViewCell.m in Sources */,
 				7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */,
 				7CC3D3901F73D3B600BE38E4 /* TextFieldCell.m in Sources */,

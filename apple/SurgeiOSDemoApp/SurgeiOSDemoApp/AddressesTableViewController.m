@@ -7,6 +7,7 @@
 //
 
 #import "AddressesTableViewController.h"
+#import "AddAddressViewController.h"
 #import "NSArray+RtspAddressStorage.h"
 
 NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotification";
@@ -68,7 +69,13 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
 
 #pragma mark - Actions
 
-- (IBAction)addButtonAction:(id)sender {
+- (IBAction)addButtonAction:(UIBarButtonItem *)sender {
+    AddAddressViewController *addController = [[AddAddressViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:addController];
+    navController.navigationBar.barTintColor = self.navigationController.navigationBar.barTintColor;
+    navController.modalPresentationStyle = UIModalPresentationPopover;
+    navController.popoverPresentationController.barButtonItem = sender;
+    [self presentViewController:navController animated:YES completion:nil];
 //    self.allStoredAddresses = [self.allStoredAddresses arrayByAddingObject:self.searchController.searchBar.text];
 //    [self.allStoredAddresses saveAsStoredRtspAddresses];
 //    self.storedAddressSearchResults = self.allStoredAddresses;

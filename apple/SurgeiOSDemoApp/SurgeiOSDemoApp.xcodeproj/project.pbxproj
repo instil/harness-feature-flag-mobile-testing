@@ -13,7 +13,8 @@
 		426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */; };
 		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
-		7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */; };
+		7C55BE6B1F75140300CCDD43 /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */; };
+		7C55BE6C1F75140700CCDD43 /* RtspAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55BE6A1F7513FC00CCDD43 /* RtspAddress.m */; };
 		7C97111C1F7100FD004A8158 /* PlaybackCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */; };
 		7C97111E1F7105C0004A8158 /* PlaybackCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */; };
 		7C9711201F712C7C004A8158 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C97111F1F712C7C004A8158 /* Assets.xcassets */; };
@@ -22,7 +23,6 @@
 		7CC3D38C1F73D18800BE38E4 /* AddAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC3D38A1F73D18800BE38E4 /* AddAddressViewController.xib */; };
 		7CC3D3901F73D3B600BE38E4 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3D38E1F73D3B600BE38E4 /* TextFieldCell.m */; };
 		7CC3D3911F73D3B600BE38E4 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */; };
-		7CC3D3941F73F5DA00BE38E4 /* RtspAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3D3931F73F5DA00BE38E4 /* RtspAddress.m */; };
 		7CC3D3971F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3D3961F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m */; };
 		7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256731D9E71B700300A88 /* AddressesTableViewController.m */; };
 		7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256761D9E722C00300A88 /* PlaybackViewController.m */; };
@@ -76,8 +76,10 @@
 		426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeiOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88361CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SurgeiOS.framework; path = "../DerivedData/Surge/Build/Products/Debug-iphoneos/SurgeiOS.framework"; sourceTree = "<group>"; };
-		7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
-		7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; tabWidth = 4; };
+		7C55BE661F7513FC00CCDD43 /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
+		7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; };
+		7C55BE691F7513FC00CCDD43 /* RtspAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspAddress.h; sourceTree = "<group>"; };
+		7C55BE6A1F7513FC00CCDD43 /* RtspAddress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RtspAddress.m; sourceTree = "<group>"; };
 		7C97111A1F7100FD004A8158 /* PlaybackCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackCollectionViewCell.h; sourceTree = "<group>"; };
 		7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackCollectionViewCell.m; sourceTree = "<group>"; };
 		7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaybackCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -89,8 +91,6 @@
 		7CC3D38D1F73D3B600BE38E4 /* TextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
 		7CC3D38E1F73D3B600BE38E4 /* TextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
-		7CC3D3921F73F5DA00BE38E4 /* RtspAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspAddress.h; sourceTree = "<group>"; };
-		7CC3D3931F73F5DA00BE38E4 /* RtspAddress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RtspAddress.m; sourceTree = "<group>"; };
 		7CC3D3951F73F97D00BE38E4 /* AddressSearchResultsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressSearchResultsTableViewController.h; sourceTree = "<group>"; };
 		7CC3D3961F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressSearchResultsTableViewController.m; sourceTree = "<group>"; };
 		7CD256721D9E71B700300A88 /* AddressesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesTableViewController.h; sourceTree = "<group>"; };
@@ -152,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				426E880F1CDA40AE00C7FF25 /* Supporting Files */,
+				7C55BE641F7513FC00CCDD43 /* DemoResources */,
 				426E88201CDA40AE00C7FF25 /* Info.plist */,
 				7C97111F1F712C7C004A8158 /* Assets.xcassets */,
 				426E88121CDA40AE00C7FF25 /* AppDelegate.h */,
@@ -165,16 +166,12 @@
 				7C97111A1F7100FD004A8158 /* PlaybackCollectionViewCell.h */,
 				7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */,
 				7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */,
-				7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */,
-				7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */,
 				7CC3D3881F73D18800BE38E4 /* AddAddressViewController.h */,
 				7CC3D3891F73D18800BE38E4 /* AddAddressViewController.m */,
 				7CC3D38A1F73D18800BE38E4 /* AddAddressViewController.xib */,
 				7CC3D38D1F73D3B600BE38E4 /* TextFieldCell.h */,
 				7CC3D38E1F73D3B600BE38E4 /* TextFieldCell.m */,
 				7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */,
-				7CC3D3921F73F5DA00BE38E4 /* RtspAddress.h */,
-				7CC3D3931F73F5DA00BE38E4 /* RtspAddress.m */,
 				426E88181CDA40AE00C7FF25 /* Main-iPhone.storyboard */,
 				7CC3D3821F73CE1400BE38E4 /* Main-iPad.storyboard */,
 				426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */,
@@ -214,6 +211,34 @@
 				7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7C55BE641F7513FC00CCDD43 /* DemoResources */ = {
+			isa = PBXGroup;
+			children = (
+				7C55BE651F7513FC00CCDD43 /* Categories */,
+				7C55BE681F7513FC00CCDD43 /* Models */,
+			);
+			name = DemoResources;
+			path = ../../DemoResources;
+			sourceTree = "<group>";
+		};
+		7C55BE651F7513FC00CCDD43 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				7C55BE661F7513FC00CCDD43 /* NSArray+RtspAddressStorage.h */,
+				7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		7C55BE681F7513FC00CCDD43 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7C55BE691F7513FC00CCDD43 /* RtspAddress.h */,
+				7C55BE6A1F7513FC00CCDD43 /* RtspAddress.m */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -353,14 +378,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				426E88141CDA40AE00C7FF25 /* AppDelegate.m in Sources */,
-				7CC3D3941F73F5DA00BE38E4 /* RtspAddress.m in Sources */,
 				7C97111C1F7100FD004A8158 /* PlaybackCollectionViewCell.m in Sources */,
-				7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */,
 				7CC3D3901F73D3B600BE38E4 /* TextFieldCell.m in Sources */,
 				7CC3D38B1F73D18800BE38E4 /* AddAddressViewController.m in Sources */,
 				7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */,
+				7C55BE6C1F75140700CCDD43 /* RtspAddress.m in Sources */,
 				426E88111CDA40AE00C7FF25 /* main.m in Sources */,
 				7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */,
+				7C55BE6B1F75140300CCDD43 /* NSArray+RtspAddressStorage.m in Sources */,
 				7CC3D3971F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

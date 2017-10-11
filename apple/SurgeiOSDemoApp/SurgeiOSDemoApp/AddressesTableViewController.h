@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const RtspAddressSelectionNotification;
+@class PlaybackManager;
 
 @interface AddressesTableViewController : UITableViewController
-
+@property (strong, nonatomic) PlaybackManager *playbackManager;
 @end

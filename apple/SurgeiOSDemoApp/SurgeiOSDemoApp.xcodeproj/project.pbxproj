@@ -13,6 +13,8 @@
 		426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */; };
 		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
+		7C1AD4EB1F8D20AD00F17E78 /* PlaybackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1AD4EA1F8D20AD00F17E78 /* PlaybackManager.m */; };
+		7C1AD4EE1F8D20DC00F17E78 /* PlaybackStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1AD4ED1F8D20DC00F17E78 /* PlaybackStream.m */; };
 		7C55BE6B1F75140300CCDD43 /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */; };
 		7C55BE6C1F75140700CCDD43 /* RtspAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55BE6A1F7513FC00CCDD43 /* RtspAddress.m */; };
 		7C97111C1F7100FD004A8158 /* PlaybackCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */; };
@@ -75,6 +77,10 @@
 		426E88301CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeiOSDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeiOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88361CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C1AD4E91F8D20AD00F17E78 /* PlaybackManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlaybackManager.h; sourceTree = "<group>"; };
+		7C1AD4EA1F8D20AD00F17E78 /* PlaybackManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlaybackManager.m; sourceTree = "<group>"; };
+		7C1AD4EC1F8D20DC00F17E78 /* PlaybackStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlaybackStream.h; sourceTree = "<group>"; };
+		7C1AD4ED1F8D20DC00F17E78 /* PlaybackStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlaybackStream.m; sourceTree = "<group>"; };
 		7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SurgeiOS.framework; path = "../DerivedData/Surge/Build/Products/Debug-iphoneos/SurgeiOS.framework"; sourceTree = "<group>"; };
 		7C55BE661F7513FC00CCDD43 /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
 		7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; };
@@ -213,9 +219,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7C1AD4E51F8D205800F17E78 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				7C1AD4E91F8D20AD00F17E78 /* PlaybackManager.h */,
+				7C1AD4EA1F8D20AD00F17E78 /* PlaybackManager.m */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		7C55BE641F7513FC00CCDD43 /* DemoResources */ = {
 			isa = PBXGroup;
 			children = (
+				7C1AD4E51F8D205800F17E78 /* Managers */,
 				7C55BE651F7513FC00CCDD43 /* Categories */,
 				7C55BE681F7513FC00CCDD43 /* Models */,
 			);
@@ -237,6 +253,8 @@
 			children = (
 				7C55BE691F7513FC00CCDD43 /* RtspAddress.h */,
 				7C55BE6A1F7513FC00CCDD43 /* RtspAddress.m */,
+				7C1AD4EC1F8D20DC00F17E78 /* PlaybackStream.h */,
+				7C1AD4ED1F8D20DC00F17E78 /* PlaybackStream.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -383,6 +401,8 @@
 				7CC3D38B1F73D18800BE38E4 /* AddAddressViewController.m in Sources */,
 				7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */,
 				7C55BE6C1F75140700CCDD43 /* RtspAddress.m in Sources */,
+				7C1AD4EB1F8D20AD00F17E78 /* PlaybackManager.m in Sources */,
+				7C1AD4EE1F8D20DC00F17E78 /* PlaybackStream.m in Sources */,
 				426E88111CDA40AE00C7FF25 /* main.m in Sources */,
 				7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */,
 				7C55BE6B1F75140300CCDD43 /* NSArray+RtspAddressStorage.m in Sources */,

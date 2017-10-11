@@ -9,9 +9,8 @@
 #import "AddressesTableViewController.h"
 #import "AddAddressViewController.h"
 #import "AddressSearchResultsTableViewController.h"
+#import "PlaybackManager.h"
 #import "NSArray+RtspAddressStorage.h"
-
-NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotification";
 
 @interface AddressesTableViewController () <UISearchBarDelegate>
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *addButton;
@@ -94,8 +93,7 @@ NSString *const RtspAddressSelectionNotification = @"RtspAddressSelectionNotific
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [[NSNotificationCenter defaultCenter] postNotificationName:RtspAddressSelectionNotification
-                                                        object:[self addressAtIndexPath:indexPath]];
+    [self.playbackManager startStreamWithAddress:[self addressAtIndexPath:indexPath]];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

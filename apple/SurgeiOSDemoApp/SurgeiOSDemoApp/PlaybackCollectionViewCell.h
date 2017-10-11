@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <SurgeiOS/SurgeiOS.h>
 
 extern NSString *const StreamRemovalRequestNotfication;
 
-@class RtspAddress;
+@class PlaybackStream;
 
 @interface PlaybackCollectionViewCell : UICollectionViewCell
-@property (copy, nonatomic) RtspAddress *rtspAddress;
+@property (copy, nonatomic) PlaybackStream *stream;
 @property (nonatomic) NSUInteger index;
 @end

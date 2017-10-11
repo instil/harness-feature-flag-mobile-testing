@@ -48,7 +48,7 @@
                     <navigationItem key="navigationItem" title="Surge" id="aGU-dP-N6U">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="8SN-yG-xbb">
                             <connections>
-                                <segue destination="yO4-TP-TeD" kind="popoverPresentation" popoverAnchorBarButtonItem="8SN-yG-xbb" id="579-IF-QQq">
+                                <segue destination="yO4-TP-TeD" kind="popoverPresentation" identifier="AddressesSegue" popoverAnchorBarButtonItem="8SN-yG-xbb" id="579-IF-QQq">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
                             </connections>

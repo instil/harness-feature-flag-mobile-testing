@@ -14,8 +14,8 @@
 		426E88991CDA54E500C7FF25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E88971CDA54E500C7FF25 /* Main.storyboard */; };
 		426E88A41CDA54E500C7FF25 /* SurgeMacOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88A31CDA54E500C7FF25 /* SurgeMacOSDemoAppTests.m */; };
 		426E88AF1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88AE1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests.m */; };
-		426E88BD1CDA562E00C7FF25 /* SurgeMacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */; };
-		426E88BE1CDA562E00C7FF25 /* SurgeMacOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7C2C86171F8FAA3D009B4D8E /* SurgeMacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C2C86161F8FAA3D009B4D8E /* SurgeMacOS.framework */; };
+		7C2C86181F8FAA3D009B4D8E /* SurgeMacOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C2C86161F8FAA3D009B4D8E /* SurgeMacOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7C9D3ECC1D9D282E000C4F62 /* AddressesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9D3ECB1D9D282E000C4F62 /* AddressesViewController.m */; };
 		7CCE4B6B1D9D1697002771E2 /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CCE4B6A1D9D1697002771E2 /* NSArray+RtspAddressStorage.m */; };
 /* End PBXBuildFile section */
@@ -38,13 +38,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		426E88BF1CDA562E00C7FF25 /* Embed Frameworks */ = {
+		7C2C86191F8FAA3D009B4D8E /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				426E88BE1CDA562E00C7FF25 /* SurgeMacOS.framework in Embed Frameworks */,
+				7C2C86181F8FAA3D009B4D8E /* SurgeMacOS.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,6 +68,7 @@
 		426E88AE1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeMacOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88B01CDA54E500C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		426E88BC1CDA562E00C7FF25 /* SurgeMacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SurgeMacOS.framework; path = ../DerivedData/Surge/Build/Products/Debug/SurgeMacOS.framework; sourceTree = SOURCE_ROOT; };
+		7C2C86161F8FAA3D009B4D8E /* SurgeMacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SurgeMacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C9D3ECA1D9D282E000C4F62 /* AddressesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesViewController.h; sourceTree = "<group>"; };
 		7C9D3ECB1D9D282E000C4F62 /* AddressesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		7CCE4B691D9D1697002771E2 /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
@@ -80,7 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				426E88BD1CDA562E00C7FF25 /* SurgeMacOS.framework in Frameworks */,
+				7C2C86171F8FAA3D009B4D8E /* SurgeMacOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +105,7 @@
 		426E88801CDA54E500C7FF25 = {
 			isa = PBXGroup;
 			children = (
+				7C2C86161F8FAA3D009B4D8E /* SurgeMacOS.framework */,
 				426E888B1CDA54E500C7FF25 /* SurgeMacOSDemoApp */,
 				426E88A21CDA54E500C7FF25 /* SurgeMacOSDemoAppTests */,
 				426E88AD1CDA54E500C7FF25 /* SurgeMacOSDemoAppUITests */,
@@ -186,7 +188,7 @@
 				426E88851CDA54E500C7FF25 /* Sources */,
 				426E88861CDA54E500C7FF25 /* Frameworks */,
 				426E88871CDA54E500C7FF25 /* Resources */,
-				426E88BF1CDA562E00C7FF25 /* Embed Frameworks */,
+				7C2C86191F8FAA3D009B4D8E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

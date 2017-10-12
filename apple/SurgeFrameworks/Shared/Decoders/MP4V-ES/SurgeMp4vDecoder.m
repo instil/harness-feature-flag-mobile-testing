@@ -84,7 +84,7 @@
 /**
  * Extract the VisualObjectSequence header from the bitstream.
  */
-- (NSData*)extractVisualObjectSequenceHeaderFrom:(uint8_t *)frameBuffer ofSize:(size_t)size {
+- (NSData*)extractVisualObjectSequenceHeaderFrom:(const uint8_t *)frameBuffer ofSize:(size_t)size {
     const unsigned char videoObjectPlaneStartCode[] = { 0x00, 0x00, 0x01, 0xb6 };
     for (int i = 0; i < size - 4; i++) {
         if (memcmp(frameBuffer + i, videoObjectPlaneStartCode, 4) == 0) {
@@ -122,7 +122,7 @@
     
     // Length
     uint8_t remainingLengthOfThisDescriptor = 3;
-    uint32_t lengthOfDecoderConfigDescriptor = 5 + 13 + 5 + [vosHeader length];
+    uint32_t lengthOfDecoderConfigDescriptor = (uint32_t)(5 + 13 + 5 + [vosHeader length]);
     uint8_t lengthOfSyncLayerDescriptor = 3;
     uint32_t length = remainingLengthOfThisDescriptor + lengthOfDecoderConfigDescriptor + lengthOfSyncLayerDescriptor;
     [self appendLength:length toDescriptor:descriptor];
@@ -152,7 +152,7 @@
     
     // Length
     uint8_t remainingLengthOfThisDescriptor = 13;
-    uint32_t lengthOfDecoderSpecificConfigDescriptor = 5 + [vosHeader length];
+    uint32_t lengthOfDecoderSpecificConfigDescriptor = (uint32_t)(5 + [vosHeader length]);
     uint32_t length = remainingLengthOfThisDescriptor + lengthOfDecoderSpecificConfigDescriptor;
     [self appendLength:length toDescriptor:descriptor];
     
@@ -185,7 +185,7 @@
     [descriptor writeByte:0x05];
     
     // Length
-    [self appendLength:[vosHeader length] toDescriptor:descriptor];
+    [self appendLength:(uint32_t)[vosHeader length] toDescriptor:descriptor];
     
     // VOS header
     [descriptor writeBytes:vosHeader];

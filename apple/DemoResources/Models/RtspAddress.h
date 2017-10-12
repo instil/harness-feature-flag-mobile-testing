@@ -10,8 +10,12 @@
 
 @interface RtspAddress : NSObject <NSCoding>
 + (nullable instancetype)withAddress:(nonnull NSString *)address;
-+ (nullable instancetype)withAddress:(nonnull NSString *)address name:(nullable NSString *)name;
-+ (nullable instancetype)withAddress:(nonnull NSString *)address name:(nullable NSString *)name username:(NSString *)username password:(NSString *)password;
++ (nullable instancetype)withAddress:(nonnull NSString *)address
+                                name:(nullable NSString *)name;
++ (nullable instancetype)withAddress:(nonnull NSString *)address
+                                name:(nullable NSString *)name
+                            username:(nullable NSString *)username
+                            password:(nullable NSString *)password;
 @property (readonly, copy, nonatomic, nonnull) NSString *address;
 @property (readonly, copy, nonatomic, nullable) NSString *name;
 @property (readonly, copy, nonatomic, nullable) NSString *username;

@@ -55,13 +55,14 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
   [self.activityIndicator startAnimating];
   [self.playPauseButton setImage:nil forState:UIControlStateNormal];
   
+  __weak typeof(self) weakSelf = self;
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
     NSURL *url = [NSURL URLWithString:rtspAddress.address];
     if (rtspAddress.username && rtspAddress.password) {
-      [self.rtspPlayer initiatePlaybackOf:url withUsername:rtspAddress.username andPassword:rtspAddress.password];
+      [weakSelf.rtspPlayer initiatePlaybackOf:url withUsername:rtspAddress.username andPassword:rtspAddress.password];
     }
     else {
-      [self.rtspPlayer initiatePlaybackOf:url];
+      [weakSelf.rtspPlayer initiatePlaybackOf:url];
     }
   });
 }
@@ -90,19 +91,24 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 #pragma mark - Actions
 
 - (IBAction)playPauseButtonAction:(id)sender {
+  __weak typeof(self) weakSelf = self;
   if (self.isPlaying) {
-    [self.rtspPlayer pause];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+      [weakSelf.rtspPlayer pause];
+    });
   }
   else {
-    [self.rtspPlayer play];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+      [weakSelf.rtspPlayer play];
+    });
   }
 }
 
 - (IBAction)closeButtonAction:(id)sender {
   self.rtspPlayer.delegate = nil;
-  __weak typeof(self.rtspPlayer) weakRtspPlayer = self.rtspPlayer;
+  __weak typeof(self) weakSelf = self;
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [weakRtspPlayer stop];
+    [weakSelf.rtspPlayer stop];
   });
   [[NSNotificationCenter defaultCenter] postNotificationName:StreamRemovalRequestNotfication
                                                       object:@(self.index)];

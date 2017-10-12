@@ -169,41 +169,44 @@ private:
 }
 
 - (void) describeSetupPlay {
-    [self describe:^{
-        if (self.sessionDescriptions.size() == 0) {
-            if ([self.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
-                [self.delegate rtspPlayerFailedToInitiatePlayback:self];
+    
+    __weak typeof(self) weakSelf = self;
+    void(^onPlay)() = ^() {
+        if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerInitiatedPlayback:)]) {
+            [weakSelf.delegate rtspPlayerInitiatedPlayback:weakSelf];
+        }
+    };
+    
+    void(^onSetup)(bool) = ^(bool result) {
+        if (!result) {
+            if (!weakSelf.interleavedRtspTransport) {
+                SurgeLogInfo(@"Failed to connect to stream via UDP, trying Interleaved TCP");
+                
+                weakSelf.interleavedTcpTransport = true;
+                [weakSelf describeSetupPlay];
+            } else {
+                if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
+                    [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf];
+                }
+                return;
             }
-            
+        }
+        [weakSelf play:onPlay];
+    };
+    
+    void(^onDescribe)(std::vector<Surge::SessionDescription>) = ^(std::vector<Surge::SessionDescription> descriptions) {
+        weakSelf.sessionDescriptions = descriptions;
+        if (weakSelf.sessionDescriptions.size() == 0) {
+            if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
+                [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf];
+            }
             return;
         }
-        
-        Surge::SessionDescription currentSessionDescription = [self selectPreferredSessionDescription];
-        
-        [self setupStream:currentSessionDescription withCallback:^(bool result) {
-            if (!result) {
-                if (!self.interleavedRtspTransport) {
-                    SurgeLogInfo(@"Failed to connect to stream via UDP, trying Interleaved TCP");
-                    
-                    self.interleavedTcpTransport = true;
-                    [self describeSetupPlay];
-                } else {
-                    if ([self.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
-                        [self.delegate rtspPlayerFailedToInitiatePlayback:self];
-                    }
-                    
-                    return;
-                }
-            }
-            
-            [self play:^{
-                if ([self.delegate respondsToSelector:@selector(rtspPlayerInitiatedPlayback:)]) {
-                    [self.delegate rtspPlayerInitiatedPlayback:self];
-                }
-            }];
-        }];
-    }];
-
+        Surge::SessionDescription currentSessionDescription = [weakSelf selectPreferredSessionDescription];
+        [weakSelf setupStream:currentSessionDescription withCallback:onSetup];
+    };
+    
+    [self describe:onDescribe];
 }
 
 - (void)seekToStartTime:(nullable NSDate *)startTime
@@ -237,17 +240,20 @@ private:
     [self play];
 }
 
-- (void)describe:(void (^)(void))callback {
-    
+- (void)describe:(void (^)(std::vector<Surge::SessionDescription>))callback {
     self.client->Describe(std::string(self.url.absoluteString.UTF8String),
                           std::string(self.username.UTF8String),
                           std::string(self.password.UTF8String),
                           [=](Surge::DescribeResponse *describeResponse) {
+                              std::vector<Surge::SessionDescription> descriptions = std::vector<Surge::SessionDescription>();
                               if (describeResponse != NULL) {
-                                  self.sessionDescriptions = describeResponse->GetSessionDescriptions();
+                                  descriptions = describeResponse->GetSessionDescriptions();
                                   delete describeResponse;
                               }
-                              callback();
+                              if (callback) {
+                                  callback(descriptions);
+                              }
+                              
       });
 }
 

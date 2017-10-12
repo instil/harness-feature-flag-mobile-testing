@@ -16,7 +16,7 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIImageView *playbackView;
 @property (weak, nonatomic) IBOutlet UILabel *urlLabel;
-@property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
+@property (weak, nonatomic) IBOutlet UIImageView *playPauseIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @end
 
@@ -25,7 +25,8 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 - (instancetype)initWithCoder:(NSCoder *)coder {
   self = [super initWithCoder:coder];
   if (self) {
-    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+    [self.contentView addGestureRecognizer:tapGesture];
   }
   return self;
 }
@@ -35,7 +36,7 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 }
 
 - (void)dealloc {
-  if (self.stream) {
+  if (self.stream && self.stream.isPlaying) {
     [self.stream removeObserver:self forKeyPath:@"state"];
   }
 }
@@ -68,14 +69,15 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 #pragma mark - Interface
 
 - (void)setupInterfaceForPlaying:(BOOL)playing {
-  UIImage *image = [UIImage imageNamed:playing ? @"play-icon" : @"pause-icon"];
-  [self.playPauseButton setImage:image forState:UIControlStateNormal];
-  self.playPauseButton.alpha = 1;
+  self.playPauseIndicator.image =  [UIImage imageNamed:playing ? @"play-icon" : @"pause-icon"];
+  self.playPauseIndicator.alpha = 1;
   [UIView animateWithDuration:1.5
                    animations:^{
-                     self.playPauseButton.alpha = 0;
+                     self.playPauseIndicator.alpha = 0;
+                     self.playPauseIndicator.transform = CGAffineTransformMakeScale(5, 5);
                    } completion:^(BOOL finished) {
-                     [self.playPauseButton setImage:nil forState:UIControlStateNormal];
+                     self.playPauseIndicator.image = nil;
+                     self.playPauseIndicator.transform = CGAffineTransformIdentity;
                    }];
   if (playing) {
     [self.activityIndicator stopAnimating];
@@ -87,7 +89,8 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 
 #pragma mark - Actions
 
-- (IBAction)playPauseButtonAction:(id)sender {
+- (void)tapped:(UITapGestureRecognizer *)sender {
+  if (sender.state != UIGestureRecognizerStateEnded) return;
   if (self.stream.isPlaying) {
     [self.stream pause];
   }
@@ -97,6 +100,10 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 }
 
 - (IBAction)closeButtonAction:(id)sender {
+  if (self.stream) {
+    [self.stream stop];
+    [self.stream removeObserver:self forKeyPath:@"state"];
+  }
   [[NSNotificationCenter defaultCenter] postNotificationName:StreamRemovalRequestNotfication
                                                       object:@(self.index)];
 }

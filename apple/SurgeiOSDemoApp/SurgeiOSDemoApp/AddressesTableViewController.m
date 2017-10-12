@@ -29,12 +29,15 @@
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsController];
     self.searchController.searchBar.delegate = self;
     self.searchController.searchResultsUpdater = self.searchResultsController;
-    self.searchController.searchBar.textContentType = UITextContentTypeURL;
     self.searchController.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.searchController.searchBar.returnKeyType = UIReturnKeyDone;
     self.searchController.searchBar.tintColor = [UIColor whiteColor];
     self.searchController.searchBar.translucent = NO;
     self.definesPresentationContext = YES;
+    
+    if (@available(iOS 10.0, *)) {
+        self.searchController.searchBar.textContentType = UITextContentTypeURL;
+    }
     
     if (@available(iOS 11.0, *)) {
         self.navigationItem.searchController = self.searchController;

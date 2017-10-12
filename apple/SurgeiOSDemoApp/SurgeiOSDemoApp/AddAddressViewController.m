@@ -79,7 +79,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TextFieldCell" forIndexPath:indexPath];
   if (indexPath.row == 0) {
-    cell.textField.textContentType = UITextContentTypeURL;
+    if (@available(iOS 10.0, *)) {
+      cell.textField.textContentType = UITextContentTypeURL;
+    }
     cell.textField.keyboardType = UIKeyboardTypeURL;
     cell.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     cell.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;

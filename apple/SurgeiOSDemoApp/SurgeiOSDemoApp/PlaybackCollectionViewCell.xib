@@ -22,6 +22,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="437"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcG-a4-0eW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="437"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                        <state key="normal" image="pause-icon"/>
+                        <connections>
+                            <action selector="playPauseButtonAction:" destination="tay-Fm-7EA" eventType="touchUpInside" id="aWa-LN-Sa3"/>
+                        </connections>
+                    </button>
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="nf9-Ne-bSl">
                         <rect key="frame" x="189" y="200" width="37" height="37"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
@@ -35,14 +43,6 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </activityIndicatorView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcG-a4-0eW">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="437"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
-                        <state key="normal" image="pause-icon"/>
-                        <connections>
-                            <action selector="playPauseButtonAction:" destination="tay-Fm-7EA" eventType="touchUpInside" id="aWa-LN-Sa3"/>
-                        </connections>
-                    </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m3B-RS-s7M">
                         <rect key="frame" x="346" y="8" width="60" height="60"/>
                         <constraints>

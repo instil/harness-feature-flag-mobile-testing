@@ -30,6 +30,14 @@
   self.player.delegate = nil;
 }
 
+#pragma mark - Properties
+
+- (BOOL)isPlaying {
+  return self.state == PlaybackStreamStatePlaying;
+}
+
+#pragma mark - Transport
+
 - (void)start {
   self.state = PlaybackStreamStateLoading;
   __weak typeof(self) weakSelf = self;

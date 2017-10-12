@@ -18,7 +18,6 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 @property (weak, nonatomic) IBOutlet UILabel *urlLabel;
 @property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
-@property (nonatomic, getter=isPlaying) BOOL playing;
 @end
 
 @implementation PlaybackCollectionViewCell
@@ -36,32 +35,41 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 }
 
 - (void)dealloc {
-  
+  if (self.stream) {
+    [self.stream removeObserver:self forKeyPath:@"state"];
+  }
 }
 
 #pragma mark - Properties
 
 - (void)setStream:(PlaybackStream *)stream {
+  if (_stream) {
+    [_stream removeObserver:self forKeyPath:@"state"];
+  }
   _stream = stream;
   stream.player.playerView = self.playbackView;
   self.urlLabel.text = stream.rtspAddress.address;
   if (stream.rtspAddress.name) {
     self.urlLabel.text = [self.urlLabel.text stringByAppendingFormat:@" (%@)", stream.rtspAddress.name];
   }
-  if (stream.state != PlaybackStreamStatePlaying) {
-    [self.activityIndicator startAnimating];
-  }
-  [self.playPauseButton setImage:nil forState:UIControlStateNormal];
+  [self setupInterfaceForPlaying:stream.isPlaying];
+  [stream addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+  if (![object isEqual:self.stream]) return;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self setupInterfaceForPlaying:self.stream.isPlaying];
+  });
 }
 
 #pragma mark - Interface
 
 - (void)setupInterfaceForPlaying:(BOOL)playing {
-  self.playing = playing;
-  
   UIImage *image = [UIImage imageNamed:playing ? @"play-icon" : @"pause-icon"];
   [self.playPauseButton setImage:image forState:UIControlStateNormal];
-  
   self.playPauseButton.alpha = 1;
   [UIView animateWithDuration:1.5
                    animations:^{
@@ -69,16 +77,18 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
                    } completion:^(BOOL finished) {
                      [self.playPauseButton setImage:nil forState:UIControlStateNormal];
                    }];
-  
   if (playing) {
     [self.activityIndicator stopAnimating];
+  }
+  else {
+    [self.activityIndicator startAnimating];
   }
 }
 
 #pragma mark - Actions
 
 - (IBAction)playPauseButtonAction:(id)sender {
-  if (self.isPlaying) {
+  if (self.stream.isPlaying) {
     [self.stream pause];
   }
   else {

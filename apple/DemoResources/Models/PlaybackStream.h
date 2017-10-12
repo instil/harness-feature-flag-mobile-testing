@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, PlaybackStreamState) {
 @property (readonly, strong, nonatomic) RtspAddress *rtspAddress;
 @property (readonly, strong, nonatomic) SurgeRtspPlayer *player;
 @property (readonly, nonatomic) PlaybackStreamState state;
+@property (readonly, nonatomic) BOOL isPlaying;
 - (void)start;
 - (void)play;
 - (void)stop;

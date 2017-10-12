@@ -121,8 +121,8 @@ Then build the RTSP server library and sample code we'll be using for testing.
 
 ```bash
 $ cd /usr/src
-$ wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.4.4.tar.xz
-$ tar xvf gst-rtsp-server-1.4.4.tar.xz
+$ sudo wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.4.4.tar.xz
+$ sudo tar xvf gst-rtsp-server-1.4.4.tar.xz
 $ cd gst-rtsp-server-1.4.4
 $ ./configure --prefix=/opt/gst-rtsp
 $ make
@@ -151,6 +151,7 @@ $ cd /usr/src/gst-rtsp-server-1.4.4/examples
 $ ./test-launch "( v4l2src device=/dev/video0 extra-controls=\"c,video_bitrate=8000000\" ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
 ```
 
+
 ## Testing streaming without a camera
 
 If a camera is not available, we can also use the Gstreamer RTSP server with a test video source on macOS, Linux, etc. The following instructions are for macOS but the required packages are also available for Linux.
@@ -160,7 +161,7 @@ If a camera is not available, we can also use the Gstreamer RTSP server with a t
 Firstly, install GStreamer and the required dependencies.
 
 ```bash
-$ brew install gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
+$ sudo brew install gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
 ```
 
 Then build the RTSP server library and sample code we'll be using for testing.
@@ -168,8 +169,8 @@ Then build the RTSP server library and sample code we'll be using for testing.
 ```bash
 $ mkdir ~/surge
 $ cd ~/surge
-$ wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.4.4.tar.xz
-$ tar xvf gst-rtsp-server-1.4.4.tar.xz
+$ sudo wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.4.4.tar.xz
+$ sudo tar xvf gst-rtsp-server-1.4.4.tar.xz
 $ cd gst-rtsp-server-1.4.4
 $ ./configure --prefix=/opt/gst-rtsp
 $ make
@@ -197,3 +198,43 @@ $ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=
 $ cd ~/surge/gst-rtsp-server-1.4.4/examples
 $ ./test-launch "( videotestsrc ! video/x-raw, width=720, height=480, framerate=25/1 ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
 ```
+
+## Expose a stream via `ngrok`
+
+Once you have a stream up and running, you can expose it outside the network via `ngrok`. This is useful for testing on potentially captive networks or for testing on mobile devices over cellular, or where device connection to the same network as the stream is not desired / not possible.
+
+The `ngrok` utility is simple to install and quick to run. Links to the latest Linux ARM build can be located on [the downloads page](https://ngrok.com/download) but is unlikely to change from the instructions below.
+
+To install on the Raspberry Pi:
+
+```bash
+$ cd ~
+$ sudo wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.zip
+$ unzip ngrok-stable-linux-arm.zip
+$ sudo mv ngrok /usr/local/bin
+$ sudo rm ngrok-stable-linux-arm.zip
+```
+
+Once the utility is installed you will first need to add your authentication to any `ngrok` commands. Use of the service is free and there are many ways to signup, including authorisation through your GitHub account. Once you have a token, authorise your `ngrok` install:
+
+```bash
+$ ngrok authtoken <YOUR_AUTHTOKEN>
+```
+
+Now opening a TCP tunnel to local port `8554` is very simple:
+
+```bash
+$ ngrok tcp -region eu 8554
+```
+
+And the output should look something like this:
+
+```
+Version                       2.2.8
+Region                        Europe (eu)
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    tcp://0.tcp.eu.ngrok.io:<PORT> -> localhost:8554
+```
+
+When the Gstreamer RTSP server is running on port `8554` the stream can now be accessed externally by adapting the URL to `rtsp://0.tcp.eu.ngrok.io:<PORT>/test`.
+

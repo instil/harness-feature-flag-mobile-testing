@@ -32,7 +32,6 @@
     self.searchController.searchBar.textContentType = UITextContentTypeURL;
     self.searchController.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.searchController.searchBar.returnKeyType = UIReturnKeyDone;
-    [self.searchController.searchBar sizeToFit];
     self.searchController.searchBar.tintColor = [UIColor whiteColor];
     self.searchController.searchBar.translucent = NO;
     self.definesPresentationContext = YES;
@@ -42,6 +41,7 @@
         self.navigationItem.hidesSearchBarWhenScrolling = NO;
     }
     else {
+        [self.searchController.searchBar sizeToFit];
         self.searchController.searchBar.barTintColor = self.navigationController.navigationBar.barTintColor;
         self.tableView.tableHeaderView = self.searchController.searchBar;
     }
@@ -66,7 +66,6 @@
     }];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:addController];
     navController.navigationBar.barTintColor = self.navigationController.navigationBar.barTintColor;
-    navController.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
     navController.modalPresentationStyle = UIModalPresentationPopover;
     navController.popoverPresentationController.barButtonItem = sender;
     [self presentViewController:navController animated:YES completion:nil];

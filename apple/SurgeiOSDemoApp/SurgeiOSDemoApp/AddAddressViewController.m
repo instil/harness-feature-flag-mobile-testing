@@ -21,7 +21,7 @@
   self.title = @"Add Address";
   self.titles = @[@"Address", @"Name", @"Username", @"Password"];
   self.preferredContentSize = CGSizeMake(320, 320);
-  self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+  
   self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                         target:self
                                                                                         action:@selector(cancelButtonAction:)];

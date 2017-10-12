@@ -8,5 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class PlaybackManager;
+
 @interface PlaybackViewController : UIViewController
+@property (readonly, strong, nonatomic) PlaybackManager *playbackManager;
 @end

@@ -5,6 +5,9 @@
 
 #import "AppDelegate.h"
 
+#import "AddressesTableViewController.h"
+#import "PlaybackViewController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -15,6 +18,15 @@
     self.window.tintColor = [UIColor whiteColor];
     if (@available(iOS 11.0, *)) {
         [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setDefaultTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    }
+    
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
+        UINavigationController *rightNav = (UINavigationController *)splitViewController.viewControllers.lastObject;
+        PlaybackViewController *playbackController = (PlaybackViewController *)rightNav.viewControllers.firstObject;
+        UINavigationController *leftNav = (UINavigationController *)splitViewController.viewControllers.firstObject;
+        AddressesTableViewController *addressesController = (AddressesTableViewController *)leftNav.viewControllers.firstObject;
+        addressesController.playbackManager = playbackController.playbackManager;
     }
     return YES;
 }

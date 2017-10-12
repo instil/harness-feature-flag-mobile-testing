@@ -35,21 +35,13 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </activityIndicatorView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcG-a4-0eW">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="437"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
-                        <state key="normal" image="pause-icon"/>
-                        <connections>
-                            <action selector="playPauseButtonAction:" destination="tay-Fm-7EA" eventType="touchUpInside" id="aWa-LN-Sa3"/>
-                        </connections>
-                    </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m3B-RS-s7M">
                         <rect key="frame" x="346" y="8" width="60" height="60"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="60" id="jo5-Gx-A2H"/>
                             <constraint firstAttribute="height" constant="60" id="k91-FJ-kik"/>
                         </constraints>
-                        <state key="normal" image="delete-icon"/>
+                        <state key="normal" image="cancel-icon"/>
                         <connections>
                             <action selector="closeButtonAction:" destination="tay-Fm-7EA" eventType="touchUpInside" id="OGk-eN-fM0"/>
                         </connections>
@@ -64,15 +56,20 @@
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play-icon" translatesAutoresizingMaskIntoConstraints="NO" id="efl-FV-Kvq">
+                        <rect key="frame" x="177" y="188" width="60" height="60"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="60" id="BTH-eY-tcA"/>
+                            <constraint firstAttribute="height" constant="60" id="fve-ZR-jml"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstItem="tF3-kz-kPy" firstAttribute="leading" secondItem="tay-Fm-7EA" secondAttribute="leading" id="5M0-MN-b1f"/>
-                <constraint firstAttribute="trailing" secondItem="NcG-a4-0eW" secondAttribute="trailing" id="6q5-vo-Vc2"/>
                 <constraint firstAttribute="bottom" secondItem="tF3-kz-kPy" secondAttribute="bottom" id="9GB-Tg-N3y"/>
-                <constraint firstItem="NcG-a4-0eW" firstAttribute="leading" secondItem="tay-Fm-7EA" secondAttribute="leading" id="9hB-he-EmQ"/>
-                <constraint firstItem="NcG-a4-0eW" firstAttribute="top" secondItem="tay-Fm-7EA" secondAttribute="top" id="BEB-jY-Bmw"/>
                 <constraint firstItem="nf9-Ne-bSl" firstAttribute="centerY" secondItem="tay-Fm-7EA" secondAttribute="centerY" id="IZz-eG-vVL"/>
+                <constraint firstItem="efl-FV-Kvq" firstAttribute="centerY" secondItem="tay-Fm-7EA" secondAttribute="centerY" id="M9g-Gg-KOb"/>
                 <constraint firstItem="m3B-RS-s7M" firstAttribute="top" secondItem="tay-Fm-7EA" secondAttribute="top" constant="8" id="N4I-Yb-XMA"/>
                 <constraint firstItem="qJq-q9-WXX" firstAttribute="leading" secondItem="tay-Fm-7EA" secondAttribute="leading" id="PAK-8a-rO3"/>
                 <constraint firstItem="qJq-q9-WXX" firstAttribute="top" secondItem="tay-Fm-7EA" secondAttribute="top" id="SaE-kK-x8H"/>
@@ -80,14 +77,14 @@
                 <constraint firstAttribute="bottom" secondItem="qJq-q9-WXX" secondAttribute="bottom" id="hJZ-zC-Bn1"/>
                 <constraint firstAttribute="trailing" secondItem="tF3-kz-kPy" secondAttribute="trailing" id="lwo-wE-NTN"/>
                 <constraint firstItem="nf9-Ne-bSl" firstAttribute="centerX" secondItem="tay-Fm-7EA" secondAttribute="centerX" id="npv-cL-8r5"/>
-                <constraint firstAttribute="bottom" secondItem="NcG-a4-0eW" secondAttribute="bottom" id="uOu-Pl-IJB"/>
                 <constraint firstAttribute="trailing" secondItem="qJq-q9-WXX" secondAttribute="trailing" id="vle-RC-wxx"/>
+                <constraint firstItem="efl-FV-Kvq" firstAttribute="centerX" secondItem="tay-Fm-7EA" secondAttribute="centerX" id="z4V-bY-yxR"/>
             </constraints>
             <size key="customSize" width="414" height="437"/>
             <connections>
                 <outlet property="activityIndicator" destination="nf9-Ne-bSl" id="gGf-dm-vBz"/>
                 <outlet property="closeButton" destination="m3B-RS-s7M" id="bbQ-KH-HI0"/>
-                <outlet property="playPauseButton" destination="NcG-a4-0eW" id="P1o-XS-0lM"/>
+                <outlet property="playPauseIndicator" destination="efl-FV-Kvq" id="Omw-yy-N4N"/>
                 <outlet property="playbackView" destination="qJq-q9-WXX" id="Klk-BB-RxN"/>
                 <outlet property="urlLabel" destination="tF3-kz-kPy" id="F6W-5i-w8C"/>
             </connections>
@@ -95,7 +92,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="delete-icon" width="30" height="30"/>
-        <image name="pause-icon" width="25" height="25"/>
+        <image name="cancel-icon" width="25" height="25"/>
+        <image name="play-icon" width="25" height="25"/>
     </resources>
 </document>

@@ -169,11 +169,15 @@ private:
 }
 
 - (void) describeSetupPlay {
-    
+
     __weak typeof(self) weakSelf = self;
-    void(^onPlay)() = ^() {
-        if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerInitiatedPlayback:)]) {
-            [weakSelf.delegate rtspPlayerInitiatedPlayback:weakSelf];
+    void(^onPlay)(bool) = ^(bool success) {
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
+                    [weakSelf.delegate rtspPlayerDidBeginPlayback:weakSelf];
+                }
+            });
         }
     };
     
@@ -201,6 +205,9 @@ private:
                 [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf];
             }
             return;
+        }
+        else if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerInitiatedPlayback:)]) {
+            [weakSelf.delegate rtspPlayerInitiatedPlayback:weakSelf];
         }
         Surge::SessionDescription currentSessionDescription = [weakSelf selectPreferredSessionDescription];
         [weakSelf setupStream:currentSessionDescription withCallback:onSetup];
@@ -253,7 +260,6 @@ private:
                               if (callback) {
                                   callback(descriptions);
                               }
-                              
       });
 }
 
@@ -280,20 +286,14 @@ private:
     }
 }
 
-- (void)play:(void (^)(void)) callback {
+- (void)play:(void (^)(bool)) callback {
     SurgeLogInfo(@"Starting/resuming playback of %@", self.url);
     self.client->Play(false,
                       [=](Surge::RtspResponse *playResponse) {
-                          if (playResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
-                              dispatch_async(dispatch_get_main_queue(), ^{
-                                  [self.delegate rtspPlayerDidBeginPlayback:self];
-                              });
+                          if (callback) {
+                              callback(playResponse->Ok());
                           }
                           delete playResponse;
-                          
-                          if (callback) {
-                              callback();
-                          }
                       });
 }
 

@@ -13,7 +13,7 @@
 NSString *const PlaybackStreamsDidChangeNotification = @"PlaybackStreamsDidChangeNotification";
 
 @interface PlaybackManager()
-@property (copy, nonatomic) NSArray<PlaybackStream *> *streams;
+@property (strong, nonatomic) NSMutableArray<PlaybackStream *> *streams;
 @end
 
 @implementation PlaybackManager
@@ -22,7 +22,7 @@ NSString *const PlaybackStreamsDidChangeNotification = @"PlaybackStreamsDidChang
 {
   self = [super init];
   if (self) {
-    _streams = [NSArray<PlaybackStream *> new];
+    _streams = [[NSMutableArray<PlaybackStream *> alloc] initWithCapacity:0];
   }
   return self;
 }
@@ -34,15 +34,12 @@ NSString *const PlaybackStreamsDidChangeNotification = @"PlaybackStreamsDidChang
   if (idx < self.streams.count) return;
   PlaybackStream *stream = [[PlaybackStream alloc] initWithRtspAddress:address];
   [stream start];
-  self.streams = [self.streams arrayByAddingObject:stream];
+  [_streams addObject:stream];
   [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackStreamsDidChangeNotification object:nil];
 }
 
 - (void)removeStream:(PlaybackStream *)stream {
-  [stream stop];
-  NSMutableArray *m_streams = [self.streams mutableCopy];
-  [m_streams removeObject:stream];
-  self.streams = [m_streams copy];
+  [_streams removeObject:stream];
   [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackStreamsDidChangeNotification object:nil];
 }
 

@@ -33,6 +33,11 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 
 - (void)prepareForReuse {
   [super prepareForReuse];
+  if (_stream && self.stream.isPlaying) {
+    [self.stream removeObserver:self forKeyPath:@"state"];
+  }
+  _stream = nil;
+  self.playbackView.image = nil;
 }
 
 - (void)dealloc {

@@ -118,7 +118,7 @@
 /**
  * Optional delegate used to receive notification of player events.
  */
-@property (nonatomic, strong, nullable) id<SurgeRtspPlayerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SurgeRtspPlayerDelegate> delegate;
 
 /**
  * Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal

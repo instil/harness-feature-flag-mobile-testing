@@ -576,7 +576,7 @@ void Surge::RtspClient::SetupRtspConnection(const std::string& url, std::functio
         } else {
             ERROR("Did not start the Transport thread.");
         }
-        
+
         callback(result);
     });
 }

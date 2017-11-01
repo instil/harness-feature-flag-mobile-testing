@@ -26,7 +26,7 @@
 }
 
 - (void)dealloc {
-  [self stop];
+//  [self stop];
   self.player.delegate = nil;
 }
 
@@ -40,36 +40,32 @@
 
 - (void)start {
   self.state = PlaybackStreamStateLoading;
-  __weak typeof(self) weakSelf = self;
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-    NSURL *url = [NSURL URLWithString:weakSelf.rtspAddress.address];
-    if (weakSelf.rtspAddress.username && weakSelf.rtspAddress.password) {
-      [weakSelf.player initiatePlaybackOf:url withUsername:weakSelf.rtspAddress.username andPassword:weakSelf.rtspAddress.password];
+    NSURL *url = [NSURL URLWithString:self.rtspAddress.address];
+    if (self.rtspAddress.username && self.rtspAddress.password) {
+      [self.player initiatePlaybackOf:url withUsername:self.rtspAddress.username andPassword:self.rtspAddress.password];
     }
     else {
-      [weakSelf.player initiatePlaybackOf:url];
+      [self.player initiatePlaybackOf:url];
     }
   });
 }
 
 - (void)play {
-  __weak typeof(self) weakSelf = self;
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [weakSelf.player play];
+    [self.player play];
   });
 }
 
 - (void)stop {
-  __weak typeof(self) weakSelf = self;
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [weakSelf.player stop];
+    [self.player stop];
   });
 }
 
 - (void)pause {
-  __weak typeof(self) weakSelf = self;
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [weakSelf.player pause];
+    [self.player pause];
   });
 }
 

@@ -66,12 +66,10 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 #pragma mark - KVO
 
 - (void)setupStreamObservers {
-  [_stream addObserver:self forKeyPath:@"faceDetectionMode" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
   [_stream addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)tearDownStreamObservers {
-  [_stream removeObserver:self forKeyPath:@"faceDetectionMode"];
   [_stream removeObserver:self forKeyPath:@"state"];
 }
 
@@ -81,9 +79,6 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
     dispatch_async(dispatch_get_main_queue(), ^{
       [self setupInterfaceForPlaying:self.stream.isPlaying];
     });
-  }
-  else if ([keyPath isEqualToString:@"faceDetectionMode"]) {
-    self.playbackView.faceDetectionEnabled = self.stream.faceDetectionMode == FaceDetectionOn;
   }
 }
 

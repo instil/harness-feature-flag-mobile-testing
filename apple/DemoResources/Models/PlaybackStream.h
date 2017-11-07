@@ -16,11 +16,6 @@ typedef NS_ENUM(NSUInteger, PlaybackStreamState) {
   PlaybackStreamStateErrored
 };
 
-typedef NS_ENUM(NSUInteger, FaceDetectionMode) {
-  FaceDetectionOff,
-  FaceDetectionOn
-};
-
 @class RtspAddress;
 
 @interface PlaybackStream : NSObject
@@ -33,5 +28,4 @@ typedef NS_ENUM(NSUInteger, FaceDetectionMode) {
 - (void)play;
 - (void)stop;
 - (void)pause;
-@property (nonatomic) FaceDetectionMode faceDetectionMode;
 @end

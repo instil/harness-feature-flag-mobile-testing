@@ -21,7 +21,6 @@
     _player.delegate = self;
     _rtspAddress = rtspAddress;
     _state = PlaybackStreamStateIdle;
-    _faceDetectionMode = FaceDetectionOn;
   }
   return self;
 }

@@ -7,6 +7,7 @@
 //
 
 #import "PlaybackCollectionViewCell.h"
+#import "SURFaceDetectionImageView.h"
 #import "PlaybackStream.h"
 #import "RtspAddress.h"
 
@@ -14,7 +15,7 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 
 @interface PlaybackCollectionViewCell ()
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (weak, nonatomic) IBOutlet UIImageView *playbackView;
+@property (weak, nonatomic) IBOutlet SURFaceDetectionImageView *playbackView;
 @property (weak, nonatomic) IBOutlet UILabel *urlLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *playPauseIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
@@ -34,7 +35,7 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 - (void)prepareForReuse {
   [super prepareForReuse];
   if (_stream && self.stream.isPlaying) {
-    [self.stream removeObserver:self forKeyPath:@"state"];
+    [self tearDownStreamObservers];
   }
   _stream = nil;
   self.playbackView.image = nil;
@@ -42,7 +43,7 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 
 - (void)dealloc {
   if (self.stream) {
-    [self.stream removeObserver:self forKeyPath:@"state"];
+    [self tearDownStreamObservers];
   }
 }
 
@@ -50,7 +51,7 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 
 - (void)setStream:(PlaybackStream *)stream {
   if (_stream) {
-    [_stream removeObserver:self forKeyPath:@"state"];
+    [self tearDownStreamObservers];
   }
   _stream = stream;
   stream.player.playerView = self.playbackView;
@@ -59,16 +60,31 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
     self.urlLabel.text = [self.urlLabel.text stringByAppendingFormat:@" (%@)", stream.rtspAddress.name];
   }
   [self setupInterfaceForPlaying:stream.isPlaying];
-  [stream addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
+  [self setupStreamObservers];
 }
 
 #pragma mark - KVO
 
+- (void)setupStreamObservers {
+  [_stream addObserver:self forKeyPath:@"faceDetectionMode" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
+  [_stream addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)tearDownStreamObservers {
+  [_stream removeObserver:self forKeyPath:@"faceDetectionMode"];
+  [_stream removeObserver:self forKeyPath:@"state"];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
   if (![object isEqual:self.stream]) return;
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [self setupInterfaceForPlaying:self.stream.isPlaying];
-  });
+  if ([keyPath isEqualToString:@"state"]) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self setupInterfaceForPlaying:self.stream.isPlaying];
+    });
+  }
+  else if ([keyPath isEqualToString:@"faceDetectionMode"]) {
+    self.playbackView.faceDetectionEnabled = self.stream.faceDetectionMode == FaceDetectionOn;
+  }
 }
 
 #pragma mark - Interface

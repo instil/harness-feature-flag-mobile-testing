@@ -8,8 +8,6 @@
 
 #import "SURFaceDetectionImageView.h"
 
-#define FACE_DETECTION_DEBUG_MODE 1
-
 @interface FaceRectsOverlayView : UIView
 @property (nonatomic, copy) NSArray<NSValue *> *faceRects;
 - (void)clear;
@@ -55,26 +53,23 @@
   self.faceDetectionEnabled = NO;
 }
 
-- (void)detectFaces {
-  if (!self.image) {
-    [self queueNextFaceDetection];
+- (void)detectFacesIn:(UIImage *)imageIn forViewSize:(CGSize)viewSize {
+  if (!imageIn) {
+    [self enqueueNextFaceDetection];
     return;
   }
-  if (FACE_DETECTION_DEBUG_MODE) NSLog(@"Detecting faces in image...");
-  CIImage *image = [CIImage imageWithCGImage:self.image.CGImage];
+  CIImage *image = [CIImage imageWithCGImage:imageIn.CGImage];
   CGSize imageSize = image.extent.size;
   CGAffineTransform transform = CGAffineTransformMakeScale(1, -1);
   transform = CGAffineTransformTranslate(transform, 0, -imageSize.height);
   
   NSDictionary *opts = @{CIDetectorImageOrientation : @(kCGImagePropertyOrientationUp) };
   NSArray *features = [self.faceDetector featuresInImage:image options:opts];
-  if (FACE_DETECTION_DEBUG_MODE) NSLog(@"found %@ features...", @(features.count));
   NSMutableArray<NSValue *> *faceRects = [NSMutableArray new];
   for (CIFaceFeature *feature in features) {
     CGRect faceViewBounds = CGRectApplyAffineTransform(feature.bounds, transform);
     
     // Calculate the actual position and size of the rectangle in the image view
-    CGSize viewSize = self.bounds.size;
     CGFloat scale = MIN(viewSize.width / imageSize.width,
                         viewSize.height / imageSize.height);
     CGFloat offsetX = (viewSize.width - imageSize.width * scale) / 2;
@@ -85,24 +80,28 @@
     faceViewBounds.origin.y += offsetY;
     [faceRects addObject:[NSValue valueWithCGRect:faceViewBounds]];
   }
-  self.overlayView.faceRects = faceRects;
-  [self queueNextFaceDetection];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    self.overlayView.faceRects = faceRects;
+    [self enqueueNextFaceDetection];
+  });
 }
 
-- (void)queueNextFaceDetection {
+- (void)enqueueNextFaceDetection {
   if (self.faceDetectionEnabled) {
-    [self performSelector:@selector(detectFaces) withObject:nil afterDelay:0.1];
+    UIImage *image = self.image;
+    CGSize viewSize = self.bounds.size;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    NSTimeInterval dt = 0.1;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(dt * NSEC_PER_SEC)), queue, ^{
+      if (self) {
+        [self detectFacesIn:image forViewSize:viewSize];
+      }
+    });
   }
 }
 
-- (void)stopFaceDetection {
-  [NSObject cancelPreviousPerformRequestsWithTarget:self];
-  [self.overlayView clear];
-}
-
 - (void)startFaceDetection {
-  if (FACE_DETECTION_DEBUG_MODE) NSLog(@"Starting face detection...");
-  [self detectFaces];
+  [self enqueueNextFaceDetection];
 }
 
 - (void)setFaceDetectionEnabled:(BOOL)faceDetectionEnabled {
@@ -111,7 +110,7 @@
     [self startFaceDetection];
   }
   else {
-    [self stopFaceDetection];
+    [self.overlayView performSelector:@selector(clear) withObject:nil afterDelay:0.2];
   }
   NSString *imageName = [NSString stringWithFormat:@"faces-%@", faceDetectionEnabled ? @"on" : @"off"];
   UIImage *image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];

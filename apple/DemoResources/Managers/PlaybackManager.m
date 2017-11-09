@@ -39,6 +39,7 @@ NSString *const PlaybackStreamsDidChangeNotification = @"PlaybackStreamsDidChang
 }
 
 - (void)removeStream:(PlaybackStream *)stream {
+  [stream stop];
   [_streams removeObject:stream];
   [[NSNotificationCenter defaultCenter] postNotificationName:PlaybackStreamsDidChangeNotification object:nil];
 }

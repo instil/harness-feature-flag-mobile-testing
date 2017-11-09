@@ -66,7 +66,7 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 #pragma mark - KVO
 
 - (void)setupStreamObservers {
-  [_stream addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:NULL];
+  [_stream addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
 }
 
 - (void)tearDownStreamObservers {

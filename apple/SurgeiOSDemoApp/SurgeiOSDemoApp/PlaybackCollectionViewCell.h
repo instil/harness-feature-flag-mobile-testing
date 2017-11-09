@@ -14,5 +14,4 @@ extern NSString *const StreamRemovalRequestNotfication;
 
 @interface PlaybackCollectionViewCell : UICollectionViewCell
 @property (weak, nonatomic) PlaybackStream *stream;
-@property (nonatomic) NSUInteger index;
 @end

@@ -83,7 +83,6 @@
     PlaybackCollectionViewCell *cell = (PlaybackCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"PlaybackCollectionViewCell"
                                                                                                                forIndexPath:indexPath];
     cell.stream = self.playbackManager.streams[indexPath.item];
-    cell.index = indexPath.item;
     return cell;
 }
 

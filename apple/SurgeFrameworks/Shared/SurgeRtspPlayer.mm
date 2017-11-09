@@ -168,7 +168,7 @@ private:
     [self describeSetupPlay];
 }
 
-- (void) describeSetupPlay {
+- (void)describeSetupPlay {
 
     __weak typeof(self) weakSelf = self;
     void(^onPlay)(bool) = ^(bool success) {
@@ -298,20 +298,31 @@ private:
 }
 
 - (void)play {
-    [self play:nil];
+    __weak typeof(self) weakSelf = self;
+    void(^callback)(bool) = ^(bool success) {
+        if (success && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.delegate rtspPlayerDidBeginPlayback:weakSelf];
+            });
+        }
+    };
+    [self play:callback];
 }
 
 - (void)pause {
     SurgeLogInfo(@"Pausing playback of %@", self.url);
-    self.client->Pause([=](Surge::RtspResponse *pauseResponse) {
-        if (pauseResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
+    __weak typeof(self) weakSelf = self;
+    void(^callback)(bool) = ^(bool success) {
+        if (success && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate rtspPlayerDidStopPlayback:self];
+                [weakSelf.delegate rtspPlayerDidStopPlayback:weakSelf];
             });
         }
+    };
+    self.client->Pause([=](Surge::RtspResponse *pauseResponse) {
+        callback(pauseResponse->Ok());
         delete pauseResponse;
     });
-    
 }
 
 - (void)stop {

@@ -18,12 +18,12 @@
 @optional
 
 /**
- *
+ * Called when the player successfully starts playback of a stream via an initiatePlaybackOf request.
  */
 - (void)rtspPlayerInitiatedPlayback:(nonnull SurgeRtspPlayer *)player;
 
 /**
- *
+ * Called when the player fails to start playback of a stream via an initiatePlaybackOf request.
  */
 - (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player;
 

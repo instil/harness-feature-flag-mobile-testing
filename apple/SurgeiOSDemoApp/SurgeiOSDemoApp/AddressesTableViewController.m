@@ -42,6 +42,16 @@
     if (@available(iOS 11.0, *)) {
         self.navigationItem.searchController = self.searchController;
         self.navigationItem.hidesSearchBarWhenScrolling = NO;
+        
+        UITextField *sbTextField = [self.searchController.searchBar valueForKey:@"searchField"];
+        if (sbTextField) {
+            UIView *bgView = sbTextField.subviews.firstObject;
+            if (bgView) {
+                bgView.backgroundColor = [UIColor whiteColor];
+                bgView.layer.cornerRadius = 10;
+                bgView.clipsToBounds = true;
+            }
+        }
     }
     else {
         [self.searchController.searchBar sizeToFit];

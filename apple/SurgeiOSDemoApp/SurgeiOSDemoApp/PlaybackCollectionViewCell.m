@@ -116,6 +116,7 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 }
 
 - (IBAction)closeButtonAction:(id)sender {
+  [self tearDownStreamObservers];
   [[NSNotificationCenter defaultCenter] postNotificationName:StreamRemovalRequestNotfication
                                                       object:self.stream];
 }

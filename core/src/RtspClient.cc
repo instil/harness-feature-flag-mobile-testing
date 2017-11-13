@@ -134,16 +134,6 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
         sessionDescription.GetControl():
         m_url + "/" + sessionDescription.GetControl();
 
-    // Gstreamer doesnt like using the control url for subsequent rtsp requests post setup
-    // only applicable in non complete control url's.
-    if (serverAllowsAggregate && !sessionDescription.IsControlUrlComplete()) {
-        // this is the new url we need to use for all requests now
-        m_url = setup_url;
-    }
-    else if (sessionDescription.IsControlUrlComplete()) {
-        m_url = setup_url;
-    }
-
     // set current palette
     m_sessionDescription = sessionDescription;
 

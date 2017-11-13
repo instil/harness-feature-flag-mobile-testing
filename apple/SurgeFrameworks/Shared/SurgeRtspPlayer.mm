@@ -82,7 +82,9 @@ public:
     
     void ClientReceivedExtendedHeader(const unsigned char * buffer,
                                       size_t length) {
-        [delegate rtspClientReceivedExtendedHeaders:buffer ofLength:length];
+        if ([delegate respondsToSelector:@selector(rtspClientReceivedExtendedHeaders:ofLength:)]) {
+            [delegate rtspClientReceivedExtendedHeaders:buffer ofLength:length];
+        }
     }
 
 private:

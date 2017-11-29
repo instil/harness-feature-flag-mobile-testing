@@ -110,7 +110,7 @@ private:
     self = [super init];
     if (self) {
         self.clientDelegate = new RtspClientDelegateWrapper(self);
-        self.client = new Surge::RtspClient(self.clientDelegate, true);
+        self.client = new Surge::RtspClient(self.clientDelegate, self.interleavedTcpTransport);
         [self configurePlayerView];
         SurgeLogInfo("Initiating RTSP stream via Surge");
     }

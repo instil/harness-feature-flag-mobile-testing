@@ -14,13 +14,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.Surface;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.List;
-
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.decoders.MediaCodecFactory;
@@ -28,6 +21,12 @@ import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
 import co.instil.surge.device.DeviceExaminer;
+import co.instil.surge.logging.Logger;
+import co.instil.surge.logging.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.List;
 
 /**
  * Abstract superclass for all H264 decoders which implements common operations e.g. parsing

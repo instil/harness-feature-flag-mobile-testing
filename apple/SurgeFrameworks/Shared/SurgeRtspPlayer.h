@@ -18,12 +18,12 @@
 @optional
 
 /**
- *
+ * Called when the player successfully starts playback of a stream via an initiatePlaybackOf request.
  */
 - (void)rtspPlayerInitiatedPlayback:(nonnull SurgeRtspPlayer *)player;
 
 /**
- *
+ * Called when the player fails to start playback of a stream via an initiatePlaybackOf request.
  */
 - (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player;
 
@@ -118,7 +118,7 @@
 /**
  * Optional delegate used to receive notification of player events.
  */
-@property (nonatomic, strong, nullable) id<SurgeRtspPlayerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SurgeRtspPlayerDelegate> delegate;
 
 /**
  * Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal

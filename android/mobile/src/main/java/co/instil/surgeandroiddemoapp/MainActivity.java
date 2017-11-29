@@ -23,18 +23,18 @@ import java.util.TimeZone;
 
 import co.instil.surge.callbacks.PlayerCallback;
 import co.instil.surge.client.SessionDescription;
-import co.instil.surge.player.RtspPlayer;
+import co.instil.surge.player.SurgeRtspPlayer;
 import co.instil.surge.client.SurgeSurface;
-import co.instil.surge.player.RtspPlayerDelegate;
+import co.instil.surge.player.SurgeRtspPlayerDelegate;
 
 /**
  *
  */
-public class MainActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener, RtspPlayerDelegate {
+public class MainActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener, SurgeRtspPlayerDelegate {
 
     private static Logger logger = LoggerFactory.getLogger(MainActivity.class);
 
-    private final RtspPlayer player = new RtspPlayer();
+    private final SurgeRtspPlayer player = new SurgeRtspPlayer();
     private SessionDescription[] palettes;
     private int currentPaletteIndex = 0;
     private TextureView textureView;

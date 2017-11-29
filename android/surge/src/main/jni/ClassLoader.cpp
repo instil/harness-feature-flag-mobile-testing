@@ -8,7 +8,7 @@
 SurgeJni::ClassLoader::ClassLoader(JNIEnv *jniEnv) {
     jniEnv->GetJavaVM(&this->jvm);
 
-    jclass randomClass = jniEnv->FindClass("co/instil/surge/player/RtspPlayer");
+    jclass randomClass = jniEnv->FindClass("co/instil/surge/player/SurgeRtspPlayer");
     jclass classClass = jniEnv->GetObjectClass(randomClass);
 
     jclass classLoaderClass = jniEnv->FindClass("java/lang/ClassLoader");

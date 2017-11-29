@@ -9,12 +9,6 @@ package co.instil.surge.player;
 
 import android.view.Surface;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.nio.ByteBuffer;
-import java.util.Date;
-
 import co.instil.surge.callbacks.PlayerCallback;
 import co.instil.surge.callbacks.ResponseCallback;
 import co.instil.surge.client.DescribeResponse;
@@ -26,17 +20,22 @@ import co.instil.surge.client.SessionDescription;
 import co.instil.surge.client.SurgeSurface;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.decoders.DecoderFactory;
+import co.instil.surge.logging.Logger;
+import co.instil.surge.logging.LoggerFactory;
 
 import static co.instil.surge.client.SessionType.H264;
 import static co.instil.surge.client.SessionType.MJPEG;
 import static co.instil.surge.client.SessionType.MP4V;
 
+import java.nio.ByteBuffer;
+import java.util.Date;
+
 /**
  *
  */
-public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
+public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
-    private static Logger logger = LoggerFactory.getLogger(RtspPlayer.class);
+    private static Logger logger = LoggerFactory.getLogger(SurgeRtspPlayer.class);
 
     protected RtspClient rtspClient;
 
@@ -48,12 +47,12 @@ public class RtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     protected ExtendedHeader extendedHeader;
 
-    public RtspPlayerDelegate delegate;
+    public SurgeRtspPlayerDelegate delegate;
 
     protected SurgeSurface surface = null;
     private Decoder decoder;
 
-    public RtspPlayer() {
+    public SurgeRtspPlayer() {
         rtspClient = generateRtspClient(false);
     }
 

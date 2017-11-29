@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddressesTableViewController : UITableViewController
+@class PlaybackManager;
 
+@interface AddressesTableViewController : UITableViewController
+@property (strong, nonatomic) PlaybackManager *playbackManager;
 @end

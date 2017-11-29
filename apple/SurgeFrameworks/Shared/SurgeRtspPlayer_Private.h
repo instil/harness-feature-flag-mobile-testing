@@ -19,7 +19,7 @@
 /**
  * Send a DESCRIBE mesage to the RTSP stream
  */
-- (void)describe:(void (^)(void)) callback;
+- (void)describe:(void (^)(std::vector<Surge::SessionDescription>)) callback;
 
 /**
  * Send a SETUP mesage to the RTSP stream

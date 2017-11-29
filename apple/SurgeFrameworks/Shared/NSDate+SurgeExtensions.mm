@@ -23,13 +23,13 @@
                                                          NSCalendarUnitNanosecond)
                                                fromDate:self];
 
-    dateTime.Year = [components year];
-    dateTime.Month = [components month];
-    dateTime.Day = [components day];
-    dateTime.Hour = [components hour];
-    dateTime.Minute = [components minute];
-    dateTime.Second = [components second];
-    dateTime.Nanosecond = [components nanosecond];
+    dateTime.Year = (int)[components year];
+    dateTime.Month = (int)[components month];
+    dateTime.Day = (int)[components day];
+    dateTime.Hour = (int)[components hour];
+    dateTime.Minute = (int)[components minute];
+    dateTime.Second = (int)[components second];
+    dateTime.Nanosecond = (int)[components nanosecond];
     
     return dateTime;
 }

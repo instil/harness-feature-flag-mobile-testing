@@ -51,7 +51,7 @@
 }
 
 - (void)writeBytes:(NSData*)data {
-    uint8_t *bytes = [data bytes];
+    uint8_t *bytes = (uint8_t *)[data bytes];
     for (int i = 0; i < [data length]; i++) {
         [self writeByte:bytes[i]];
     }

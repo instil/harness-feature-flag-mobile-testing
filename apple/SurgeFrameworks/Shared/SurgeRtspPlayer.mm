@@ -82,7 +82,9 @@ public:
     
     void ClientReceivedExtendedHeader(const unsigned char * buffer,
                                       size_t length) {
-        [delegate rtspClientReceivedExtendedHeaders:buffer ofLength:length];
+        if ([delegate respondsToSelector:@selector(rtspClientReceivedExtendedHeaders:ofLength:)]) {
+            [delegate rtspClientReceivedExtendedHeaders:buffer ofLength:length];
+        }
     }
 
 private:
@@ -108,7 +110,7 @@ private:
     self = [super init];
     if (self) {
         self.clientDelegate = new RtspClientDelegateWrapper(self);
-        self.client = new Surge::RtspClient(self.clientDelegate, false);
+        self.client = new Surge::RtspClient(self.clientDelegate, true);
         [self configurePlayerView];
         SurgeLogInfo("Initiating RTSP stream via Surge");
     }
@@ -168,42 +170,52 @@ private:
     [self describeSetupPlay];
 }
 
-- (void) describeSetupPlay {
-    [self describe:^{
-        if (self.sessionDescriptions.size() == 0) {
-            if ([self.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
-                [self.delegate rtspPlayerFailedToInitiatePlayback:self];
+- (void)describeSetupPlay {
+
+    __weak typeof(self) weakSelf = self;
+    void(^onPlay)(bool) = ^(bool success) {
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
+                    [weakSelf.delegate rtspPlayerDidBeginPlayback:weakSelf];
+                }
+            });
+        }
+    };
+    
+    void(^onSetup)(bool) = ^(bool result) {
+        if (!result) {
+            if (!weakSelf.interleavedRtspTransport) {
+                SurgeLogInfo(@"Failed to connect to stream via UDP, trying Interleaved TCP");
+                
+                weakSelf.interleavedTcpTransport = true;
+                [weakSelf describeSetupPlay];
+            } else {
+                if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
+                    [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf];
+                }
+                return;
             }
-            
+        }
+        [weakSelf play:onPlay];
+    };
+    
+    void(^onDescribe)(std::vector<Surge::SessionDescription>) = ^(std::vector<Surge::SessionDescription> descriptions) {
+        weakSelf.sessionDescriptions = descriptions;
+        if (weakSelf.sessionDescriptions.size() == 0) {
+            if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
+                [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf];
+            }
             return;
         }
-        
-        Surge::SessionDescription currentSessionDescription = [self selectPreferredSessionDescription];
-        
-        [self setupStream:currentSessionDescription withCallback:^(bool result) {
-            if (!result) {
-                if (!self.interleavedRtspTransport) {
-                    SurgeLogInfo(@"Failed to connect to stream via UDP, trying Interleaved TCP");
-                    
-                    self.interleavedTcpTransport = true;
-                    [self describeSetupPlay];
-                } else {
-                    if ([self.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:)]) {
-                        [self.delegate rtspPlayerFailedToInitiatePlayback:self];
-                    }
-                    
-                    return;
-                }
-            }
-            
-            [self play:^{
-                if ([self.delegate respondsToSelector:@selector(rtspPlayerInitiatedPlayback:)]) {
-                    [self.delegate rtspPlayerInitiatedPlayback:self];
-                }
-            }];
-        }];
-    }];
-
+        else if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerInitiatedPlayback:)]) {
+            [weakSelf.delegate rtspPlayerInitiatedPlayback:weakSelf];
+        }
+        Surge::SessionDescription currentSessionDescription = [weakSelf selectPreferredSessionDescription];
+        [weakSelf setupStream:currentSessionDescription withCallback:onSetup];
+    };
+    
+    [self describe:onDescribe];
 }
 
 - (void)seekToStartTime:(nullable NSDate *)startTime
@@ -237,17 +249,19 @@ private:
     [self play];
 }
 
-- (void)describe:(void (^)(void))callback {
-    
+- (void)describe:(void (^)(std::vector<Surge::SessionDescription>))callback {
     self.client->Describe(std::string(self.url.absoluteString.UTF8String),
                           std::string(self.username.UTF8String),
                           std::string(self.password.UTF8String),
                           [=](Surge::DescribeResponse *describeResponse) {
+                              std::vector<Surge::SessionDescription> descriptions = std::vector<Surge::SessionDescription>();
                               if (describeResponse != NULL) {
-                                  self.sessionDescriptions = describeResponse->GetSessionDescriptions();
+                                  descriptions = describeResponse->GetSessionDescriptions();
                                   delete describeResponse;
                               }
-                              callback();
+                              if (callback) {
+                                  callback(descriptions);
+                              }
       });
 }
 
@@ -274,38 +288,43 @@ private:
     }
 }
 
-- (void)play:(void (^)(void)) callback {
+- (void)play:(void (^)(bool)) callback {
     SurgeLogInfo(@"Starting/resuming playback of %@", self.url);
     self.client->Play(false,
                       [=](Surge::RtspResponse *playResponse) {
-                          if (playResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
-                              dispatch_async(dispatch_get_main_queue(), ^{
-                                  [self.delegate rtspPlayerDidBeginPlayback:self];
-                              });
+                          if (callback) {
+                              callback(playResponse->Ok());
                           }
                           delete playResponse;
-                          
-                          if (callback) {
-                              callback();
-                          }
                       });
 }
 
 - (void)play {
-    [self play:nil];
+    __weak typeof(self) weakSelf = self;
+    void(^callback)(bool) = ^(bool success) {
+        if (success && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.delegate rtspPlayerDidBeginPlayback:weakSelf];
+            });
+        }
+    };
+    [self play:callback];
 }
 
 - (void)pause {
     SurgeLogInfo(@"Pausing playback of %@", self.url);
-    self.client->Pause([=](Surge::RtspResponse *pauseResponse) {
-        if (pauseResponse->Ok() && [self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
+    __weak typeof(self) weakSelf = self;
+    void(^callback)(bool) = ^(bool success) {
+        if (success && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate rtspPlayerDidStopPlayback:self];
+                [weakSelf.delegate rtspPlayerDidStopPlayback:weakSelf];
             });
         }
+    };
+    self.client->Pause([=](Surge::RtspResponse *pauseResponse) {
+        callback(pauseResponse->Ok());
         delete pauseResponse;
     });
-    
 }
 
 - (void)stop {

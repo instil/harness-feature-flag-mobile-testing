@@ -9,12 +9,24 @@
 /* Begin PBXBuildFile section */
 		426E88111CDA40AE00C7FF25 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88101CDA40AE00C7FF25 /* main.m */; };
 		426E88141CDA40AE00C7FF25 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88131CDA40AE00C7FF25 /* AppDelegate.m */; };
-		426E881A1CDA40AE00C7FF25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E88181CDA40AE00C7FF25 /* Main.storyboard */; };
-		426E881C1CDA40AE00C7FF25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 426E881B1CDA40AE00C7FF25 /* Assets.xcassets */; };
+		426E881A1CDA40AE00C7FF25 /* Main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E88181CDA40AE00C7FF25 /* Main-iPhone.storyboard */; };
 		426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */; };
 		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
-		7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */; };
+		7C1AD4EB1F8D20AD00F17E78 /* PlaybackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1AD4EA1F8D20AD00F17E78 /* PlaybackManager.m */; };
+		7C1AD4EE1F8D20DC00F17E78 /* PlaybackStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1AD4ED1F8D20DC00F17E78 /* PlaybackStream.m */; };
+		7C55BE6B1F75140300CCDD43 /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */; };
+		7C55BE6C1F75140700CCDD43 /* RtspAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55BE6A1F7513FC00CCDD43 /* RtspAddress.m */; };
+		7C6011BB1FB2060400FE497A /* SURFaceDetectionImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C6011BA1FB2060300FE497A /* SURFaceDetectionImageView.m */; };
+		7C97111C1F7100FD004A8158 /* PlaybackCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */; };
+		7C97111E1F7105C0004A8158 /* PlaybackCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */; };
+		7C9711201F712C7C004A8158 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C97111F1F712C7C004A8158 /* Assets.xcassets */; };
+		7CC3D3841F73CF2300BE38E4 /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CC3D3821F73CE1400BE38E4 /* Main-iPad.storyboard */; };
+		7CC3D38B1F73D18800BE38E4 /* AddAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3D3891F73D18800BE38E4 /* AddAddressViewController.m */; };
+		7CC3D38C1F73D18800BE38E4 /* AddAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC3D38A1F73D18800BE38E4 /* AddAddressViewController.xib */; };
+		7CC3D3901F73D3B600BE38E4 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3D38E1F73D3B600BE38E4 /* TextFieldCell.m */; };
+		7CC3D3911F73D3B600BE38E4 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */; };
+		7CC3D3971F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3D3961F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m */; };
 		7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256731D9E71B700300A88 /* AddressesTableViewController.m */; };
 		7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256761D9E722C00300A88 /* PlaybackViewController.m */; };
 		F4FA48CF1E93E74F006554AC /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */; };
@@ -57,8 +69,7 @@
 		426E88101CDA40AE00C7FF25 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		426E88121CDA40AE00C7FF25 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		426E88131CDA40AE00C7FF25 /* AppDelegate.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; tabWidth = 4; };
-		426E88191CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		426E881B1CDA40AE00C7FF25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		426E88191CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Main-iPhone.storyboard"; sourceTree = "<group>"; };
 		426E881E1CDA40AE00C7FF25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		426E88201CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		426E88251CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeiOSDemoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,9 +78,30 @@
 		426E88301CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeiOSDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeiOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88361CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C1AD4E91F8D20AD00F17E78 /* PlaybackManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlaybackManager.h; sourceTree = "<group>"; };
+		7C1AD4EA1F8D20AD00F17E78 /* PlaybackManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlaybackManager.m; sourceTree = "<group>"; };
+		7C1AD4EC1F8D20DC00F17E78 /* PlaybackStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlaybackStream.h; sourceTree = "<group>"; };
+		7C1AD4ED1F8D20DC00F17E78 /* PlaybackStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlaybackStream.m; sourceTree = "<group>"; };
 		7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SurgeiOS.framework; path = "../DerivedData/Surge/Build/Products/Debug-iphoneos/SurgeiOS.framework"; sourceTree = "<group>"; };
-		7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
-		7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; tabWidth = 4; };
+		7C55BE661F7513FC00CCDD43 /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
+		7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; };
+		7C55BE691F7513FC00CCDD43 /* RtspAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspAddress.h; sourceTree = "<group>"; };
+		7C55BE6A1F7513FC00CCDD43 /* RtspAddress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RtspAddress.m; sourceTree = "<group>"; };
+		7C6011B91FB2060300FE497A /* SURFaceDetectionImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SURFaceDetectionImageView.h; sourceTree = "<group>"; };
+		7C6011BA1FB2060300FE497A /* SURFaceDetectionImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SURFaceDetectionImageView.m; sourceTree = "<group>"; };
+		7C97111A1F7100FD004A8158 /* PlaybackCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackCollectionViewCell.h; sourceTree = "<group>"; };
+		7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackCollectionViewCell.m; sourceTree = "<group>"; };
+		7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaybackCollectionViewCell.xib; sourceTree = "<group>"; };
+		7C97111F1F712C7C004A8158 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7CC3D3831F73CE1400BE38E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Main-iPad.storyboard"; sourceTree = "<group>"; };
+		7CC3D3881F73D18800BE38E4 /* AddAddressViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddAddressViewController.h; sourceTree = "<group>"; };
+		7CC3D3891F73D18800BE38E4 /* AddAddressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddAddressViewController.m; sourceTree = "<group>"; };
+		7CC3D38A1F73D18800BE38E4 /* AddAddressViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAddressViewController.xib; sourceTree = "<group>"; };
+		7CC3D38D1F73D3B600BE38E4 /* TextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextFieldCell.h; sourceTree = "<group>"; };
+		7CC3D38E1F73D3B600BE38E4 /* TextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
+		7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
+		7CC3D3951F73F97D00BE38E4 /* AddressSearchResultsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddressSearchResultsTableViewController.h; sourceTree = "<group>"; };
+		7CC3D3961F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressSearchResultsTableViewController.m; sourceTree = "<group>"; };
 		7CD256721D9E71B700300A88 /* AddressesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressesTableViewController.h; sourceTree = "<group>"; };
 		7CD256731D9E71B700300A88 /* AddressesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesTableViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		7CD256751D9E722C00300A88 /* PlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackViewController.h; sourceTree = "<group>"; };
@@ -128,19 +160,32 @@
 		426E880E1CDA40AE00C7FF25 /* SurgeiOSDemoApp */ = {
 			isa = PBXGroup;
 			children = (
+				426E880F1CDA40AE00C7FF25 /* Supporting Files */,
+				7C55BE641F7513FC00CCDD43 /* DemoResources */,
+				426E88201CDA40AE00C7FF25 /* Info.plist */,
+				7C97111F1F712C7C004A8158 /* Assets.xcassets */,
 				426E88121CDA40AE00C7FF25 /* AppDelegate.h */,
 				426E88131CDA40AE00C7FF25 /* AppDelegate.m */,
 				7CD256751D9E722C00300A88 /* PlaybackViewController.h */,
 				7CD256761D9E722C00300A88 /* PlaybackViewController.m */,
 				7CD256721D9E71B700300A88 /* AddressesTableViewController.h */,
 				7CD256731D9E71B700300A88 /* AddressesTableViewController.m */,
-				426E88181CDA40AE00C7FF25 /* Main.storyboard */,
-				426E881B1CDA40AE00C7FF25 /* Assets.xcassets */,
+				7CC3D3951F73F97D00BE38E4 /* AddressSearchResultsTableViewController.h */,
+				7CC3D3961F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m */,
+				7C97111A1F7100FD004A8158 /* PlaybackCollectionViewCell.h */,
+				7C97111B1F7100FD004A8158 /* PlaybackCollectionViewCell.m */,
+				7C97111D1F7105C0004A8158 /* PlaybackCollectionViewCell.xib */,
+				7CC3D3881F73D18800BE38E4 /* AddAddressViewController.h */,
+				7CC3D3891F73D18800BE38E4 /* AddAddressViewController.m */,
+				7CC3D38A1F73D18800BE38E4 /* AddAddressViewController.xib */,
+				7CC3D38D1F73D3B600BE38E4 /* TextFieldCell.h */,
+				7CC3D38E1F73D3B600BE38E4 /* TextFieldCell.m */,
+				7CC3D38F1F73D3B600BE38E4 /* TextFieldCell.xib */,
+				7C6011B91FB2060300FE497A /* SURFaceDetectionImageView.h */,
+				7C6011BA1FB2060300FE497A /* SURFaceDetectionImageView.m */,
+				426E88181CDA40AE00C7FF25 /* Main-iPhone.storyboard */,
+				7CC3D3821F73CE1400BE38E4 /* Main-iPad.storyboard */,
 				426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */,
-				426E88201CDA40AE00C7FF25 /* Info.plist */,
-				7C43DA191D9BD45600E4D1CD /* NSArray+RtspAddressStorage.h */,
-				7C43DA1A1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m */,
-				426E880F1CDA40AE00C7FF25 /* Supporting Files */,
 			);
 			path = SurgeiOSDemoApp;
 			sourceTree = "<group>";
@@ -177,6 +222,46 @@
 				7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7C1AD4E51F8D205800F17E78 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				7C1AD4E91F8D20AD00F17E78 /* PlaybackManager.h */,
+				7C1AD4EA1F8D20AD00F17E78 /* PlaybackManager.m */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		7C55BE641F7513FC00CCDD43 /* DemoResources */ = {
+			isa = PBXGroup;
+			children = (
+				7C1AD4E51F8D205800F17E78 /* Managers */,
+				7C55BE651F7513FC00CCDD43 /* Categories */,
+				7C55BE681F7513FC00CCDD43 /* Models */,
+			);
+			name = DemoResources;
+			path = ../../DemoResources;
+			sourceTree = "<group>";
+		};
+		7C55BE651F7513FC00CCDD43 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				7C55BE661F7513FC00CCDD43 /* NSArray+RtspAddressStorage.h */,
+				7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		7C55BE681F7513FC00CCDD43 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7C55BE691F7513FC00CCDD43 /* RtspAddress.h */,
+				7C55BE6A1F7513FC00CCDD43 /* RtspAddress.m */,
+				7C1AD4EC1F8D20DC00F17E78 /* PlaybackStream.h */,
+				7C1AD4ED1F8D20DC00F17E78 /* PlaybackStream.m */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,7 +327,7 @@
 		426E88041CDA40AD00C7FF25 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Instil;
 				TargetAttributes = {
 					426E880B1CDA40AE00C7FF25 = {
@@ -285,8 +370,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */,
-				426E881C1CDA40AE00C7FF25 /* Assets.xcassets in Resources */,
-				426E881A1CDA40AE00C7FF25 /* Main.storyboard in Resources */,
+				7C97111E1F7105C0004A8158 /* PlaybackCollectionViewCell.xib in Resources */,
+				7CC3D3841F73CF2300BE38E4 /* Main-iPad.storyboard in Resources */,
+				7C9711201F712C7C004A8158 /* Assets.xcassets in Resources */,
+				426E881A1CDA40AE00C7FF25 /* Main-iPhone.storyboard in Resources */,
+				7CC3D38C1F73D18800BE38E4 /* AddAddressViewController.xib in Resources */,
+				7CC3D3911F73D3B600BE38E4 /* TextFieldCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,10 +401,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				426E88141CDA40AE00C7FF25 /* AppDelegate.m in Sources */,
-				7C43DA1B1D9BD45600E4D1CD /* NSArray+RtspAddressStorage.m in Sources */,
+				7C97111C1F7100FD004A8158 /* PlaybackCollectionViewCell.m in Sources */,
+				7CC3D3901F73D3B600BE38E4 /* TextFieldCell.m in Sources */,
+				7CC3D38B1F73D18800BE38E4 /* AddAddressViewController.m in Sources */,
 				7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */,
+				7C55BE6C1F75140700CCDD43 /* RtspAddress.m in Sources */,
+				7C1AD4EB1F8D20AD00F17E78 /* PlaybackManager.m in Sources */,
+				7C1AD4EE1F8D20DC00F17E78 /* PlaybackStream.m in Sources */,
 				426E88111CDA40AE00C7FF25 /* main.m in Sources */,
+				7C6011BB1FB2060400FE497A /* SURFaceDetectionImageView.m in Sources */,
 				7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */,
+				7C55BE6B1F75140300CCDD43 /* NSArray+RtspAddressStorage.m in Sources */,
+				7CC3D3971F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,12 +448,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		426E88181CDA40AE00C7FF25 /* Main.storyboard */ = {
+		426E88181CDA40AE00C7FF25 /* Main-iPhone.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				426E88191CDA40AE00C7FF25 /* Base */,
 			);
-			name = Main.storyboard;
+			name = "Main-iPhone.storyboard";
 			sourceTree = "<group>";
 		};
 		426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */ = {
@@ -365,6 +462,14 @@
 				426E881E1CDA40AE00C7FF25 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		7CC3D3821F73CE1400BE38E4 /* Main-iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7CC3D3831F73CE1400BE38E4 /* Base */,
+			);
+			name = "Main-iPad.storyboard";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -379,13 +484,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -424,13 +537,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

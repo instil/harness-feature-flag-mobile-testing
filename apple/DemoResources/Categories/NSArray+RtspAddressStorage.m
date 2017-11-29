@@ -17,13 +17,13 @@
         NSArray *stored = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         return [self arrayWithArray:stored];
     }
-    NSArray *defaultValues = @[@"rtsp://192.168.1.54:8554/test", @"rtsp://127.0.0.1:8554/test"];
+    NSArray *defaultValues = @[[RtspAddress withAddress:@"rtsp://127.0.0.1:8554/test" name:@"G-streamer"]];
     [defaultValues saveAsStoredRtspAddresses];
     return [self arrayWithArray:defaultValues];
 }
 
 - (BOOL)saveAsStoredRtspAddresses {
-    NSURL    *path = [NSArray rtspAddressesStoragePath];
+    NSURL  *path = [NSArray rtspAddressesStoragePath];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
     return [data writeToURL:path atomically:YES];
 }

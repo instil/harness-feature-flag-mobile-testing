@@ -7,9 +7,9 @@
 
 package co.instil.surge.client;
 
-import java.util.Date;
-
 import co.instil.surge.callbacks.ResponseCallback;
+
+import java.util.Date;
 
 /**
  *

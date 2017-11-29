@@ -5,7 +5,7 @@
 
 #include "RtspClient.h"
 #include "RtspCommandFactory.h"
-#include "Datetime.h"
+#include "DateTime.h"
 #include "Url.h"
 
 #include "InterleavedRtspTransport.h"
@@ -141,16 +141,6 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
     std::string setup_url = (sessionDescription.IsControlUrlComplete()) ?
         sessionDescription.GetControl():
         m_url + "/" + sessionDescription.GetControl();
-
-    // Gstreamer doesnt like using the control url for subsequent rtsp requests post setup
-    // only applicable in non complete control url's.
-    if (serverAllowsAggregate && !sessionDescription.IsControlUrlComplete()) {
-        // this is the new url we need to use for all requests now
-        m_url = setup_url;
-    }
-    else if (sessionDescription.IsControlUrlComplete()) {
-        m_url = setup_url;
-    }
 
     // set current palette
     m_sessionDescription = sessionDescription;
@@ -578,7 +568,7 @@ void Surge::RtspClient::SetupRtspConnection(const std::string& url, std::functio
         } else {
             ERROR("Did not start the Transport thread.");
         }
-        
+
         callback(result);
     });
 }

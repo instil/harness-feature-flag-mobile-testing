@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RtspAddress.h"
 
 @interface NSArray (RtspAddressStorage)
-+ (instancetype)storedRtspAddresses;
++ (NSArray<RtspAddress *> *)storedRtspAddresses;
 - (BOOL)saveAsStoredRtspAddresses;
 @end

@@ -7,37 +7,60 @@
 //
 
 #import "AddressesTableViewController.h"
-#import "PlaybackViewController.h"
+#import "AddAddressViewController.h"
+#import "AddressSearchResultsTableViewController.h"
+#import "PlaybackManager.h"
 #import "NSArray+RtspAddressStorage.h"
 
 @interface AddressesTableViewController () <UISearchBarDelegate>
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *addButton;
-@property (nonatomic, copy) NSArray <NSString *> *allStoredAddresses;
-@property (nonatomic, copy) NSArray <NSString *> *storedAddressSearchResults;
+@property (strong, nonatomic) UISearchController *searchController;
+@property (strong, nonatomic) AddressSearchResultsTableViewController *searchResultsController;
 @end
 
 @implementation AddressesTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.allStoredAddresses = [NSArray<NSString *> storedRtspAddresses];
-    self.storedAddressSearchResults = self.allStoredAddresses;
+    
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main-iPhone" bundle:nil];
+    self.searchResultsController = [sb instantiateViewControllerWithIdentifier:@"AddressSearchResultsTableViewController"];
+    
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsController];
+    self.searchController.searchBar.delegate = self;
+    self.searchController.searchResultsUpdater = self.searchResultsController;
+    self.searchController.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.searchController.searchBar.returnKeyType = UIReturnKeyDone;
+    self.searchController.searchBar.tintColor = [UIColor whiteColor];
+    self.searchController.searchBar.translucent = NO;
+    self.definesPresentationContext = YES;
+    
+    if (@available(iOS 10.0, *)) {
+        self.searchController.searchBar.textContentType = UITextContentTypeURL;
+    }
+    
+    if (@available(iOS 11.0, *)) {
+        self.navigationItem.searchController = self.searchController;
+        self.navigationItem.hidesSearchBarWhenScrolling = NO;
+        
+        UITextField *sbTextField = [self.searchController.searchBar valueForKey:@"searchField"];
+        if (sbTextField) {
+            UIView *bgView = sbTextField.subviews.firstObject;
+            if (bgView) {
+                bgView.backgroundColor = [UIColor whiteColor];
+                bgView.layer.cornerRadius = 10;
+                bgView.clipsToBounds = true;
+            }
+        }
+    }
+    else {
+        [self.searchController.searchBar sizeToFit];
+        self.searchController.searchBar.barTintColor = self.navigationController.navigationBar.barTintColor;
+        self.tableView.tableHeaderView = self.searchController.searchBar;
+    }
 }
 
 #pragma mark - UISearchBarDelegate
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    self.addButton.enabled = searchText.length;
-    if (searchText.length) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self CONTAINS[cd] %@", searchBar.text];
-        self.storedAddressSearchResults = [self.allStoredAddresses filteredArrayUsingPredicate:predicate];
-    }
-    else {
-        self.storedAddressSearchResults = self.allStoredAddresses;
-    }
-    [self.tableView reloadData];
-}
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
@@ -45,23 +68,20 @@
 
 #pragma mark - Actions
 
-- (IBAction)addButtonAction:(id)sender {
-    self.allStoredAddresses = [self.allStoredAddresses arrayByAddingObject:self.searchBar.text];
-    [self.allStoredAddresses saveAsStoredRtspAddresses];
-    self.searchBar.text = @"";
-    self.storedAddressSearchResults = self.allStoredAddresses;
-    [self.searchBar resignFirstResponder];
-    [self.tableView reloadData];
-}
-
-#pragma mark - Segues
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"AddressSelectionSegue"]) {
-        NSString *selection = self.storedAddressSearchResults[self.tableView.indexPathForSelectedRow.row];
-        PlaybackViewController *playbackViewController = (PlaybackViewController *)segue.destinationViewController;
-        playbackViewController.playbackUrlString = selection;
-    }
+- (IBAction)addButtonAction:(UIBarButtonItem *)sender {
+    AddAddressViewController *addController = [[AddAddressViewController alloc] init];
+    
+    __weak typeof(self) weakSelf = self;
+    [addController setCompletionHandler:^(RtspAddress *address) {
+        [weakSelf addAddress:address];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0] inSection:0]]
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:addController];
+    navController.navigationBar.barTintColor = self.navigationController.navigationBar.barTintColor;
+    navController.modalPresentationStyle = UIModalPresentationPopover;
+    navController.popoverPresentationController.barButtonItem = sender;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
@@ -71,16 +91,22 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.storedAddressSearchResults.count;
+    return self.searchResultsController.allStoredAddresses.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddressTableViewCell"];
-    cell.textLabel.text = self.storedAddressSearchResults[indexPath.row];
+    RtspAddress *address = [self addressAtIndexPath:indexPath];
+    cell.textLabel.text = address.address;
+    cell.detailTextLabel.text = address.name;
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.playbackManager startStreamWithAddress:[self addressAtIndexPath:indexPath]];
+}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
@@ -94,17 +120,31 @@
     if (editingStyle != UITableViewCellEditingStyleDelete) {
         return;
     }
-    NSString *address = self.storedAddressSearchResults[indexPath.row];
-    NSMutableArray *m_storedAddressSearchResults = self.storedAddressSearchResults.mutableCopy;
-    [m_storedAddressSearchResults removeObject:address];
-    self.storedAddressSearchResults = m_storedAddressSearchResults;
-    
-    NSMutableArray *m_allStoredAddresses = self.allStoredAddresses.mutableCopy;
-    [m_allStoredAddresses removeObject:address];
-    self.allStoredAddresses = m_allStoredAddresses;
-    [self.allStoredAddresses saveAsStoredRtspAddresses];
-    
+    RtspAddress *address = self.searchResultsController.allStoredAddresses[indexPath.row];
+    [self removeAddress:address];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+}
+
+#pragma mark - Helpers
+
+- (RtspAddress *)addressAtIndexPath:(NSIndexPath *)indexPath {
+    return self.searchResultsController.allStoredAddresses[indexPath.row];
+}
+
+- (void)addAddress:(RtspAddress *)address {
+    NSMutableArray *m_allStoredAddresses = self.searchResultsController.allStoredAddresses.mutableCopy;
+    [m_allStoredAddresses addObject:address];
+    self.searchResultsController.allStoredAddresses = m_allStoredAddresses;
+    [self.searchResultsController.allStoredAddresses saveAsStoredRtspAddresses];
+    [self.searchResultsController.tableView reloadData];
+}
+
+- (void)removeAddress:(RtspAddress *)address {
+    NSMutableArray *m_allStoredAddresses = self.searchResultsController.allStoredAddresses.mutableCopy;
+    [m_allStoredAddresses removeObject:address];
+    self.searchResultsController.allStoredAddresses = m_allStoredAddresses;
+    [self.searchResultsController.allStoredAddresses saveAsStoredRtspAddresses];
+    [self.searchResultsController.tableView reloadData];
 }
 
 @end

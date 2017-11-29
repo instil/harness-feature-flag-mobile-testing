@@ -10,7 +10,7 @@ package co.instil.surge.player;
 /**
  *
  */
-public interface RtspPlayerDelegate {
+public interface SurgeRtspPlayerDelegate {
     void rtspPlayerDidTimeout();
 
     void rtspPlayerDidUpdateFps(int fps);

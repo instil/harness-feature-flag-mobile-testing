@@ -15,7 +15,7 @@ import co.instil.surge.decoders.mjpeg.MjpegDecoder;
 import co.instil.surge.decoders.mp4v.AsyncMp4vDecoder;
 import co.instil.surge.device.DeviceExaminer;
 
-/*
+/**
  * Factory to generate each supported type of decoder.
  */
 public class DecoderFactory {

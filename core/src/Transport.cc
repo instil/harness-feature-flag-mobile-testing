@@ -87,7 +87,7 @@ void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function
     DEBUG("Sending command to server");
     
     rtspCallback = callback;
-    
+  
     executingRtspCommand = false;
     m_loop->stop();
     m_tcp->write(generateRtspDataPtr((char *) command->BytesPointer(), command->PointerLength()),
@@ -142,7 +142,7 @@ void Surge::Transport::Run() {
     }
     
     
-    ERROR("Closing transport");
+    INFO("Closing transport");
     m_loop->close();
     m_tcp->close();
 }

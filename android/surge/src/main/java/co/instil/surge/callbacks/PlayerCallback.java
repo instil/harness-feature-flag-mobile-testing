@@ -11,5 +11,5 @@ package co.instil.surge.callbacks;
  *
  */
 public interface PlayerCallback {
-    void response(boolean result);
+    void response(int errorCode);
 }

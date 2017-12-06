@@ -32,10 +32,19 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         factory(new SessionDescriptionFactory()){
             
     StartErrorDispatcher();
+            
+    packetBuffer = new RtpPacketBuffer(DEFAULT_PACKET_BUFFER_DELAY_MS);
+    packetBuffer->SetPacketAvailableCallback([this](RtpPacket *packet) {
+        this->ProcessRtpPacket(packet);
+        delete packet;
+    });
 
     if (useInterleavedTcpTransport) {
         INFO("Using Interleaved TCP Transport");
         m_transport = new InterleavedRtspTransport(nullptr);
+        
+        INFO("Disabling packet buffer");
+        packetBuffer->SetBufferDelay(0);
     } else {
         INFO("Using UDP Transport");
         m_transport = new UdpTransport(nullptr);
@@ -43,12 +52,6 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
             
     m_transport->SetDelegate(this);
     frameBuffer = new std::vector<unsigned char>();
-    
-    packetBuffer = new RtpPacketBuffer(DEFAULT_PACKET_BUFFER_DELAY_MS);
-    packetBuffer->SetPacketAvailableCallback([this](RtpPacket *packet) {
-        this->ProcessRtpPacket(packet);
-        delete packet;
-    });
 }
 
 Surge::RtspClient::~RtspClient() {
@@ -82,11 +85,12 @@ void Surge::RtspClient::Describe(const std::string& url,
     m_isPlaying = false;
     
     SetupRtspConnection(url, [&](int result) {
-        INFO("Sending DESCRIBE request");
-        
         if (result != 0) {
+            INFO("Could not connect to the supplied URL to initiate streaming. Incorrect URL?");
             callback(nullptr);
         }
+        
+        INFO("Sending DESCRIBE request");
         
         if (user.length() > 0 && password.length() > 0) {
             RtspCommandFactory::SetBasicAuthCredentials(user.c_str(), password.c_str());
@@ -189,7 +193,10 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
             }
         } else {
             ERROR("SETUP command failed");
-            ERROR(raw_resp->StringDump());
+            
+            if (raw_resp != nullptr) {
+                ERROR(raw_resp->StringDump());
+            }
         }
 
         callback(resp);

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Surge
-   &#160;<span id="projectnumber">1.1.0</span>
+   &#160;<span id="projectnumber">1.1.1</span>
    </div>
    <div id="projectbrief">Surge is a high performance Real-Time Streaming Protocol (RTSP) and Real-Time Transport Protocol (RTP) implementation.</div>
   </td>
@@ -86,8 +86,77 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:ae265f95a36d7f788d0c279a0cd2da6c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the video encoding and associated decoder used for a RTSP stream.  <a href="namespace_surge_xamarini_o_s_bindings.html#ae265f95a36d7f788d0c279a0cd2da6c1">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:ae265f95a36d7f788d0c279a0cd2da6c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9fd93680b94cd5a99c018ef98b65ec2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2">RtspErrorCode</a> { <br />
+&#160;&#160;<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a3dc3de7e2b9766d7721579fc257339c3">RtspErrorCode.UnknownFailure</a> = -1, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a505a83f220c02df2f85c3810cd9ceb38">RtspErrorCode.Success</a> = 200, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a4202ef115ebede37eb22297113f5fb32">RtspErrorCode.Redirect</a> = 302, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a8ba68fee5542f5fd071aed140c39bd8e">RtspErrorCode.MethodNotAllowed</a> = 405, 
+<br />
+&#160;&#160;<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2adccd5724d9b6fd4946eeb4451f9af4a4">RtspErrorCode.ParameterNotUnderstood</a> = 451, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a76008931054caa0241240bc79718078b">RtspErrorCode.ConferenceNotFound</a> = 452, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a62b8e9fdd3138f0819ef8ab632e9c99d">RtspErrorCode.NotEnoughBandwidth</a> = 453, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a999a3e96785a44f4829c7e95f5497432">RtspErrorCode.SessionNotFound</a> = 454, 
+<br />
+&#160;&#160;<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a2c2dc1f697c4183cf8165feb68bf30e0">RtspErrorCode.MethodNotValidInThisState</a> = 455, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a1e519c15a4c8e5b98c82cf026b15daa8">RtspErrorCode.HeaderFieldNotValidInThisState</a> = 456, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2aefcb4954ae74945cf0eba28983e28b6e">RtspErrorCode.InvalidRange</a> = 457, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a1a59987567a7d6c784bbc3c143ff4699">RtspErrorCode.ParameterIsReadOnly</a> = 458, 
+<br />
+&#160;&#160;<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a82bf5678170e4437d8cd2062da4f52d4">RtspErrorCode.AggregateOperationNotAllowed</a> = 459, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a345d96ac2c122b04213af27972e8e33a">RtspErrorCode.OnlyAggregationOperationAllowed</a> = 460, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2ae6058ef75d38a5dd79bc0d9a2cc80e8b">RtspErrorCode.UnsupportedTransport</a> = 461, 
+<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2ad4fbeceabd9b5fd7e31cc0f9b1db1c73">RtspErrorCode.DestinationUnreachable</a> = 462, 
+<br />
+&#160;&#160;<a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2adb9e192ba67e270e21abbae2d98426b9">RtspErrorCode.OptionNotSupported</a> = 551
+<br />
+ }<tr class="memdesc:af9fd93680b94cd5a99c018ef98b65ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines all possible RTSP error codes, as defined by the RTSP specification.  <a href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:af9fd93680b94cd5a99c018ef98b65ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="af9fd93680b94cd5a99c018ef98b65ec2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9fd93680b94cd5a99c018ef98b65ec2">&#9670;&nbsp;</a></span>RtspErrorCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2">SurgeXamariniOSBindings.RtspErrorCode</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defines all possible RTSP error codes, as defined by the RTSP specification. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a3dc3de7e2b9766d7721579fc257339c3"></a>UnknownFailure&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a505a83f220c02df2f85c3810cd9ceb38"></a>Success&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a4202ef115ebede37eb22297113f5fb32"></a>Redirect&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a8ba68fee5542f5fd071aed140c39bd8e"></a>MethodNotAllowed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2adccd5724d9b6fd4946eeb4451f9af4a4"></a>ParameterNotUnderstood&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a76008931054caa0241240bc79718078b"></a>ConferenceNotFound&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a62b8e9fdd3138f0819ef8ab632e9c99d"></a>NotEnoughBandwidth&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a999a3e96785a44f4829c7e95f5497432"></a>SessionNotFound&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a2c2dc1f697c4183cf8165feb68bf30e0"></a>MethodNotValidInThisState&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a1e519c15a4c8e5b98c82cf026b15daa8"></a>HeaderFieldNotValidInThisState&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2aefcb4954ae74945cf0eba28983e28b6e"></a>InvalidRange&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a1a59987567a7d6c784bbc3c143ff4699"></a>ParameterIsReadOnly&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a82bf5678170e4437d8cd2062da4f52d4"></a>AggregateOperationNotAllowed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2a345d96ac2c122b04213af27972e8e33a"></a>OnlyAggregationOperationAllowed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2ae6058ef75d38a5dd79bc0d9a2cc80e8b"></a>UnsupportedTransport&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2ad4fbeceabd9b5fd7e31cc0f9b1db1c73"></a>DestinationUnreachable&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af9fd93680b94cd5a99c018ef98b65ec2adb9e192ba67e270e21abbae2d98426b9"></a>OptionNotSupported&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="ae265f95a36d7f788d0c279a0cd2da6c1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae265f95a36d7f788d0c279a0cd2da6c1">&#9670;&nbsp;</a></span>RtspSessionType</h2>
 

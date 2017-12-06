@@ -6,6 +6,6 @@ var searchData=
   ['rtspplayerdidstopbuffering',['RtspPlayerDidStopBuffering',['../interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#ac178f502817c60bfe3a57b7393d66232',1,'SurgeXamariniOSBindings::SurgeRtspPlayerDelegate']]],
   ['rtspplayerdidstopplayback',['RtspPlayerDidStopPlayback',['../interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#acbda4e7146444810d2800ad8e6a90d88',1,'SurgeXamariniOSBindings::SurgeRtspPlayerDelegate']]],
   ['rtspplayerdidtimeout',['RtspPlayerDidTimeout',['../interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#a090498b65f3da84477fc9486e24235a4',1,'SurgeXamariniOSBindings::SurgeRtspPlayerDelegate']]],
-  ['rtspplayerfailedtoinitiateplayback',['RtspPlayerFailedToInitiatePlayback',['../interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#a50991332700fd45a8a2771e35bd6016c',1,'SurgeXamariniOSBindings::SurgeRtspPlayerDelegate']]],
+  ['rtspplayerfailedtoinitiateplayback',['RtspPlayerFailedToInitiatePlayback',['../interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#a3042de09c8d096bb37d7e3d0373ab449',1,'SurgeXamariniOSBindings::SurgeRtspPlayerDelegate']]],
   ['rtspplayerinitiatedplayback',['RtspPlayerInitiatedPlayback',['../interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#a086947a6da6d523853a8cfacd4be654a',1,'SurgeXamariniOSBindings::SurgeRtspPlayerDelegate']]]
 ];

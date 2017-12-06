@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Surge
-   &#160;<span id="projectnumber">1.1.0</span>
+   &#160;<span id="projectnumber">1.1.1</span>
    </div>
    <div id="projectbrief">Surge is a high performance Real-Time Streaming Protocol (RTSP) and Real-Time Transport Protocol (RTP) implementation.</div>
   </td>
@@ -114,9 +114,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a3c3b5c3ea3dd97de86d36c7fafe333aa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a3c3b5c3ea3dd97de86d36c7fafe333aa">InterleavedTcpTransport</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a3c3b5c3ea3dd97de86d36c7fafe333aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, Surge will stream video data via an interleaved TCP transport rather than via UDP  <a href="#a3c3b5c3ea3dd97de86d36c7fafe333aa">More...</a><br /></td></tr>
 <tr class="separator:a3c3b5c3ea3dd97de86d36c7fafe333aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04d1e0594b8cd84a5b6a15c544568aee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a04d1e0594b8cd84a5b6a15c544568aee">PacketBufferDelay</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a04d1e0594b8cd84a5b6a15c544568aee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time delay, in milliseconds, between Surge receiving a packet containing video data and the frame data being decoded for viewing. Used for error correction and packet reordering purposes for the UDP transport.  <a href="#a04d1e0594b8cd84a5b6a15c544568aee">More...</a><br /></td></tr>
-<tr class="separator:a04d1e0594b8cd84a5b6a15c544568aee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7f5f050c331469cce2e89cc8e2ad496"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#ab7f5f050c331469cce2e89cc8e2ad496">PacketBufferDelay</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab7f5f050c331469cce2e89cc8e2ad496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time delay, in milliseconds, between Surge receiving a packet containing video data and the frame data being decoded for viewing. Used for error correction and packet reordering purposes for the UDP transport.  <a href="#ab7f5f050c331469cce2e89cc8e2ad496">More...</a><br /></td></tr>
+<tr class="separator:ab7f5f050c331469cce2e89cc8e2ad496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The core class used to start and control playback of an RTSP stream on iOS. </p>
@@ -309,7 +309,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Stop playback of the stream, issuing the TEARDOWN RTSP request. </p>
-<p>Once Stop has been requested, the stream canno tbe restarted via the <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a3f7d8277f7aa65454732afd623ee53af" title="Resumes playback of a paused stream. ">Play()</a> command. To restart a stream, plese re-execute the <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a7c2572b559c1758415a21c0bde4417be" title="Initiate playback of the RTSP stream. ">InitiatePlaybackOf()</a> command </p>
+<p>Once Stop has been requested, the stream cannot be restarted via the <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a3f7d8277f7aa65454732afd623ee53af" title="Resumes playback of a paused stream. ">Play()</a> command. To restart a stream, plese re-execute the <a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html#a7c2572b559c1758415a21c0bde4417be" title="Initiate playback of the RTSP stream. ">InitiatePlaybackOf()</a> command </p>
 
 </div>
 </div>
@@ -387,8 +387,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a04d1e0594b8cd84a5b6a15c544568aee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04d1e0594b8cd84a5b6a15c544568aee">&#9670;&nbsp;</a></span>PacketBufferDelay</h2>
+<a id="ab7f5f050c331469cce2e89cc8e2ad496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7f5f050c331469cce2e89cc8e2ad496">&#9670;&nbsp;</a></span>PacketBufferDelay</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -397,7 +397,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SurgeXamariniOSBindings.SurgeRtspPlayer.PacketBufferDelay</td>
+          <td class="memname">int SurgeXamariniOSBindings.SurgeRtspPlayer.PacketBufferDelay</td>
         </tr>
       </table>
   </td>

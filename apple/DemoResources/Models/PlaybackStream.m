@@ -75,7 +75,7 @@
   self.state = PlaybackStreamStatePlaying;
 }
 
-- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player {
+- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player withErrorCode:(RtspErrorCode)errorCode {
   self.state = PlaybackStreamStateErrored;
 }
 

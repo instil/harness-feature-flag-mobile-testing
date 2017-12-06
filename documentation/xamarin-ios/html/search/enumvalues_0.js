@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['h264',['H264',['../namespace_surge_xamarini_o_s_bindings.html#ae265f95a36d7f788d0c279a0cd2da6c1a8ba63b54352f7053b055235a9ec7ac09',1,'SurgeXamariniOSBindings']]]
+  ['aggregateoperationnotallowed',['AggregateOperationNotAllowed',['../namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2a82bf5678170e4437d8cd2062da4f52d4',1,'SurgeXamariniOSBindings']]]
 ];

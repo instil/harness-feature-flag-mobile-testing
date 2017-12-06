@@ -13,6 +13,26 @@
 
 @class SurgeRtspPlayer;
 
+typedef enum {
+    UnknownFailure = -1,
+    Success = 200,
+    Redirect = 302,
+    MethodNotAllowed = 405,
+    ParameterNotUnderstood = 451,
+    ConferenceNotFound = 452,
+    NotEnoughBandwidth = 453,
+    SessionNotFound = 454,
+    MethodNotValidInThisState = 455,
+    HeaderFieldNotValidInThisState = 456,
+    InvalidRange = 457,
+    ParameterIsReadOnly = 458,
+    AggregateOperationNotAllowed = 459,
+    OnlyAggregationOperationAllowed = 460,
+    UnsupportedTransport = 461,
+    DestinationUnreachable = 462,
+    OptionNotSupported = 551
+} RtspErrorCode;
+
 @protocol SurgeRtspPlayerDelegate <NSObject>
 
 @optional
@@ -25,7 +45,7 @@
 /**
  * Called when the player fails to start playback of a stream via an initiatePlaybackOf request.
  */
-- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player;
+- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player withErrorCode: (RtspErrorCode)errorCode;
 
 /**
  * Called when the player begins or resumes playback of a stream.

@@ -33,7 +33,7 @@ int \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a5d41
 \begin{DoxyCompactList}\small\item\em Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal. \end{DoxyCompactList}\item 
 bool \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a3c3b5c3ea3dd97de86d36c7fafe333aa}{Interleaved\+Tcp\+Transport}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em If true, Surge will stream video data via an interleaved T\+CP transport rather than via U\+DP \end{DoxyCompactList}\item 
-bool \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a04d1e0594b8cd84a5b6a15c544568aee}{Packet\+Buffer\+Delay}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+int \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ab7f5f050c331469cce2e89cc8e2ad496}{Packet\+Buffer\+Delay}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Time delay, in milliseconds, between Surge receiving a packet containing video data and the frame data being decoded for viewing. Used for error correction and packet reordering purposes for the U\+DP transport. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -151,7 +151,7 @@ Resumes playback of a paused stream.
 
 Stop playback of the stream, issuing the T\+E\+A\+R\+D\+O\+WN R\+T\+SP request. 
 
-Once Stop has been requested, the stream canno tbe restarted via the \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a3f7d8277f7aa65454732afd623ee53af}{Play()} command. To restart a stream, plese re-\/execute the \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a7c2572b559c1758415a21c0bde4417be}{Initiate\+Playback\+Of()} command 
+Once Stop has been requested, the stream cannot be restarted via the \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a3f7d8277f7aa65454732afd623ee53af}{Play()} command. To restart a stream, plese re-\/execute the \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a7c2572b559c1758415a21c0bde4417be}{Initiate\+Playback\+Of()} command 
 
 \subsection{Property Documentation}
 \mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a6c7ed65f9656542894f0ccfe7e728b0e}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a6c7ed65f9656542894f0ccfe7e728b0e}} 
@@ -184,11 +184,11 @@ Frames per second measured from the currently playing stream.
 
 If true, Surge will stream video data via an interleaved T\+CP transport rather than via U\+DP 
 
-\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a04d1e0594b8cd84a5b6a15c544568aee}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a04d1e0594b8cd84a5b6a15c544568aee}} 
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ab7f5f050c331469cce2e89cc8e2ad496}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_ab7f5f050c331469cce2e89cc8e2ad496}} 
 \index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}!Packet\+Buffer\+Delay@{Packet\+Buffer\+Delay}}
 \index{Packet\+Buffer\+Delay@{Packet\+Buffer\+Delay}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player}}
 \subsubsection{\texorpdfstring{Packet\+Buffer\+Delay}{PacketBufferDelay}}
-{\footnotesize\ttfamily bool Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Packet\+Buffer\+Delay\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+{\footnotesize\ttfamily int Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player.\+Packet\+Buffer\+Delay\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
 
 
 

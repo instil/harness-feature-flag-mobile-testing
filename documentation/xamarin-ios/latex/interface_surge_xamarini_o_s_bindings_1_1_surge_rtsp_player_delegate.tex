@@ -12,7 +12,7 @@ void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_dele
 \begin{DoxyCompactList}\small\item\em Called once a stream has not received a frame from the R\+T\+SP stream within the defined timeout peroid as defined by \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_a5d41ebac63bbd4c26859615abcf1fa0e}{Surge\+Rtsp\+Player\+::\+Timeout}. \end{DoxyCompactList}\item 
 void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a086947a6da6d523853a8cfacd4be654a}{Rtsp\+Player\+Initiated\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
 \begin{DoxyCompactList}\small\item\em Called once stream playback has successfully started. \end{DoxyCompactList}\item 
-void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a50991332700fd45a8a2771e35bd6016c}{Rtsp\+Player\+Failed\+To\+Initiate\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
+void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a3042de09c8d096bb37d7e3d0373ab449}{Rtsp\+Player\+Failed\+To\+Initiate\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player, \hyperlink{namespace_surge_xamarini_o_s_bindings_af9fd93680b94cd5a99c018ef98b65ec2}{Rtsp\+Error\+Code} error\+Code)
 \begin{DoxyCompactList}\small\item\em Called if a stream has failed to successfully start playback. \end{DoxyCompactList}\item 
 void \hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_ad4dabfca0a807a5d2e5edb1c0325379d}{Rtsp\+Player\+Did\+Begin\+Playback} (\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player} player)
 \begin{DoxyCompactList}\small\item\em Called when the player begins or resumes playback of a stream. \end{DoxyCompactList}\item 
@@ -122,11 +122,11 @@ Called once a stream has not received a frame from the R\+T\+SP stream within th
 {\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a50991332700fd45a8a2771e35bd6016c}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a50991332700fd45a8a2771e35bd6016c}} 
+\mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a3042de09c8d096bb37d7e3d0373ab449}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a3042de09c8d096bb37d7e3d0373ab449}} 
 \index{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}!Rtsp\+Player\+Failed\+To\+Initiate\+Playback@{Rtsp\+Player\+Failed\+To\+Initiate\+Playback}}
 \index{Rtsp\+Player\+Failed\+To\+Initiate\+Playback@{Rtsp\+Player\+Failed\+To\+Initiate\+Playback}!Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate@{Surge\+Xamarini\+O\+S\+Bindings\+::\+Surge\+Rtsp\+Player\+Delegate}}
 \subsubsection{\texorpdfstring{Rtsp\+Player\+Failed\+To\+Initiate\+Playback()}{RtspPlayerFailedToInitiatePlayback()}}
-{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Failed\+To\+Initiate\+Playback (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Surge\+Xamarini\+O\+S\+Bindings.\+Surge\+Rtsp\+Player\+Delegate.\+Rtsp\+Player\+Failed\+To\+Initiate\+Playback (\begin{DoxyParamCaption}\item[{\hyperlink{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player}{Surge\+Rtsp\+Player}}]{player,  }\item[{\hyperlink{namespace_surge_xamarini_o_s_bindings_af9fd93680b94cd5a99c018ef98b65ec2}{Rtsp\+Error\+Code}}]{error\+Code }\end{DoxyParamCaption})}
 
 
 
@@ -135,6 +135,8 @@ Called if a stream has failed to successfully start playback.
 
 \begin{DoxyParams}{Parameters}
 {\em player} & The Surge R\+T\+SP Player that called the delegate method.\\
+\hline
+{\em error\+Code} & R\+T\+SP error code causing playback to fail.\\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a086947a6da6d523853a8cfacd4be654a}\label{interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate_a086947a6da6d523853a8cfacd4be654a}} 

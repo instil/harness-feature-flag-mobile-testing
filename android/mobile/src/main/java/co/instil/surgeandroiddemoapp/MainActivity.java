@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
                 surface,
                 new PlayerCallback() {
                     @Override
-                    public void response(boolean result) {
+                    public void response(int errorCode) {
                         palettes = player.getSessionDescriptions();
                         System.out.println("Finished starting stream");
                     }

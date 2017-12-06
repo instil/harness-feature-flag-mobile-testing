@@ -94,7 +94,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                 if (response == null ||
                         response.getSessionDescriptions() == null ||
                         response.getSessionDescriptions().length == 0) {
-                    callback.response(false);
+                    callback.response(response.getStatusCode());
                     return;
                 }
 
@@ -107,8 +107,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                     setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
                             new PlayerCallback() {
                                 @Override
-                                public void response(boolean result) {
-                                    callback.response(result);
+                                public void response(int errorCode) {
+                                    callback.response(errorCode);
                                 }
                             });
                 } else {
@@ -127,10 +127,10 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             @Override
             public void response(Response response) {
                 if (response == null || response.getStatusCode() != 200) {
-                    callback.response(false);
+                    callback.response(response.getStatusCode());
                 }
                 rtspClient.play();
-                callback.response(true);
+                callback.response(-1);
             }
         });
     }

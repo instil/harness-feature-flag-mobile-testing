@@ -159,10 +159,11 @@ namespace SurgeXamariniOSBindings
 		/// <summary>
 		/// Called if a stream has failed to successfully start playback.
 		/// </summary>
-		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        /// <param name="errorCode">RTSP error code causing playback to fail.</param>
 		[Abstract]
-        [Export("rtspPlayerFailedToInitiatePlayback:")]
-		void RtspPlayerFailedToInitiatePlayback(SurgeRtspPlayer player);
+        [Export("rtspPlayerFailedToInitiatePlayback:withErrorCode:")]
+        void RtspPlayerFailedToInitiatePlayback(SurgeRtspPlayer player, RtspErrorCode errorCode);
 
 		/// <summary>
 		/// Called when the player begins or resumes playback of a stream.

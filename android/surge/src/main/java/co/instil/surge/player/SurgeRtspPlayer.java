@@ -91,7 +91,12 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             public void response(Response rawResponse) {
                 DescribeResponse response = (DescribeResponse) rawResponse;
 
-                if (response == null ||
+                if (response == null) {
+                    callback.response(-1);
+                    return;
+                }
+
+                if (response.getStatusCode() != 200 ||
                         response.getSessionDescriptions() == null ||
                         response.getSessionDescriptions().length == 0) {
                     callback.response(response.getStatusCode());

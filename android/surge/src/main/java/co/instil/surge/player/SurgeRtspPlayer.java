@@ -92,11 +92,11 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                 DescribeResponse response = (DescribeResponse) rawResponse;
 
                 if (response == null) {
-                    callback.response(-1);
+                    callback.response(RtspErrorCode.UNKNOWN_FAILURE);
                     return;
                 }
 
-                if (response.getStatusCode() != 200 ||
+                if (response.getStatusCode() != RtspErrorCode.SUCCESS ||
                         response.getSessionDescriptions() == null ||
                         response.getSessionDescriptions().length == 0) {
                     callback.response(response.getStatusCode());
@@ -112,7 +112,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                     setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
                             new PlayerCallback() {
                                 @Override
-                                public void response(int errorCode) {
+                                public void response(RtspErrorCode errorCode) {
                                     callback.response(errorCode);
                                 }
                             });
@@ -131,11 +131,15 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         rtspClient.setup(sessionDescription, new ResponseCallback() {
             @Override
             public void response(Response response) {
-                if (response == null || response.getStatusCode() != 200) {
-                    callback.response(response.getStatusCode());
+                if (response == null || response.getStatusCode() != RtspErrorCode.SUCCESS) {
+                    callback.response(RtspErrorCode.UNKNOWN_FAILURE);
+                    return;
+
+                } else if (response.getStatusCode() == RtspErrorCode.SUCCESS) {
+                    rtspClient.play();
                 }
-                rtspClient.play();
-                callback.response(-1);
+
+                callback.response(response.getStatusCode());
             }
         });
     }

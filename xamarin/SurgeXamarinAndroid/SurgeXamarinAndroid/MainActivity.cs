@@ -39,7 +39,7 @@ namespace SurgeXamarinAndroid
 
 		public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
 		{
-            player.InitiatePlaybackOf("rtsp://192.168.1.151:8554/test", new SurgeSurface(surface, width, height), (int errorCode) => {
+            player.InitiatePlaybackOf("rtsp://192.168.1.103:8554/test", new SurgeSurface(surface, width, height), (RtspErrorCode errorCode) => {
                 Console.WriteLine(errorCode);
             });
    		}

@@ -23,6 +23,7 @@ import java.util.TimeZone;
 
 import co.instil.surge.callbacks.PlayerCallback;
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.player.RtspErrorCode;
 import co.instil.surge.player.SurgeRtspPlayer;
 import co.instil.surge.client.SurgeSurface;
 import co.instil.surge.player.SurgeRtspPlayerDelegate;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
                 surface,
                 new PlayerCallback() {
                     @Override
-                    public void response(int errorCode) {
+                    public void response(RtspErrorCode errorCode) {
                         palettes = player.getSessionDescriptions();
                         System.out.println("Finished starting stream");
                     }

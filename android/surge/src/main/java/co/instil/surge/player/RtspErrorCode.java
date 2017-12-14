@@ -8,7 +8,7 @@
 package co.instil.surge.player;
 
 /**
- *
+ * Enum containing all possible RTSP response error codes, as defined in the RTSP specification.
  */
 public enum RtspErrorCode {
     UNKNOWN_FAILURE(-1),

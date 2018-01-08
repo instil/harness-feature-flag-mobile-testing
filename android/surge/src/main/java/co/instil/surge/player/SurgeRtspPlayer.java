@@ -91,10 +91,15 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             public void response(Response rawResponse) {
                 DescribeResponse response = (DescribeResponse) rawResponse;
 
-                if (response == null ||
+                if (response == null) {
+                    callback.response(RtspErrorCode.UNKNOWN_FAILURE);
+                    return;
+                }
+
+                if (response.getStatusCode() != RtspErrorCode.SUCCESS ||
                         response.getSessionDescriptions() == null ||
                         response.getSessionDescriptions().length == 0) {
-                    callback.response(false);
+                    callback.response(response.getStatusCode());
                     return;
                 }
 
@@ -107,8 +112,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                     setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
                             new PlayerCallback() {
                                 @Override
-                                public void response(boolean result) {
-                                    callback.response(result);
+                                public void response(RtspErrorCode errorCode) {
+                                    callback.response(errorCode);
                                 }
                             });
                 } else {
@@ -126,11 +131,15 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         rtspClient.setup(sessionDescription, new ResponseCallback() {
             @Override
             public void response(Response response) {
-                if (response == null || response.getStatusCode() != 200) {
-                    callback.response(false);
+                if (response == null) {
+                    callback.response(RtspErrorCode.UNKNOWN_FAILURE);
+                    return;
+
+                } else if (response.getStatusCode() == RtspErrorCode.SUCCESS) {
+                    rtspClient.play();
                 }
-                rtspClient.play();
-                callback.response(true);
+
+                callback.response(response.getStatusCode());
             }
         });
     }

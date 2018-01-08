@@ -15,6 +15,11 @@ Surge seeks to address these issues by being designed from the ground up to exec
 
 ## Release Notes
 
+### v1.1.1
+
+ * Added a RTP packet buffer to help handle out of order and lost packets with the UDP transport
+ * Additonal error informtion now passed through to the client
+
 ### v1.1
 
  * Added UDP support

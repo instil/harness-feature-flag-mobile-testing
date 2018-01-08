@@ -18,6 +18,7 @@
 #include "DescribeResponse.h"
 #include "SetupResponse.h"
 #include "Depacketizer.h"
+#include "RtpPacketBuffer.h"
 
 #include "DateTime.h"
 
@@ -204,16 +205,22 @@ namespace Surge {
         bool endTimeSet;
         SurgeUtil::DateTime endDate;
         SessionDescriptionFactory *factory;
+                
+    public:
+        Surge::RtpPacketBuffer *packetBuffer;
         
-        ///////
+        int GetPacketBufferDelay() {
+            return packetBuffer->GetBufferDelay();
+        }
+        
+        void SetPacketBufferDelay(int bufferDelayMilliseconds) {
+            packetBuffer->SetBufferDelay(bufferDelayMilliseconds);
+        }
         
     public:
         void CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet);
-        int lastPacket = 0;
+        long long lastPacketSequenceNum = MAX_SEQ_NUM;
         bool dropFrame = false;
-        
-        int successfulPackets = 0;
-        int missedPackets = 0;
     };
     
 }

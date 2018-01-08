@@ -15,17 +15,14 @@ echo "Executing tests"
 
 echo "Building macOS framework"
 xcodebuild -workspace Surge.xcworkspace -scheme SurgeMacOS -configuration Release clean build \
-  CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/macOS \
-  CODE_SIGN_IDENTITY="iPhone Developer: Instil Software"
+  CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/macOS
 
 echo "Building iOS framework"
 xcodebuild -workspace Surge.xcworkspace -scheme SurgeiOS -configuration Release -sdk iphoneos clean build \
-  CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/iOS \
-  CODE_SIGN_IDENTITY="iPhone Developer: Instil Software"
+  CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/iOS
 
 xcodebuild -workspace Surge.xcworkspace -scheme SurgeiOS -configuration Release -sdk iphonesimulator clean build \
-  CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/iOS/simulator \
-  CODE_SIGN_IDENTITY="iPhone Developer: Instil Software"
+  CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/iOS/simulator
 
 cd build/frameworks/iOS
 

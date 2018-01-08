@@ -23,6 +23,7 @@ import java.util.TimeZone;
 
 import co.instil.surge.callbacks.PlayerCallback;
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.player.RtspErrorCode;
 import co.instil.surge.player.SurgeRtspPlayer;
 import co.instil.surge.client.SurgeSurface;
 import co.instil.surge.player.SurgeRtspPlayerDelegate;
@@ -57,13 +58,11 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
         SurgeSurface surface = new SurgeSurface(new Surface(surfaceTexture), width, height);
 
-        player.initiatePlaybackOf("rtsp://192.168.1.40/media/1/video/1?commport=80&Warped=True",
+        player.initiatePlaybackOf("rtsp://192.168.1.52:8554/test",
                 surface,
-                "admin",
-                "admin",
                 new PlayerCallback() {
                     @Override
-                    public void response(boolean result) {
+                    public void response(RtspErrorCode errorCode) {
                         palettes = player.getSessionDescriptions();
                         System.out.println("Finished starting stream");
                     }

@@ -22,9 +22,9 @@
                  duration:(int)duration {
 
     NSArray *nalUnits = [SurgeNalUnitParser parseNalUnitsFromFrameBuffer:frameBuffer ofLength:size];
-    for (SurgeNalUnit *nalUnit in nalUnits) {
-        SurgeLogDebug(@"NALU Type : %lu", (unsigned long)nalUnit.type);
-    }
+//    for (SurgeNalUnit *nalUnit in nalUnits) {
+//        SurgeLogDebug(@"NALU Type : %lu", (unsigned long)nalUnit.type);
+//    }
     
     [self setFormatDescriptionFromParameterSetsIfAvailable:nalUnits];
     

@@ -70,7 +70,7 @@ namespace SurgeXamariniOSBindings
         /// <summary>
         /// Stop playback of the stream, issuing the TEARDOWN RTSP request.
         /// 
-        /// Once Stop has been requested, the stream canno tbe restarted via the Play() command. To restart a stream, plese re-execute the InitiatePlaybackOf() command
+        /// Once Stop has been requested, the stream cannot be restarted via the Play() command. To restart a stream, plese re-execute the InitiatePlaybackOf() command
         /// </summary>
 		[Export("stop")]
         void Stop();
@@ -114,8 +114,7 @@ namespace SurgeXamariniOSBindings
         /// Default value: 5000ms
 		/// </summary>
 		[Export("timeout")]
-		int Timeout 
-        { get; set; }
+		int Timeout { get; set; }
 
 		/// <summary>
 		/// If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
@@ -123,6 +122,15 @@ namespace SurgeXamariniOSBindings
 		[Export("interleavedTcpTransport")]
 		bool InterleavedTcpTransport { get; set; }
 
+		/// <summary>
+		/// Time delay, in milliseconds, between Surge receiving a packet containing video data and the 
+        /// frame data being decoded for viewing. Used for error correction and packet reordering 
+        /// purposes for the UDP transport. 
+        /// 
+        /// Default: 200ms
+		/// </summary>
+		[Export("packetBufferDelay")]
+		int PacketBufferDelay { get; set; }
 	}
 
     /// <summary>
@@ -151,10 +159,11 @@ namespace SurgeXamariniOSBindings
 		/// <summary>
 		/// Called if a stream has failed to successfully start playback.
 		/// </summary>
-		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        /// <param name="errorCode">RTSP error code causing playback to fail.</param>
 		[Abstract]
-        [Export("rtspPlayerFailedToInitiatePlayback:")]
-		void RtspPlayerFailedToInitiatePlayback(SurgeRtspPlayer player);
+        [Export("rtspPlayerFailedToInitiatePlayback:withErrorCode:")]
+        void RtspPlayerFailedToInitiatePlayback(SurgeRtspPlayer player, RtspErrorCode errorCode);
 
 		/// <summary>
 		/// Called when the player begins or resumes playback of a stream.

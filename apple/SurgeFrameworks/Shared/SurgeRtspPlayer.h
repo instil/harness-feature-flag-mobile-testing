@@ -13,6 +13,26 @@
 
 @class SurgeRtspPlayer;
 
+typedef NS_ENUM(NSInteger, RtspErrorCode) {
+    RtspErrorCodeUnknownFailure = -1,
+    RtspErrorCodeSuccess = 200,
+    RtspErrorCodeRedirect = 302,
+    RtspErrorCodeMethodNotAllowed = 405,
+    RtspErrorCodeParameterNotUnderstood = 451,
+    RtspErrorCodeConferenceNotFound = 452,
+    RtspErrorCodeNotEnoughBandwidth = 453,
+    RtspErrorCodeSessionNotFound = 454,
+    RtspErrorCodeMethodNotValidInThisState = 455,
+    RtspErrorCodeHeaderFieldNotValidInThisState = 456,
+    RtspErrorCodeInvalidRange = 457,
+    RtspErrorCodeParameterIsReadOnly = 458,
+    RtspErrorCodeAggregateOperationNotAllowed = 459,
+    RtspErrorCodeOnlyAggregationOperationAllowed = 460,
+    RtspErrorCodeUnsupportedTransport = 461,
+    RtspErrorCodeDestinationUnreachable = 462,
+    RtspErrorCodeOptionNotSupported = 551
+};
+
 @protocol SurgeRtspPlayerDelegate <NSObject>
 
 @optional
@@ -25,7 +45,7 @@
 /**
  * Called when the player fails to start playback of a stream via an initiatePlaybackOf request.
  */
-- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player;
+- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player withErrorCode: (RtspErrorCode)errorCode;
 
 /**
  * Called when the player begins or resumes playback of a stream.
@@ -134,5 +154,10 @@
  * If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
  */
 @property (nonatomic, assign) bool interleavedTcpTransport;
+
+/*
+ * Time delay, in milliseconds, between Surge receiving a packet containing video data and the frame data being decoded for viewing. Used for error correction and packet reordering purposes for the UDP transport. Default: 200ms
+ */
+@property (nonatomic, assign) int packetBufferDelay;
 
 @end

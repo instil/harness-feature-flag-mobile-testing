@@ -13,14 +13,14 @@ namespace SurgeXamarinAndroid
 	[Activity(Label = "SurgeXamarinAndroid", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : Activity, TextureView.ISurfaceTextureListener
 	{
-		RtspPlayer player;
+		SurgeRtspPlayer player;
 		private TextureView textureView;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 
-			player = new RtspPlayer();
+			player = new SurgeRtspPlayer();
 
 			SetContentView(Resource.Layout.activity_main);
 			textureView = (TextureView)FindViewById(Resource.Id.textureView);
@@ -39,8 +39,8 @@ namespace SurgeXamarinAndroid
 
 		public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
 		{
-            player.InitiatePlaybackOf("rtsp://localhost:8554/test", new SurgeSurface(surface, width, height), (bool result) => {
-                Console.WriteLine(result);
+            player.InitiatePlaybackOf("rtsp://192.168.1.103:8554/test", new SurgeSurface(surface, width, height), (RtspErrorCode errorCode) => {
+                Console.WriteLine(errorCode);
             });
    		}
 

@@ -57,7 +57,7 @@ namespace SurgeXamariniOSDemoApp {
 			});
         }
 
-        public override void RtspPlayerFailedToInitiatePlayback(SurgeRtspPlayer player) {
+        public override void RtspPlayerFailedToInitiatePlayback(SurgeRtspPlayer player, RtspErrorCode code) {
 			InvokeOnMainThread(() => {
 				statusLabel.Text = "Failed to initiate playback";
 			});

@@ -7,9 +7,11 @@
 
 package co.instil.surge.callbacks;
 
+import co.instil.surge.player.RtspErrorCode;
+
 /**
  *
  */
 public interface PlayerCallback {
-    void response(boolean result);
+    void response(RtspErrorCode errorCode);
 }

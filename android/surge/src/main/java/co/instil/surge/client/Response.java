@@ -9,22 +9,24 @@ package co.instil.surge.client;
 
 import java.util.Map;
 
+import co.instil.surge.player.RtspErrorCode;
+
 /**
  *
  */
 public class Response {
 
-    private final int statusCode;
+    private final RtspErrorCode statusCode;
     private final Map<String, String> headers;
     private final String body;
 
     public Response(int statusCode, Map<String, String> headers, String body) {
-        this.statusCode = statusCode;
+        this.statusCode = RtspErrorCode.valueOf(statusCode);
         this.headers = headers;
         this.body = body;
     }
 
-    public int getStatusCode() {
+    public RtspErrorCode getStatusCode() {
         return statusCode;
     }
 

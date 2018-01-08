@@ -19,12 +19,12 @@
 /**
  * Send a DESCRIBE mesage to the RTSP stream
  */
-- (void)describe:(void (^)(std::vector<Surge::SessionDescription>)) callback;
-
+- (void)describe:(void (^)(std::vector<Surge::SessionDescription>, RtspErrorCode))callback;
+                  
 /**
  * Send a SETUP mesage to the RTSP stream
  */
-- (void)setupStream:(Surge::SessionDescription)sessionDescription withCallback:(void (^)(bool))callback;
+- (void)setupStream:(Surge::SessionDescription)sessionDescription withCallback:(void (^)(RtspErrorCode))callback;
 
 /**
  * Select the preferred initial Session Description, returned from the last DESCRIBE message

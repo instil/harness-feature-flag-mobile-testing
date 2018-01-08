@@ -43,10 +43,10 @@ task findbugs(type: FindBugs) {
         xml.enabled = true
         html.enabled = false
         xml {
-            destination "$project.buildDir/reports/findbugs/main.xml"
+            destination new File("$project.buildDir/reports/findbugs/main.xml")
         }
         html {
-            destination "$project.buildDir/reports/findbugs/main.html"
+            destination new File("$project.buildDir/reports/findbugs/main.html")
         }
     }
 }

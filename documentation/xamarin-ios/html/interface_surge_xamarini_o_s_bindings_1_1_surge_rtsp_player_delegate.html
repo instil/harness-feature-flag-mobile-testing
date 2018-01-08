@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Surge
-   &#160;<span id="projectnumber">1.1.0</span>
+   &#160;<span id="projectnumber">1.1.1</span>
    </div>
    <div id="projectbrief">Surge is a high performance Real-Time Streaming Protocol (RTSP) and Real-Time Transport Protocol (RTP) implementation.</div>
   </td>
@@ -83,9 +83,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a086947a6da6d523853a8cfacd4be654a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#a086947a6da6d523853a8cfacd4be654a">RtspPlayerInitiatedPlayback</a> (<a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html">SurgeRtspPlayer</a> player)</td></tr>
 <tr class="memdesc:a086947a6da6d523853a8cfacd4be654a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called once stream playback has successfully started.  <a href="#a086947a6da6d523853a8cfacd4be654a">More...</a><br /></td></tr>
 <tr class="separator:a086947a6da6d523853a8cfacd4be654a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50991332700fd45a8a2771e35bd6016c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#a50991332700fd45a8a2771e35bd6016c">RtspPlayerFailedToInitiatePlayback</a> (<a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html">SurgeRtspPlayer</a> player)</td></tr>
-<tr class="memdesc:a50991332700fd45a8a2771e35bd6016c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called if a stream has failed to successfully start playback.  <a href="#a50991332700fd45a8a2771e35bd6016c">More...</a><br /></td></tr>
-<tr class="separator:a50991332700fd45a8a2771e35bd6016c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3042de09c8d096bb37d7e3d0373ab449"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#a3042de09c8d096bb37d7e3d0373ab449">RtspPlayerFailedToInitiatePlayback</a> (<a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html">SurgeRtspPlayer</a> player, <a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2">RtspErrorCode</a> errorCode)</td></tr>
+<tr class="memdesc:a3042de09c8d096bb37d7e3d0373ab449"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called if a stream has failed to successfully start playback.  <a href="#a3042de09c8d096bb37d7e3d0373ab449">More...</a><br /></td></tr>
+<tr class="separator:a3042de09c8d096bb37d7e3d0373ab449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4dabfca0a807a5d2e5edb1c0325379d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player_delegate.html#ad4dabfca0a807a5d2e5edb1c0325379d">RtspPlayerDidBeginPlayback</a> (<a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html">SurgeRtspPlayer</a> player)</td></tr>
 <tr class="memdesc:ad4dabfca0a807a5d2e5edb1c0325379d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the player begins or resumes playback of a stream.  <a href="#ad4dabfca0a807a5d2e5edb1c0325379d">More...</a><br /></td></tr>
 <tr class="separator:ad4dabfca0a807a5d2e5edb1c0325379d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -271,8 +271,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a50991332700fd45a8a2771e35bd6016c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50991332700fd45a8a2771e35bd6016c">&#9670;&nbsp;</a></span>RtspPlayerFailedToInitiatePlayback()</h2>
+<a id="a3042de09c8d096bb37d7e3d0373ab449"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3042de09c8d096bb37d7e3d0373ab449">&#9670;&nbsp;</a></span>RtspPlayerFailedToInitiatePlayback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,8 +281,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void SurgeXamariniOSBindings.SurgeRtspPlayerDelegate.RtspPlayerFailedToInitiatePlayback </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="interface_surge_xamarini_o_s_bindings_1_1_surge_rtsp_player.html">SurgeRtspPlayer</a>&#160;</td>
-          <td class="paramname"><em>player</em></td><td>)</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespace_surge_xamarini_o_s_bindings.html#af9fd93680b94cd5a99c018ef98b65ec2">RtspErrorCode</a>&#160;</td>
+          <td class="paramname"><em>errorCode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -291,6 +301,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The Surge RTSP Player that called the delegate method.</td></tr>
+    <tr><td class="paramname">errorCode</td><td>RTSP error code causing playback to fail.</td></tr>
   </table>
   </dd>
 </dl>

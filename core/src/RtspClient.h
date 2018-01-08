@@ -219,7 +219,7 @@ namespace Surge {
         
     public:
         void CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet);
-        long long lastPacketSequenceNum = 65535;
+        long long lastPacketSequenceNum = MAX_SEQ_NUM;
         bool dropFrame = false;
     };
     

@@ -13,25 +13,25 @@
 
 @class SurgeRtspPlayer;
 
-typedef enum {
-    UnknownFailure = -1,
-    Success = 200,
-    Redirect = 302,
-    MethodNotAllowed = 405,
-    ParameterNotUnderstood = 451,
-    ConferenceNotFound = 452,
-    NotEnoughBandwidth = 453,
-    SessionNotFound = 454,
-    MethodNotValidInThisState = 455,
-    HeaderFieldNotValidInThisState = 456,
-    InvalidRange = 457,
-    ParameterIsReadOnly = 458,
-    AggregateOperationNotAllowed = 459,
-    OnlyAggregationOperationAllowed = 460,
-    UnsupportedTransport = 461,
-    DestinationUnreachable = 462,
-    OptionNotSupported = 551
-} RtspErrorCode;
+typedef NS_ENUM(NSInteger, RtspErrorCode) {
+    RtspErrorCodeUnknownFailure = -1,
+    RtspErrorCodeSuccess = 200,
+    RtspErrorCodeRedirect = 302,
+    RtspErrorCodeMethodNotAllowed = 405,
+    RtspErrorCodeParameterNotUnderstood = 451,
+    RtspErrorCodeConferenceNotFound = 452,
+    RtspErrorCodeNotEnoughBandwidth = 453,
+    RtspErrorCodeSessionNotFound = 454,
+    RtspErrorCodeMethodNotValidInThisState = 455,
+    RtspErrorCodeHeaderFieldNotValidInThisState = 456,
+    RtspErrorCodeInvalidRange = 457,
+    RtspErrorCodeParameterIsReadOnly = 458,
+    RtspErrorCodeAggregateOperationNotAllowed = 459,
+    RtspErrorCodeOnlyAggregationOperationAllowed = 460,
+    RtspErrorCodeUnsupportedTransport = 461,
+    RtspErrorCodeDestinationUnreachable = 462,
+    RtspErrorCodeOptionNotSupported = 551
+};
 
 @protocol SurgeRtspPlayerDelegate <NSObject>
 

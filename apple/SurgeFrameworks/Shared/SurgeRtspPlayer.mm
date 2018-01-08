@@ -188,7 +188,7 @@ private:
     };
     
     void(^onSetup)(RtspErrorCode) = ^(RtspErrorCode errorCode) {
-        if (errorCode != Success) {
+        if (errorCode != RtspErrorCodeSuccess) {
             if (!weakSelf.interleavedRtspTransport) {
                 SurgeLogInfo(@"Failed to connect to stream via UDP, trying Interleaved TCP");
 
@@ -206,7 +206,7 @@ private:
     
     void(^onDescribe)(std::vector<Surge::SessionDescription>, RtspErrorCode) = ^(std::vector<Surge::SessionDescription> descriptions, RtspErrorCode errorCode) {
         weakSelf.sessionDescriptions = descriptions;
-        if (errorCode != Success || weakSelf.sessionDescriptions.size() == 0) {
+        if (errorCode != RtspErrorCodeSuccess || weakSelf.sessionDescriptions.size() == 0) {
             if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:withErrorCode:)]) {
                 [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf withErrorCode:errorCode];
             }
@@ -260,7 +260,7 @@ private:
                           [=](Surge::DescribeResponse *describeResponse) {
                               
                               std::vector<Surge::SessionDescription> descriptions = std::vector<Surge::SessionDescription>();
-                              int errorCode = (int)UnknownFailure;
+                              int errorCode = (int)RtspErrorCodeUnknownFailure;
                               
                               if (describeResponse != NULL) {
                                   descriptions = describeResponse->GetSessionDescriptions();
@@ -285,7 +285,7 @@ private:
                                callback((RtspErrorCode)setupResponse->GetCode());
                                delete setupResponse;
                            } else {
-                               callback(UnknownFailure);
+                               callback(RtspErrorCodeUnknownFailure);
                            }
                        });
 }
@@ -307,7 +307,7 @@ private:
                           if (callback) {
                               callback((RtspErrorCode)playResponse->GetCode());
                           } else {
-                              callback(UnknownFailure);
+                              callback(RtspErrorCodeUnknownFailure);
                           }
                           delete playResponse;
                       });
@@ -316,7 +316,7 @@ private:
 - (void)play {
     __weak typeof(self) weakSelf = self;
     void(^callback)(RtspErrorCode) = ^(RtspErrorCode errorCode) {
-        if (errorCode == Success && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
+        if (errorCode == RtspErrorCodeSuccess && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.delegate rtspPlayerDidBeginPlayback:weakSelf];
             });

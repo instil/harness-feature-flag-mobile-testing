@@ -60,14 +60,56 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         return new RtspClient(this, interleavedTcpTransport);
     }
 
+    /**
+     * Initiate playback of the RTSP stream.
+     * 
+     * This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
+     * Once completed, Surge will notify the user of the requests result via the supplied callback method.
+     * If successful, the video stream will start playing on the provided surface associated with the SurgeRtspPlayer#Surface property.
+     * 
+     * \sa SurgeRtspPlayerDelegate
+     * @param url The RTSP Stream URL
+     * @param surface The Surface that Surge will use to play the RTSP video stream on.
+     * @param callback Callback method called once the stream has started playing, or has irrecoverably failed.
+     */
     public synchronized void initiatePlaybackOf(String url, SurgeSurface surface, final PlayerCallback callback) {
         initiatePlaybackOf(url, surface, "", "", null, null, callback);
     }
 
+    /**
+     * Initiate playback of a basic auth protected RTSP stream.
+     *
+     * This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
+     * Once completed, Surge will notify the user of the requests result via the supplied callback method.
+     * If successful, the video stream will start playing on the provided surface associated with the SurgeRtspPlayer#Surface property.
+     *
+     * \sa SurgeRtspPlayerDelegate
+     * @param url The RTSP Stream URL
+     * @param surface The Surface that Surge will use to play the RTSP video stream on.
+     * @param username Username used to authenticate the stream.
+     * @param password Password associated with the provided username.
+     * @param callback Callback method called once the stream has started playing, or has irrecoverably failed.
+     */
     public synchronized void initiatePlaybackOf(String url, SurgeSurface surface, String username, String password, final PlayerCallback callback) {
         initiatePlaybackOf(url, surface, username, password, null, null, callback);
     }
 
+    /**
+     * Initiate playback of a basic auth protected RTSP stream at a specified timestamp.
+     *
+     * This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
+     * Once completed, Surge will notify the user of the requests result via the supplied callback method.
+     * If successful, the video stream will start playing on the provided surface associated with the SurgeRtspPlayer#Surface property.
+     *
+     * \sa SurgeRtspPlayerDelegate
+     * @param url The RTSP Stream URL
+     * @param surface The Surface that Surge will use to play the RTSP video stream on.
+     * @param username Username used to authenticate the stream.
+     * @param password Password associated with the provided username.
+     * @param startTime If the RTSP stream supports recorded video, timestamp to start playing video from.
+     * @param endTime If the RTSP stream supports recorded video, timestamp to finish playing video at.
+     * @param callback Callback method called once the stream has started playing, or has irrecoverably failed.
+     */
     public synchronized void initiatePlaybackOf(final String url, SurgeSurface surface, final String username, final String password, Date startTime, Date endTime, final PlayerCallback callback) {
         this.url = url;
         this.username = username;
@@ -170,22 +212,42 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         }
     }
 
+    /**
+     * Resumes playback of a paused stream.
+     */
     public void play() {
         logger.debug("Starting/resuming playback of {}", url);
         rtspClient.play();
     }
 
+    /**
+     * Pause playback of the stream.
+     */
     public void pause() {
         logger.debug("Pausing playback of {}", url);
         rtspClient.pause();
     }
 
+    /**
+     *Stop playback of the stream, issuing the TEARDOWN RTSP request.
+     * 
+     * Once Stop has been requested, the stream cannot be restarted via the Play() command.
+     * To restart a stream, please re-execute the InitiatePlaybackOf() command.
+     */
     public void stop() {
         logger.debug("Stopping playback of {}", url);
         rtspClient.tearDown();
         decoder = null;
     }
 
+    /**
+     * Sek playback to a specified point in time.
+     *
+     * Seeking has to be supported by the RTSP stream for this transaction to succeed. If unsupported,
+     * calling this method will likely cause the stream to stop all playback and timeout.
+     * @param startTime Timestamp to start playing video from.
+     * @param endTime Timestamp to finish playing video at.
+     */
     public void seek(Date startTime, Date endTime) {
         rtspClient.pause();
 
@@ -204,10 +266,20 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         return sessionDescriptions[0];
     }
 
+    /**
+     * The surface that Surge will use to play the RTSP video stream on.
+     * @param surface Surface to play the RTSP video on.
+     * @param width Width of the surface.
+     * @param height Height of the surface.
+     */
     public void setSurface(Surface surface, int width, int height) {
         setSurface(new SurgeSurface(surface, width, height));
     }
 
+    /**
+     * The surface that Surge will use to play the RTSP video stream on.
+     * @param surface Surface to play the RTSP video on.
+     */
     public void setSurface(SurgeSurface surface) {
         this.surface = surface;
 
@@ -303,11 +375,11 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
 
 
-    public SessionDescription getCurrentSessionDescription() {
+    protected SessionDescription getCurrentSessionDescription() {
         return sessionDescription;
     }
 
-    public SessionDescription[] getSessionDescriptions() {
+    protected SessionDescription[] getSessionDescriptions() {
         return sessionDescriptions;
     }
 
@@ -315,23 +387,63 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         this.sessionDescriptions = sessionDescriptions;
     }
 
+    /**
+     *
+     * @return
+     */
     public ExtendedHeader getExtendedHeader() {
         return extendedHeader;
     }
 
+    /**
+     * Frames per second measured from the currently playing stream.
+     * @return Frames per second measured from the currently playing stream.
+     */
     public int getFramesPerSecond() {
         return framesPerSecond;
     }
 
+    /**
+     * Returns true if Surge is streaming video data by a TCP transport, rather than a UDP transport.
+     * @return true if Surge is streaming video data by a TCP transport, rather than a UDP transport.
+     */
     public boolean isInterleavedTransport() {
         return rtspClient.isInterleavedTransport();
     }
 
+    /**
+     * If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
+     * @param interleavedTcpTransport True if requiring a TCP transport, false if using a UDP transport.
+     */
     public void setInterleavedTransport(boolean interleavedTcpTransport) {
         if (rtspClient.isInterleavedTransport() == interleavedTcpTransport) {
             return;
         }
 
         rtspClient = generateRtspClient(interleavedTcpTransport);
+    }
+
+    /**
+     * Time delay, in milliseconds, between Surge receiving a packet containing video data and the 
+     * frame data being decoded for viewing. Used for error correction and packet reordering 
+     * purposes for the UDP transport. 
+     * 
+     * Default: 200ms
+     * @return Time delay, in milliseconds, between Surge receiving a packet containing video data and the
+     * frame data being decoded for viewing
+     */
+    public int getPacketBufferDelay() {
+        return rtspClient.getPacketBufferDelay();
+    }
+
+    /**
+     * Set the time delay, in milliseconds, between Surge receiving a packet containing video data and the
+     * frame data being decoded for viewing. Used for error correction and packet reordering 
+     * purposes for the UDP transport.
+     * @param packetBufferDelay Time to wait between urge receiving a packet containing video data and the
+     * frame data being decoded for viewing.
+     */
+    public void setPacketBufferDelay(int packetBufferDelay) {
+        rtspClient.setPacketBufferDelay(packetBufferDelay);
     }
 }

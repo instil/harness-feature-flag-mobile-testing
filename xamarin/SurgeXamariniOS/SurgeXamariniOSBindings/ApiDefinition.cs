@@ -36,7 +36,7 @@ namespace SurgeXamariniOSBindings
 		void InitiatePlaybackOf(NSUrl url);
 
 		/// <summary>
-		/// Initiate playback of the a basic auth protected RTSP stream.
+		/// Initiate playback of a basic auth protected RTSP stream.
 		/// 
 		/// This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
 		/// Once completed, Surge will notify the user of the requests result via the Surge RTSP delegate.
@@ -70,7 +70,7 @@ namespace SurgeXamariniOSBindings
         /// <summary>
         /// Stop playback of the stream, issuing the TEARDOWN RTSP request.
         /// 
-        /// Once Stop has been requested, the stream cannot be restarted via the Play() command. To restart a stream, plese re-execute the InitiatePlaybackOf() command
+        /// Once Stop has been requested, the stream cannot be restarted via the Play() command. To restart a stream, please re-execute the InitiatePlaybackOf() command.
         /// </summary>
 		[Export("stop")]
         void Stop();

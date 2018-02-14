@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 /**
  *
  */
-public interface RtspClientDelegate {
+private interface RtspClientDelegate {
 
     void clientDidTimeout();
 

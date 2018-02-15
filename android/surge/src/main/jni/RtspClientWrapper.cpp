@@ -245,3 +245,15 @@ jboolean JNICALL Java_co_instil_surge_client_RtspClient_isInterleavedTransport (
     Surge::RtspClient *client = getClient(env, callingObject);
     return (jboolean)client->IsInterleavedTransport();
 }
+
+JNIEXPORT
+jint JNICALL Java_co_instil_surge_client_RtspClient_getPacketBufferDelay(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    return (jint)client->GetPacketBufferDelay();
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_setPacketBufferDelay(JNIEnv *env, jobject callingObject, jint packetBufferDelay) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->SetPacketBufferDelay(packetBufferDelay);
+}

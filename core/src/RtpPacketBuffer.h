@@ -48,6 +48,7 @@ namespace Surge {
         }
         
         void SetBufferDelay(int bufferDelayMilliseconds) {
+            INFO("Updated the packet buffer delay value to " << bufferDelayMilliseconds << " ms.");
             this->bufferDelayMilliseconds = bufferDelayMilliseconds;
         }
         

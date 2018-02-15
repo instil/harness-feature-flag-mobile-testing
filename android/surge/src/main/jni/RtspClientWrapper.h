@@ -159,6 +159,22 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_stopStream
 JNIEXPORT jboolean JNICALL Java_co_instil_surge_client_RtspClient_isInterleavedTransport
   (JNIEnv *, jobject);
 
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    getPacketBufferDelay
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_co_instil_surge_client_RtspClient_getPacketBufferDelay
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    setPacketBufferDelay
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setPacketBufferDelay
+  (JNIEnv *, jobject, jint);
+
 #ifdef __cplusplus
 }
 #endif

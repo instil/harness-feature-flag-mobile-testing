@@ -13,23 +13,15 @@ RTSP and RTP are currently a popular choice for use with IP video cameras both c
 
 Surge seeks to address these issues by being designed from the ground up to execute asynchronously whilst utilising non-blocking I/O and leveraging platform specific APIs to access hardware accelerated video decoding.
 
+## Contacts
+
+- [Matt McComb](mailto:matt.mccomb@instil.co) (Project Lead)
+- [Paul Shields](mailto:paul.shields@instil.co) (Developer)
+- [Niall Kelly](mailto:niall.kelly@instil.co) (Developer)
+
 ## Release Notes
 
-### v1.1.1
-
- * Added a RTP packet buffer to help handle out of order and lost packets with the UDP transport
- * Additonal error informtion now passed through to the client
-
-### v1.1
-
- * Added UDP support
-
-### v1.0
-
- * Initial release
- * Supports H264, MP4V-ES and MJPEG decoding
- * Supports the Interleaved TCP transport protocol
- * Can be built for iOS, Mac OS, Android, Xamarin iOS and Xamarin Android
+See [RELEASE-NOTES.md](RELEASE-NOTES.md) for notes on the changes between each release of Surge.
 
 ## Development
 

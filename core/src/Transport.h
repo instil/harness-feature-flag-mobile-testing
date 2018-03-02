@@ -82,6 +82,8 @@ namespace Surge {
         virtual bool HandlePacket(const char* buffer, size_t size) = 0;
         
     protected:
+        std::string m_streamIp;
+
         std::shared_ptr<uvw::Loop> m_loop;
         std::shared_ptr<uvw::TcpHandle> m_tcp;
         

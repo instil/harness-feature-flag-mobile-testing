@@ -50,7 +50,7 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
         m_tcp = m_loop->resource<uvw::TcpHandle>();
     }
 
-    auto ip = ResolveHostnameToIP(host, port);
+    m_streamIp = ResolveHostnameToIP(host, port);
     
     m_tcp->once<uvw::ErrorEvent>([&](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("Error occured on connect");
@@ -63,7 +63,7 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
     });
     
     INFO("Connecting to TCP port");
-    m_tcp->connect(ip, port);
+    m_tcp->connect(m_streamIp, port);
     m_loop->run<uvw::Loop::Mode::ONCE>();
 }
 

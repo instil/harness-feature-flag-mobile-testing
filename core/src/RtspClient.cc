@@ -190,6 +190,8 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
                 
                 DEBUG("Rtp Interleaved Channel set to: " << resp->GetRtpInterleavedChannel());
                 DEBUG("Rtcp Interleaved Channel set to: " << resp->GetRtcpInterleavedChannel());
+            } else {
+                ((UdpTransport*)m_transport)->SetRtpServerPort(resp->GetRtpServerPort());
             }
         } else {
             ERROR("SETUP command failed");

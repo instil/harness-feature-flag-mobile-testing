@@ -24,7 +24,8 @@ namespace Surge {
                                              m_rtpInterleavedChannel(0),
                                              m_rtcpInterleavedChannel(1),
                                              m_session(),
-                                             m_timeout(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS) {
+                                             m_timeout(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS)
+        {
             
             const std::string session_header = HeaderValueForKey("Session");
             const std::string transport_header = HeaderValueForKey("Transport");
@@ -50,15 +51,22 @@ namespace Surge {
             }
 
             values = SurgeUtil::StringSplit(transport_header, ';');
-            std::string value = SurgeUtil::FindKeyAndValuePair(&values, "interleaved");
-            if (!value.empty()) {
+            std::string interleavedValue = SurgeUtil::FindKeyAndValuePair(&values, "interleaved");
+            std::string serverPortValue = SurgeUtil::FindKeyAndValuePair(&values, "server_port");
+            if (!interleavedValue.empty()) {
                 m_isInterleaved = true;
                 
-                values = SurgeUtil::StringSplit(value, '=');
+                values = SurgeUtil::StringSplit(interleavedValue, '=');
                 values = SurgeUtil::StringSplit(values[1], '-');
                 
                 m_rtpInterleavedChannel = atoi(values[0].c_str());
                 m_rtcpInterleavedChannel = atoi(values[1].c_str());
+            } else if (!serverPortValue.empty()) {
+                values = SurgeUtil::StringSplit(serverPortValue, '=');
+                values = SurgeUtil::StringSplit(values[1], '-');
+                
+                m_rtpServerPort = atoi(values[0].c_str());
+                m_rtcpServerPort = atoi(values[1].c_str());
             }
         }
 
@@ -71,6 +79,10 @@ namespace Surge {
         int GetTimeoutSeconds() const { return m_timeout; }
 
         bool IsInterleaved() const { return m_isInterleaved; }
+        
+        int GetRtpServerPort() const { return m_rtpServerPort; }
+        
+        int GetRtcpServerPort() const { return m_rtcpServerPort; }
 
     private:
         bool m_isInterleaved;
@@ -78,6 +90,9 @@ namespace Surge {
         int m_rtcpInterleavedChannel;
         std::string m_session;
         int m_timeout;
+        
+        int m_rtpServerPort;
+        int m_rtcpServerPort;
     };
     
 };

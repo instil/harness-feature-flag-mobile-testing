@@ -53,6 +53,26 @@ namespace Surge {
         }
         
         bool HandleRtpPacket(const char* data, size_t size);
+        
+        /**************/
+        
+    public:
+        void SetRtpServerPort(int rtpServerPort) {
+            m_rtpServerPort = rtpServerPort;
+            PunchHoleInNat(rtpServerPort);
+        }
+        
+        void SetRtcpServerPort(int rtcpServerPort) {
+            m_rtcpServerPort = rtcpServerPort;
+            PunchHoleInNat(rtcpServerPort);
+        }
+        
+    private:
+        void PunchHoleInNat(int port);
+        
+    private:
+        int m_rtpServerPort;
+        int m_rtcpServerPort;
     };
 }
 

@@ -175,14 +175,16 @@ private:
     __weak typeof(self) weakSelf = self;
     void(^onPlay)(RtspErrorCode) = ^(RtspErrorCode errorCode) {
         if (errorCode == 200) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
+            if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.delegate rtspPlayerDidBeginPlayback:weakSelf];
-                }
-            });
+                });
+            }
         } else {
             if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:withErrorCode:)]) {
-                [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf withErrorCode: (RtspErrorCode)errorCode];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf withErrorCode: (RtspErrorCode)errorCode];
+                });
             }
         }
     };
@@ -196,7 +198,9 @@ private:
                 [weakSelf describeSetupPlay];
             } else {
                 if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:withErrorCode:)]) {
-                    [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf withErrorCode: errorCode];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf withErrorCode: errorCode];
+                    });
                 }
                 return;
             }
@@ -208,12 +212,16 @@ private:
         weakSelf.sessionDescriptions = descriptions;
         if (errorCode != RtspErrorCodeSuccess || weakSelf.sessionDescriptions.size() == 0) {
             if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:withErrorCode:)]) {
-                [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf withErrorCode:errorCode];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf withErrorCode:errorCode];
+                });
             }
             return;
         }
         else if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerInitiatedPlayback:)]) {
-            [weakSelf.delegate rtspPlayerInitiatedPlayback:weakSelf];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.delegate rtspPlayerInitiatedPlayback:weakSelf];
+            });
         }
         Surge::SessionDescription currentSessionDescription = [weakSelf selectPreferredSessionDescription];
         [weakSelf setupStream:currentSessionDescription withCallback:onSetup];

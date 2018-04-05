@@ -26,6 +26,10 @@ void Surge::Transport::StartRunning() {
     if (IsRunning()) {
         return;
     }
+    if (m_receivedBuffer.size() > 0) {
+        DEBUG("Transport packet buffer clear required.");
+        m_receivedBuffer.clear();
+    }
     m_threadRunning = true;
     m_thread.Execute(*this);
 }

@@ -84,15 +84,23 @@ namespace Surge {
             this->endDate = endDate;
             this->endTimeSet = true;
         }
-        
+
         void SetStartTime(SurgeUtil::DateTime startDate) {
             this->startDate = startDate;
             this->startTimeSet = true;
         }
-        
+
         void SetEndTime(SurgeUtil::DateTime endDate) {
             this->endDate = endDate;
             this->endTimeSet = true;
+        }
+
+        void ClearStartTime() {
+            this->startTimeSet = false;
+        }
+
+        void ClearEndTime() {
+            this->endTimeSet = false;
         }
         
         void ResetTimeToLive() {

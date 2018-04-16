@@ -371,11 +371,15 @@ private:
     if (startTime != nil) {
         surgeStartTime = [startTime toSurgeDateTime];
         self.client->SetStartTime(surgeStartTime);
+    } else {
+        self.client->ClearStartTime();
     }
     
     if (endTime != nil) {
         surgeEndTime = [endTime toSurgeDateTime];
         self.client->SetEndTime(surgeEndTime);
+    } else {
+        self.client->ClearEndTime();
     }
 }
 

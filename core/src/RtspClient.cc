@@ -171,9 +171,7 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
             
             resp = nullptr;
         }
-        
-        delete raw_resp;
-        
+
         if (resp != nullptr && resp->Ok()) {
             m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
             m_keeepAliveIntervalInSeconds = resp->GetTimeoutSeconds();
@@ -200,6 +198,8 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
                 ERROR(raw_resp->StringDump());
             }
         }
+
+        delete raw_resp;
 
         callback(resp);
     });

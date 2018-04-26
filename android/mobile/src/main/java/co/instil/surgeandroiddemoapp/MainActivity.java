@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     private static Logger logger = LoggerFactory.getLogger(MainActivity.class);
 
     private final SurgeRtspPlayer player = new SurgeRtspPlayer();
-    private SessionDescription[] palettes;
     private int currentPaletteIndex = 0;
     private TextureView textureView;
 
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
                 new PlayerCallback() {
                     @Override
                     public void response(RtspErrorCode errorCode) {
-                        palettes = player.getSessionDescriptions();
                         System.out.println("Finished starting stream");
                     }
                 });
@@ -83,13 +81,6 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     }
 
-    public void iteratePalette(View view) {
-        currentPaletteIndex = ++currentPaletteIndex % palettes.length;
-        System.out.println(palettes[currentPaletteIndex].getType());
-//        player.changePalette(palettes[currentPaletteIndex]);
-        palettes = player.getSessionDescriptions();
-    }
-
     public void seekBackAnHour(View view) {
         logger.debug("Seeking back an hour");
 
@@ -106,9 +97,6 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
     @Override
     public void rtspPlayerDidUpdateFps(int fps) {
-        if (palettes != null) {
-            SessionDescription descrip = palettes[currentPaletteIndex];
-            logger.debug("Updated fps: " + fps + "/" + descrip.getFramerate());
-        }
+        logger.debug("Updated fps: " + fps);
     }
 }

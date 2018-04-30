@@ -12,6 +12,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.Surface;
 
 import co.instil.surge.client.SessionDescription;
@@ -30,31 +32,40 @@ public class MjpegDecoder implements Decoder {
     private static Logger logger = LoggerFactory.getLogger(MjpegDecoder.class);
 
     private final Surface surface;
+    private HandlerThread decoderThread;
 
     public MjpegDecoder(Surface surface) {
         this.surface = surface;
+        decoderThread = new HandlerThread("decoderThread");
+        decoderThread.start();
     }
 
     @Override
     public void decodeFrameBuffer(SessionDescription sessionDescription,
                                   ByteBuffer frameBuffer,
-                                  int width,
-                                  int height,
+                                  final int width,
+                                  final int height,
                                   int presentationTime,
                                   int duration) {
 
         try {
-            byte[] imageBytes = new byte[frameBuffer.limit()];
-            frameBuffer.get(imageBytes);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            if (bitmap != null) {
-                Canvas canvas = surface.lockCanvas(null);
-                canvas.drawBitmap(bitmap,
-                        new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
-                        new Rect(0, 0, width, height),
-                        null);
-                surface.unlockCanvasAndPost(canvas);
-            }
+            final ByteBuffer test = deepCopy(frameBuffer, null);
+            new Handler(decoderThread.getLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    byte[] imageBytes = new byte[test.limit()];
+                    test.get(imageBytes);
+                    final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    if (bitmap != null) {
+                        Canvas canvas = surface.lockCanvas(null);
+                        canvas.drawBitmap(bitmap,
+                                new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
+                                new Rect(0, 0, width, height),
+                                null);
+                        surface.unlockCanvasAndPost(canvas);
+                    }
+                }
+            });
         } catch (Exception e) {
             logger.error("Failed to decode frame", e);
         }
@@ -62,5 +73,21 @@ public class MjpegDecoder implements Decoder {
 
     @Override
     public void close() throws InterruptedException {}
+
+    private ByteBuffer deepCopy(ByteBuffer source, ByteBuffer target) {
+
+        int sourceP = source.position();
+        int sourceL = source.limit();
+
+        if (null == target) {
+            target = ByteBuffer.allocate(source.remaining());
+        }
+        target.put(source);
+        target.flip();
+
+        source.position(sourceP);
+        source.limit(sourceL);
+        return target;
+    }
 
 }

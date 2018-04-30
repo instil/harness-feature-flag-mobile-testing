@@ -253,10 +253,14 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
         if (startTime != null) {
             rtspClient.setStartTime(startTime);
+        } else {
+            rtspClient.clearStartTime();
         }
 
         if (endTime != null) {
             rtspClient.setEndTime(endTime);
+        } else {
+            rtspClient.clearEndTime();
         }
 
         rtspClient.play();

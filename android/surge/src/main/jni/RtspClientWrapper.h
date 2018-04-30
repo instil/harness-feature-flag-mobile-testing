@@ -113,11 +113,27 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setStartTime
 
 /*
  * Class:     co_instil_surge_client_RtspClient
+ * Method:    clearStartTime
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_clearStartTime
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
  * Method:    setEndTime
  * Signature: (Ljava/util/Date;)V
  */
 JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setEndTime
   (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    clearEndTime
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_clearEndTime
+  (JNIEnv *, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient

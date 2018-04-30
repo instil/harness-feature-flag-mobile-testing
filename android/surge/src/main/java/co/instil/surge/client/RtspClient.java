@@ -61,7 +61,11 @@ public class RtspClient implements AutoCloseable {
 
     public native void setStartTime(Date startTime);
 
+    public native void clearStartTime();
+
     public native void setEndTime(Date endTime);
+
+    public native void clearEndTime();
 
     public native void tearDown();
 

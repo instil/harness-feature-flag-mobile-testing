@@ -200,7 +200,14 @@ void JNICALL Java_co_instil_surge_client_RtspClient_setStartTime(JNIEnv *env, jo
     client->SetStartTime(startDate);
 }
 
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTimeRange (JNIEnv *env, jobject callingObject, jobject jStartDate, jobject jEndDate) {
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_clearStartTime(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->ClearStartTime();
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_setTimeRange (JNIEnv *env, jobject callingObject, jobject jStartDate, jobject jEndDate) {
     Surge::RtspClient *client = getClient(env, callingObject);
     SurgeUtil::DateTime startDate = convertDate(env, jStartDate);
     SurgeUtil::DateTime endDate = convertDate(env, jEndDate);
@@ -213,6 +220,12 @@ void JNICALL Java_co_instil_surge_client_RtspClient_setEndTime(JNIEnv *env, jobj
     Surge::RtspClient *client = getClient(env, callingObject);
     SurgeUtil::DateTime endDate = convertDate(env, jEndDate);
     client->SetEndTime(endDate);
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_clearEndTime(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->ClearEndTime();
 }
 
 JNIEXPORT

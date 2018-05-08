@@ -20,12 +20,8 @@ Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string& rawSessionD
         bool is_control = current_line.find("a=control") != std::string::npos;
         bool is_mime = is_rtpmap;
         
-        if (is_audio) {
-            isAudio = true;
-        }
-        
-        if (is_video) {
-            isAudio = false;
+        if (is_video || is_audio) {
+            isAudio = is_audio;
         }
         
         if (!isAudio) {

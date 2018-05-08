@@ -53,11 +53,6 @@ bool Surge::UdpTransport::HandleRtpPacket(const char* data, size_t size) {
 }
 
 void Surge::UdpTransport::PunchHoleInNat(int port) {
-    m_udp->once<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::UDPHandle &tcp) {
-        // Note: This callback isn't firing - investigate
-        DEBUG("Whole punched");
-    });
-    
     DEBUG("Punching hole in NAT to open the UDP connection on port " << port << " for IP " << m_streamIp << ".");
     m_udp->send(m_streamIp, port, "HelloFromSurge", 14);
 }

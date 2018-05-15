@@ -2,11 +2,19 @@
 
 ### v1.1.2
 
-* UDP: External UDP streams are now supported; Surge will now puch a hole in the NAT to ensure video dta correctly gets from the source to Surge.
+###### Features
+
+* Core: External UDP streams are now supported; Surge will now puch a hole in the NAT to ensure video dta correctly gets from the source to Surge.
 * iOS: Delegate calls are now called on the main thread.
-* Bugfix: Audio session description causing video SD to fail to parse fix.
-* Bugfix: Fixed issue in the transports that caused data to sometimes be left behind after a stream had stopped, causing RTSP responses to appear corrupt when trying to reuse the player.
-* Bugfix: Fixed issue that caused start and end time to not be cleared when trying to reuse a player to play stream from live.
+* Core: Added an RTSP request timeout timer at the Transport level to detect a timeout on RTSP requests.
+
+###### Fixes
+
+* Audio session description causing video SD to fail to parse fix.
+* Fixed issue in the transports that caused data to sometimes be left behind after a stream had stopped, causing RTSP responses to appear corrupt when trying to reuse the player.
+* Fixed issue that caused start and end time to not be cleared when trying to reuse a player to play stream from live.
+* Fixed a file descriptor leak coming from libuv not cleaning up handles when they are closed.
+
 
 ### v1.1.1
 

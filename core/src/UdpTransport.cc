@@ -17,12 +17,12 @@ Surge::UdpTransport::~UdpTransport() {
 }
 
 void Surge::UdpTransport::StopRunning() {
-    Surge::Transport::StopRunning();
-    
     if (m_udp != nullptr) {
         m_udp->close();
         m_udp = nullptr;
     }
+
+    Surge::Transport::StopRunning();
 }
 
 void Surge::UdpTransport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)>callback) {

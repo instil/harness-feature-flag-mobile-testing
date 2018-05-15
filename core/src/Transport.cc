@@ -5,7 +5,10 @@
 
 #include "Transport.h"
 
-Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_threadRunning(false), executingRtspCommand(false), m_delegate(delegate)
+using SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
+
+
+Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_rtspTimeoutTime(uvw::TimerHandle::Time(DEFAULT_TRANSACTION_TIMEOUT_MS)), m_threadRunning(false), executingRtspCommand(false), m_delegate(delegate)
 { }
 
 Surge::Transport::~Transport() {
@@ -26,10 +29,12 @@ void Surge::Transport::StartRunning() {
     if (IsRunning()) {
         return;
     }
+    
     if (m_receivedBuffer.size() > 0) {
         DEBUG("Transport packet buffer clear required.");
         m_receivedBuffer.clear();
     }
+    
     m_threadRunning = true;
     m_thread.Execute(*this);
 }
@@ -44,28 +49,27 @@ void Surge::Transport::StopRunning() {
         m_thread.WaitUntilStopped();
     }
 }
-
 /*  Network  */
 
 void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
-    
     if (!m_threadRunning) {
         m_loop = uvw::Loop::create();
         m_tcp = m_loop->resource<uvw::TcpHandle>();
+        m_timer = m_loop->resource<uvw::TimerHandle>();
     }
 
     m_streamIp = ResolveHostnameToIP(host, port);
-    
+
     m_tcp->once<uvw::ErrorEvent>([&](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("Error occured on connect");
         callback(error.code());
     });
-    
+
     m_tcp->once<uvw::ConnectEvent>([&](const uvw::ConnectEvent &connectEvent, uvw::TcpHandle &tcp) {
         INFO("Connected");
         callback(0);
     });
-    
+
     INFO("Connecting to TCP port");
     m_tcp->connect(m_streamIp, port);
     m_loop->run<uvw::Loop::Mode::ONCE>();
@@ -96,8 +100,18 @@ void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function
     m_loop->stop();
     m_tcp->write(generateRtspDataPtr((char *) command->BytesPointer(), command->PointerLength()),
                  command->PointerLength());
+    StartRtspTimer();
     m_tcp->read();
     executingRtspCommand = true;
+}
+
+void Surge::Transport::StartRtspTimer() {
+    DEBUG("Started RTSP transaction timeout timer.");
+    m_timer->start(m_rtspTimeoutTime, uvw::TimerHandle::Time(0));
+}
+
+void Surge::Transport::StopRtspTimer() {
+    m_timer->stop();
 }
 
 std::unique_ptr<char[]> Surge::Transport::generateRtspDataPtr(char *data, size_t length) {
@@ -138,6 +152,11 @@ void Surge::Transport::Run() {
         
         NotifyDelegateOfReadFailure();
     });
+
+    m_timer->on<uvw::TimerEvent>([this](const uvw::TimerEvent &timerEvent, uvw::TimerHandle &timer) {
+        INFO("RTSP timeout triggered, cancelling RTSP request.");
+        rtspCallback(nullptr);
+    });
     
     while (m_threadRunning) {
         if (executingRtspCommand) {
@@ -145,10 +164,17 @@ void Surge::Transport::Run() {
         }
     }
     
-    
+
+    // After closing a handle, run the libuv loop once to allow libuv to call the
+    // associated close event callback and clean up the resource.
     INFO("Closing transport");
-    m_loop->close();
+    
+    m_timer->close();
+    m_loop->run<uvw::Loop::Mode::NOWAIT>();
     m_tcp->close();
+    m_loop->run<uvw::Loop::Mode::NOWAIT>();
+
+    m_loop->close();
 }
 
 /*  Packet handling  */
@@ -197,7 +223,7 @@ bool Surge::Transport::HandleRtspPacket() {
         0;
         
         size_t headers_length = body_pos;
-        
+
         const unsigned char *rtsp_buffer = &(m_receivedBuffer[0]);
         size_t rtsp_buffer_length = content_length + 4 + headers_length;
         
@@ -209,6 +235,7 @@ bool Surge::Transport::HandleRtspPacket() {
             rtspCallback(new Response(rtsp_buffer, rtsp_buffer_length));
         }
         
+        StopRtspTimer();
         RemoveDataFromStartOfBuffer(rtsp_buffer_length);
     } else {
         return false;

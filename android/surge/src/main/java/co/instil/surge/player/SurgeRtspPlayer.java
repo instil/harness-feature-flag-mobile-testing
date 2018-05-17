@@ -9,11 +9,12 @@ package co.instil.surge.player;
 
 import android.view.Surface;
 
+import java.nio.ByteBuffer;
+import java.util.Date;
+
 import co.instil.surge.callbacks.PlayerCallback;
-import co.instil.surge.callbacks.ResponseCallback;
 import co.instil.surge.client.DescribeResponse;
 import co.instil.surge.client.ExtendedHeader;
-import co.instil.surge.client.Response;
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
@@ -26,9 +27,6 @@ import co.instil.surge.logging.LoggerFactory;
 import static co.instil.surge.client.SessionType.H264;
 import static co.instil.surge.client.SessionType.MJPEG;
 import static co.instil.surge.client.SessionType.MP4V;
-
-import java.nio.ByteBuffer;
-import java.util.Date;
 
 /**
  *
@@ -128,61 +126,50 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             rtspClient.setEndTime(endTime);
         }
 
-        rtspClient.describe(url, username, password, new ResponseCallback() {
-            @Override
-            public void response(Response rawResponse) {
-                DescribeResponse response = (DescribeResponse) rawResponse;
+        rtspClient.describe(url, username, password, rawResponse -> {
+            DescribeResponse response = (DescribeResponse) rawResponse;
 
-                if (response == null) {
-                    callback.response(RtspErrorCode.UNKNOWN_FAILURE);
-                    return;
-                }
-
-                if (response.getStatusCode() != RtspErrorCode.SUCCESS ||
-                        response.getSessionDescriptions() == null ||
-                        response.getSessionDescriptions().length == 0) {
-                    callback.response(response.getStatusCode());
-                    return;
-                }
-
-                for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
-                    logger.debug(sessionDescription.toString());
-                }
-
-                setSessionDescriptions(response.getSessionDescriptions());
-                if (sessionDescriptions.length > 0) {
-                    setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
-                            new PlayerCallback() {
-                                @Override
-                                public void response(RtspErrorCode errorCode) {
-                                    callback.response(errorCode);
-                                }
-                            });
-                } else {
-                    throw new RuntimeException("No session description available, is the stream active?");
-                }
-
-                startFpsCounter();
+            if (response == null) {
+                callback.response(RtspErrorCode.UNKNOWN_FAILURE);
+                return;
             }
+
+            if (response.getStatusCode() != RtspErrorCode.SUCCESS ||
+                    response.getSessionDescriptions() == null ||
+                    response.getSessionDescriptions().length == 0) {
+                callback.response(response.getStatusCode());
+                return;
+            }
+
+            for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
+                logger.debug(sessionDescription.toString());
+            }
+
+            setSessionDescriptions(response.getSessionDescriptions());
+            if (sessionDescriptions.length > 0) {
+                setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
+                        errorCode -> callback.response(errorCode));
+            } else {
+                throw new RuntimeException("No session description available, is the stream active?");
+            }
+
+            startFpsCounter();
         });
     }
 
     private void setupStream(SessionDescription sessionDescription, final PlayerCallback callback) {
         this.sessionDescription = sessionDescription;
         initialiseDecoder(sessionDescription);
-        rtspClient.setup(sessionDescription, new ResponseCallback() {
-            @Override
-            public void response(Response response) {
-                if (response == null) {
-                    callback.response(RtspErrorCode.UNKNOWN_FAILURE);
-                    return;
+        rtspClient.setup(sessionDescription, response -> {
+            if (response == null) {
+                callback.response(RtspErrorCode.UNKNOWN_FAILURE);
+                return;
 
-                } else if (response.getStatusCode() == RtspErrorCode.SUCCESS) {
-                    rtspClient.play();
-                }
-
-                callback.response(response.getStatusCode());
+            } else if (response.getStatusCode() == RtspErrorCode.SUCCESS) {
+                rtspClient.play();
             }
+
+            callback.response(response.getStatusCode());
         });
     }
 
@@ -353,20 +340,17 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         if (!fpsThreadIsRunning) {
             fpsThreadIsRunning = true;
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (fpsThreadIsRunning) {
-                        framesPerSecond = framesPerSecondCounter;
-                        framesPerSecondCounter = 0;
-                        if (delegate != null) {
-                            delegate.rtspPlayerDidUpdateFps(framesPerSecond);
-                        }
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+            new Thread(() -> {
+                while (fpsThreadIsRunning) {
+                    framesPerSecond = framesPerSecondCounter;
+                    framesPerSecondCounter = 0;
+                    if (delegate != null) {
+                        delegate.rtspPlayerDidUpdateFps(framesPerSecond);
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }).start();

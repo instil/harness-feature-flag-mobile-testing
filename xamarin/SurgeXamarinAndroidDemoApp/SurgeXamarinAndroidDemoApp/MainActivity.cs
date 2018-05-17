@@ -45,7 +45,7 @@ namespace SurgeXamarinAndroidDemoApp {
         }
 
         public void StartPlayback(String url) {
-            player.InitiatePlaybackOf(url, null, (int errorCode) => {
+            player.InitiatePlaybackOf(url, null, (RtspErrorCode errorCode) => {
                 Console.WriteLine(errorCode);
             });
         }

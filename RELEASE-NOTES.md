@@ -15,7 +15,6 @@
 * Fixed issue that caused start and end time to not be cleared when trying to reuse a player to play stream from live.
 * Fixed a file descriptor leak coming from libuv not cleaning up handles when they are closed.
 
-
 ### v1.1.1
 
  * Added a RTP packet buffer to help handle out of order and lost packets with the UDP transport.

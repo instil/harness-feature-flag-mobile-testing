@@ -1,73 +1,21 @@
-apply plugin: "com.android.model.library"
-apply plugin: "jacoco"
+apply plugin: "com.android.library"
+apply plugin: 'me.tatarka.retrolambda'
 apply from: "${project.rootDir}/gradle/static-analysis.gradle"
 
-model {
-    android {
-        compileSdkVersion = 23
-        buildToolsVersion = "26.0.2"
-
-        defaultConfig {
-            minSdkVersion.apiLevel 19
-            targetSdkVersion.apiLevel 23
-            versionCode 1
-            versionName "1.0"
-        }
-
-//        externalNativeBuild {
-//            cmake {
-//                path "../../core/lib/libuv-cmake/CMakeLists.txt"
-//            }
-//        }
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
-    android.sources {
-        main {
-            jni {
-                source {
-                    srcDirs = ["../../core/src",
-                               "../../core/lib/libuv-cmake/libuv/src",
-                               "../../core/lib/uvw/src",
-                               "src/main/jni"]
-
-                    exclude "**/aix.c"
-                    exclude "**/darwin-proctitle.c"
-                    exclude "**/darwin.c"
-                    exclude "**/freebsd.c"
-                    exclude "**/fsevents.c"
-                    exclude "**/kqueue.c"
-                    exclude "**/netbsd.c"
-                    exclude "**/openbsd.c"
-                    exclude "**/os390.c"
-                    exclude "**/os390-syscalls.c"
-                    exclude "**/sunos.c"
-                    exclude "**/win/**"
-                }
-                exportedHeaders {
-                    srcDirs = ["../../core/lib/libuv-cmake/libuv/include",
-                               "../../core/lib/libuv-cmake/libuv/src",
-                               "../../core/lib/uvw/src"]
-                }
-            }
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    android.ndk {
-        moduleName "surge"
-        cppFlags.add("-std=c++14")
-        cppFlags.add("-fexceptions")
-        cppFlags.add("-I" + file("../../core/src"))
-        cppFlags.add("-O0");
-        ldLibs.addAll(["log"])
-        stl "c++_shared"
-        toolchain "clang"
-
-        // clang crashes when building for MIPS since NDK 15
-        // https://github.com/android-ndk/ndk/issues/399
-        abiFilters.addAll(['armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64']) // 'mips', 'mips64'
-    }
-
-    android.buildTypes {
+    buildTypes {
         debug {
             testCoverageEnabled = true
             minifyEnabled = true
@@ -78,21 +26,17 @@ model {
             proguardFiles.add(file("proguard-rules.pro"))
         }
     }
-}
-
-ext.includeLibsFolder = 'libs'
-task copyLibs(type: Copy, dependsOn: 'cleanLibs') {
-    from configurations.compile
-    into includeLibsFolder
-}
-
-task cleanLibs(type: Delete) {
-    delete includeLibsFolder
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: includeLibsFolder, include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.4.0"
-    testCompile "junit:junit:4.12"
-    testCompile "org.easymock:easymock:3.4"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.easymock:easymock:3.4"
 }
+

@@ -21,11 +21,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import co.instil.surge.callbacks.PlayerCallback;
-import co.instil.surge.client.SessionDescription;
-import co.instil.surge.player.RtspErrorCode;
-import co.instil.surge.player.SurgeRtspPlayer;
 import co.instil.surge.client.SurgeSurface;
+import co.instil.surge.player.SurgeRtspPlayer;
 import co.instil.surge.player.SurgeRtspPlayerDelegate;
 
 /**
@@ -59,12 +56,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
         player.initiatePlaybackOf("rtsp://192.168.1.52:8554/test",
                 surface,
-                new PlayerCallback() {
-                    @Override
-                    public void response(RtspErrorCode errorCode) {
-                        System.out.println("Finished starting stream");
-                    }
-                });
+                errorCode -> System.out.println("Finished starting stream"));
     }
 
     @Override

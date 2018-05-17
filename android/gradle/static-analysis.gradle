@@ -27,6 +27,7 @@ task checkstyle(type: Checkstyle) {
 }
 
 task findbugs(type: FindBugs) {
+    mustRunAfter assemble
     ignoreFailures = false
     effort = "max"
     reportLevel = "high"
@@ -71,13 +72,11 @@ task pmd(type: Pmd) {
     }
 }
 
-model {
-    android.lintOptions {
-        abortOnError true
-        xmlReport true
-        htmlReport true
-        lintConfig file("${project.rootDir}/config/lint/lint.xml")
-        htmlOutput file("$project.buildDir/reports/lint/lint-results.html")
-        xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
-    }
+android.lintOptions {
+    abortOnError true
+    xmlReport true
+    htmlReport true
+    lintConfig file("${project.rootDir}/config/lint/lint.xml")
+    htmlOutput file("$project.buildDir/reports/lint/lint-results.html")
+    xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
 }

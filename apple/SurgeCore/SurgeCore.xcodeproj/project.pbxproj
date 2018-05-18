@@ -318,73 +318,20 @@
 			isa = PBXGroup;
 			children = (
 				F46D0DD91F320425000782DD /* Transports */,
-				F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */,
-				F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */,
-				42D671C51D3069BB00D42C35 /* Base64.cc */,
-				42D671C61D3069BB00D42C35 /* Base64.h */,
-				42D671C71D3069BB00D42C35 /* BaseWaitableEvent.h */,
-				42D671C81D3069BB00D42C35 /* BasicFDEvent.h */,
-				42D671C91D3069BB00D42C35 /* BitstreamReader.cc */,
-				42D671CA1D3069BB00D42C35 /* BitstreamReader.h */,
-				42D671CB1D3069BB00D42C35 /* BitstreamWriter.cc */,
-				42D671CC1D3069BB00D42C35 /* BitstreamWriter.h */,
+				F4C4F60220AEDE47009313CD /* RTSP */,
+				F4C4F60620AEDF19009313CD /* SessionDescriptions */,
+				F4C4F60320AEDEAB009313CD /* RTP */,
+				F4C4F60120AEDE29009313CD /* Depacketizers */,
+				F4C4F60420AEDECA009313CD /* Utils */,
 				42D671CD1D3069BB00D42C35 /* CMakeLists.txt */,
 				42D671CF1D3069BB00D42C35 /* Constants.h */,
-				42D671D01D3069BB00D42C35 /* DataEventQueue.h */,
-				42D671D11D3069BB00D42C35 /* DateTime.cc */,
-				42D671D21D3069BB00D42C35 /* DateTime.h */,
-				42D671D31D3069BB00D42C35 /* Depacketizer.h */,
-				42D671D41D3069BB00D42C35 /* Describe.h */,
-				42D671D51D3069BB00D42C35 /* DescribeResponse.h */,
 				42D671D61D3069BB00D42C35 /* ErrorDispatcher.cc */,
 				42D671D71D3069BB00D42C35 /* ErrorDispatcher.h */,
-				42D671D81D3069BB00D42C35 /* FireableEvent.cc */,
-				42D671D91D3069BB00D42C35 /* FireableEvent.h */,
-				42D671DA1D3069BB00D42C35 /* H264Depacketizer.cc */,
-				42D671DB1D3069BB00D42C35 /* H264Depacketizer.h */,
-				42D671DC1D3069BB00D42C35 /* Helpers.cc */,
-				42D671DD1D3069BB00D42C35 /* Helpers.h */,
-				42D671DE1D3069BB00D42C35 /* ILoggingDelegate.h */,
 				42D671E11D3069BB00D42C35 /* IRtspClientDelegate.h */,
-				42D671E21D3069BB00D42C35 /* ISocketHandlerDelegate.h */,
-				42D671E41D3069BB00D42C35 /* Logging.h */,
-				42D671E51D3069BB00D42C35 /* MimeTypes.h */,
-				42D671E61D3069BB00D42C35 /* MJPEGDepacketizer.cc */,
-				42D671E71D3069BB00D42C35 /* MJPEGDepacketizer.h */,
-				42D671E81D3069BB00D42C35 /* MP4VDepacketizer.cc */,
-				42D671E91D3069BB00D42C35 /* MP4VDepacketizer.h */,
-				42D671EA1D3069BB00D42C35 /* Mutex.cc */,
-				42D671EB1D3069BB00D42C35 /* Mutex.h */,
-				42D671EC1D3069BB00D42C35 /* MutexLocker.h */,
-				42D671ED1D3069BB00D42C35 /* Options.h */,
-				42D671EE1D3069BB00D42C35 /* Pause.h */,
-				42D671EF1D3069BB00D42C35 /* Play.h */,
-				42D671F01D3069BB00D42C35 /* Response.h */,
-				42D671F11D3069BB00D42C35 /* ResponseFactory.h */,
-				42D671F21D3069BB00D42C35 /* RtpPacket.cc */,
-				42D671F31D3069BB00D42C35 /* RtpPacket.h */,
 				42D671F41D3069BB00D42C35 /* RtspClient.cc */,
 				42D671F51D3069BB00D42C35 /* RtspClient.h */,
-				42D671F61D3069BB00D42C35 /* RtspCommand.h */,
-				42D671F71D3069BB00D42C35 /* RtspCommandFactory.cc */,
-				42D671F81D3069BB00D42C35 /* RtspCommandFactory.h */,
-				42D671F91D3069BB00D42C35 /* RtspResponse.h */,
-				42D671FA1D3069BB00D42C35 /* SessionDescription.h */,
-				42D671FB1D3069BB00D42C35 /* SessionDescriptionFactory.cc */,
-				42D671FC1D3069BB00D42C35 /* SessionDescriptionFactory.h */,
-				42D671FD1D3069BB00D42C35 /* SessionDescriptionV0.cc */,
-				42D671FE1D3069BB00D42C35 /* SessionDescriptionV0.h */,
-				42D671FF1D3069BB00D42C35 /* Setup.h */,
-				42D672001D3069BB00D42C35 /* SetupResponse.h */,
-				42D672011D3069BB00D42C35 /* StoppableThread.h */,
 				42D672021D3069BB00D42C35 /* Surge.cc */,
 				42D672031D3069BB00D42C35 /* Surge.h */,
-				42D672041D3069BB00D42C35 /* Teardown.h */,
-				42D672051D3069BB00D42C35 /* Thread.cc */,
-				42D672061D3069BB00D42C35 /* Thread.h */,
-				42D6720A1D3069BB00D42C35 /* Url.h */,
-				42D6720B1D3069BB00D42C35 /* WaitableEvent.h */,
-				42D6720C1D3069BB00D42C35 /* WaitableEvents.cc */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -543,10 +490,111 @@
 				F46D0DDC1F3211C5000782DD /* Transport.h */,
 				F46D0DDF1F322D36000782DD /* InterleavedRtspTransport.cc */,
 				F46D0DE01F322D36000782DD /* InterleavedRtspTransport.h */,
+				42D671E21D3069BB00D42C35 /* ISocketHandlerDelegate.h */,
 				F4388E4A1F333AD80064A24F /* UdpTransport.cc */,
 				F4388E4B1F333AD80064A24F /* UdpTransport.h */,
 			);
 			name = Transports;
+			sourceTree = "<group>";
+		};
+		F4C4F60120AEDE29009313CD /* Depacketizers */ = {
+			isa = PBXGroup;
+			children = (
+				42D671D31D3069BB00D42C35 /* Depacketizer.h */,
+				42D671DA1D3069BB00D42C35 /* H264Depacketizer.cc */,
+				42D671DB1D3069BB00D42C35 /* H264Depacketizer.h */,
+				42D671E61D3069BB00D42C35 /* MJPEGDepacketizer.cc */,
+				42D671E71D3069BB00D42C35 /* MJPEGDepacketizer.h */,
+				42D671E81D3069BB00D42C35 /* MP4VDepacketizer.cc */,
+				42D671E91D3069BB00D42C35 /* MP4VDepacketizer.h */,
+			);
+			name = Depacketizers;
+			sourceTree = "<group>";
+		};
+		F4C4F60220AEDE47009313CD /* RTSP */ = {
+			isa = PBXGroup;
+			children = (
+				42D671D41D3069BB00D42C35 /* Describe.h */,
+				42D671D51D3069BB00D42C35 /* DescribeResponse.h */,
+				42D671ED1D3069BB00D42C35 /* Options.h */,
+				42D671EE1D3069BB00D42C35 /* Pause.h */,
+				42D671EF1D3069BB00D42C35 /* Play.h */,
+				42D671F11D3069BB00D42C35 /* ResponseFactory.h */,
+				42D671F61D3069BB00D42C35 /* RtspCommand.h */,
+				42D671F71D3069BB00D42C35 /* RtspCommandFactory.cc */,
+				42D671F81D3069BB00D42C35 /* RtspCommandFactory.h */,
+				42D671F91D3069BB00D42C35 /* RtspResponse.h */,
+				42D671FF1D3069BB00D42C35 /* Setup.h */,
+				42D672001D3069BB00D42C35 /* SetupResponse.h */,
+				42D672041D3069BB00D42C35 /* Teardown.h */,
+			);
+			name = RTSP;
+			sourceTree = "<group>";
+		};
+		F4C4F60320AEDEAB009313CD /* RTP */ = {
+			isa = PBXGroup;
+			children = (
+				42D671F01D3069BB00D42C35 /* Response.h */,
+				42D671F21D3069BB00D42C35 /* RtpPacket.cc */,
+				42D671F31D3069BB00D42C35 /* RtpPacket.h */,
+				F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */,
+				F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */,
+			);
+			name = RTP;
+			sourceTree = "<group>";
+		};
+		F4C4F60420AEDECA009313CD /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F4C4F60520AEDED5009313CD /* Threading */,
+				42D671C51D3069BB00D42C35 /* Base64.cc */,
+				42D671C61D3069BB00D42C35 /* Base64.h */,
+				42D671C71D3069BB00D42C35 /* BaseWaitableEvent.h */,
+				42D671C81D3069BB00D42C35 /* BasicFDEvent.h */,
+				42D671C91D3069BB00D42C35 /* BitstreamReader.cc */,
+				42D671CA1D3069BB00D42C35 /* BitstreamReader.h */,
+				42D671CB1D3069BB00D42C35 /* BitstreamWriter.cc */,
+				42D671CC1D3069BB00D42C35 /* BitstreamWriter.h */,
+				42D671D11D3069BB00D42C35 /* DateTime.cc */,
+				42D671D21D3069BB00D42C35 /* DateTime.h */,
+				42D671D01D3069BB00D42C35 /* DataEventQueue.h */,
+				42D671D81D3069BB00D42C35 /* FireableEvent.cc */,
+				42D671D91D3069BB00D42C35 /* FireableEvent.h */,
+				42D671DC1D3069BB00D42C35 /* Helpers.cc */,
+				42D671DD1D3069BB00D42C35 /* Helpers.h */,
+				42D671DE1D3069BB00D42C35 /* ILoggingDelegate.h */,
+				42D671E41D3069BB00D42C35 /* Logging.h */,
+				42D671EA1D3069BB00D42C35 /* Mutex.cc */,
+				42D671EB1D3069BB00D42C35 /* Mutex.h */,
+				42D671EC1D3069BB00D42C35 /* MutexLocker.h */,
+				42D6720A1D3069BB00D42C35 /* Url.h */,
+				42D6720B1D3069BB00D42C35 /* WaitableEvent.h */,
+				42D6720C1D3069BB00D42C35 /* WaitableEvents.cc */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		F4C4F60520AEDED5009313CD /* Threading */ = {
+			isa = PBXGroup;
+			children = (
+				42D672051D3069BB00D42C35 /* Thread.cc */,
+				42D672061D3069BB00D42C35 /* Thread.h */,
+				42D672011D3069BB00D42C35 /* StoppableThread.h */,
+			);
+			name = Threading;
+			sourceTree = "<group>";
+		};
+		F4C4F60620AEDF19009313CD /* SessionDescriptions */ = {
+			isa = PBXGroup;
+			children = (
+				42D671E51D3069BB00D42C35 /* MimeTypes.h */,
+				42D671FA1D3069BB00D42C35 /* SessionDescription.h */,
+				42D671FB1D3069BB00D42C35 /* SessionDescriptionFactory.cc */,
+				42D671FC1D3069BB00D42C35 /* SessionDescriptionFactory.h */,
+				42D671FD1D3069BB00D42C35 /* SessionDescriptionV0.cc */,
+				42D671FE1D3069BB00D42C35 /* SessionDescriptionV0.h */,
+			);
+			name = SessionDescriptions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -117,7 +117,7 @@ void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_
 
         callResponseCallback(classLoader, callbackObject, convertDescribeResponse(classLoader, response));
 
-        if (currentCallbackObject != NULL) {
+        if (callbackObject != NULL) {
             env->DeleteGlobalRef(callbackObject);
         }
 

@@ -30,7 +30,7 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         endTimeSet(false),
         depacketizer(nullptr),
         factory(new SessionDescriptionFactory()){
-            
+
     StartErrorDispatcher();
             
     packetBuffer = new RtpPacketBuffer(DEFAULT_PACKET_BUFFER_DELAY_MS);
@@ -62,6 +62,8 @@ Surge::RtspClient::~RtspClient() {
     if (m_thread.IsRunning()) {
         m_thread.Stop();
     }
+
+    CloseErrorDispatcher();
 
     delete frameBuffer;
     delete m_transport;
@@ -111,8 +113,8 @@ void Surge::RtspClient::Describe(const std::string& url,
             if (!received_response) {
                 ERROR("Failed to get response to DESCRIBE!");
                 callback(nullptr);
+                return;
             }
-            
             
             DescribeResponse *resp = nullptr;
             try {
@@ -563,8 +565,6 @@ void Surge::RtspClient::SetupRtspConnection(const std::string& url, std::functio
         StopStream();
         m_transport->StopRunning();
     }
-
-    m_abortWait.Reset();
     
     SurgeUtil::Url url_model(url);
     

@@ -130,10 +130,6 @@ namespace Surge {
 
         void StartSession();
 
-        void Abort() {
-            m_abortWait.Fire();
-        }
-
         void ProcessRtpPacket(const RtpPacket* packet);
 
         void CreateDepacketizer();
@@ -190,7 +186,6 @@ namespace Surge {
         void SetupRtspConnection(const std::string& url, std::function<void(int)> callback);
 
         bool m_isPlaying;
-        SurgeUtil::FireableEvent m_abortWait;
 
         SessionDescription m_sessionDescription;
         std::vector<unsigned char> *frameBuffer;

@@ -19,6 +19,7 @@
 #include "SetupResponse.h"
 #include "Depacketizer.h"
 #include "RtpPacketBuffer.h"
+#include "DispatchQueue.h"
 
 #include "DateTime.h"
 
@@ -143,12 +144,14 @@ namespace Surge {
             }
             
             if (m_delegate != nullptr) {
-                m_delegate->ClientReceivedFrame(frameBuffer->data(),
-                                                frameBuffer->size(),
-                                                depacketizer->GetWidth(),
-                                                depacketizer->GetHeight(),
-                                                1,
-                                                1);
+                dispatchQueue->Dispatch([=]() {
+                    m_delegate->ClientReceivedFrame(frameBuffer->data(),
+                                                    frameBuffer->size(),
+                                                    depacketizer->GetWidth(),
+                                                    depacketizer->GetHeight(),
+                                                    1,
+                                                    1);
+                });
             }
         }
         
@@ -208,6 +211,8 @@ namespace Surge {
         bool endTimeSet;
         SurgeUtil::DateTime endDate;
         SessionDescriptionFactory *factory;
+
+        Surge::DispatchQueue *dispatchQueue;
                 
     public:
         Surge::RtpPacketBuffer *packetBuffer;

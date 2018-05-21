@@ -124,6 +124,8 @@
 		F46D0DE21F322D36000782DD /* InterleavedRtspTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F46D0DE01F322D36000782DD /* InterleavedRtspTransport.h */; };
 		F49A7E941F3B0D29007FCBD2 /* RtpPacketBuffer.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */; };
 		F49A7E951F3B0D29007FCBD2 /* RtpPacketBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */; };
+		F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4C4F60720AEE853009313CD /* DispatchQueue.cc */; };
+		F4C4F60A20AEE853009313CD /* DispatchQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C4F60820AEE853009313CD /* DispatchQueue.h */; };
 		F4FA24C31ED8427A001B56E0 /* atomic-ops.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24A61ED8427A001B56E0 /* atomic-ops.h */; };
 		F4FA24CC1ED8427A001B56E0 /* internal.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24AF1ED8427A001B56E0 /* internal.h */; };
 		F4FA24D71ED8427A001B56E0 /* spinlock.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24BA1ED8427A001B56E0 /* spinlock.h */; };
@@ -238,6 +240,8 @@
 		F46D0DE01F322D36000782DD /* InterleavedRtspTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterleavedRtspTransport.h; path = ../../core/src/InterleavedRtspTransport.h; sourceTree = "<group>"; };
 		F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RtpPacketBuffer.cc; path = ../../core/src/RtpPacketBuffer.cc; sourceTree = "<group>"; };
 		F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtpPacketBuffer.h; path = ../../core/src/RtpPacketBuffer.h; sourceTree = "<group>"; };
+		F4C4F60720AEE853009313CD /* DispatchQueue.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DispatchQueue.cc; path = ../../core/src/DispatchQueue.cc; sourceTree = "<group>"; };
+		F4C4F60820AEE853009313CD /* DispatchQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DispatchQueue.h; path = ../../core/src/DispatchQueue.h; sourceTree = "<group>"; };
 		F4FA24A51ED8427A001B56E0 /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
 		F4FA24A61ED8427A001B56E0 /* atomic-ops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "atomic-ops.h"; sourceTree = "<group>"; };
 		F4FA24A71ED8427A001B56E0 /* core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = core.c; sourceTree = "<group>"; };
@@ -332,6 +336,8 @@
 				42D671F51D3069BB00D42C35 /* RtspClient.h */,
 				42D672021D3069BB00D42C35 /* Surge.cc */,
 				42D672031D3069BB00D42C35 /* Surge.h */,
+				F4C4F60720AEE853009313CD /* DispatchQueue.cc */,
+				F4C4F60820AEE853009313CD /* DispatchQueue.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -624,6 +630,7 @@
 				42D6721F1D3069BB00D42C35 /* FireableEvent.h in Headers */,
 				42D6724A1D3069BB00D42C35 /* Teardown.h in Headers */,
 				42D672281D3069BB00D42C35 /* ISocketHandlerDelegate.h in Headers */,
+				F4C4F60A20AEE853009313CD /* DispatchQueue.h in Headers */,
 				42D672211D3069BB00D42C35 /* H264Depacketizer.h in Headers */,
 				42D6722B1D3069BB00D42C35 /* MimeTypes.h in Headers */,
 				42D6723F1D3069BB00D42C35 /* RtspResponse.h in Headers */,
@@ -795,6 +802,7 @@
 				42D6721E1D3069BB00D42C35 /* FireableEvent.cc in Sources */,
 				F4589E081ED85627004F023D /* dl.c in Sources */,
 				F4388E4C1F333AD80064A24F /* UdpTransport.cc in Sources */,
+				F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */,
 				42D6720D1D3069BB00D42C35 /* Base64.cc in Sources */,
 				F4589E161ED85627004F023D /* signal.c in Sources */,
 				F4589E101ED85627004F023D /* pipe.c in Sources */,

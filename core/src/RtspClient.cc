@@ -52,6 +52,9 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
             
     m_transport->SetDelegate(this);
     frameBuffer = new std::vector<unsigned char>();
+
+    dispatchQueue = new DispatchQueue();
+    dispatchQueue->Start();
 }
 
 Surge::RtspClient::~RtspClient() {
@@ -72,6 +75,9 @@ Surge::RtspClient::~RtspClient() {
     if (depacketizer != nullptr) {
         delete depacketizer;
     }
+
+    dispatchQueue->Stop();
+    delete dispatchQueue;
 }
 
 void Surge::RtspClient::Describe(const std::string& url,
@@ -132,7 +138,7 @@ void Surge::RtspClient::Describe(const std::string& url,
             
             delete raw_resp;
             
-            callback(resp);
+            dispatchQueue->Dispatch([=]() {callback(resp); });
         });
         
         delete describe;
@@ -203,7 +209,7 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
 
         delete raw_resp;
 
-        callback(resp);
+        dispatchQueue->Dispatch([=]() { callback(resp); });
     });
     
     delete setup;
@@ -253,7 +259,7 @@ void Surge::RtspClient::Play(bool waitForResponse,
 
         StartSession();
         
-        callback(resp);
+        dispatchQueue->Dispatch([=]() { callback(resp); });
     });
     
     delete play;
@@ -284,7 +290,7 @@ void Surge::RtspClient::Pause(std::function<void(Surge::RtspResponse*)> callback
         m_isPlaying = false;
         
         if (callback != NULL) {
-            callback(resp);
+            dispatchQueue->Dispatch([=]() { callback(resp); });
         }
     });
     
@@ -310,7 +316,7 @@ void Surge::RtspClient::Options(std::function<void(Surge::RtspResponse*)> callba
         }
         delete raw_resp;
         
-        callback(resp);
+        dispatchQueue->Dispatch([=]() { callback(resp); });
     });
      
     delete options;
@@ -342,7 +348,7 @@ void Surge::RtspClient::Options(const std::string& url,
             }
             delete raw_resp;
             
-            callback(resp);
+            dispatchQueue->Dispatch([=]() { callback(resp); });
         });
         delete options;
     });
@@ -376,7 +382,7 @@ void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callb
         }
         
         if (callback) {
-            callback(resp);
+            dispatchQueue->Dispatch([=]() { callback(resp); });
         } else {
             delete resp;
         }
@@ -404,7 +410,7 @@ void Surge::RtspClient::KeepAlive(std::function<void(Surge::RtspResponse*)> call
         
         delete raw_resp;
         
-        callback(resp);
+        dispatchQueue->Dispatch([=]() { callback(resp); });
     });
     
     delete keep_alive;

@@ -410,9 +410,7 @@ void Surge::RtspClient::KeepAlive(std::function<void(Surge::RtspResponse*)> call
     delete keep_alive;
 }
 
-void Surge::RtspClient::StopClient() {
-    Abort();
-    
+void Surge::RtspClient::StopClient() {    
     if (m_transport->IsRunning()) {
 
         // non empty session token we should teardown

@@ -137,21 +137,19 @@ namespace Surge {
         
         int GetNextSequenceNumber() { return m_sequenceNumber++; }
 
-        void NotifyDelegateOfAvailableFrame() {
+        void NotifyDelegateOfAvailableFrame(const std::vector<unsigned char> &frame) {
             if (dropFrame) {
                 ClearDroppedFrameFlag();
                 return;
             }
             
             if (m_delegate != nullptr) {
-                dispatchQueue->Dispatch([=]() {
-                    m_delegate->ClientReceivedFrame(frameBuffer->data(),
-                                                    frameBuffer->size(),
-                                                    depacketizer->GetWidth(),
-                                                    depacketizer->GetHeight(),
-                                                    1,
-                                                    1);
-                });
+                m_delegate->ClientReceivedFrame(frame.data(),
+                                                frame.size(),
+                                                depacketizer->GetWidth(),
+                                                depacketizer->GetHeight(),
+                                                1,
+                                                1);
             }
         }
         
@@ -179,11 +177,6 @@ namespace Surge {
 
         void NotifyDelegateAnnounce() {
             GetDispatcher().FailureForClient(this, ERROR_TYPE::ANNOUNCE);
-        }
-
-        void ClearFrameBuffer() {
-            frameBuffer->clear();
-            frameBuffer->resize(0);
         }
 
         void SetupRtspConnection(const std::string& url, std::function<void(int)> callback);

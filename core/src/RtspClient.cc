@@ -526,9 +526,11 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
         return;
     }
 
-    NotifyDelegateOfAvailableFrame();
-    
-    ClearFrameBuffer();
+    std::vector<unsigned char> frame;
+    frameBuffer->swap(frame);
+    dispatchQueue->Dispatch([=]() {
+        NotifyDelegateOfAvailableFrame(frame);
+    });
 }
 
 void Surge::RtspClient::CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet) {

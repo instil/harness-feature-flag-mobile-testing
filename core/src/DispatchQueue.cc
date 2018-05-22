@@ -15,7 +15,9 @@ Surge::DispatchQueue::~DispatchQueue() { }
 
 void Surge::DispatchQueue::Dispatch(const std::function<void()> task) {
     taskQueue.push(task);
-    taskAvailableEvent.Fire();
+    if (!taskAvailableEvent.IsFired()) {
+        taskAvailableEvent.Fire();
+    }
 }
 
 void Surge::DispatchQueue::Run() {
@@ -31,6 +33,7 @@ void Surge::DispatchQueue::Run() {
         }
 
         while (!taskQueue.empty()) {
+            taskAvailableEvent.Reset();
             auto task = taskQueue.front();
             task();
             taskQueue.pop();

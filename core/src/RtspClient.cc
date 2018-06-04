@@ -245,7 +245,6 @@ void Surge::RtspClient::Play(bool waitForResponse,
                 ERROR("Invalid PlayResponse: " << e.what());
                 resp = nullptr;
             }
-            delete raw_resp;
         } else {
             resp = new RtspResponse(200, "");
         }
@@ -256,6 +255,8 @@ void Surge::RtspClient::Play(bool waitForResponse,
             ERROR("PLAY command failed");
             ERROR(raw_resp->StringDump());
         }
+
+        delete raw_resp;
 
         StartSession();
         

@@ -18,7 +18,7 @@ namespace SurgeJni {
         static JavaVM *staticJvm;
 
         static void detatchJvmThread(void *rawEnv) {
-            DEBUG("Detachign JVM Thread");
+            DEBUG("Detaching JVM Thread");
             staticJvm->DetachCurrentThread();
         }
 
@@ -54,7 +54,7 @@ namespace SurgeJni {
         void getEnv(JNIEnv **env) {
             int status = jvm->GetEnv((void **) env, JNI_VERSION_1_6);
             if (status < 0) {
-                INFO("ATTACHING CURRENT THREAD");
+                INFO("Attaching thread to JVM");
                 status = jvm->AttachCurrentThread(env, NULL);
                 pthread_setspecific(key, &env);
             }

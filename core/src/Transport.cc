@@ -20,16 +20,19 @@ Surge::Transport::~Transport() {
     
     if (m_loop != nullptr) {
         m_loop->stop();
+        m_loop->close();
     }
 }
 
 /*  Thread handling  */
 
 void Surge::Transport::StartRunning() {
+    DEBUG("Starting transport");
+
     if (IsRunning()) {
         return;
     }
-    
+
     if (m_receivedBuffer.size() > 0) {
         DEBUG("Transport packet buffer clear required.");
         m_receivedBuffer.clear();
@@ -40,11 +43,14 @@ void Surge::Transport::StartRunning() {
 }
 
 void Surge::Transport::StopRunning() {
+    DEBUG("Stopping transport");
+
     if (!IsRunning()) {
         return;
     }
     m_threadRunning = false;
     m_loop->stop();
+
     if (m_thread.IsRunning()) {
         m_thread.WaitUntilStopped();
     }
@@ -53,7 +59,9 @@ void Surge::Transport::StopRunning() {
 
 void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
     if (!m_threadRunning) {
-        m_loop = uvw::Loop::create();
+        if (m_loop == nullptr) {
+            m_loop = uvw::Loop::create();
+        }
         m_tcp = m_loop->resource<uvw::TcpHandle>();
         m_timer = m_loop->resource<uvw::TimerHandle>();
     }
@@ -174,7 +182,10 @@ void Surge::Transport::Run() {
     m_tcp->close();
     m_loop->run<uvw::Loop::Mode::NOWAIT>();
 
-    m_loop->close();
+    m_loop->clear();
+    m_loop->run<uvw::Loop::Mode::NOWAIT>();
+
+    INFO("Transport stopped");
 }
 
 /*  Packet handling  */

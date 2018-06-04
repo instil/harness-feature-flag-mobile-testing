@@ -13,19 +13,6 @@ using namespace SurgeJni::NativeTypeConverters;
 
 SurgeJni::ClassLoader *classLoader;
 
-// JNI has issues at times accessing a local Java-land object on a different thread than it was created
-// This is a quick fix, making the local objects global until a fix accessing global variables on a
-// different thread via the RTSP response callbacks is found.
-jobject currentCallbackObject;
-
-void pushCallbackObject(jobject callbackObject) {
-    currentCallbackObject = callbackObject;
-}
-
-jobject popCallbackObject() {
-    return currentCallbackObject;
-}
-
 Surge::RtspClient* getClient(JNIEnv *env, jobject callingObject) {
     jclass callingObjectClass = env->GetObjectClass(callingObject);
     jfieldID field = env->GetFieldID(callingObjectClass, "nativeClient", "J");
@@ -109,16 +96,15 @@ JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2(JNIEnv *env, jobject callingObject, jstring url, jstring user, jstring password, jobject callback) {
     Surge::RtspClient *client = getClient(env, callingObject);
 
-    pushCallbackObject(env->NewGlobalRef(callback));
+    jobject globalCallback = env->NewGlobalRef(callback);
 
     client->Describe(convertString(env, url), convertString(env, user), convertString(env, password), [=](Surge::DescribeResponse *response) {
         JNIEnv *env = classLoader->getEnv();
-        jobject callbackObject = popCallbackObject();
 
-        callResponseCallback(classLoader, callbackObject, convertDescribeResponse(classLoader, response));
+        callResponseCallback(classLoader, globalCallback, convertDescribeResponse(classLoader, response));
 
-        if (callbackObject != NULL) {
-            env->DeleteGlobalRef(callbackObject);
+        if (globalCallback != NULL) {
+            env->DeleteGlobalRef(globalCallback);
         }
 
         classLoader->detatchJniEnv();
@@ -129,16 +115,15 @@ JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_setup(JNIEnv *env, jobject callingObject, jobject jSessionDescription, jobject callback) {
     Surge::RtspClient *client = getClient(env, callingObject);
 
-    pushCallbackObject(env->NewGlobalRef(callback));
+    jobject globalCallback = env->NewGlobalRef(callback);
 
     client->Setup(convertSessionDescription(env, jSessionDescription), false, [=](Surge::SetupResponse *response) {
         JNIEnv *env = classLoader->getEnv();
-        jobject callbackObject = popCallbackObject();
 
-        callResponseCallback(classLoader, callbackObject, convertResponse(classLoader, response));
+        callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
 
-        if (callbackObject != NULL) {
-            env->DeleteGlobalRef(callbackObject);
+        if (globalCallback != NULL) {
+            env->DeleteGlobalRef(globalCallback);
         }
 
         classLoader->detatchJniEnv();

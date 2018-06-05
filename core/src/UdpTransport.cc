@@ -5,9 +5,12 @@
 
 #include "UdpTransport.h"
 #include "Logging.h"
+#include "Helpers.h"
 
-
-Surge::UdpTransport::UdpTransport(ISocketHandlerDelegate *delegate) : Surge::Transport(delegate) { }
+Surge::UdpTransport::UdpTransport(ISocketHandlerDelegate *delegate) : Surge::Transport(delegate) {
+    m_rtpClientPort = SurgeUtil::RandomEvenNumberBetween(SurgeUtil::Constants::MIN_RTP_PORT_NUMBER,
+                                                         SurgeUtil::Constants::MAX_RTP_PORT_NUMBER);
+}
 
 Surge::UdpTransport::~UdpTransport() {
     
@@ -39,7 +42,7 @@ void Surge::UdpTransport::RtspTcpOpen(const std::string& host, int port, std::fu
         HandleRtpPacket(dataEvent.data.get(), dataEvent.length);
     });
     
-    m_udp->bind("0.0.0.0", SurgeUtil::Constants::DEFAULT_RTP_PORT);
+    m_udp->bind("0.0.0.0", m_rtpClientPort);
     m_udp->recv();
 }
 

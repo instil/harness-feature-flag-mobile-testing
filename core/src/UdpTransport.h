@@ -35,11 +35,11 @@ namespace Surge {
         std::string GetTransportHeaderString() const override {
             char rtp_port[12];
             char rtcp_port[12];
-            
+
             memset(rtp_port, 0, sizeof(rtp_port));
             memset(rtcp_port, 0, sizeof(rtcp_port));
-            snprintf(rtp_port, sizeof(rtp_port), "%d", SurgeUtil::Constants::DEFAULT_RTP_PORT);
-            snprintf(rtcp_port, sizeof(rtcp_port), "%d", SurgeUtil::Constants::DEFAULT_RTCP_PORT);
+            snprintf(rtp_port, sizeof(rtp_port), "%d", m_rtpClientPort);
+            snprintf(rtcp_port, sizeof(rtcp_port), "%d", m_rtpClientPort + 1);
             
             return "RTP/AVP/UDP;unicast;client_port="
             + std::string(rtp_port)
@@ -71,6 +71,8 @@ namespace Surge {
         void PunchHoleInNat(int port);
         
     private:
+        int m_rtpClientPort;
+
         int m_rtpServerPort;
         int m_rtcpServerPort;
     };

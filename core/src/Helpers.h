@@ -19,7 +19,9 @@ namespace SurgeUtil {
     std::vector<std::string> StringSplit(const std::string& data, std::string token);
 
     std::string FindKeyAndValuePair(const std::vector<std::string>* values, const std::string& key);
-    
+
+    int RandomEvenNumberBetween(int min, int max);
+
 };
 
 #endif //__HELPERS_H__

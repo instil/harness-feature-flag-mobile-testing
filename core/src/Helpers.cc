@@ -57,3 +57,10 @@ std::string SurgeUtil::FindKeyAndValuePair(const std::vector<std::string>* value
     }
     return std::string();
 }
+
+int SurgeUtil::RandomEvenNumberBetween(int min, int max) {
+    min /= 2;
+    max /= 2;
+
+    return 2 * (rand() % (max - min)) + min;
+}

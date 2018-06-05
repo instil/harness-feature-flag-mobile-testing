@@ -257,6 +257,12 @@ void JNICALL Java_co_instil_surge_client_RtspClient_stopStream(JNIEnv *env, jobj
 }
 
 JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_stopClient(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->StopClient();
+}
+
+JNIEXPORT
 jboolean JNICALL Java_co_instil_surge_client_RtspClient_isInterleavedTransport (JNIEnv *env, jobject callingObject) {
     Surge::RtspClient *client = getClient(env, callingObject);
     return (jboolean)client->IsInterleavedTransport();

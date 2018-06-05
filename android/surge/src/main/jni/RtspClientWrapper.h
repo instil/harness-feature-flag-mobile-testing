@@ -169,6 +169,14 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_stopStream
 
 /*
  * Class:     co_instil_surge_client_RtspClient
+ * Method:    stopClient
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_stopClient
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
  * Method:    isInterleavedTransport
  * Signature: ()Z
  */

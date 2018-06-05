@@ -75,6 +75,8 @@ public class RtspClient implements AutoCloseable {
 
     public native void stopStream();
 
+    public native void stopClient();
+
     public native boolean isInterleavedTransport();
 
     public native int getPacketBufferDelay();

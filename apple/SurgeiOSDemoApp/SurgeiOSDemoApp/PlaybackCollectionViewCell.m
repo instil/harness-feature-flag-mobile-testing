@@ -19,6 +19,7 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 @property (weak, nonatomic) IBOutlet UILabel *urlLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *playPauseIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (nonatomic) BOOL kvoObserversRegistered;
 @end
 
 @implementation PlaybackCollectionViewCell
@@ -66,11 +67,15 @@ NSString *const StreamRemovalRequestNotfication = @"StreamRemovalRequestNotficat
 #pragma mark - KVO
 
 - (void)setupStreamObservers {
+  self.kvoObserversRegistered = YES;
   [_stream addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
 }
 
 - (void)tearDownStreamObservers {
-  [_stream removeObserver:self forKeyPath:@"state"];
+  if (!self.kvoObserversRegistered) {
+    self.kvoObserversRegistered = NO;
+    [_stream removeObserver:self forKeyPath:@"state"];
+  }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {

@@ -5,11 +5,9 @@
 
 #include "UdpTransport.h"
 #include "Logging.h"
-#include "Helpers.h"
 
 Surge::UdpTransport::UdpTransport(ISocketHandlerDelegate *delegate) : Surge::Transport(delegate) {
-    m_rtpClientPort = SurgeUtil::RandomEvenNumberBetween(SurgeUtil::Constants::MIN_RTP_PORT_NUMBER,
-                                                         SurgeUtil::Constants::MAX_RTP_PORT_NUMBER);
+    m_rtpClientPort = GetRandomRtpPort();
 }
 
 Surge::UdpTransport::~UdpTransport() {
@@ -37,11 +35,23 @@ void Surge::UdpTransport::RtspTcpOpen(const std::string& host, int port, std::fu
     }
     
     m_udp = m_loop->resource<uvw::UDPHandle>();
-    
+
     m_udp->on<uvw::UDPDataEvent>([this](const uvw::UDPDataEvent &dataEvent, uvw::UDPHandle &udp) {
         HandleRtpPacket(dataEvent.data.get(), dataEvent.length);
     });
-    
+
+    m_udp->on<uvw::ErrorEvent>([this](const uvw::ErrorEvent &error, uvw::UDPHandle &tcp) {
+
+        if (error.code() == UV_EADDRINUSE) {
+            DEBUG("Port clash - port must already be in use. Trying another port.");
+
+            m_rtpClientPort = GetRandomRtpPort();
+            m_udp->bind("0.0.0.0", m_rtpClientPort);
+            m_udp->recv();
+        }
+    });
+
+    DEBUG("Binding to port " << m_rtpClientPort << " for UDP RTP data.");
     m_udp->bind("0.0.0.0", m_rtpClientPort);
     m_udp->recv();
 }

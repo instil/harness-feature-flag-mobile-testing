@@ -10,6 +10,7 @@
 
 #include "uvw.hpp"
 #include "Constants.h"
+#include "Helpers.h"
 
 
 namespace Surge {
@@ -53,6 +54,11 @@ namespace Surge {
         }
         
         bool HandleRtpPacket(const char* data, size_t size);
+
+        int GetRandomRtpPort() {
+            return SurgeUtil::RandomEvenNumberBetween(SurgeUtil::Constants::MIN_RTP_PORT_NUMBER,
+                                                      SurgeUtil::Constants::MAX_RTP_PORT_NUMBER);
+        }
         
         /**************/
         

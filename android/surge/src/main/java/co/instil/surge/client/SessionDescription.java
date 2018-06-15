@@ -92,7 +92,8 @@ public class SessionDescription {
 
         SessionDescription sd = (SessionDescription)object;
 
-        return this.getFormatParameters().equals(sd.getFormatParameters());
+        return this.getFormatParameters().equals(sd.getFormatParameters()) &&
+                this.getControlUrl().equals(sd.getControlUrl());
     }
 
     public int hashCode() {

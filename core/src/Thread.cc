@@ -41,7 +41,9 @@ void Thread::Execute(Runnable& runnable)
     {
         // Start thread executing in temporary thread object.
         thread t{[&]
-                 { m_isRunning = true; runnable.Run(); m_isRunning = false; }};
+                 { runnable.Run(); m_isRunning = false; }};
+
+        m_isRunning = true;
 
         // Want to move execution from t to m_thread
         // (so can exit this function) but to do that

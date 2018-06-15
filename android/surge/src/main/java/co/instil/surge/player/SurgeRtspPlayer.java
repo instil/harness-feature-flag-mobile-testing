@@ -7,8 +7,6 @@
 
 package co.instil.surge.player;
 
-import android.view.Surface;
-
 import java.nio.ByteBuffer;
 import java.util.Date;
 
@@ -256,16 +254,6 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     protected SessionDescription selectPreferredSessionDescription(SessionDescription[] sessionDescriptions) {
         return sessionDescriptions[0];
-    }
-
-    /**
-     * The surface that Surge will use to play the RTSP video stream on.
-     * @param surface Surface to play the RTSP video on.
-     * @param width Width of the surface.
-     * @param height Height of the surface.
-     */
-    public void setSurface(Surface surface, int width, int height) {
-        setSurface(new SurgeSurface(surface, width, height));
     }
 
     /**

@@ -8,7 +8,7 @@ rm $BUILD_DIR/SurgeAndroid.aar
 
 cd $SURGE_DIR
 
-./gradlew clean surge:build -x checkstyle -x findbugs
+./gradlew surge:build -x checkstyle -x findbugs
 
 cp $SURGE_DIR/surge/build/outputs/aar/surge-release.aar $BUILD_DIR/SurgeAndroid.aar
 

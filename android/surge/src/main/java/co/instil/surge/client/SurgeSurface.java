@@ -14,25 +14,24 @@ import android.view.Surface;
  * Created by paulshields on 12/05/2017.
  */
 public class SurgeSurface {
-    public static final SurgeSurface NONE = new SurgeSurface((Surface)null, 0, 0);
+    public static final SurgeSurface NONE = new SurgeSurface((SurfaceTexture)null, 0, 0);
 
+    private SurfaceTexture surfaceTexture;
     private Surface surface;
     private int width;
     private int height;
 
-    public SurgeSurface(Surface surface, int width, int height) {
-        this.surface = surface;
+    public SurgeSurface(SurfaceTexture surfaceTexture, int width, int height) {
+        this.surfaceTexture = surfaceTexture;
         this.width = width;
         this.height = height;
     }
 
-    public SurgeSurface(SurfaceTexture surfaceTexture, int width, int height) {
-        this(surfaceTexture != null ? new Surface(surfaceTexture) : null,
-                width,
-                height);
-    }
-
     public Surface getSurface() {
+        if (surfaceTexture != null) {
+            surface = new Surface(surfaceTexture);
+        }
+
         return surface;
     }
 

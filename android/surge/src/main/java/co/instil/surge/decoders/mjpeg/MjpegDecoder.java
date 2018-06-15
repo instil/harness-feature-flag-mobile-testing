@@ -12,16 +12,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.os.Handler;
 import android.os.HandlerThread;
 import android.view.Surface;
+
+import java.nio.ByteBuffer;
 
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
-
-import java.nio.ByteBuffer;
 
 /**
  * Decoder which renders a MJPEG stream to a {@link android.view.Surface}.
@@ -50,29 +49,28 @@ public class MjpegDecoder implements Decoder {
 
         try {
             final ByteBuffer test = deepCopy(frameBuffer, null);
-            new Handler(decoderThread.getLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    byte[] imageBytes = new byte[test.limit()];
-                    test.get(imageBytes);
-                    final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    if (bitmap != null) {
-                        Canvas canvas = surface.lockCanvas(null);
-                        canvas.drawBitmap(bitmap,
-                                new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
-                                new Rect(0, 0, width, height),
-                                null);
-                        surface.unlockCanvasAndPost(canvas);
-                    }
-                }
-            });
+            byte[] imageBytes = new byte[test.limit()];
+            test.get(imageBytes);
+            final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            if (bitmap != null) {
+                Canvas canvas = surface.lockCanvas(null);
+                canvas.drawBitmap(bitmap,
+                        new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
+                        new Rect(0, 0, width, height),
+                        null);
+                surface.unlockCanvasAndPost(canvas);
+            }
         } catch (Exception e) {
             logger.error("Failed to decode frame", e);
         }
     }
 
     @Override
-    public void close() throws InterruptedException {}
+    public void close() {
+        if (surface != null) {
+            surface.release();
+        }
+    }
 
     private ByteBuffer deepCopy(ByteBuffer source, ByteBuffer target) {
 

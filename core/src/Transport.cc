@@ -20,7 +20,6 @@ Surge::Transport::~Transport() {
     
     if (m_loop != nullptr) {
         m_loop->stop();
-        m_loop->close();
     }
 }
 

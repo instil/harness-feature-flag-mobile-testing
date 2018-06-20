@@ -12,8 +12,8 @@
 #include "FireableEvent.h"
 #include "Thread.h"
 #include "StoppableThread.h"
+#include "Queue.h"
 
-#endif /* DispatchQueue_h */
 
 namespace Surge {
     class DispatchQueue : private SurgeUtil::Runnable {
@@ -38,10 +38,23 @@ namespace Surge {
     private:
         void Run() override;
 
+        std::function<void()> popTaskFromQueue() {
+            return taskQueue.pop();
+        }
+
+        void pushTaskToQueue(std::function<void()> task) {
+            taskQueue.push(task);
+        }
+
+        bool taskQueueIsNotEmpty() {
+            return !taskQueue.empty();
+        }
+
     private:
-        std::queue<const std::function<void()>> taskQueue;
+        SurgeUtil::Queue<std::function<void()>> taskQueue;
 
         SurgeUtil::FireableEvent taskAvailableEvent;
-        SurgeUtil::StoppableThread dispatchThread;
-    };
+        SurgeUtil::StoppableThread dispatchThread;    };
 }
+
+#endif /* DispatchQueue_h */

@@ -527,10 +527,11 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
         return;
     }
 
-    std::vector<unsigned char> frame;
-    frameBuffer->swap(frame);
-    dispatchQueue->Dispatch([=]() {
-        NotifyDelegateOfAvailableFrame(frame);
+    std::vector<unsigned char> *frame = new std::vector<unsigned char>();
+    frameBuffer->swap(*frame);
+    dispatchQueue->Dispatch([this, frame]() {
+        NotifyDelegateOfAvailableFrame(*frame);
+        delete frame;
     });
 }
 

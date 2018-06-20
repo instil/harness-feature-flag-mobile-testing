@@ -14,7 +14,7 @@ Surge::DispatchQueue::DispatchQueue() { }
 Surge::DispatchQueue::~DispatchQueue() { }
 
 void Surge::DispatchQueue::Dispatch(const std::function<void()> task) {
-    taskQueue.push(task);
+    pushTaskToQueue(task);
     if (!taskAvailableEvent.IsFired()) {
         taskAvailableEvent.Fire();
     }
@@ -32,11 +32,10 @@ void Surge::DispatchQueue::Run() {
             break;
         }
 
-        while (!taskQueue.empty()) {
-            taskAvailableEvent.Reset();
-            auto task = taskQueue.front();
+        while (taskQueueIsNotEmpty()) {
+            auto task = popTaskFromQueue();
             task();
-            taskQueue.pop();
+            taskAvailableEvent.Reset();
         }
     }
 }

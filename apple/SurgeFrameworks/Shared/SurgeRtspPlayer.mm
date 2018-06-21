@@ -130,15 +130,9 @@ private:
 }
 
 - (void)dealloc {
-    self.client->StopClient();
+    self.client->StopStream();
     delete self.client;
     delete self.clientDelegate;
-}
-
-- (void)closeStream {
-    SurgeLogInfo(@"Closing Stream");
-    
-    self.client->StopStream();
 }
 
 #pragma mark - Public API
@@ -351,8 +345,7 @@ private:
 
 - (void)stop {
     SurgeLogInfo(@"Stopping playback of %@", self.url);
-    [self closeStream];
-    self.client->StopClient();
+    self.client->StopStream();
     if ([self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
         [self.delegate rtspPlayerDidStopPlayback:self];
     }

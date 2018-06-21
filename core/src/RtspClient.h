@@ -60,8 +60,6 @@ namespace Surge {
                       bool waitForResponse = false);
 
         void KeepAlive(std::function<void(Surge::RtspResponse*)> callback);
-
-        void StopClient();
         
         void StopStream();
 

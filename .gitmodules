@@ -7,3 +7,6 @@
 [submodule "core/lib/uvw"]
 	path = core/lib/uvw
 	url = https://github.com/skypjack/uvw.git
+[submodule "core/lib/openssl-mobile"]
+	path = core/lib/openssl-mobile
+	url = https://github.com/Pkshields/openssl-mobile.git

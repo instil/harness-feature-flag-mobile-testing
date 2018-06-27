@@ -217,7 +217,6 @@ JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobject callingObject) {
     Surge::RtspClient *client = getClient(env, callingObject);
     client->StopStream();
-    client->StopClient();
 }
 
 JNIEXPORT
@@ -241,7 +240,7 @@ void JNICALL Java_co_instil_surge_client_RtspClient_close(JNIEnv *env, jobject c
     Surge::RtspClient *client = getClient(env, callingObject);
     SurgeJni::RtspClientDelegateWrapper *delegate = (SurgeJni::RtspClientDelegateWrapper *)client->GetDelegate();
 
-    client->StopClient();
+    client->StopStream();
 
     if (delegate->GetJavaDelegate() != NULL) {
         env->DeleteWeakGlobalRef(delegate->GetJavaDelegate());
@@ -254,12 +253,6 @@ JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_stopStream(JNIEnv *env, jobject callingObject) {
     Surge::RtspClient *client = getClient(env, callingObject);
     client->StopStream();
-}
-
-JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_stopClient(JNIEnv *env, jobject callingObject) {
-    Surge::RtspClient *client = getClient(env, callingObject);
-    client->StopClient();
 }
 
 JNIEXPORT

@@ -9,34 +9,39 @@
 #include "FireableEvent.h"
 #include "RtspCommand.h"
 #include "Response.h"
+#include "SetupResponse.h"
 #include "RtpPacket.h"
 #include "ISocketHandlerDelegate.h"
 
 #include <string>
 
 namespace Surge {
-    
+
     class ITransportInterface {
     public:
-        
+
         virtual ~ITransportInterface() { }
-        
+
         virtual bool IsInterleavedTransport() = 0;
-        
+
         virtual void RtspTcpOpen(const std::string&, int, std::function<void(int)>) = 0;
-        
+
         virtual void StartRunning() = 0;
-        
+
         virtual void StopRunning() = 0;
-        
+
         virtual bool IsRunning() = 0;
-        
+
         virtual void SetRtpCallback(std::function<void(RtpPacket*)> callback) = 0;
-        
+
         virtual void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) = 0;
-        
+
+        virtual void ArbitraryDataTransaction(const char *data, const size_t length) = 0;
+
         virtual void SetDelegate(ISocketHandlerDelegate * const delegate) = 0;
-        
+
+        virtual void SetRtpPortsAndChannels(const SetupResponse *setupResponse) = 0;
+
         virtual std::string GetTransportHeaderString() const = 0;
     };
     

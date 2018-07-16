@@ -8,7 +8,7 @@
 using SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
 
 
-Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_rtspTimeoutTime(uvw::TimerHandle::Time(DEFAULT_TRANSACTION_TIMEOUT_MS)), m_threadRunning(false), executingRtspCommand(false), m_delegate(delegate)
+Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_rtspTimeoutTime(uvw::TimerHandle::Time(DEFAULT_TRANSACTION_TIMEOUT_MS)), m_threadRunning(false), executingLibuvCommand(false), m_delegate(delegate)
 { }
 
 Surge::Transport::~Transport() {
@@ -67,19 +67,26 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
 
     m_streamIp = ResolveHostnameToIP(host, port);
 
-    m_tcp->once<uvw::ErrorEvent>([&](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
+    m_tcp->once<uvw::ErrorEvent>([&, callback](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("Error occured on connect");
         callback(error.code());
     });
 
-    m_tcp->once<uvw::ConnectEvent>([&](const uvw::ConnectEvent &connectEvent, uvw::TcpHandle &tcp) {
+
+    m_tcp->once<uvw::ConnectEvent>([&, callback](const uvw::ConnectEvent &connectEvent, uvw::TcpHandle &tcp) {
+        AttachCallbacksToLibuv();
+
         INFO("Connected");
         callback(0);
     });
 
+    INFO("Starting the Transport thread");
+    StartRunning();
+
     INFO("Connecting to TCP port");
-    m_tcp->connect(m_streamIp, port);
-    m_loop->run<uvw::Loop::Mode::ONCE>();
+    SafeRunLibuvCommand([&]() {
+        m_tcp->connect(m_streamIp, port);
+    });
 }
 
 std::string Surge::Transport::ResolveHostnameToIP(const std::string& host, const int port) {
@@ -103,13 +110,28 @@ void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function
     
     rtspCallback = callback;
   
-    executingRtspCommand = false;
+    SafeRunLibuvCommand([&]() {
+        m_tcp->write(GenerateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
+                   command->PointerLength());
+        m_tcp->read();
+    });
+}
+
+void Surge::Transport::ArbitraryDataTransaction(const char *data, const size_t length) {
+    DEBUG("Sending arbitrary data down the socket");
+
+    SafeRunLibuvCommand([&]() {
+        m_tcp->write(GenerateRtspDataPtr((char *) data, length), length);
+        m_tcp->read();
+    });
+}
+
+
+void Surge::Transport::SafeRunLibuvCommand(std::function<void()> commandsToRun) {
+    executingLibuvCommand = false;
     m_loop->stop();
-    m_tcp->write(generateRtspDataPtr((char *) command->BytesPointer(), command->PointerLength()),
-                 command->PointerLength());
-    StartRtspTimer();
-    m_tcp->read();
-    executingRtspCommand = true;
+    commandsToRun();
+    executingLibuvCommand = true;
 }
 
 void Surge::Transport::StartRtspTimer() {
@@ -121,42 +143,39 @@ void Surge::Transport::StopRtspTimer() {
     m_timer->stop();
 }
 
-std::unique_ptr<char[]> Surge::Transport::generateRtspDataPtr(char *data, size_t length) {
+std::unique_ptr<char[]> Surge::Transport::GenerateRtspDataPtr(char *data, size_t length) {
     char *dataCopy = new char[length];
     memcpy(dataCopy, data, length);
     return std::unique_ptr<char[]>(dataCopy);
 }
 
-void Surge::Transport::Run() {
-    
-    m_tcp->clear();
-    
+void Surge::Transport::AttachCallbacksToLibuv() {
     m_tcp->on<uvw::ErrorEvent>([this](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("ERROR");
         NotifyDelegateOfReadFailure();
     });
-    
+
     m_tcp->on<uvw::ListenEvent>([](const uvw::ListenEvent &listenEvent, uvw::TcpHandle &tcp) {
         INFO("Listening");
     });
-    
+
     m_tcp->on<uvw::ShutdownEvent>([](const uvw::ShutdownEvent &shutdownEvent, uvw::TcpHandle &tcp) {
         ERROR("Shutdown");
     });
-    
+
     m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) {
         DEBUG("Sent request to stream, wait for a response");
     });
-    
+
     m_tcp->on<uvw::DataEvent>([this](const uvw::DataEvent &dataEvent, uvw::TcpHandle &tcp) {
 //        DEBUG("Data received, handing received data");
         RtspHandleReceive(dataEvent.data.get(), dataEvent.length);
     });
-    
+
     m_tcp->on<uvw::EndEvent>([this](const uvw::EndEvent &endEvent, uvw::TcpHandle &tcp) {
         ERROR("Loop ended prematurely, closing TCP port");
         m_threadRunning = false;
-        
+
         NotifyDelegateOfReadFailure();
     });
 
@@ -164,9 +183,48 @@ void Surge::Transport::Run() {
         INFO("RTSP timeout triggered, cancelling RTSP request.");
         rtspCallback(nullptr);
     });
+}
+
+void Surge::Transport::Run() {
     
+//    m_tcp->clear();
+//
+//    m_tcp->on<uvw::ErrorEvent>([this](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
+//        ERROR("ERROR");
+//        NotifyDelegateOfReadFailure();
+//    });
+//
+//    m_tcp->on<uvw::ListenEvent>([](const uvw::ListenEvent &listenEvent, uvw::TcpHandle &tcp) {
+//        INFO("Listening");
+//    });
+//
+//    m_tcp->on<uvw::ShutdownEvent>([](const uvw::ShutdownEvent &shutdownEvent, uvw::TcpHandle &tcp) {
+//        ERROR("Shutdown");
+//    });
+//
+//    m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) {
+//        DEBUG("Sent request to stream, wait for a response");
+//    });
+//
+//    m_tcp->on<uvw::DataEvent>([this](const uvw::DataEvent &dataEvent, uvw::TcpHandle &tcp) {
+////        DEBUG("Data received, handing received data");
+//        RtspHandleReceive(dataEvent.data.get(), dataEvent.length);
+//    });
+//
+//    m_tcp->on<uvw::EndEvent>([this](const uvw::EndEvent &endEvent, uvw::TcpHandle &tcp) {
+//        ERROR("Loop ended prematurely, closing TCP port");
+//        m_threadRunning = false;
+//
+//        NotifyDelegateOfReadFailure();
+//    });
+//
+//    m_timer->on<uvw::TimerEvent>([this](const uvw::TimerEvent &timerEvent, uvw::TimerHandle &timer) {
+//        INFO("RTSP timeout triggered, cancelling RTSP request.");
+//        rtspCallback(nullptr);
+//    });
+
     while (m_threadRunning) {
-        if (executingRtspCommand) {
+        if (executingLibuvCommand) {
             m_loop->run();
         }
     }

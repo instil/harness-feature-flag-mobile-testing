@@ -38,8 +38,6 @@ namespace Surge {
         
         const size_t PointerLength() const { return m_length; }
 
-        bool IsInterleavedPacket() const { return m_buffer[0] == '$'; }
-
         const std::string StringDump() const {
             size_t length = PointerLength();
             char *dump = (char*)malloc(length + 1);
@@ -51,15 +49,6 @@ namespace Surge {
             free(dump);
             
             return repr;
-        }
-
-        int GetInterleavedPacketChannelNumber() {
-            if (!IsInterleavedPacket()) {
-                return -1;
-            }
-
-            unsigned char channel_number = m_buffer[1];
-            return static_cast<int>(channel_number);
         }
 
         std::string StringDump() {

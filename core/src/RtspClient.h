@@ -14,6 +14,7 @@
 #include "ITransportInterface.h"
 #include "SessionDescription.h"
 #include "ISocketHandlerDelegate.h"
+#include "TransportDelegate.h"
 
 #include "DescribeResponse.h"
 #include "SetupResponse.h"
@@ -28,11 +29,13 @@
 
 namespace Surge {
 
-    class RtspClient : public ISocketHandlerDelegate, private SurgeUtil::Runnable {
+    class RtspClient : public ISocketHandlerDelegate, public TransportDelegate, private SurgeUtil::Runnable {
     public:
         RtspClient(IRtspClientDelegate * const delegate, bool useInterleavedTcpTransport = false);
 
         ~RtspClient();
+
+        void SetTransport(const std::string& url);
 
         void Describe(const std::string& url,
                       std::function<void(Surge::DescribeResponse*)> callback);
@@ -121,7 +124,7 @@ namespace Surge {
         }
         
         bool IsInterleavedTransport() {
-            return m_transport->IsInterleavedTransport();
+            return useInterleavedTcpTransport;
         }
 
     private:
@@ -181,6 +184,8 @@ namespace Surge {
 
         bool m_isPlaying;
 
+        bool useInterleavedTcpTransport;
+
         SessionDescription m_sessionDescription;
         std::vector<unsigned char> *frameBuffer;
 
@@ -204,6 +209,8 @@ namespace Surge {
         SessionDescriptionFactory *factory;
 
         Surge::DispatchQueue *dispatchQueue;
+
+        void RtpPacketReceived(RtpPacket *packet) override;
                 
     public:
         Surge::RtpPacketBuffer *packetBuffer;

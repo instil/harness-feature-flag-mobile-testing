@@ -10,6 +10,7 @@
 
 #include "InterleavedRtspTransport.h"
 #include "UdpTransport.h"
+#include "SecureInterleavedTCPTransport.h"
 
 #include "H264Depacketizer.h"
 #include "MP4VDepacketizer.h"
@@ -18,9 +19,10 @@
 using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 using SurgeUtil::Constants::DEFAULT_PACKET_BUFFER_DELAY_MS;
 
-
 Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool useInterleavedTcpTransport) :
         m_delegate(delegate),
+        useInterleavedTcpTransport(useInterleavedTcpTransport),
+        m_transport(nullptr),
         processedFirstPayload(false),
         m_lastKeepAliveMs(0),
         m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
@@ -39,18 +41,6 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         delete packet;
     });
 
-    if (useInterleavedTcpTransport) {
-        INFO("Using Interleaved TCP Transport");
-        m_transport = new InterleavedRtspTransport(nullptr);
-        
-        INFO("Disabling packet buffer");
-        packetBuffer->SetBufferDelay(0);
-    } else {
-        INFO("Using UDP Transport");
-        m_transport = new UdpTransport(nullptr);
-    }
-            
-    m_transport->SetDelegate(this);
     frameBuffer = new std::vector<unsigned char>();
 
     dispatchQueue = new DispatchQueue();
@@ -58,7 +48,7 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
 }
 
 Surge::RtspClient::~RtspClient() {
-    if (m_transport->IsRunning()) {
+    if (m_transport != nullptr && m_transport->IsRunning()) {
         m_transport->StopRunning();
     }
     
@@ -85,14 +75,44 @@ void Surge::RtspClient::Describe(const std::string& url,
     Describe(url, "", "", callback);
 }
 
+void Surge::RtspClient::SetTransport(const std::string& url) {
+    if (m_transport != nullptr) {
+        delete m_transport;
+    }
+
+    SurgeUtil::Url parsedUrl = SurgeUtil::Url(url);
+
+    auto test = parsedUrl.GetScheme();
+    if (parsedUrl.GetScheme() == "rtsp://") {
+        if (useInterleavedTcpTransport) {
+            INFO("Using Interleaved TCP Transport");
+            m_transport = new InterleavedRtspTransport(nullptr, this);
+
+            INFO("Disabling packet buffer");
+            packetBuffer->SetBufferDelay(0);
+        } else {
+            INFO("Using UDP Transport");
+            m_transport = new UdpTransport(nullptr);
+        }
+    } else {
+        INFO("Using TLS TCP Transport");
+        m_transport = new SecureInterleavedTCPTransport(nullptr, this);
+        packetBuffer->SetBufferDelay(0);
+    }
+
+    m_transport->SetDelegate(this);
+}
+
 void Surge::RtspClient::Describe(const std::string& url,
                                  const std::string& user,
                                  const std::string& password,
                                  std::function<void(Surge::DescribeResponse*)> callback) {
     m_url = url;
     m_isPlaying = false;
+
+    SetTransport(url);
     
-    SetupRtspConnection(url, [&](int result) {
+    SetupRtspConnection(url, [=](int result) {
         if (result != 0) {
             INFO("Could not connect to the supplied URL to initiate streaming. Incorrect URL?");
             callback(nullptr);
@@ -153,6 +173,7 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
     std::string setup_url = (sessionDescription.IsControlUrlComplete()) ?
         sessionDescription.GetControl():
         m_url + "/" + sessionDescription.GetControl();
+    m_url = setup_url;
 
     // set current palette
     m_sessionDescription = sessionDescription;
@@ -188,17 +209,7 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
             DEBUG("RtspClient Session set to: " << m_session);
             DEBUG("RtspClient KeepAlive Interval set to: " << m_keeepAliveIntervalInSeconds);
             
-            if (m_transport->IsInterleavedTransport() && resp->IsInterleaved()) {
-                ((InterleavedRtspTransport*)m_transport)->
-                SetRtpInterleavedChannel(resp->GetRtpInterleavedChannel());
-                ((InterleavedRtspTransport*)m_transport)->
-                SetRtcpInterleavedChannel(resp->GetRtcpInterleavedChannel());
-                
-                DEBUG("Rtp Interleaved Channel set to: " << resp->GetRtpInterleavedChannel());
-                DEBUG("Rtcp Interleaved Channel set to: " << resp->GetRtcpInterleavedChannel());
-            } else {
-                ((UdpTransport*)m_transport)->SetRtpServerPort(resp->GetRtpServerPort());
-            }
+            m_transport->SetRtpPortsAndChannels(resp);
         } else {
             ERROR("SETUP command failed");
             
@@ -441,9 +452,24 @@ void Surge::RtspClient::StartSession() {
     m_thread.Execute(*this);
 }
 
+long long int time_last_packet_was_processed;
+
+void Surge::RtspClient::RtpPacketReceived(RtpPacket *packet) {
+    if (packet != nullptr) {
+        packetBuffer->AddPacketToBuffer(packet);
+        dispatchQueue->Dispatch([&, packet]() {
+            this->ProcessRtpPacket(packet);
+            delete packet;
+        });
+
+        time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
+    }
+}
+
 void Surge::RtspClient::Run() {
 
-    long long int time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
+//    long long int time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
+    time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
 
     m_transport->SetRtpCallback([&](RtpPacket* packet) {
         if (packet != nullptr) {
@@ -492,6 +518,7 @@ void Surge::RtspClient::Run() {
                     NotifyDelegateTimeout();
                     m_thread.Stop();
                 } else {
+                    DEBUG("Keep Alive response received.");
                     m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
                     delete resp;
                 }
@@ -527,7 +554,7 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
     frameBuffer->swap(*frame);
     dispatchQueue->Dispatch([this, frame]() {
         NotifyDelegateOfAvailableFrame(*frame);
-        delete frame;
+        frame->clear();
     });
 }
 
@@ -574,14 +601,5 @@ void Surge::RtspClient::SetupRtspConnection(const std::string& url, std::functio
     
     std::string host = url_model.GetHost();
     int port = url_model.GetPort();
-    m_transport->RtspTcpOpen(host, port, [&](int result) {
-        if (result == 0) {
-            INFO("Starting the Transport thread");
-            m_transport->StartRunning();
-        } else {
-            ERROR("Did not start the Transport thread.");
-        }
-
-        callback(result);
-    });
+    m_transport->RtspTcpOpen(host, port, callback);
 }

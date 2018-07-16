@@ -24,6 +24,7 @@ namespace Surge {
         void StartRunning() override;
         void StopRunning() override;
         void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;
+        void ArbitraryDataTransaction(const char *data, const size_t length) override;
         void StartRtspTimer();
         void StopRtspTimer();
         
@@ -61,8 +62,10 @@ namespace Surge {
             }
         }
         
-        std::unique_ptr<char[]> generateRtspDataPtr(char *data, size_t length);
-        void RtspHandleReceive(const char* buffer, size_t size);
+        std::unique_ptr<char[]> GenerateRtspDataPtr(char *data, size_t length);
+        void SafeRunLibuvCommand(std::function<void()> commandsToRun);
+        void AttachCallbacksToLibuv();
+        virtual void RtspHandleReceive(const char* buffer, size_t size);
         bool HandleRtspPacket();
         void AppendDataToBuffer(const char* buffer, size_t size);
         void RemoveDataFromStartOfBuffer(size_t count);
@@ -96,7 +99,7 @@ namespace Surge {
         std::atomic<bool> m_threadRunning;
         
         std::function<void(Response*)> rtspCallback;
-        std::atomic<bool> executingRtspCommand;
+        std::atomic<bool> executingLibuvCommand;
 
         ISocketHandlerDelegate *m_delegate;
         

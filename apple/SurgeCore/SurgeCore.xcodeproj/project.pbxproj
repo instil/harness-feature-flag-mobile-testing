@@ -83,6 +83,8 @@
 		42D674791D30847400D42C35 /* testrunner.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674781D30847400D42C35 /* testrunner.cc */; };
 		42D676351D3084B200D42C35 /* gmock-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674E71D3084B100D42C35 /* gmock-all.cc */; };
 		42D677241D30857B00D42C35 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D6771A1D30857B00D42C35 /* gtest-all.cc */; };
+		F417EA2E20F3698500ED51EE /* SecureInterleavedTCPTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */; };
+		F417EA2F20F3698500ED51EE /* SecureInterleavedTCPTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */; };
 		F4388E4C1F333AD80064A24F /* UdpTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4388E4A1F333AD80064A24F /* UdpTransport.cc */; };
 		F4388E4D1F333AD80064A24F /* UdpTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F4388E4B1F333AD80064A24F /* UdpTransport.h */; };
 		F43E1C1220DA7DF900143083 /* Queue.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E1C1020DA7DF900143083 /* Queue.h */; };
@@ -123,6 +125,8 @@
 		F46D0DDE1F3211C5000782DD /* Transport.h in Headers */ = {isa = PBXBuildFile; fileRef = F46D0DDC1F3211C5000782DD /* Transport.h */; };
 		F46D0DE11F322D36000782DD /* InterleavedRtspTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F46D0DDF1F322D36000782DD /* InterleavedRtspTransport.cc */; };
 		F46D0DE21F322D36000782DD /* InterleavedRtspTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F46D0DE01F322D36000782DD /* InterleavedRtspTransport.h */; };
+		F490E03720DD5BC000D30214 /* TLSClient.cc in Sources */ = {isa = PBXBuildFile; fileRef = F490E03520DD5BC000D30214 /* TLSClient.cc */; };
+		F490E03820DD5BC000D30214 /* TLSClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F490E03620DD5BC000D30214 /* TLSClient.h */; };
 		F49A7E941F3B0D29007FCBD2 /* RtpPacketBuffer.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */; };
 		F49A7E951F3B0D29007FCBD2 /* RtpPacketBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */; };
 		F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4C4F60720AEE853009313CD /* DispatchQueue.cc */; };
@@ -224,6 +228,8 @@
 		42D674781D30847400D42C35 /* testrunner.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testrunner.cc; path = ../../../core/test/testrunner.cc; sourceTree = "<group>"; };
 		42D674E71D3084B100D42C35 /* gmock-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gmock-all.cc"; sourceTree = "<group>"; };
 		42D6771A1D30857B00D42C35 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
+		F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SecureInterleavedTCPTransport.cc; path = ../../core/src/SecureInterleavedTCPTransport.cc; sourceTree = "<group>"; };
+		F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SecureInterleavedTCPTransport.h; path = ../../core/src/SecureInterleavedTCPTransport.h; sourceTree = "<group>"; };
 		F4388E4A1F333AD80064A24F /* UdpTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpTransport.cc; path = ../../core/src/UdpTransport.cc; sourceTree = "<group>"; };
 		F4388E4B1F333AD80064A24F /* UdpTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpTransport.h; path = ../../core/src/UdpTransport.h; sourceTree = "<group>"; };
 		F43E1C1020DA7DF900143083 /* Queue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = ../../core/src/Queue.h; sourceTree = "<group>"; };
@@ -240,6 +246,9 @@
 		F46D0DDC1F3211C5000782DD /* Transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transport.h; path = ../../core/src/Transport.h; sourceTree = "<group>"; };
 		F46D0DDF1F322D36000782DD /* InterleavedRtspTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InterleavedRtspTransport.cc; path = ../../core/src/InterleavedRtspTransport.cc; sourceTree = "<group>"; };
 		F46D0DE01F322D36000782DD /* InterleavedRtspTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterleavedRtspTransport.h; path = ../../core/src/InterleavedRtspTransport.h; sourceTree = "<group>"; };
+		F48DFB1920E27AE900BA39A8 /* TransportDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TransportDelegate.h; path = ../../core/src/TransportDelegate.h; sourceTree = "<group>"; };
+		F490E03520DD5BC000D30214 /* TLSClient.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TLSClient.cc; path = ../../core/src/TLSClient.cc; sourceTree = "<group>"; };
+		F490E03620DD5BC000D30214 /* TLSClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSClient.h; path = ../../core/src/TLSClient.h; sourceTree = "<group>"; };
 		F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RtpPacketBuffer.cc; path = ../../core/src/RtpPacketBuffer.cc; sourceTree = "<group>"; };
 		F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtpPacketBuffer.h; path = ../../core/src/RtpPacketBuffer.h; sourceTree = "<group>"; };
 		F4C4F60720AEE853009313CD /* DispatchQueue.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DispatchQueue.cc; path = ../../core/src/DispatchQueue.cc; sourceTree = "<group>"; };
@@ -299,6 +308,7 @@
 				42D671C41D3069AE00D42C35 /* SurgeCore */,
 				42D6731C1D306ACE00D42C35 /* SurgeCoreUnitTests */,
 				42D671BA1D30684A00D42C35 /* Products */,
+				F490E02320DD4FB200D30214 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -329,6 +339,7 @@
 				F4C4F60320AEDEAB009313CD /* RTP */,
 				F4C4F60120AEDE29009313CD /* Depacketizers */,
 				F4C4F60420AEDECA009313CD /* Utils */,
+				F490E02820DD514E00D30214 /* TLS */,
 				42D671CD1D3069BB00D42C35 /* CMakeLists.txt */,
 				42D671CF1D3069BB00D42C35 /* Constants.h */,
 				42D671D61D3069BB00D42C35 /* ErrorDispatcher.cc */,
@@ -505,6 +516,25 @@
 			name = Transports;
 			sourceTree = "<group>";
 		};
+		F490E02320DD4FB200D30214 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F490E02820DD514E00D30214 /* TLS */ = {
+			isa = PBXGroup;
+			children = (
+				F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */,
+				F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */,
+				F490E03520DD5BC000D30214 /* TLSClient.cc */,
+				F490E03620DD5BC000D30214 /* TLSClient.h */,
+				F48DFB1920E27AE900BA39A8 /* TransportDelegate.h */,
+			);
+			name = TLS;
+			sourceTree = "<group>";
+		};
 		F4C4F60120AEDE29009313CD /* Depacketizers */ = {
 			isa = PBXGroup;
 			children = (
@@ -646,6 +676,7 @@
 				42D672101D3069BB00D42C35 /* BasicFDEvent.h in Headers */,
 				42D672461D3069BB00D42C35 /* SetupResponse.h in Headers */,
 				F4388E4D1F333AD80064A24F /* UdpTransport.h in Headers */,
+				F490E03820DD5BC000D30214 /* TLSClient.h in Headers */,
 				42D672231D3069BB00D42C35 /* Helpers.h in Headers */,
 				42D672501D3069BB00D42C35 /* Url.h in Headers */,
 				42D6722A1D3069BB00D42C35 /* Logging.h in Headers */,
@@ -670,6 +701,7 @@
 				42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */,
 				42D6724C1D3069BB00D42C35 /* Thread.h in Headers */,
 				42D6723C1D3069BB00D42C35 /* RtspCommand.h in Headers */,
+				F417EA2F20F3698500ED51EE /* SecureInterleavedTCPTransport.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,6 +801,7 @@
 				42D672481D3069BB00D42C35 /* Surge.cc in Sources */,
 				F4589E171ED85627004F023D /* stream.c in Sources */,
 				F4589E0D1ED85627004F023D /* kqueue.c in Sources */,
+				F417EA2E20F3698500ED51EE /* SecureInterleavedTCPTransport.cc in Sources */,
 				42D672411D3069BB00D42C35 /* SessionDescriptionFactory.cc in Sources */,
 				F4589E0A1ED85627004F023D /* fsevents.c in Sources */,
 				42D6721C1D3069BB00D42C35 /* ErrorDispatcher.cc in Sources */,
@@ -777,6 +810,7 @@
 				F49A7E941F3B0D29007FCBD2 /* RtpPacketBuffer.cc in Sources */,
 				42D6723D1D3069BB00D42C35 /* RtspCommandFactory.cc in Sources */,
 				42D672171D3069BB00D42C35 /* DateTime.cc in Sources */,
+				F490E03720DD5BC000D30214 /* TLSClient.cc in Sources */,
 				F4589E151ED85627004F023D /* pthread-fixes.c in Sources */,
 				F4589E191ED85627004F023D /* thread.c in Sources */,
 				42D6723A1D3069BB00D42C35 /* RtspClient.cc in Sources */,
@@ -959,6 +993,7 @@
 					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
 					"$(PROJECT_DIR)/../../core/lib/uvw/src",
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -980,6 +1015,7 @@
 					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
 					"$(PROJECT_DIR)/../../core/lib/uvw/src",
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;

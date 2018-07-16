@@ -81,6 +81,10 @@
 		F41D9E4D1D940B95005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
 		F41D9E4E1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
 		F41D9E4F1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
+		F45A89D220F50833003C4D81 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D020F50833003C4D81 /* libcrypto.a */; };
+		F45A89D320F50833003C4D81 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D120F50833003C4D81 /* libssl.a */; };
+		F497B42F20E120A20067D92A /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F497B42D20E120A10067D92A /* libssl.a */; };
+		F497B43020E120A20067D92A /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F497B42E20E120A20067D92A /* libcrypto.a */; };
 		F4B2A0101D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
 		F4B2A0111D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
 		F4B2A0121D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
@@ -136,6 +140,10 @@
 		42EFF7861CAADB330056B9F3 /* SurgeRtspPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SurgeRtspPlayer.mm; sourceTree = "<group>"; tabWidth = 4; };
 		42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeLogging.h; sourceTree = "<group>"; };
 		F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayer_Private.h; sourceTree = "<group>"; };
+		F45A89D020F50833003C4D81 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../core/lib/openssl-mobile/lib/mac/libcrypto.a"; sourceTree = "<group>"; };
+		F45A89D120F50833003C4D81 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/mac/libssl.a"; sourceTree = "<group>"; };
+		F497B42D20E120A10067D92A /* libssl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/ios/libssl.a"; sourceTree = "<group>"; };
+		F497B42E20E120A20067D92A /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libcrypto.a; path = "../../core/lib/openssl-mobile/lib/ios/libcrypto.a"; sourceTree = "<group>"; };
 		F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+SurgeExtensions.h"; sourceTree = "<group>"; };
 		F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDate+SurgeExtensions.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,6 +153,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F45A89D220F50833003C4D81 /* libcrypto.a in Frameworks */,
+				F45A89D320F50833003C4D81 /* libssl.a in Frameworks */,
 				42D672581D306A2E00D42C35 /* libSurgeCore.a in Frameworks */,
 				4241D51E1CBB07F80087BAAF /* AppKit.framework in Frameworks */,
 				422E8E4C1CBB1FA00092FFB3 /* CoreVideo.framework in Frameworks */,
@@ -157,6 +167,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				42D672541D306A1A00D42C35 /* libSurgeCore.a in Frameworks */,
+				F497B42F20E120A20067D92A /* libssl.a in Frameworks */,
+				F497B43020E120A20067D92A /* libcrypto.a in Frameworks */,
 				422E8E481CBB1F840092FFB3 /* CoreVideo.framework in Frameworks */,
 				426A40E41CB1A3F200A4712B /* UIKit.framework in Frameworks */,
 				422E8E461CBB1F500092FFB3 /* VideoToolbox.framework in Frameworks */,
@@ -296,6 +308,10 @@
 		42F577B01CA3575800112E27 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F497B42E20E120A20067D92A /* libcrypto.a */,
+				F497B42D20E120A10067D92A /* libssl.a */,
+				F45A89D020F50833003C4D81 /* libcrypto.a */,
+				F45A89D120F50833003C4D81 /* libssl.a */,
 				42D672571D306A2E00D42C35 /* libSurgeCore.a */,
 				42D672551D306A2600D42C35 /* libSurgeCore.a */,
 				42D672531D306A1A00D42C35 /* libSurgeCore.a */,
@@ -619,10 +635,15 @@
 					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
 					"$(PROJECT_DIR)/../../core/lib/uvw/src",
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
 				INFOPLIST_FILE = SurgeMacOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/paulshields/Projects/Surge/core/lib/openssl-mobile/lib/mac",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeMacOS;
@@ -685,10 +706,15 @@
 					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
 					"$(PROJECT_DIR)/../../core/lib/uvw/src",
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
 				INFOPLIST_FILE = SurgeMacOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/paulshields/Projects/Surge/core/lib/openssl-mobile/lib/mac",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeMacOS;
@@ -751,12 +777,16 @@
 					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
 					"$(PROJECT_DIR)/../../core/lib/uvw/src",
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/paulshields/Projects/Surge/core/lib/openssl-mobile/lib/ios",
+				);
 				MODULE_NAME = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -816,12 +846,16 @@
 					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
 					"$(PROJECT_DIR)/../../core/lib/uvw/src",
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/paulshields/Projects/Surge/core/lib/openssl-mobile/lib/ios",
+				);
 				MODULE_NAME = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOS;
@@ -884,11 +918,15 @@
 					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
 					"$(PROJECT_DIR)/../../core/lib/uvw/src",
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
 				INFOPLIST_FILE = SurgeTvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/paulshields/Projects/Surge/core/lib/openssl-mobile/lib/ios",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeTvOS;
@@ -944,11 +982,15 @@
 					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
 					"$(PROJECT_DIR)/../../core/lib/uvw/src",
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
 				INFOPLIST_FILE = SurgeTvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/paulshields/Projects/Surge/core/lib/openssl-mobile/lib/ios",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeTvOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";

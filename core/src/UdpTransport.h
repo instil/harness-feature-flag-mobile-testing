@@ -63,14 +63,11 @@ namespace Surge {
         /**************/
         
     public:
-        void SetRtpServerPort(int rtpServerPort) {
-            m_rtpServerPort = rtpServerPort;
-            PunchHoleInNat(rtpServerPort);
-        }
-        
-        void SetRtcpServerPort(int rtcpServerPort) {
-            m_rtcpServerPort = rtcpServerPort;
-            PunchHoleInNat(rtcpServerPort);
+        void SetRtpPortsAndChannels(const SetupResponse *setupResponse) override {
+            m_rtpServerPort = setupResponse->GetRtpServerPort();
+            m_rtcpServerPort = setupResponse->GetRtcpServerPort();
+            PunchHoleInNat(m_rtpServerPort);
+            PunchHoleInNat(m_rtcpServerPort);
         }
         
     private:

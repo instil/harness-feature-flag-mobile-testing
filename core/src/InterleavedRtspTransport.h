@@ -8,11 +8,12 @@
 
 #include "Transport.h"
 #include "Constants.h"
+#include "TransportDelegate.h"
 
 namespace Surge {
     class InterleavedRtspTransport : public Surge::Transport {
     public:
-        InterleavedRtspTransport(ISocketHandlerDelegate * const delegate);
+        InterleavedRtspTransport(ISocketHandlerDelegate * const delegate, TransportDelegate * const transportDelegate);
         
         std::string GetTransportHeaderString() const override {
             char rtp_channel[12];
@@ -29,17 +30,14 @@ namespace Surge {
             + std::string(rtcp_channel);
         }
         
-        void SetRtpInterleavedChannel(int rtpInterleavedChannel) {
-            m_rtpInterleavedChannel = rtpInterleavedChannel;
-        }
-        
-        void SetRtcpInterleavedChannel(int rtcpInterleavedChannel) {
-            m_rtcpInterleavedChannel = rtcpInterleavedChannel;
-        }
-        
     protected:
         bool IsInterleavedTransport() override {
             return true;
+        }
+
+        void SetRtpPortsAndChannels(const SetupResponse *setupResponse) override {
+            m_rtpInterleavedChannel = setupResponse->GetRtpInterleavedChannel();
+            m_rtcpInterleavedChannel = setupResponse->GetRtcpInterleavedChannel();
         }
         
         bool HandlePacket(const char* buffer, size_t size) override;
@@ -53,6 +51,8 @@ namespace Surge {
         int m_readBufferSize;
         int m_rtpInterleavedChannel;
         int m_rtcpInterleavedChannel;
+
+        TransportDelegate *transportDelegate;
     };
 }
 

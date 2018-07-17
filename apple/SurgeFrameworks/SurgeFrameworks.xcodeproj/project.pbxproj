@@ -630,13 +630,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../core/src",
-					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
-					"$(PROJECT_DIR)/../../core/lib/uvw/src",
-					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
-					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SurgeMacOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
@@ -701,13 +695,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../core/src",
-					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
-					"$(PROJECT_DIR)/../../core/lib/uvw/src",
-					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
-					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SurgeMacOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
@@ -772,20 +760,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../core/src",
-					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
-					"$(PROJECT_DIR)/../../core/lib/uvw/src",
-					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
-					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/paulshields/Projects/Surge/core/lib/openssl-mobile/lib/ios",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/lib/ios",
 				);
 				MODULE_NAME = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -841,20 +823,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../core/src",
-					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
-					"$(PROJECT_DIR)/../../core/lib/uvw/src",
-					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
-					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/paulshields/Projects/Surge/core/lib/openssl-mobile/lib/ios",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/lib/ios",
 				);
 				MODULE_NAME = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -913,13 +889,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../core/src",
-					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
-					"$(PROJECT_DIR)/../../core/lib/uvw/src",
-					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
-					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SurgeTvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -977,13 +947,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../core/src",
-					"$(PROJECT_DIR)/../../core/lib/RxCpp/Rx/v2/src",
-					"$(PROJECT_DIR)/../../core/lib/uvw/src",
-					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
-					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SurgeTvOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1031,6 +995,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../../core/src",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -1061,6 +1029,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../../core/src",
+				);
 			};
 			name = Release;
 		};

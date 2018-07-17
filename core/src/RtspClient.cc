@@ -457,10 +457,6 @@ long long int time_last_packet_was_processed;
 void Surge::RtspClient::RtpPacketReceived(RtpPacket *packet) {
     if (packet != nullptr) {
         packetBuffer->AddPacketToBuffer(packet);
-        dispatchQueue->Dispatch([&, packet]() {
-            this->ProcessRtpPacket(packet);
-            delete packet;
-        });
 
         time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
     }

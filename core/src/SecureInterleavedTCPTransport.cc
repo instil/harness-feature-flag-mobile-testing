@@ -44,7 +44,7 @@ void Surge::SecureInterleavedTCPTransport::RtspTransaction(const RtspCommand* co
 
     auto response = tlsClient->EncryptData((char *) command->BytesPointer(), command->PointerLength());
     if (response.StatusCode() == ERROR) {
-        ERROR("Fialed to encrypt data; skipping transaction.");
+        ERROR("Failed to encrypt data; skipping transaction.");
         return;
     }
 

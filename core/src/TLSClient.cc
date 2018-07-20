@@ -68,14 +68,14 @@ void Surge::TLSClient::GenerateSSLContext() {
     if (sslContext == NULL) {
         ERROR("Error?");
     }
-    
 
-    // Verifty vertificate callback
+    // Verify vertificate callback
     SSL_CTX_set_verify(sslContext, SSL_VERIFY_PEER, VerifyCertificate);
-    SSL_CTX_set_verify_depth(sslContext, 4);
 
     //
     SSL_CTX_set_read_ahead(sslContext, true);
+
+    int test = SSL_CTX_load_verify_locations(sslContext, "cacert.pem", NULL);
 
     // Disables SSL & compression support
     const long flags = SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION;
@@ -98,9 +98,17 @@ void Surge::TLSClient::SetupSSL() {
     SSL_set_bio(ssl, openSSLBio, openSSLBio);
 }
 
-int Surge::TLSClient::VerifyCertificate(int preverify, X509_STORE_CTX* x509_ctx) {
-    // Always verify certificate - bad idea!
-    return 1;
+int Surge::TLSClient::VerifyCertificate(int openSSLVerificationResult, X509_STORE_CTX* x509_ctx) {
+    if (openSSLVerificationResult != 1) {
+        if (X509_STORE_CTX_get_error(x509_ctx) == X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT) {
+            INFO("Self signed certificate detected; Allowed.");
+            return 1;
+        } else {
+            INFO("Certificate validation error: code " << X509_STORE_CTX_get_error(x509_ctx));
+        }
+    }
+
+    return openSSLVerificationResult;
 }
 
 void Surge::TLSClient::OpenTLSConnection(std::function<void(TLSStatus)> callback) {
@@ -112,7 +120,6 @@ void Surge::TLSClient::OpenTLSConnection(std::function<void(TLSStatus)> callback
 void Surge::TLSClient::RunTLSHandshake() {
     // Initiates handshake, when in client mode.
     int result = SSL_do_handshake(ssl);
-    INFO("RV: " << result);
 
     if (InterpretSSLResult(ssl, result) == WRITE_TO_TRANSPORT) {
         int handshakeDataLength = BIO_pending(appBio);
@@ -123,6 +130,8 @@ void Surge::TLSClient::RunTLSHandshake() {
         transport->ArbitraryDataTransaction(handshakeTransaction, handshakeDataLength);
 
         free(handshakeTransaction);
+    } else if (InterpretSSLResult(ssl, result) != OK) {
+        ERROR("Handshake failed!");
     }
 }
 

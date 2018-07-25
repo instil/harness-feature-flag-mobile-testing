@@ -467,4 +467,29 @@ private:
     }
 }
 
+- (bool)tlsCertificateVerificationEnabled {
+    return self.client->IsTLSCertificateValidationEnabled();
+}
+
+- (void)setTlsCertificateVerificationEnabled:(bool)tlsCertificateVerificationEnabled {
+    self.client->SetTLSCertificateValidationEnabled(tlsCertificateVerificationEnabled);
+}
+
+- (bool)tlsSelfSignedCertificateAllowed {
+    return self.client->IsTLSCertificateValidationEnabled();
+}
+
+- (void)setTlsSelfSignedCertificateAllowed:(bool)tlsSelfSignedCertificateAllowed {
+    self.client->SetTLSSelfSignedCertsAllowed(tlsSelfSignedCertificateAllowed);
+}
+
+- (void)setTlsTrustedCertificatePath:(NSURL *)tlsTrustedCertificatePath {
+    if (![tlsTrustedCertificatePath isFileURL]) {
+        [NSException raise:@"Invalid Trusted Certificate Path" format:@"URI provided is not a local file URL"];
+    }
+
+    _tlsTrustedCertificatePath = tlsTrustedCertificatePath;
+    self.client->SetTLSTrustedCertificate(tlsTrustedCertificatePath.path.UTF8String);
+}
+
 @end

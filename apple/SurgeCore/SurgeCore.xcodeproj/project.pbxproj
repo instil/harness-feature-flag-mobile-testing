@@ -246,6 +246,9 @@
 		F46D0DDC1F3211C5000782DD /* Transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transport.h; path = ../../core/src/Transport.h; sourceTree = "<group>"; };
 		F46D0DDF1F322D36000782DD /* InterleavedRtspTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InterleavedRtspTransport.cc; path = ../../core/src/InterleavedRtspTransport.cc; sourceTree = "<group>"; };
 		F46D0DE01F322D36000782DD /* InterleavedRtspTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterleavedRtspTransport.h; path = ../../core/src/InterleavedRtspTransport.h; sourceTree = "<group>"; };
+		F473291621072D5500E6C117 /* ITLSClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ITLSClient.h; path = ../../core/src/ITLSClient.h; sourceTree = "<group>"; };
+		F47329172107323200E6C117 /* TLSFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSFactory.h; path = ../../core/src/TLSFactory.h; sourceTree = "<group>"; };
+		F47329192107448E00E6C117 /* TLSResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSResponse.h; path = ../../core/src/TLSResponse.h; sourceTree = "<group>"; };
 		F48DFB1920E27AE900BA39A8 /* TransportDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TransportDelegate.h; path = ../../core/src/TransportDelegate.h; sourceTree = "<group>"; };
 		F490E03520DD5BC000D30214 /* TLSClient.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TLSClient.cc; path = ../../core/src/TLSClient.cc; sourceTree = "<group>"; };
 		F490E03620DD5BC000D30214 /* TLSClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSClient.h; path = ../../core/src/TLSClient.h; sourceTree = "<group>"; };
@@ -528,8 +531,11 @@
 			children = (
 				F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */,
 				F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */,
+				F473291621072D5500E6C117 /* ITLSClient.h */,
 				F490E03520DD5BC000D30214 /* TLSClient.cc */,
 				F490E03620DD5BC000D30214 /* TLSClient.h */,
+				F47329172107323200E6C117 /* TLSFactory.h */,
+				F47329192107448E00E6C117 /* TLSResponse.h */,
 				F48DFB1920E27AE900BA39A8 /* TransportDelegate.h */,
 			);
 			name = TLS;

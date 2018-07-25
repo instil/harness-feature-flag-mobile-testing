@@ -16,6 +16,8 @@
 #include "MP4VDepacketizer.h"
 #include "MJPEGDepacketizer.h"
 
+#include "TLSFactory.h"
+
 using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 using SurgeUtil::Constants::DEFAULT_PACKET_BUFFER_DELAY_MS;
 
@@ -31,6 +33,8 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         startTimeSet(false),
         endTimeSet(false),
         depacketizer(nullptr),
+        tlsCertificateValidationEnabled(true),
+        tlsSelfSignedCertsAllowed(true),
         factory(new SessionDescriptionFactory()){
 
     StartErrorDispatcher();
@@ -45,6 +49,9 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
 
     dispatchQueue = new DispatchQueue();
     dispatchQueue->Start();
+
+    tlsClient = TLSFactory::GenerateTLSClient(tlsCertificateValidationEnabled,
+                                              tlsSelfSignedCertsAllowed);
 }
 
 Surge::RtspClient::~RtspClient() {
@@ -96,7 +103,9 @@ void Surge::RtspClient::SetTransport(const std::string& url) {
         }
     } else {
         INFO("Using TLS TCP Transport");
-        m_transport = new SecureInterleavedTCPTransport(nullptr, this);
+        m_transport = new SecureInterleavedTCPTransport(tlsClient,
+                                                        nullptr,
+                                                        this);
         packetBuffer->SetBufferDelay(0);
     }
 
@@ -116,6 +125,7 @@ void Surge::RtspClient::Describe(const std::string& url,
         if (result != 0) {
             INFO("Could not connect to the supplied URL to initiate streaming. Incorrect URL?");
             callback(nullptr);
+            return;
         }
         
         INFO("Sending DESCRIBE request");

@@ -14,12 +14,15 @@
 
 #include "Logging.h"
 
-Surge::TLSClient::TLSClient() :
+Surge::TLSClient::TLSClient(bool certificateValidationEnabled, bool selfSignedCertsAllowed) :
     sslContext(nullptr),
     ssl(nullptr),
     appBio(nullptr),
     openSSLBio(nullptr),
-    transport(nullptr) { }
+    transport(nullptr),
+    certificateValidationEnabled(certificateValidationEnabled),
+    selfSignedCertsAllowed(selfSignedCertsAllowed),
+    trustedCertificate("") { }
 
 Surge::TLSClient::~TLSClient() {
     StopClient();
@@ -75,7 +78,8 @@ void Surge::TLSClient::GenerateSSLContext() {
     //
     SSL_CTX_set_read_ahead(sslContext, true);
 
-    int test = SSL_CTX_load_verify_locations(sslContext, "cacert.pem", NULL);
+    SSL_CTX_load_verify_locations(sslContext, trustedCertificate.c_str(), NULL);
+    SSL_CTX_set_verify_depth(sslContext, 4);
 
     // Disables SSL & compression support
     const long flags = SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION;
@@ -96,15 +100,29 @@ void Surge::TLSClient::SetupSSL() {
 
     // Connects the BIOs rbio and wbio for the read and write operations of the TLS/SSL (encrypted) side of ssl.
     SSL_set_bio(ssl, openSSLBio, openSSLBio);
+
+    // Store a pointer to this object in the SSL client so it can be accessed in any (static) callback functions.
+    StoreItemInSSLObject(ssl, SSL_TLS_CLIENT_STORE_LOCATION, this);
 }
 
 int Surge::TLSClient::VerifyCertificate(int openSSLVerificationResult, X509_STORE_CTX* x509_ctx) {
+    TLSClient *client = RetrieveItemInSSLObject<TLSClient>(x509_ctx, SSL_TLS_CLIENT_STORE_LOCATION);
+
+    if (!client->certificateValidationEnabled) {
+        DEBUG("Certificate validation disabled; skipping...");
+        return 1;
+    }
+
     if (openSSLVerificationResult != 1) {
         if (X509_STORE_CTX_get_error(x509_ctx) == X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT) {
-            INFO("Self signed certificate detected; Allowed.");
-            return 1;
+            if (client->selfSignedCertsAllowed) {
+                DEBUG("Self signed certificate detected; Allowed.");
+                return 1;
+            } else {
+                DEBUG("Self signed certificate detected; Blocked.");
+            }
         } else {
-            INFO("Certificate validation error: code " << X509_STORE_CTX_get_error(x509_ctx));
+            ERROR("Certificate validation error: code " << X509_STORE_CTX_get_error(x509_ctx));
         }
     }
 
@@ -135,11 +153,34 @@ void Surge::TLSClient::RunTLSHandshake() {
     }
 }
 
+Surge::TLSClient::OpenSSLStatus Surge::TLSClient::ContinueTLSHandshake(const char* data, size_t size) {
+    BIO_write(appBio, data, (int)size);
+
+    int handshakeStatus = SSL_do_handshake(ssl);
+
+    auto handshakeResult = InterpretSSLResult(ssl, handshakeStatus);
+
+    if (handshakeResult == OK) {
+        INFO("Handshake complete");
+        return HANDSHAKE_COMPLETE;
+    } else if (handshakeResult == TLS_ERROR) {
+        ERROR("TLS error detected, sending to user...");
+        return TLS_ERROR;
+    } else {
+        RunTLSHandshake();
+    }
+
+    return OK;
+}
+
 Surge::TLSResponse Surge::TLSClient::DecryptData(const char* data, size_t size) {
     if (!SSL_is_init_finished(ssl)) {
         // Handshaking not complete yet, check if we need to send anything else to the socket
-        if (ContinueTLSHandshake(data, size)) {
+        auto handshakeResult = ContinueTLSHandshake(data, size);
+        if (handshakeResult == HANDSHAKE_COMPLETE) {
             sslConnectedResponse(CONNECTED);
+        } else if (handshakeResult == TLS_ERROR) {
+            sslConnectedResponse(ERROR);
         }
 
         return TLSResponse(NO_RESPONSE);
@@ -199,21 +240,6 @@ Surge::TLSResponse Surge::TLSClient::DecryptData(const char* data, size_t size) 
     return TLSResponse(DECRYPTED_DATA_AVAILABLE, tlsDataBuffer, tlsDataBufferSize);
 }
 
-bool Surge::TLSClient::ContinueTLSHandshake(const char* data, size_t size) {
-    BIO_write(appBio, data, (int)size);
-
-    int handshakeStatus = SSL_do_handshake(ssl);
-
-    if (InterpretSSLResult(ssl, handshakeStatus) == OK) {
-        INFO("Handshake complete");
-        return true;
-    } else {
-        RunTLSHandshake();
-    }
-
-    return false;
-}
-
 Surge::TLSResponse Surge::TLSClient::EncryptData(const char* data, size_t size) {
     SSL_write(ssl, data, size);
 
@@ -230,3 +256,12 @@ Surge::TLSResponse Surge::TLSClient::EncryptData(const char* data, size_t size) 
 
     return TLSResponse(ERROR);
 }
+
+void Surge::TLSClient::SetTrustedCertificate(const std::string& fileUri) {
+    if (sslContext != nullptr) {
+        SSL_CTX_load_verify_locations(sslContext, fileUri.c_str(), NULL);
+    }
+
+    trustedCertificate = fileUri;
+}
+

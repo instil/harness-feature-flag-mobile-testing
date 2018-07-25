@@ -11,12 +11,12 @@
 
 #include "InterleavedRtspTransport.h"
 
-#include "TLSClient.h"
+#include "ITLSClient.h"
 
 namespace Surge {
     class SecureInterleavedTCPTransport : public InterleavedRtspTransport {
     public:
-        SecureInterleavedTCPTransport(ISocketHandlerDelegate *delegate, TransportDelegate *test);
+        SecureInterleavedTCPTransport(ITLSClient *tlsClient, ISocketHandlerDelegate *delegate, TransportDelegate *test);
         ~SecureInterleavedTCPTransport();
 
         void RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) override;
@@ -25,7 +25,7 @@ namespace Surge {
 
 
     public:
-        TLSClient *tlsClient;
+        ITLSClient *tlsClient;
     };
 }
 

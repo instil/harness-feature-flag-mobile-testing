@@ -22,6 +22,8 @@
 #include "RtpPacketBuffer.h"
 #include "DispatchQueue.h"
 
+#include "ITLSClient.h"
+
 #include "DateTime.h"
 
 #include <string>
@@ -127,6 +129,28 @@ namespace Surge {
             return useInterleavedTcpTransport;
         }
 
+        void SetTLSCertificateValidationEnabled(bool tlsCertificateValidationEnabled) {
+            this->tlsCertificateValidationEnabled = tlsCertificateValidationEnabled;
+        }
+
+        bool IsTLSCertificateValidationEnabled() {
+            return tlsCertificateValidationEnabled;
+        }
+
+        void SetTLSSelfSignedCertsAllowed(bool tlsSelfSignedCertsAllowed) {
+            this->tlsSelfSignedCertsAllowed = tlsSelfSignedCertsAllowed;
+        }
+
+        bool TLSSelfSignedCertsAllowed() {
+            return tlsSelfSignedCertsAllowed;
+        }
+
+        void SetTLSTrustedCertificate(const std::string& fileUrl) {
+            if (tlsClient != nullptr) {
+                tlsClient->SetTrustedCertificate(fileUrl);
+            }
+        }
+
     private:
         void Run() override;
 
@@ -209,6 +233,10 @@ namespace Surge {
         SessionDescriptionFactory *factory;
 
         Surge::DispatchQueue *dispatchQueue;
+
+        Surge::ITLSClient *tlsClient;
+        bool tlsCertificateValidationEnabled;
+        bool tlsSelfSignedCertsAllowed;
 
         void RtpPacketReceived(RtpPacket *packet) override;
                 

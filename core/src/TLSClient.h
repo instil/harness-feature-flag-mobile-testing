@@ -12,88 +12,44 @@
 #include "openssl/ssl.h"
 #include "openssl/err.h"
 
-#include <functional>
-#include <vector>
+#include "ITLSClient.h"
 
-#include "ITransportInterface.h"
+#define SSL_TLS_CLIENT_STORE_LOCATION 0
 
 namespace Surge {
-    typedef enum {
-        CONNECTED = 0,
-        DECRYPTED_DATA_AVAILABLE = 1,
-        ENCRYPTED_DATA_AVAILABLE = 2,
-        NO_RESPONSE = 3,
-        ERROR = -1
-    } TLSStatus;
 
-    struct TLSResponse {
-    private:
-        Surge::TLSStatus statusCode;
-        std::vector<char> *resizableDataBuffer;
-        char *dataBuffer;
-        size_t size;
-
-    public:
-        TLSResponse(Surge::TLSStatus statusCode, std::vector<char> *resizableDataBuffer, size_t size) : statusCode(statusCode), resizableDataBuffer(resizableDataBuffer), dataBuffer(resizableDataBuffer->data()), size(size) { }
-
-        TLSResponse(Surge::TLSStatus statusCode, char *dataBuffer, size_t size) : statusCode(statusCode), resizableDataBuffer(nullptr), dataBuffer(dataBuffer), size(size) { }
-
-        TLSResponse(Surge::TLSStatus statusCode) : statusCode(statusCode), resizableDataBuffer(nullptr), dataBuffer(nullptr), size(0) { }
-
-        ~TLSResponse() {
-            if (resizableDataBuffer != nullptr) {
-                delete resizableDataBuffer;
-            } else if (dataBuffer != nullptr) {
-                free(dataBuffer);
-            }
-        }
-
-        TLSStatus StatusCode() {
-            return statusCode;
-        }
-
-        char *Data() {
-            return dataBuffer;
-        }
-
-        size_t Size() {
-            return size;
-        }
-
-        bool HasData() {
-            return dataBuffer != nullptr && size > 0;
-        }
-    };
-
-    class TLSClient {
+    class TLSClient : public ITLSClient {
 
     private:
         typedef enum {
             OK = 0,
             WRITE_TO_TRANSPORT = 1,
             READ_FROM_TRANSPORT = 2,
+            HANDSHAKE_COMPLETE = 3,
             UNKNOWN_ERROR = -1,
             TLS_ERROR = -2
         } OpenSSLStatus;
 
     public:
-        TLSClient();
-        ~TLSClient();
+        TLSClient(bool certificateValidationEnabled, bool selfSignedCertsAllowed);
+        ~TLSClient() override;
 
-        void StartClient(ITransportInterface *transport);
-        void StopClient();
-        void OpenTLSConnection(std::function<void(TLSStatus)> callback);
+        void StartClient(ITransportInterface *transport) override;
+        void StopClient() override;
+        void OpenTLSConnection(std::function<void(TLSStatus)> callback) override;
 
-        void RunTLSHandshake();
-        bool ContinueTLSHandshake(const char* data, size_t size);
+        Surge::TLSResponse DecryptData(const char* data, size_t size) override;
+        Surge::TLSResponse EncryptData(const char* data, size_t size) override;
 
-        Surge::TLSResponse DecryptData(const char* data, size_t size);
-        Surge::TLSResponse EncryptData(const char* data, size_t size);
+        void SetTrustedCertificate(const std::string& fileUri) override;
 
     private:
         void InitializeOpenSSL();
         void GenerateSSLContext();
         void SetupSSL();
+
+        void RunTLSHandshake();
+        OpenSSLStatus ContinueTLSHandshake(const char* data, size_t size);
 
         static int VerifyCertificate(int preverify, X509_STORE_CTX* x509_ctx);
 
@@ -126,6 +82,22 @@ namespace Surge {
             }
         }
 
+        template <class T>
+        static void StoreItemInSSLObject(SSL *ssl, int index, T *object) {
+            SSL_set_ex_data(ssl, SSL_TLS_CLIENT_STORE_LOCATION, (void *)object);
+        }
+
+        template <class T>
+        static T* RetrieveItemInSSLObject(SSL *ssl, int index) {
+            return (T*)SSL_get_ex_data(ssl, 0);
+        }
+
+        template <class T>
+        static T* RetrieveItemInSSLObject(X509_STORE_CTX *x509Certificate, int index) {
+            SSL *ssl = (SSL *)X509_STORE_CTX_get_ex_data(x509Certificate, SSL_get_ex_data_X509_STORE_CTX_idx());
+            return RetrieveItemInSSLObject<T>(ssl, index);
+        }
+
     private:
         SSL_CTX* sslContext;
         SSL* ssl;
@@ -136,6 +108,10 @@ namespace Surge {
         ITransportInterface* transport;
 
         std::function<void(TLSStatus)> sslConnectedResponse;
+
+        bool certificateValidationEnabled;
+        bool selfSignedCertsAllowed;
+        std::string trustedCertificate;
     };
 }
 

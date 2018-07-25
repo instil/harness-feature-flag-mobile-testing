@@ -160,4 +160,19 @@ typedef NS_ENUM(NSInteger, RtspErrorCode) {
  */
 @property (nonatomic, assign) int packetBufferDelay;
 
+/*
+ * Enables/disables TLS certificate validation when streaming from a TLS protected RTSP stream. Default: true
+ */
+@property (nonatomic, assign) bool tlsCertificateVerificationEnabled;
+
+/*
+ * Allows/disallows self signed TLS certificates from being used when streaming from a TLS protected RTSP stream. Default: true
+ */
+@property (nonatomic, assign) bool tlsSelfSignedCertificateAllowed;
+
+/*
+ * Optional: The path to a trusted root certificate used to validate a TLS certificate recelvied through the TLS handshaking process.
+ */
+@property (nonatomic, strong, nullable) NSURL *tlsTrustedCertificatePath;
+
 @end

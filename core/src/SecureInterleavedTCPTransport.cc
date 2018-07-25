@@ -10,9 +10,7 @@
 
 #include "Logging.h"
 
-Surge::SecureInterleavedTCPTransport::SecureInterleavedTCPTransport(ISocketHandlerDelegate *delegate, TransportDelegate *test) : Surge::InterleavedRtspTransport(delegate, test) {
-    tlsClient = new TLSClient();
-}
+Surge::SecureInterleavedTCPTransport::SecureInterleavedTCPTransport(ITLSClient *tlsClient, ISocketHandlerDelegate *delegate, TransportDelegate *test) : tlsClient(tlsClient), Surge::InterleavedRtspTransport(delegate, test) { }
 
 Surge::SecureInterleavedTCPTransport::~SecureInterleavedTCPTransport() {
     if (tlsClient != nullptr) {
@@ -28,9 +26,7 @@ void Surge::SecureInterleavedTCPTransport::RtspTcpOpen(const std::string& host, 
         if (result == 0) {
             INFO("Opening TLS connection");
             tlsClient->OpenTLSConnection([&, callback](Surge::TLSStatus result) {
-                if (result == CONNECTED) {
-                    callback(result);
-                }
+                callback(result);
             });
         }
     });

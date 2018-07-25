@@ -532,7 +532,7 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
 }
 
 void Surge::RtspClient::CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet) {
-    if (m_sessionDescription.GetType() == H264) {
+    if (m_sessionDescription.GetType() == H264 || m_sessionDescription.GetType() == MP4V) {
         return;
     }
     

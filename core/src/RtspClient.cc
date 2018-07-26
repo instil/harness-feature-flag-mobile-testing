@@ -35,7 +35,8 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         depacketizer(nullptr),
         tlsCertificateValidationEnabled(true),
         tlsSelfSignedCertsAllowed(true),
-        factory(new SessionDescriptionFactory()){
+        factory(new SessionDescriptionFactory()),
+        tlsClient(nullptr) {
 
     StartErrorDispatcher();
             
@@ -49,9 +50,6 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
 
     dispatchQueue = new DispatchQueue();
     dispatchQueue->Start();
-
-    tlsClient = TLSFactory::GenerateTLSClient(tlsCertificateValidationEnabled,
-                                              tlsSelfSignedCertsAllowed);
 }
 
 Surge::RtspClient::~RtspClient() {
@@ -75,6 +73,10 @@ Surge::RtspClient::~RtspClient() {
 
     dispatchQueue->Stop();
     delete dispatchQueue;
+
+    if (tlsClient != nullptr) {
+        delete tlsClient;
+    }
 }
 
 void Surge::RtspClient::Describe(const std::string& url,
@@ -85,6 +87,9 @@ void Surge::RtspClient::Describe(const std::string& url,
 void Surge::RtspClient::SetTransport(const std::string& url) {
     if (m_transport != nullptr) {
         delete m_transport;
+    }
+    if (tlsClient != nullptr) {
+        delete tlsClient;
     }
 
     SurgeUtil::Url parsedUrl = SurgeUtil::Url(url);
@@ -103,6 +108,9 @@ void Surge::RtspClient::SetTransport(const std::string& url) {
         }
     } else {
         INFO("Using TLS TCP Transport");
+        tlsClient = TLSFactory::GenerateTLSClient(tlsCertificateValidationEnabled,
+                                                  tlsSelfSignedCertsAllowed);
+
         m_transport = new SecureInterleavedTCPTransport(tlsClient,
                                                         nullptr,
                                                         this);

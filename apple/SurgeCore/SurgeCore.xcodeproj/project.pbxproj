@@ -125,8 +125,13 @@
 		F46D0DDE1F3211C5000782DD /* Transport.h in Headers */ = {isa = PBXBuildFile; fileRef = F46D0DDC1F3211C5000782DD /* Transport.h */; };
 		F46D0DE11F322D36000782DD /* InterleavedRtspTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F46D0DDF1F322D36000782DD /* InterleavedRtspTransport.cc */; };
 		F46D0DE21F322D36000782DD /* InterleavedRtspTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F46D0DE01F322D36000782DD /* InterleavedRtspTransport.h */; };
+		F47D1E6D210B239000302481 /* AuthenticationService.cc in Sources */ = {isa = PBXBuildFile; fileRef = F47D1E6B210B239000302481 /* AuthenticationService.cc */; };
+		F47D1E6E210B239000302481 /* AuthenticationService.h in Headers */ = {isa = PBXBuildFile; fileRef = F47D1E6C210B239000302481 /* AuthenticationService.h */; };
 		F490E03720DD5BC000D30214 /* TLSClient.cc in Sources */ = {isa = PBXBuildFile; fileRef = F490E03520DD5BC000D30214 /* TLSClient.cc */; };
 		F490E03820DD5BC000D30214 /* TLSClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F490E03620DD5BC000D30214 /* TLSClient.h */; };
+		F49699702109D77600B7EE4E /* BaseAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F496996E2109D77600B7EE4E /* BaseAuthenticator.h */; };
+		F49699732109FA2B00B7EE4E /* BasicDigestAuthenticator.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49699712109FA2B00B7EE4E /* BasicDigestAuthenticator.cc */; };
+		F49699742109FA2B00B7EE4E /* BasicDigestAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F49699722109FA2B00B7EE4E /* BasicDigestAuthenticator.h */; };
 		F49A7E941F3B0D29007FCBD2 /* RtpPacketBuffer.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */; };
 		F49A7E951F3B0D29007FCBD2 /* RtpPacketBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */; };
 		F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4C4F60720AEE853009313CD /* DispatchQueue.cc */; };
@@ -249,9 +254,14 @@
 		F473291621072D5500E6C117 /* ITLSClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ITLSClient.h; path = ../../core/src/ITLSClient.h; sourceTree = "<group>"; };
 		F47329172107323200E6C117 /* TLSFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSFactory.h; path = ../../core/src/TLSFactory.h; sourceTree = "<group>"; };
 		F47329192107448E00E6C117 /* TLSResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSResponse.h; path = ../../core/src/TLSResponse.h; sourceTree = "<group>"; };
+		F47D1E6B210B239000302481 /* AuthenticationService.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AuthenticationService.cc; path = ../../core/src/AuthenticationService.cc; sourceTree = "<group>"; };
+		F47D1E6C210B239000302481 /* AuthenticationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AuthenticationService.h; path = ../../core/src/AuthenticationService.h; sourceTree = "<group>"; };
 		F48DFB1920E27AE900BA39A8 /* TransportDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TransportDelegate.h; path = ../../core/src/TransportDelegate.h; sourceTree = "<group>"; };
 		F490E03520DD5BC000D30214 /* TLSClient.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TLSClient.cc; path = ../../core/src/TLSClient.cc; sourceTree = "<group>"; };
 		F490E03620DD5BC000D30214 /* TLSClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSClient.h; path = ../../core/src/TLSClient.h; sourceTree = "<group>"; };
+		F496996E2109D77600B7EE4E /* BaseAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseAuthenticator.h; path = ../../core/src/BaseAuthenticator.h; sourceTree = "<group>"; };
+		F49699712109FA2B00B7EE4E /* BasicDigestAuthenticator.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BasicDigestAuthenticator.cc; path = ../../core/src/BasicDigestAuthenticator.cc; sourceTree = "<group>"; };
+		F49699722109FA2B00B7EE4E /* BasicDigestAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BasicDigestAuthenticator.h; path = ../../core/src/BasicDigestAuthenticator.h; sourceTree = "<group>"; };
 		F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RtpPacketBuffer.cc; path = ../../core/src/RtpPacketBuffer.cc; sourceTree = "<group>"; };
 		F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtpPacketBuffer.h; path = ../../core/src/RtpPacketBuffer.h; sourceTree = "<group>"; };
 		F4C4F60720AEE853009313CD /* DispatchQueue.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DispatchQueue.cc; path = ../../core/src/DispatchQueue.cc; sourceTree = "<group>"; };
@@ -343,6 +353,7 @@
 				F4C4F60120AEDE29009313CD /* Depacketizers */,
 				F4C4F60420AEDECA009313CD /* Utils */,
 				F490E02820DD514E00D30214 /* TLS */,
+				F496996C2109D72E00B7EE4E /* Authentication */,
 				42D671CD1D3069BB00D42C35 /* CMakeLists.txt */,
 				42D671CF1D3069BB00D42C35 /* Constants.h */,
 				42D671D61D3069BB00D42C35 /* ErrorDispatcher.cc */,
@@ -541,6 +552,18 @@
 			name = TLS;
 			sourceTree = "<group>";
 		};
+		F496996C2109D72E00B7EE4E /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				F496996E2109D77600B7EE4E /* BaseAuthenticator.h */,
+				F49699712109FA2B00B7EE4E /* BasicDigestAuthenticator.cc */,
+				F49699722109FA2B00B7EE4E /* BasicDigestAuthenticator.h */,
+				F47D1E6B210B239000302481 /* AuthenticationService.cc */,
+				F47D1E6C210B239000302481 /* AuthenticationService.h */,
+			);
+			name = Authentication;
+			sourceTree = "<group>";
+		};
 		F4C4F60120AEDE29009313CD /* Depacketizers */ = {
 			isa = PBXGroup;
 			children = (
@@ -656,6 +679,7 @@
 				42D6721A1D3069BB00D42C35 /* Describe.h in Headers */,
 				42D672121D3069BB00D42C35 /* BitstreamReader.h in Headers */,
 				F4FA24CC1ED8427A001B56E0 /* internal.h in Headers */,
+				F49699702109D77600B7EE4E /* BaseAuthenticator.h in Headers */,
 				F45BDAC91E1FB88F00496E62 /* uv-common.h in Headers */,
 				42D672241D3069BB00D42C35 /* ILoggingDelegate.h in Headers */,
 				42D672151D3069BB00D42C35 /* Constants.h in Headers */,
@@ -676,6 +700,7 @@
 				42D672391D3069BB00D42C35 /* RtpPacket.h in Headers */,
 				42D672181D3069BB00D42C35 /* DateTime.h in Headers */,
 				42D672191D3069BB00D42C35 /* Depacketizer.h in Headers */,
+				F47D1E6E210B239000302481 /* AuthenticationService.h in Headers */,
 				F45BDA9D1E1FB88F00496E62 /* heap-inl.h in Headers */,
 				42D672361D3069BB00D42C35 /* Response.h in Headers */,
 				42D6721D1D3069BB00D42C35 /* ErrorDispatcher.h in Headers */,
@@ -707,6 +732,7 @@
 				42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */,
 				42D6724C1D3069BB00D42C35 /* Thread.h in Headers */,
 				42D6723C1D3069BB00D42C35 /* RtspCommand.h in Headers */,
+				F49699742109FA2B00B7EE4E /* BasicDigestAuthenticator.h in Headers */,
 				F417EA2F20F3698500ED51EE /* SecureInterleavedTCPTransport.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -817,12 +843,14 @@
 				42D6723D1D3069BB00D42C35 /* RtspCommandFactory.cc in Sources */,
 				42D672171D3069BB00D42C35 /* DateTime.cc in Sources */,
 				F490E03720DD5BC000D30214 /* TLSClient.cc in Sources */,
+				F47D1E6D210B239000302481 /* AuthenticationService.cc in Sources */,
 				F4589E151ED85627004F023D /* pthread-fixes.c in Sources */,
 				F4589E191ED85627004F023D /* thread.c in Sources */,
 				42D6723A1D3069BB00D42C35 /* RtspClient.cc in Sources */,
 				F4589E061ED85627004F023D /* darwin-proctitle.c in Sources */,
 				42D672131D3069BB00D42C35 /* BitstreamWriter.cc in Sources */,
 				F4589E121ED85627004F023D /* process.c in Sources */,
+				F49699732109FA2B00B7EE4E /* BasicDigestAuthenticator.cc in Sources */,
 				42D672431D3069BB00D42C35 /* SessionDescriptionV0.cc in Sources */,
 				F4589E1B1ED85627004F023D /* tty.c in Sources */,
 				F45BDAC81E1FB88F00496E62 /* uv-common.c in Sources */,

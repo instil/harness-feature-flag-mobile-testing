@@ -24,6 +24,8 @@
 
 #include "ITLSClient.h"
 
+#include "AuthenticationService.h"
+
 #include "DateTime.h"
 
 #include <string>
@@ -237,6 +239,8 @@ namespace Surge {
         Surge::ITLSClient *tlsClient;
         bool tlsCertificateValidationEnabled;
         bool tlsSelfSignedCertsAllowed;
+
+        AuthenticationService *authService;
 
         void RtpPacketReceived(RtpPacket *packet) override;
                 

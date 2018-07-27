@@ -18,6 +18,8 @@
 
 #include "TLSFactory.h"
 
+#include "BasicDigestAuthenticator.h"
+
 using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 using SurgeUtil::Constants::DEFAULT_PACKET_BUFFER_DELAY_MS;
 
@@ -50,6 +52,10 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
 
     dispatchQueue = new DispatchQueue();
     dispatchQueue->Start();
+
+    authService = new AuthenticationService();
+    authService->Add(new BasicDigestAuthenticator());
+    RtspCommandFactory::SetAuthService(authService);
 }
 
 Surge::RtspClient::~RtspClient() {
@@ -139,8 +145,8 @@ void Surge::RtspClient::Describe(const std::string& url,
         INFO("Sending DESCRIBE request");
         
         if (user.length() > 0 && password.length() > 0) {
-            RtspCommandFactory::SetBasicAuthCredentials(user.c_str(), password.c_str());
-        }
+            authService->OnConnect(user, password);
+         }
         
         RtspCommand* describe;
         if (startTimeSet) {

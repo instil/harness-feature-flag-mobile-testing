@@ -17,6 +17,8 @@
 #include "Base64.h"
 #include "ITransportInterface.h"
 
+#include "AuthenticationService.h"
+
 namespace Surge {
 
     enum RtspCommandType {
@@ -30,15 +32,9 @@ namespace Surge {
     };
 
     namespace RtspCommandFactory {
-
-        void SetBasicAuthCredentials(const char *user, const char *password);
-
-        bool IsBasicAuthHeaderAvailable();
         
-        const std::string& GetBasicAuthHeader();
+        void SetAuthService(AuthenticationService *authService);
 
-        void ResetSession();
-        
         RtspCommand* DescribeRequest(const std::string& url,
                                      int nextSequenceNumber);
 

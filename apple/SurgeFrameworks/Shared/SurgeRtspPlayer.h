@@ -11,6 +11,8 @@
 #import <AppKit/AppKit.h>
 #endif
 
+#import "Authenticator.h"
+
 @class SurgeRtspPlayer;
 
 typedef NS_ENUM(NSInteger, RtspErrorCode) {
@@ -171,8 +173,13 @@ typedef NS_ENUM(NSInteger, RtspErrorCode) {
 @property (nonatomic, assign) bool tlsSelfSignedCertificateAllowed;
 
 /*
- * Optional: The path to a trusted root certificate used to validate a TLS certificate recelvied through the TLS handshaking process.
+ * Optional: The path to a trusted root certificate used to validate a TLS certificate received through the TLS handshaking process.
  */
 @property (nonatomic, strong, nullable) NSURL *tlsTrustedCertificatePath;
+
+/*
+ * Optional: Custom RTSP authentication logic, can be used if a provided RTSP stream is protected by a bespoke non-standard authentication method.
+ */
+@property (nonatomic, strong, nullable) id<Authenticator> authenticator;
 
 @end

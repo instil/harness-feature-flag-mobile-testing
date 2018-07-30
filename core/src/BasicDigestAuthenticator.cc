@@ -9,18 +9,18 @@
 #include "BasicDigestAuthenticator.h"
 #include "Base64.h"
 
-std::map<std::string, std::string> Surge::BasicDigestAuthenticator::OnConnect(const std::string &username, const std::string &password) {
+std::vector<std::string>* Surge::BasicDigestAuthenticator::OnConnect(const std::string &username, const std::string &password) {
     this->username = username;
     this->password = password;
 
     std::string auth = username + ":" + password;
 
-    std::map<std::string, std::string> result;
-    result["Authorization"] = "Basic " + SurgeUtil::Base64Encode((const unsigned char *)auth.c_str(), auth.length());
+    std::vector<std::string> *result = new std::vector<std::string>;
+    result->push_back("Authorization: Basic " + SurgeUtil::Base64Encode((const unsigned char *)auth.c_str(), auth.length()));
 
     return result;
 }
 
-std::map<std::string, std::string> Surge::BasicDigestAuthenticator::UnauthorizedError(const Response *response) {
-    return std::map<std::string, std::string>();
+std::vector<std::string> Surge::BasicDigestAuthenticator::UnauthorizedError(const Response *response) {
+    return std::vector<std::string>();
 }

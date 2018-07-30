@@ -83,6 +83,15 @@
 		F41D9E4F1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
 		F45A89D220F50833003C4D81 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D020F50833003C4D81 /* libcrypto.a */; };
 		F45A89D320F50833003C4D81 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D120F50833003C4D81 /* libssl.a */; };
+		F48C83D3210F44B100A632BF /* Authenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* Authenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F48C83D4210F44B200A632BF /* Authenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* Authenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F48C83D5210F44B300A632BF /* Authenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* Authenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F48C83D6210F44B800A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
+		F48C83D7210F44B900A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
+		F4905BE6210F17B000903D27 /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
+		F4905BE7210F17B000903D27 /* AuthenticatorMapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */; };
+		F4905BE8210F17B400903D27 /* AuthenticatorMapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */; };
+		F4905BE9210F17B400903D27 /* AuthenticatorMapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */; };
 		F497B42F20E120A20067D92A /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F497B42D20E120A10067D92A /* libssl.a */; };
 		F497B43020E120A20067D92A /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F497B42E20E120A20067D92A /* libcrypto.a */; };
 		F4B2A0101D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
@@ -142,6 +151,9 @@
 		F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayer_Private.h; sourceTree = "<group>"; };
 		F45A89D020F50833003C4D81 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../core/lib/openssl-mobile/lib/mac/libcrypto.a"; sourceTree = "<group>"; };
 		F45A89D120F50833003C4D81 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/mac/libssl.a"; sourceTree = "<group>"; };
+		F4905BE3210F15C300903D27 /* Authenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Authenticator.h; sourceTree = "<group>"; };
+		F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthenticatorMapper.h; sourceTree = "<group>"; };
+		F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AuthenticatorMapper.mm; sourceTree = "<group>"; };
 		F497B42D20E120A10067D92A /* libssl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/ios/libssl.a"; sourceTree = "<group>"; };
 		F497B42E20E120A20067D92A /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libcrypto.a; path = "../../core/lib/openssl-mobile/lib/ios/libcrypto.a"; sourceTree = "<group>"; };
 		F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+SurgeExtensions.h"; sourceTree = "<group>"; };
@@ -295,6 +307,7 @@
 		42F577921CA3526800112E27 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F47D1E6F210B6F9C00302481 /* Authentication */,
 				F4B2A00D1D4B879D00979ABB /* Utilities */,
 				42DCC2E01CC2D68A00497306 /* Decoders */,
 				42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */,
@@ -334,6 +347,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F47D1E6F210B6F9C00302481 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				F4905BE3210F15C300903D27 /* Authenticator.h */,
+				F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */,
+				F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		F4B2A00D1D4B879D00979ABB /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -359,9 +382,11 @@
 				42AD017A1CE6317800EA072F /* BitstreamWriter.h in Headers */,
 				42DCC3001CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
 				42DCC3151CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
+				F48C83D7210F44B900A632BF /* AuthenticatorMapper.h in Headers */,
 				42DCC2F71CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30C1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2F11CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
+				F48C83D5210F44B300A632BF /* Authenticator.h in Headers */,
 				F4B2A0121D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -370,6 +395,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F48C83D3210F44B100A632BF /* Authenticator.h in Headers */,
 				42EFF7871CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */,
 				F41D9E4D1D940B95005D2B0A /* SurgeRtspPlayer_Private.h in Headers */,
 				42AD016A1CE6267E00EA072F /* BitstreamReader.h in Headers */,
@@ -381,6 +407,7 @@
 				42DCC3131CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
 				42DCC2F51CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30A1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
+				F4905BE6210F17B000903D27 /* AuthenticatorMapper.h in Headers */,
 				42DCC2EF1CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
 				F4B2A0101D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
 			);
@@ -399,9 +426,11 @@
 				42AD01791CE6317800EA072F /* BitstreamWriter.h in Headers */,
 				42DCC2FF1CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
 				42DCC3141CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
+				F48C83D6210F44B800A632BF /* AuthenticatorMapper.h in Headers */,
 				42DCC2F61CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30B1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2F01CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
+				F48C83D4210F44B200A632BF /* Authenticator.h in Headers */,
 				F4B2A0111D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -537,6 +566,7 @@
 				42DCC3031CC2D68A00497306 /* SurgeH264Decoder.m in Sources */,
 				42AD016F1CE6267E00EA072F /* BitstreamReader.m in Sources */,
 				42DCC2FA1CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
+				F4905BE8210F17B400903D27 /* AuthenticatorMapper.mm in Sources */,
 				42DCC3091CC2D68A00497306 /* SurgeMp4vDecoder.m in Sources */,
 				42DCC3181CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */,
 				4241D4F71CBB01800087BAAF /* SurgeRtspPlayer.mm in Sources */,
@@ -551,6 +581,7 @@
 			files = (
 				42DCC2F21CC2D68A00497306 /* SurgeNalUnitParser.m in Sources */,
 				42DCC3011CC2D68A00497306 /* SurgeH264Decoder.m in Sources */,
+				F4905BE7210F17B000903D27 /* AuthenticatorMapper.mm in Sources */,
 				42AD016D1CE6267E00EA072F /* BitstreamReader.m in Sources */,
 				42DCC2F81CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42EFF7891CAADB330056B9F3 /* SurgeRtspPlayer.mm in Sources */,
@@ -568,6 +599,7 @@
 			files = (
 				42DCC2F31CC2D68A00497306 /* SurgeNalUnitParser.m in Sources */,
 				42DCC3021CC2D68A00497306 /* SurgeH264Decoder.m in Sources */,
+				F4905BE9210F17B400903D27 /* AuthenticatorMapper.mm in Sources */,
 				42AD016E1CE6267E00EA072F /* BitstreamReader.m in Sources */,
 				42DCC2F91CC2D68A00497306 /* SurgeNalUnit.m in Sources */,
 				42DCC3081CC2D68A00497306 /* SurgeMp4vDecoder.m in Sources */,

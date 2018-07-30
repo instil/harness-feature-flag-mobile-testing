@@ -20,9 +20,9 @@ namespace Surge {
         BaseAuthenticator() : transport(nullptr) { }
         virtual ~BaseAuthenticator() { }
 
-        virtual std::map<std::string, std::string> OnConnect(const std::string &username, const std::string &password) = 0;
-        virtual std::map<std::string, std::string> UnauthorizedError(const Response *response) {
-            return std::map<std::string, std::string>();
+        virtual std::vector<std::string>* OnConnect(const std::string &username, const std::string &password) = 0;
+        virtual std::vector<std::string> UnauthorizedError(const Response *response) {
+            return std::vector<std::string>();
         };
 
         void SetTransport(ITransportInterface *transport) {

@@ -26,14 +26,14 @@ void Surge::AuthenticationService::OnConnect(const std::string &username, const 
                   [this, username, password](auto authenticator) {
                       auto newHeaders = authenticator->OnConnect(username, password);
 
-                      std::for_each(newHeaders.begin(),
-                                    newHeaders.end(),
+                      std::for_each(newHeaders->begin(),
+                                    newHeaders->end(),
                                     [this](auto header) {
-                                        currentAuthHeaders += header.first;
-                                        currentAuthHeaders += ": ";
-                                        currentAuthHeaders += header.second;
+                                        currentAuthHeaders += header;
                                         currentAuthHeaders += "\r\n";
                                     });
+                      
+                      delete newHeaders;
                   });
 }
 
@@ -52,9 +52,7 @@ bool Surge::AuthenticationService::UnauthorizedError(const Response *response) {
                           std::for_each(newHeaders.begin(),
                                         newHeaders.end(),
                                         [this](auto header) {
-                                            currentAuthHeaders += header.first;
-                                            currentAuthHeaders += ": ";
-                                            currentAuthHeaders += header.second;
+                                            currentAuthHeaders += header;
                                             currentAuthHeaders += "\r\n";
                                         });
                       }

@@ -9,6 +9,8 @@
 #import "SurgeMp4vDecoder.h"
 #import "SurgeMjpegDecoder.h"
 
+#import "AuthenticatorMapper.h"
+
 #import "Surge.h"
 
 #include "NSDate+SurgeExtensions.h"
@@ -490,6 +492,17 @@ private:
 
     _tlsTrustedCertificatePath = tlsTrustedCertificatePath;
     self.client->SetTLSTrustedCertificate(tlsTrustedCertificatePath.path.UTF8String);
+}
+
+-(void)setAuthenticator:(id<Authenticator>) authenticator {
+    INFO("Setting custom RTSP authenticator");
+
+    if (_authenticator) {
+        self.client->RemoveAuthenticator(1);
+    }
+    
+    _authenticator = authenticator;
+    self.client->AddAuthenticator([AuthenticatorMapper toCoreObject:authenticator]);
 }
 
 @end

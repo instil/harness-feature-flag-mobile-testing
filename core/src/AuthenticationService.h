@@ -25,6 +25,15 @@ namespace Surge {
             authenticators.push_back(authenticator);
         }
 
+        void Remove(BaseAuthenticator *authenticator) {
+            auto test = std::distance(authenticators.begin(), std::find(authenticators.begin(), authenticators.end(), authenticator));
+            Remove((unsigned int)test);
+        }
+
+        void Remove(unsigned int index) {
+            authenticators.erase(authenticators.begin() + index);
+        }
+
         std::string& AuthHeaders() {
             return currentAuthHeaders;
         }

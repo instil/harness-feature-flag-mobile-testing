@@ -153,6 +153,18 @@ namespace Surge {
             }
         }
 
+        void AddAuthenticator(BaseAuthenticator *authenticator) {
+            authService->Add(authenticator);
+        }
+
+        void RemoveAuthenticator(BaseAuthenticator *authenticator) {
+            authService->Remove(authenticator);
+        }
+
+        void RemoveAuthenticator(unsigned int index) {
+            authService->Remove(index);
+        }
+
     private:
         void Run() override;
 

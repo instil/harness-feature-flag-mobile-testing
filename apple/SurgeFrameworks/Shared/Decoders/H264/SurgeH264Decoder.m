@@ -65,6 +65,10 @@
         CMFormatDescriptionRef formatDescription;
         OSStatus status = [self createVideoFormatDescription:&formatDescription fromNalUnits:nalUnits];
         if (status == noErr) {
+            if (self.formatDescription) {
+                CFRelease(self.formatDescription);
+            }
+
             self.formatDescription = formatDescription;
         }
     }
@@ -85,7 +89,7 @@
     SurgeNalUnit *spsNalUnit = sequenceParamSet.lastObject;
     parameterSetSizes[1] = spsNalUnit.length - spsNalUnit.headerSize;
     parameterSetPointers[1] = [spsNalUnit bufferWithoutHeader];
-    
+
     OSStatus status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault,
                                                                           totalNumberOfParameters,
                                                                           (const uint8_t *const*)parameterSetPointers,

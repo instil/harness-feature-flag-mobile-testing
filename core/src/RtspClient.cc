@@ -124,6 +124,7 @@ void Surge::RtspClient::SetTransport(const std::string& url) {
     }
 
     m_transport->SetDelegate(this);
+    authService->SetTransport(m_transport);
 }
 
 void Surge::RtspClient::Describe(const std::string& url,
@@ -144,10 +145,9 @@ void Surge::RtspClient::Describe(const std::string& url,
         
         INFO("Sending DESCRIBE request");
         
-        if (user.length() > 0 && password.length() > 0) {
-            authService->OnConnect(user, password);
-         }
-        
+        authService->ExecuteFirstBytesOnTheWireAuthentication(user, password);
+        authService->GenerateAuthHeaders(user, password);
+
         RtspCommand* describe;
         if (startTimeSet) {
             describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber(), startDate);
@@ -197,7 +197,6 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
     std::string setup_url = (sessionDescription.IsControlUrlComplete()) ?
         sessionDescription.GetControl():
         m_url + "/" + sessionDescription.GetControl();
-    m_url = setup_url;
 
     // set current palette
     m_sessionDescription = sessionDescription;
@@ -574,9 +573,10 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
     frameBuffer->swap(*frame);
     dispatchQueue->Dispatch([this, frame]() {
         NotifyDelegateOfAvailableFrame(*frame);
-        frame->clear();
+        delete frame;
     });
 }
+
 
 void Surge::RtspClient::CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet) {
     if (m_sessionDescription.GetType() == H264 || m_sessionDescription.GetType() == MP4V) {

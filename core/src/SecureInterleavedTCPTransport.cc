@@ -58,3 +58,17 @@ void Surge::SecureInterleavedTCPTransport::RtspHandleReceive(const char* buffer,
         Transport::RtspHandleReceive(result.Data(), result.Size());
     }
 }
+
+void Surge::SecureInterleavedTCPTransport::ArbitraryDataTransaction(const char *data, const size_t length) {
+    auto response = tlsClient->EncryptData(data, length);
+    if (response.StatusCode() == ERROR) {
+        ERROR("Failed to encrypt data; skipping transaction.");
+        return;
+    }
+
+    InterleavedRtspTransport::ArbitraryDataTransaction(response.Data(), response.Size());
+}
+
+void Surge::SecureInterleavedTCPTransport::UnencryptedArbitraryDataTransaction(const char *data, const size_t length) {
+    InterleavedRtspTransport::ArbitraryDataTransaction(data, length);
+}

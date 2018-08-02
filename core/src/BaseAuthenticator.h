@@ -10,6 +10,7 @@
 #define BaseAuthentication_h
 
 #include <stdio.h>
+#include <vector>
 
 #include "ITransportInterface.h"
 #include "Response.h"
@@ -17,27 +18,19 @@
 namespace Surge {
     class BaseAuthenticator {
     public:
-        BaseAuthenticator() : transport(nullptr) { }
         virtual ~BaseAuthenticator() { }
 
-        virtual std::vector<std::string>* OnConnect(const std::string &username, const std::string &password) = 0;
+        virtual std::vector<std::string> AuthenticationHeaders(const std::string &username, const std::string &password) {
+            return std::vector<std::string>();
+        };
+        
+        virtual std::vector<char> FirstBytesOnTheWireAuthentication(const std::string &username, const std::string &password) {
+            return std::vector<char>();
+        };
+
         virtual std::vector<std::string> UnauthorizedError(const Response *response) {
             return std::vector<std::string>();
         };
-
-        void SetTransport(ITransportInterface *transport) {
-            this->transport = transport;
-        }
-
-    protected:
-        void SendDataThroughTransport(const char *data, size_t size) {
-            if (transport != nullptr) {
-                transport->ArbitraryDataTransaction(data, size);
-            }
-        }
-
-    private:
-        ITransportInterface *transport;
     };
 }
 

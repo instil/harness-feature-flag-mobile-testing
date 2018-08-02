@@ -8,7 +8,7 @@
 
 #include "AuthenticationService.h"
 
-Surge::AuthenticationService::AuthenticationService() { }
+Surge::AuthenticationService::AuthenticationService() : transport(nullptr) { }
 
 Surge::AuthenticationService::~AuthenticationService() {
     std::for_each(authenticators.begin(),
@@ -18,45 +18,36 @@ Surge::AuthenticationService::~AuthenticationService() {
                   });
 }
 
-void Surge::AuthenticationService::OnConnect(const std::string &username, const std::string &password) {
+void Surge::AuthenticationService::GenerateAuthHeaders(const std::string &username, const std::string &password) {
     currentAuthHeaders.clear();
 
     std::for_each(authenticators.begin(),
                   authenticators.end(),
                   [this, username, password](auto authenticator) {
-                      auto newHeaders = authenticator->OnConnect(username, password);
+                      auto newHeaders = authenticator->AuthenticationHeaders(username, password);
 
-                      std::for_each(newHeaders->begin(),
-                                    newHeaders->end(),
+                      std::for_each(newHeaders.begin(),
+                                    newHeaders.end(),
                                     [this](auto header) {
                                         currentAuthHeaders += header;
                                         currentAuthHeaders += "\r\n";
                                     });
-                      
-                      delete newHeaders;
                   });
 }
 
-bool Surge::AuthenticationService::UnauthorizedError(const Response *response) {
-    bool result = false;
-    currentAuthHeaders.clear();
+void Surge::AuthenticationService::ExecuteFirstBytesOnTheWireAuthentication(const std::string &username, const std::string &password) {
+    if (!transport) {
+        ERROR("Authenticator error: No transport is set, so could not send any bytes down the wire.");
+        return;
+    }
 
     std::for_each(authenticators.begin(),
                   authenticators.end(),
-                  [this, &result, response](auto authenticator) {
-                      auto newHeaders = authenticator->UnauthorizedError(response);
+                  [this, username, password](auto authenticator) {
+                      auto bytesToSend = authenticator->FirstBytesOnTheWireAuthentication(username, password);
 
-                      if (newHeaders.size() > 0) {
-                          result = true;
-
-                          std::for_each(newHeaders.begin(),
-                                        newHeaders.end(),
-                                        [this](auto header) {
-                                            currentAuthHeaders += header;
-                                            currentAuthHeaders += "\r\n";
-                                        });
+                      if (bytesToSend.size() > 0) {
+                          transport->ArbitraryDataTransaction(bytesToSend.data(), bytesToSend.size());
                       }
                   });
-
-    return false;
 }

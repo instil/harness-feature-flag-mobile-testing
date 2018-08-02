@@ -19,7 +19,7 @@ namespace Surge {
         BasicDigestAuthenticator() { }
         ~BasicDigestAuthenticator() { }
 
-        std::vector<std::string>* OnConnect(const std::string &username, const std::string &password) override;
+        std::vector<std::string> AuthenticationHeaders(const std::string &username, const std::string &password) override;
         std::vector<std::string> UnauthorizedError(const Response *response) override;
 
     private:

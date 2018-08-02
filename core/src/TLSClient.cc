@@ -28,7 +28,7 @@ Surge::TLSClient::~TLSClient() {
     StopClient();
 }
 
-void Surge::TLSClient::StartClient(ITransportInterface *transport) {
+void Surge::TLSClient::StartClient(ISecureTransport *transport) {
     this->transport = transport;
 
     InitializeOpenSSL();
@@ -145,7 +145,7 @@ void Surge::TLSClient::RunTLSHandshake() {
         char *handshakeTransaction = (char*)malloc(handshakeDataLength);
         int readLength = BIO_read(appBio, handshakeTransaction, handshakeDataLength);
 
-        transport->ArbitraryDataTransaction(handshakeTransaction, handshakeDataLength);
+        transport->UnencryptedArbitraryDataTransaction(handshakeTransaction, handshakeDataLength);
 
         free(handshakeTransaction);
     } else if (InterpretSSLResult(ssl, result) != OK) {
@@ -204,6 +204,8 @@ Surge::TLSResponse Surge::TLSClient::DecryptData(const char* data, size_t size) 
         - Of course, there may be another packet to decrypt after this, so we loop again, try a
           read with a buffer of 0 length, get the amount of data that needs read, then resize
           and loop again...
+            - Usually, we only need to resize once, but for hardness sake we do our due diligence
+              and check for more decrypted data.
      */
 
     std::vector<char> *tlsDataBuffer = new std::vector<char>(size);

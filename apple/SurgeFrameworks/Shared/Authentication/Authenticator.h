@@ -9,6 +9,8 @@
 
 @protocol Authenticator
 
--(NSArray*) onConnectWithUsername:(NSString*)username andPassword:(NSString*)password;
+@optional
+-(NSArray*) authenticationHeadersForUsername:(NSString*)username andPassword:(NSString*)password;
+-(NSData*) firstBytesOnTheWireAuthenticationWithUsername:(NSString*)username andPassword:(NSString*)password;
 
 @end

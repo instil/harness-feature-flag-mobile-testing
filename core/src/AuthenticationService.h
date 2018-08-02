@@ -14,6 +14,7 @@
 
 #include "BaseAuthenticator.h"
 #include "Response.h"
+#include "ITransportInterface.h"
 
 namespace Surge {
     class AuthenticationService {
@@ -21,13 +22,19 @@ namespace Surge {
         AuthenticationService();
         ~AuthenticationService();
 
+        void GenerateAuthHeaders(const std::string &username, const std::string &password);
+        void ExecuteFirstBytesOnTheWireAuthentication(const std::string &username, const std::string &password);
+
         void Add(BaseAuthenticator *authenticator) {
             authenticators.push_back(authenticator);
         }
 
         void Remove(BaseAuthenticator *authenticator) {
-            auto test = std::distance(authenticators.begin(), std::find(authenticators.begin(), authenticators.end(), authenticator));
-            Remove((unsigned int)test);
+            auto index = (unsigned int)std::distance(authenticators.begin(),
+                                                     std::find(authenticators.begin(),
+                                                               authenticators.end(),
+                                                               authenticator));
+            Remove(index);
         }
 
         void Remove(unsigned int index) {
@@ -37,12 +44,15 @@ namespace Surge {
         std::string& AuthHeaders() {
             return currentAuthHeaders;
         }
-        
-        void OnConnect(const std::string &username, const std::string &password);
-        bool UnauthorizedError(const Response *response);
+
+        void SetTransport(ITransportInterface *transport) {
+            this->transport = transport;
+        }
+
 
     private:
         std::vector<BaseAuthenticator*> authenticators;
+        ITransportInterface *transport;
 
         std::string currentAuthHeaders;
     };

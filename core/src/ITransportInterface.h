@@ -44,6 +44,13 @@ namespace Surge {
 
         virtual std::string GetTransportHeaderString() const = 0;
     };
+
+    class ISecureTransport {
+    public:
+        virtual ~ISecureTransport() { }
+
+        virtual void UnencryptedArbitraryDataTransaction(const char *data, const size_t length) = 0;
+    };
     
 }
 

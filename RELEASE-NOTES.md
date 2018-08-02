@@ -1,5 +1,18 @@
 ## Release Notes
 
+### v1.2
+
+###### Features
+
+* TLS encryption - Added support for streaming TLS encrypted RTSP streams over TCP, triggered using `rtsps://` as the stream protocol.
+* Added the ability for the user to provide a custom authenticator, used to inject headers into the RTSP requests to any arbitrary data through the socket.
+
+###### Fixes
+
+* Fixed a memory leak within the H264 decoder.
+* Fixed a memory leak with cleaning up after processing a frame of data, at the core level.
+
+
 ### v1.1.2
 
 ###### Features

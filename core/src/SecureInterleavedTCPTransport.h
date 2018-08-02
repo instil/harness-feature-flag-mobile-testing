@@ -14,7 +14,7 @@
 #include "ITLSClient.h"
 
 namespace Surge {
-    class SecureInterleavedTCPTransport : public InterleavedRtspTransport {
+    class SecureInterleavedTCPTransport : public InterleavedRtspTransport, public ISecureTransport {
     public:
         SecureInterleavedTCPTransport(ITLSClient *tlsClient, ISocketHandlerDelegate *delegate, TransportDelegate *test);
         ~SecureInterleavedTCPTransport();
@@ -22,6 +22,9 @@ namespace Surge {
         void RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) override;
         void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;
         void RtspHandleReceive(const char* buffer, size_t size) override;
+        void ArbitraryDataTransaction(const char *data, const size_t length) override;
+
+        void UnencryptedArbitraryDataTransaction(const char *data, const size_t length) override;
 
 
     public:

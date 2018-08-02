@@ -34,7 +34,7 @@ namespace Surge {
         TLSClient(bool certificateValidationEnabled, bool selfSignedCertsAllowed);
         ~TLSClient() override;
 
-        void StartClient(ITransportInterface *transport) override;
+        void StartClient(ISecureTransport *transport) override;
         void StopClient() override;
         void OpenTLSConnection(std::function<void(TLSStatus)> callback) override;
 
@@ -105,7 +105,7 @@ namespace Surge {
         BIO *appBio;
         BIO *openSSLBio;
 
-        ITransportInterface* transport;
+        ISecureTransport* transport;
 
         std::function<void(TLSStatus)> sslConnectedResponse;
 

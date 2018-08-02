@@ -20,7 +20,7 @@ namespace Surge {
     public:
         virtual ~ITLSClient() { };
 
-        virtual void StartClient(ITransportInterface *transport) = 0;
+        virtual void StartClient(ISecureTransport *transport) = 0;
         virtual void StopClient() = 0;
         virtual void OpenTLSConnection(std::function<void(TLSStatus)> callback) = 0;
 

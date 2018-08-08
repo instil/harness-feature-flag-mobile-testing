@@ -83,9 +83,9 @@
 		F41D9E4F1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
 		F45A89D220F50833003C4D81 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D020F50833003C4D81 /* libcrypto.a */; };
 		F45A89D320F50833003C4D81 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D120F50833003C4D81 /* libssl.a */; };
-		F48C83D3210F44B100A632BF /* Authenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* Authenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F48C83D4210F44B200A632BF /* Authenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* Authenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F48C83D5210F44B300A632BF /* Authenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* Authenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F48C83D3210F44B100A632BF /* SurgeAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F48C83D4210F44B200A632BF /* SurgeAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F48C83D5210F44B300A632BF /* SurgeAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F48C83D6210F44B800A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
 		F48C83D7210F44B900A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
 		F4905BE6210F17B000903D27 /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
@@ -151,7 +151,7 @@
 		F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayer_Private.h; sourceTree = "<group>"; };
 		F45A89D020F50833003C4D81 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../core/lib/openssl-mobile/lib/mac/libcrypto.a"; sourceTree = "<group>"; };
 		F45A89D120F50833003C4D81 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/mac/libssl.a"; sourceTree = "<group>"; };
-		F4905BE3210F15C300903D27 /* Authenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Authenticator.h; sourceTree = "<group>"; };
+		F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeAuthenticator.h; sourceTree = "<group>"; };
 		F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthenticatorMapper.h; sourceTree = "<group>"; };
 		F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AuthenticatorMapper.mm; sourceTree = "<group>"; };
 		F497B42D20E120A10067D92A /* libssl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/ios/libssl.a"; sourceTree = "<group>"; };
@@ -350,7 +350,7 @@
 		F47D1E6F210B6F9C00302481 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				F4905BE3210F15C300903D27 /* Authenticator.h */,
+				F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */,
 				F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */,
 				F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */,
 			);
@@ -386,7 +386,7 @@
 				42DCC2F71CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30C1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2F11CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
-				F48C83D5210F44B300A632BF /* Authenticator.h in Headers */,
+				F48C83D5210F44B300A632BF /* SurgeAuthenticator.h in Headers */,
 				F4B2A0121D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -395,7 +395,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F48C83D3210F44B100A632BF /* Authenticator.h in Headers */,
+				F48C83D3210F44B100A632BF /* SurgeAuthenticator.h in Headers */,
 				42EFF7871CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */,
 				F41D9E4D1D940B95005D2B0A /* SurgeRtspPlayer_Private.h in Headers */,
 				42AD016A1CE6267E00EA072F /* BitstreamReader.h in Headers */,
@@ -430,7 +430,7 @@
 				42DCC2F61CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
 				42DCC30B1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
 				42DCC2F01CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
-				F48C83D4210F44B200A632BF /* Authenticator.h in Headers */,
+				F48C83D4210F44B200A632BF /* SurgeAuthenticator.h in Headers */,
 				F4B2A0111D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

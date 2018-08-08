@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol Authenticator
+@protocol SurgeAuthenticator<NSObject>
 
 @optional
 -(NSArray*) authenticationHeadersForUsername:(NSString*)username andPassword:(NSString*)password;

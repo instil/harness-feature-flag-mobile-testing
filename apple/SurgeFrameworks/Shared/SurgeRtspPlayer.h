@@ -11,7 +11,7 @@
 #import <AppKit/AppKit.h>
 #endif
 
-#import "Authenticator.h"
+#import "SurgeAuthenticator.h"
 
 @class SurgeRtspPlayer;
 
@@ -180,6 +180,6 @@ typedef NS_ENUM(NSInteger, RtspErrorCode) {
 /*
  * Optional: Custom RTSP authentication logic, can be used if a provided RTSP stream is protected by a bespoke non-standard authentication method.
  */
-@property (nonatomic, strong, nullable) id<Authenticator> authenticator;
+@property (nonatomic, strong, nullable) id<SurgeAuthenticator> authenticator;
 
 @end

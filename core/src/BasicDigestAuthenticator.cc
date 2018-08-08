@@ -16,7 +16,7 @@ std::vector<std::string> Surge::BasicDigestAuthenticator::AuthenticationHeaders(
 
         std::string auth = username + ":" + password;
 
-        std::vector<std::string> result(1);
+        std::vector<std::string> result;
         result.push_back("Authorization: Basic " + SurgeUtil::Base64Encode((const unsigned char *)auth.c_str(), auth.length()));
 
         return result;

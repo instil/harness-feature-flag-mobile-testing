@@ -494,7 +494,7 @@ private:
     self.client->SetTLSTrustedCertificate(tlsTrustedCertificatePath.path.UTF8String);
 }
 
--(void)setAuthenticator:(id<Authenticator>) authenticator {
+-(void)setAuthenticator:(id<SurgeAuthenticator>) authenticator {
     INFO("Setting custom RTSP authenticator");
 
     if (_authenticator) {

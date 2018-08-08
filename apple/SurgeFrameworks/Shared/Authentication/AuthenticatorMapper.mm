@@ -11,15 +11,16 @@ std::vector<std::string> ObjectiveCAuthenticator::AuthenticationHeaders(const st
     NSString *user = [NSString stringWithCString:username.c_str() encoding:[NSString defaultCStringEncoding]];
     NSString *pass = [NSString stringWithCString:password.c_str() encoding:[NSString defaultCStringEncoding]];
 
-    NSArray *headers = [authenticator authenticationHeadersForUsername:user
-                                                           andPassword:pass];
-
     std::vector<std::string> result;
-    std::vector<std::string> *resultPointer = &result;
 
-    [headers enumerateObjectsUsingBlock:^( NSString * _Nonnull header, NSUInteger index,  BOOL * _Nonnull stop) {
-        resultPointer->push_back(std::string([header UTF8String]));
-    }];
+    if ([authenticator respondsToSelector:@selector(authenticationHeadersForUsername:andPassword:)]) {
+        NSArray *headers = [authenticator authenticationHeadersForUsername:user
+                                                               andPassword:pass];
+
+        for (id header in headers) {
+            result.push_back(std::string([header UTF8String]));
+        }
+    }
 
     return result;
 }
@@ -28,15 +29,19 @@ std::vector<char> ObjectiveCAuthenticator::FirstBytesOnTheWireAuthentication(con
     NSString *user = [NSString stringWithCString:username.c_str() encoding:[NSString defaultCStringEncoding]];
     NSString *pass = [NSString stringWithCString:password.c_str() encoding:[NSString defaultCStringEncoding]];
 
-    NSData *bytesToSend = [authenticator firstBytesOnTheWireAuthenticationWithUsername:user
-                                                                           andPassword:pass];
+    std::vector<char> result;
 
-    auto size = [bytesToSend length];
-    std::vector<char> result(size);
+    if ([authenticator respondsToSelector:@selector(firstBytesOnTheWireAuthenticationWithUsername:andPassword:)]) {
+        NSData *bytesToSend = [authenticator firstBytesOnTheWireAuthenticationWithUsername:user
+                                                                               andPassword:pass];
 
-    if (size > 0) {
-        auto data = (char *)[bytesToSend bytes];
-        copy(data, data + size, result.begin());
+        auto size = [bytesToSend length];
+        result.resize(size);
+
+        if (size > 0) {
+            auto data = (char *)[bytesToSend bytes];
+            copy(data, data + size, result.begin());
+        }
     }
 
     return result;
@@ -44,7 +49,7 @@ std::vector<char> ObjectiveCAuthenticator::FirstBytesOnTheWireAuthentication(con
 
 @implementation AuthenticatorMapper
 
-+(Surge::BaseAuthenticator*) toCoreObject:(id<Authenticator>) authenticator {
++(Surge::BaseAuthenticator*) toCoreObject:(id<SurgeAuthenticator>) authenticator {
     return new ObjectiveCAuthenticator(authenticator);
 }
 

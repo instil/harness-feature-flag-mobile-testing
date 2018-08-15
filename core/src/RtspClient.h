@@ -84,34 +84,44 @@ namespace Surge {
             NotifyDelgateRedirect();
         }
 
-        void SetTimeRange(SurgeUtil::DateTime startDate, SurgeUtil::DateTime endDate) {
+        void SetTimeRange(SurgeUtil::DateTime *startDate, SurgeUtil::DateTime *endDate) {
+            if (this->startDate != nullptr) {
+                delete this->startDate;
+            }
+            if (this->endDate != nullptr) {
+                delete this->endDate;
+            }
+
             this->startDate = startDate;
-            this->startTimeSet = true;
             this->endDate = endDate;
-            this->endTimeSet = true;
         }
 
-        void SetStartTime(SurgeUtil::DateTime startDate) {
+        void SetStartTime(SurgeUtil::DateTime *startDate) {
+            if (this->startDate != nullptr) {
+                delete this->startDate;
+            }
+
             this->startDate = startDate;
-            this->startTimeSet = true;
         }
 
-        void SetEndTime(SurgeUtil::DateTime endDate) {
+        void SetEndTime(SurgeUtil::DateTime *endDate) {
+            if (this->endDate != nullptr) {
+                delete this->endDate;
+            }
+
             this->endDate = endDate;
-            this->endTimeSet = true;
-        }
-
-        void ClearStartTime() {
-            this->startTimeSet = false;
-        }
-
-        void ClearEndTime() {
-            this->endTimeSet = false;
         }
         
         void ResetTimeToLive() {
-            this->startTimeSet = false;
-            this->endTimeSet = false;
+            if (this->startDate != nullptr) {
+                delete this->startDate;
+            }
+            if (this->endDate != nullptr) {
+                delete this->endDate;
+            }
+            
+            this->startDate = nullptr;
+            this->endDate = nullptr;
         }
         
         void SetSessionDescriptionFactory(SessionDescriptionFactory *factory) {
@@ -240,10 +250,8 @@ namespace Surge {
         SurgeUtil::StoppableThread m_thread;
         SurgeUtil::Mutex m_mutex;
         
-        bool startTimeSet;
-        SurgeUtil::DateTime startDate;
-        bool endTimeSet;
-        SurgeUtil::DateTime endDate;
+        SurgeUtil::DateTime *startDate;
+        SurgeUtil::DateTime *endDate;
         SessionDescriptionFactory *factory;
 
         Surge::DispatchQueue *dispatchQueue;

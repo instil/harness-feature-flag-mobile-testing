@@ -32,8 +32,8 @@ Surge::RtspClient::RtspClient(Surge::IRtspClientDelegate * const delegate, bool 
         m_keeepAliveIntervalInSeconds(DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS),
         m_sequenceNumber(1),
         m_timeout(SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS),
-        startTimeSet(false),
-        endTimeSet(false),
+        startDate(nullptr),
+        endDate(nullptr),
         depacketizer(nullptr),
         tlsCertificateValidationEnabled(true),
         tlsSelfSignedCertsAllowed(true),
@@ -149,8 +149,8 @@ void Surge::RtspClient::Describe(const std::string& url,
         authService->GenerateAuthHeaders(user, password);
 
         RtspCommand* describe;
-        if (startTimeSet) {
-            describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber(), startDate);
+        if (startDate != nullptr) {
+            describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber(), *startDate);
         }
         else {
             describe = RtspCommandFactory::DescribeRequest(url, GetNextSequenceNumber());
@@ -158,14 +158,14 @@ void Surge::RtspClient::Describe(const std::string& url,
 
         m_transport->RtspTransaction(describe, [=](Response *raw_resp) {
             INFO("Received DESCRIBE response");
-            
+
             bool received_response = raw_resp != nullptr;
             if (!received_response) {
                 ERROR("Failed to get response to DESCRIBE!");
                 callback(nullptr);
                 return;
             }
-            
+
             DescribeResponse *resp = nullptr;
             try {
                 resp = new DescribeResponse(raw_resp, factory);
@@ -225,7 +225,7 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription,
         }
 
         if (resp != nullptr && resp->Ok()) {
-            m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
+            m_lastKeepAliveMs = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
             m_keeepAliveIntervalInSeconds = resp->GetTimeoutSeconds();
             m_session = resp->GetSession();
             
@@ -253,11 +253,11 @@ void Surge::RtspClient::Play(bool waitForResponse,
                              std::function<void(Surge::RtspResponse*)> callback) {
     RtspCommand* play;
     
-    if (endTimeSet) {
-        play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber(), startDate, endDate);
+    if (endDate != nullptr) {
+        play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber(), *startDate, *endDate);
     }
-    else if (startTimeSet) {
-        play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber(), startDate);
+    else if (startDate != nullptr) {
+        play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber(), *startDate);
     }
     else {
         play = RtspCommandFactory::PlayRequest(m_url, m_session, GetNextSequenceNumber());
@@ -481,20 +481,20 @@ void Surge::RtspClient::RtpPacketReceived(RtpPacket *packet) {
     if (packet != nullptr) {
         packetBuffer->AddPacketToBuffer(packet);
 
-        time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
+        time_last_packet_was_processed = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
     }
 }
 
 void Surge::RtspClient::Run() {
 
 //    long long int time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
-    time_last_packet_was_processed = SurgeUtil::currentTimeMilliseconds();
+    time_last_packet_was_processed = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
 
     m_transport->SetRtpCallback([&](RtpPacket* packet) {
         if (packet != nullptr) {
             packetBuffer->AddPacketToBuffer(packet);
 
-            long long int test = SurgeUtil::currentTimeMilliseconds();
+            long long int test = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
             time_last_packet_was_processed = test;
         }
     });
@@ -509,7 +509,7 @@ void Surge::RtspClient::Run() {
         }
 
         // TIMEOUT
-        int64_t timeout_delta_ms = SurgeUtil::currentTimeMilliseconds() - time_last_packet_was_processed;
+        int64_t timeout_delta_ms = SurgeUtil::DateTime::CurrentTimeInMilliseconds() - time_last_packet_was_processed;
         int maxTimeBetweenFrames = m_timeout + m_sessionDescription.GetTimeoutOffset();
         bool client_did_timeout = m_isPlaying && timeout_delta_ms >= maxTimeBetweenFrames;
         if (client_did_timeout) {
@@ -519,7 +519,7 @@ void Surge::RtspClient::Run() {
         }
 
         // KEEP ALIVE
-        int64_t delta = SurgeUtil::currentTimeMilliseconds() - m_lastKeepAliveMs;
+        int64_t delta = SurgeUtil::DateTime::CurrentTimeInMilliseconds() - m_lastKeepAliveMs;
         int64_t delta_seconds = delta / 1000;
         bool need_keep_alive = delta_seconds >= static_cast<int64_t>(m_keeepAliveIntervalInSeconds * 0.9);
         if (need_keep_alive) {
@@ -538,7 +538,7 @@ void Surge::RtspClient::Run() {
                     m_thread.Stop();
                 } else {
                     DEBUG("Keep Alive response received.");
-                    m_lastKeepAliveMs = SurgeUtil::currentTimeMilliseconds();
+                    m_lastKeepAliveMs = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
                     delete resp;
                 }
             });

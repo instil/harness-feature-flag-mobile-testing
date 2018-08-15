@@ -20,10 +20,10 @@ namespace Surge {
                     const std::string& session,
                     const int nextSequenceNumber,
                     const std::string& authHeader,
-                    const SurgeUtil::DateTime startTime,
-                    const SurgeUtil::DateTime endTime) {
+                    SurgeUtil::DateTime startTime,
+                    SurgeUtil::DateTime endTime) {
             
-            std::string rangeHeader = "Range: clock=" + SurgeUtil::convertToISO(startTime) + "-" + SurgeUtil::convertToISO(endTime);
+            std::string rangeHeader = "Range: clock=" + startTime.ConvertToISO() + "-" + endTime.ConvertToISO();
             
             generatePlayRequest(url, session, nextSequenceNumber, authHeader, rangeHeader);
         }
@@ -32,9 +32,9 @@ namespace Surge {
                     const std::string& session,
                     const int nextSequenceNumber,
                     const std::string& authHeader,
-                    const SurgeUtil::DateTime startTime) {
+                    SurgeUtil::DateTime startTime) {
             
-            std::string rangeHeader = "Range: clock=" + SurgeUtil::convertToISO(startTime) + "-";
+            std::string rangeHeader = "Range: clock=" + startTime.ConvertToISO() + "-";
             
             generatePlayRequest(url, session, nextSequenceNumber, authHeader, rangeHeader);
         }

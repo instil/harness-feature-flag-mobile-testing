@@ -27,7 +27,7 @@ void Surge::RtpPacketBuffer::AddToBuffer(RtpPacket *packet) {
             LogMissedPackets(numPacketsLost);
         }
 
-        RtpPacketBufferItem item(packet, SurgeUtil::currentTimeMilliseconds() + bufferDelayMilliseconds);
+            RtpPacketBufferItem item(packet, SurgeUtil::DateTime::CurrentTimeInMilliseconds() + bufferDelayMilliseconds);
         buffer.push_back(item);
         return;
     }
@@ -80,7 +80,7 @@ int Surge::RtpPacketBuffer::NumberOfPacketsLost(const RtpPacket *packet, const s
 }
 
 void Surge::RtpPacketBuffer::PopPacketsPastDelayTime() {
-    long long bufferReleaseTime = SurgeUtil::currentTimeMilliseconds();
+    long long bufferReleaseTime = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
     while (buffer.size() > 0) {
         if (bufferReleaseTime < buffer.front().timestamp) {
             break;

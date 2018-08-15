@@ -21,9 +21,9 @@ namespace Surge {
         DescribeRequest(const std::string& url,
                         int nextSequenceNumber,
                         const std::string& authHeader,
-                        const SurgeUtil::DateTime& startTime) {
+                        SurgeUtil::DateTime& startTime) {
             
-            std::string rangeHeader = "Range: clock=" + SurgeUtil::convertToISO(startTime) + "-";
+            std::string rangeHeader = "Range: clock=" + startTime.ConvertToISO() + "-";
             generateDescribe(url, nextSequenceNumber, authHeader, rangeHeader);
         }
         
@@ -76,7 +76,7 @@ namespace Surge {
             
             // range delimiter
             packet += "\r\n";
-            
+
             if (!authHeader.empty()) {
                 packet += authHeader;
             }

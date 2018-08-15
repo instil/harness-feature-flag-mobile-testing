@@ -360,21 +360,21 @@ private:
 - (void)setRangeWithStartTime:(nullable NSDate *)startTime
                    andEndTime:(nullable NSDate *)endTime {
     
-    SurgeUtil::DateTime surgeStartTime;
-    SurgeUtil::DateTime surgeEndTime;
+    SurgeUtil::DateTime *surgeStartTime;
+    SurgeUtil::DateTime *surgeEndTime;
     
     if (startTime != nil) {
         surgeStartTime = [startTime toSurgeDateTime];
         self.client->SetStartTime(surgeStartTime);
     } else {
-        self.client->ClearStartTime();
+        self.client->SetStartTime(nullptr);
     }
     
     if (endTime != nil) {
         surgeEndTime = [endTime toSurgeDateTime];
         self.client->SetEndTime(surgeEndTime);
     } else {
-        self.client->ClearEndTime();
+        self.client->SetEndTime(nullptr);
     }
 }
 

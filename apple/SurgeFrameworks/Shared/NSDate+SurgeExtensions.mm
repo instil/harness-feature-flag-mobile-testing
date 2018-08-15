@@ -7,8 +7,7 @@
 
 @implementation NSDate (SurgeExtensions)
 
-- (SurgeUtil::DateTime) toSurgeDateTime {
-    SurgeUtil::DateTime dateTime = SurgeUtil::DateTime();
+- (SurgeUtil::DateTime *) toSurgeDateTime {
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
     [calendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
@@ -23,15 +22,13 @@
                                                          NSCalendarUnitNanosecond)
                                                fromDate:self];
 
-    dateTime.Year = (int)[components year];
-    dateTime.Month = (int)[components month];
-    dateTime.Day = (int)[components day];
-    dateTime.Hour = (int)[components hour];
-    dateTime.Minute = (int)[components minute];
-    dateTime.Second = (int)[components second];
-    dateTime.Nanosecond = (int)[components nanosecond];
-    
-    return dateTime;
+    return new SurgeUtil::DateTime((int)[components year],
+                                   (int)[components month],
+                                   (int)[components day],
+                                   (int)[components hour],
+                                   (int)[components minute],
+                                   (int)[components second],
+                                   (int)[components nanosecond]);
 }
 
 @end

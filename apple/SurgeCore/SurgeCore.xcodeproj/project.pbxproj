@@ -17,7 +17,6 @@
 		42D672141D3069BB00D42C35 /* BitstreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671CC1D3069BB00D42C35 /* BitstreamWriter.h */; };
 		42D672151D3069BB00D42C35 /* Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671CF1D3069BB00D42C35 /* Constants.h */; };
 		42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671D01D3069BB00D42C35 /* DataEventQueue.h */; };
-		42D672171D3069BB00D42C35 /* DateTime.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671D11D3069BB00D42C35 /* DateTime.cc */; };
 		42D672181D3069BB00D42C35 /* DateTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671D21D3069BB00D42C35 /* DateTime.h */; };
 		42D672191D3069BB00D42C35 /* Depacketizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671D31D3069BB00D42C35 /* Depacketizer.h */; };
 		42D6721A1D3069BB00D42C35 /* Describe.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671D41D3069BB00D42C35 /* Describe.h */; };
@@ -164,7 +163,6 @@
 		42D671CD1D3069BB00D42C35 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = ../../core/src/CMakeLists.txt; sourceTree = "<group>"; };
 		42D671CF1D3069BB00D42C35 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = ../../core/src/Constants.h; sourceTree = "<group>"; };
 		42D671D01D3069BB00D42C35 /* DataEventQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataEventQueue.h; path = ../../core/src/DataEventQueue.h; sourceTree = "<group>"; };
-		42D671D11D3069BB00D42C35 /* DateTime.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DateTime.cc; path = ../../core/src/DateTime.cc; sourceTree = "<group>"; };
 		42D671D21D3069BB00D42C35 /* DateTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateTime.h; path = ../../core/src/DateTime.h; sourceTree = "<group>"; };
 		42D671D31D3069BB00D42C35 /* Depacketizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Depacketizer.h; path = ../../core/src/Depacketizer.h; sourceTree = "<group>"; };
 		42D671D41D3069BB00D42C35 /* Describe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Describe.h; path = ../../core/src/Describe.h; sourceTree = "<group>"; };
@@ -622,7 +620,6 @@
 				42D671CA1D3069BB00D42C35 /* BitstreamReader.h */,
 				42D671CB1D3069BB00D42C35 /* BitstreamWriter.cc */,
 				42D671CC1D3069BB00D42C35 /* BitstreamWriter.h */,
-				42D671D11D3069BB00D42C35 /* DateTime.cc */,
 				42D671D21D3069BB00D42C35 /* DateTime.h */,
 				42D671D01D3069BB00D42C35 /* DataEventQueue.h */,
 				42D671D81D3069BB00D42C35 /* FireableEvent.cc */,
@@ -841,7 +838,6 @@
 				42D672221D3069BB00D42C35 /* Helpers.cc in Sources */,
 				F49A7E941F3B0D29007FCBD2 /* RtpPacketBuffer.cc in Sources */,
 				42D6723D1D3069BB00D42C35 /* RtspCommandFactory.cc in Sources */,
-				42D672171D3069BB00D42C35 /* DateTime.cc in Sources */,
 				F490E03720DD5BC000D30214 /* TLSClient.cc in Sources */,
 				F47D1E6D210B239000302481 /* AuthenticationService.cc in Sources */,
 				F4589E151ED85627004F023D /* pthread-fixes.c in Sources */,

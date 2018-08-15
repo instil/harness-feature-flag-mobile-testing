@@ -24,7 +24,7 @@ namespace Surge {
         
         RtspCommand* DescribeRequest(const std::string& url,
                                      int nextSequenceNumber,
-                                     const SurgeUtil::DateTime startDate) {
+                                     SurgeUtil::DateTime startDate) {
             return new class DescribeRequest(url, nextSequenceNumber, authService->AuthHeaders(), startDate);
         }
 
@@ -45,15 +45,15 @@ namespace Surge {
         RtspCommand* PlayRequest(const std::string& url,
                                  const std::string& session,
                                  int nextSequenceNumber,
-                                 const SurgeUtil::DateTime startDate) {
+                                  SurgeUtil::DateTime startDate) {
             return new class PlayRequest(url, session, nextSequenceNumber, authService->AuthHeaders(), startDate);
         }
         
         RtspCommand* PlayRequest(const std::string& url,
                                  const std::string& session,
                                  int nextSequenceNumber,
-                                 const SurgeUtil::DateTime startDate,
-                                 const SurgeUtil::DateTime endDate) {
+                                 SurgeUtil::DateTime startDate,
+                                 SurgeUtil::DateTime endDate) {
             return new class PlayRequest(url, session, nextSequenceNumber, authService->AuthHeaders(), startDate, endDate);
         }
 

@@ -110,7 +110,7 @@ The instructions below have been tested on a Raspberry Pi but they should work f
 Firstly, install GStreamer and the required dependencies. The script `tools/raspberry-pi-setup.sh` can also be used to automate this process for a Raspberry Pi.
 
 ```bash
-$ sudo apt-get install gstreamer1.0 gstreamer1.0-tools gstreamer1.0-omx libgstreamer1.0-dev v4l-utils
+$ sudo apt-get install gstreamer1.0-tools gstreamer1.0-omx libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev v4l-utils
 ```
 
 Next, load the Broadcom Video4Linux driver for the Raspberry Pi which we'll be using. For other platforms, substitute with the appropriate driver for your camera.
@@ -124,9 +124,9 @@ Then build the RTSP server library and sample code we'll be using for testing.
 
 ```bash
 $ cd /usr/src
-$ sudo wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.4.4.tar.xz
-$ sudo tar xvf gst-rtsp-server-1.4.4.tar.xz
-$ cd gst-rtsp-server-1.4.4
+$ sudo wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.10.4.tar.xz
+$ sudo tar xvf gst-rtsp-server-1.10.4.tar.xz
+$ cd gst-rtsp-server-1.10.4
 $ ./configure --prefix=/opt/gst-rtsp
 $ make
 ```
@@ -136,26 +136,26 @@ $ make
 #### H264
 
 ```bash
-$ cd /usr/src/gst-rtsp-server-1.4.4/examples
+$ cd /usr/src/gst-rtsp-server-1.10.4/examples
 $ ./test-launch "( v4l2src device=/dev/video0 ! omxh264enc ! video/x-h264,width=720,height=480,framerate=25/1,profile=high,target-bitrate=8000000 ! h264parse ! rtph264pay name=pay0 config-interval=1 pt=96 )"
 ```
 
 #### MPEG-4 Part 2
 
 ```bash
-$ cd /usr/src/gst-rtsp-server-1.4.4/examples
+$ cd /usr/src/gst-rtsp-server-1.10.4/examples
 $ ./test-launch "( v4l2src device=/dev/video0 extra-controls=\"c,video_bitrate=8000000\" ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! avenc_mpeg4 ! rtpmp4vpay name=pay0 config-interval=1 pt=96 )"
 ```
 
 #### MJPEG
 
 ```bash
-$ cd /usr/src/gst-rtsp-server-1.4.4/examples
+$ cd /usr/src/gst-rtsp-server-1.10.4/examples
 $ ./test-launch "( v4l2src device=/dev/video0 extra-controls=\"c,video_bitrate=8000000\" ! video/x-raw, width=720, height=480, framerate=25/1 ! videoconvert ! jpegenc ! rtpjpegpay name=pay0 config-interval=1 pt=96 )"
 ```
 
 
-## Testing streaming without a camera
+### Testing streaming without a camera
 
 If a camera is not available, we can also use the Gstreamer RTSP server with a test video source on macOS, Linux, etc. The following instructions are for macOS but the required packages are also available for Linux.
 
@@ -172,9 +172,9 @@ Then build the RTSP server library and sample code we'll be using for testing.
 ```bash
 $ mkdir ~/surge
 $ cd ~/surge
-$ sudo wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.4.4.tar.xz
-$ sudo tar xvf gst-rtsp-server-1.4.4.tar.xz
-$ cd gst-rtsp-server-1.4.4
+$ sudo wget https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.14.2.tar.xz
+$ sudo tar xvf gst-rtsp-server-1.14.2.tar.xz
+$ cd gst-rtsp-server-1.14.2
 $ ./configure --prefix=/opt/gst-rtsp
 $ make
 ```

@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "ITransportInterface.h"
-#include "Response.h"
+#include "RtspResponse.h"
 
 namespace Surge {
     class BaseAuthenticator {
@@ -28,7 +28,7 @@ namespace Surge {
             return std::vector<char>();
         };
 
-        virtual std::vector<std::string> UnauthorizedError(const Response *response) {
+        virtual std::vector<std::string> UnauthorizedError(const std::string &username, const std::string &password, const RtspResponse *response) {
             return std::vector<std::string>();
         };
     };

@@ -128,6 +128,8 @@
 		F47D1E6E210B239000302481 /* AuthenticationService.h in Headers */ = {isa = PBXBuildFile; fileRef = F47D1E6C210B239000302481 /* AuthenticationService.h */; };
 		F490E03720DD5BC000D30214 /* TLSClient.cc in Sources */ = {isa = PBXBuildFile; fileRef = F490E03520DD5BC000D30214 /* TLSClient.cc */; };
 		F490E03820DD5BC000D30214 /* TLSClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F490E03620DD5BC000D30214 /* TLSClient.h */; };
+		F4965ABB212590D800DB30B5 /* RtspService.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4965AB9212590D800DB30B5 /* RtspService.cc */; };
+		F4965ABC212590D800DB30B5 /* RtspService.h in Headers */ = {isa = PBXBuildFile; fileRef = F4965ABA212590D800DB30B5 /* RtspService.h */; };
 		F49699702109D77600B7EE4E /* BaseAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F496996E2109D77600B7EE4E /* BaseAuthenticator.h */; };
 		F49699732109FA2B00B7EE4E /* BasicDigestAuthenticator.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49699712109FA2B00B7EE4E /* BasicDigestAuthenticator.cc */; };
 		F49699742109FA2B00B7EE4E /* BasicDigestAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F49699722109FA2B00B7EE4E /* BasicDigestAuthenticator.h */; };
@@ -257,6 +259,8 @@
 		F48DFB1920E27AE900BA39A8 /* TransportDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TransportDelegate.h; path = ../../core/src/TransportDelegate.h; sourceTree = "<group>"; };
 		F490E03520DD5BC000D30214 /* TLSClient.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TLSClient.cc; path = ../../core/src/TLSClient.cc; sourceTree = "<group>"; };
 		F490E03620DD5BC000D30214 /* TLSClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSClient.h; path = ../../core/src/TLSClient.h; sourceTree = "<group>"; };
+		F4965AB9212590D800DB30B5 /* RtspService.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = RtspService.cc; path = ../../core/src/RtspService.cc; sourceTree = "<group>"; };
+		F4965ABA212590D800DB30B5 /* RtspService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RtspService.h; path = ../../core/src/RtspService.h; sourceTree = "<group>"; };
 		F496996E2109D77600B7EE4E /* BaseAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseAuthenticator.h; path = ../../core/src/BaseAuthenticator.h; sourceTree = "<group>"; };
 		F49699712109FA2B00B7EE4E /* BasicDigestAuthenticator.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BasicDigestAuthenticator.cc; path = ../../core/src/BasicDigestAuthenticator.cc; sourceTree = "<group>"; };
 		F49699722109FA2B00B7EE4E /* BasicDigestAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BasicDigestAuthenticator.h; path = ../../core/src/BasicDigestAuthenticator.h; sourceTree = "<group>"; };
@@ -352,6 +356,7 @@
 				F4C4F60420AEDECA009313CD /* Utils */,
 				F490E02820DD514E00D30214 /* TLS */,
 				F496996C2109D72E00B7EE4E /* Authentication */,
+				F45EE635212467BD003548BA /* Refactor */,
 				42D671CD1D3069BB00D42C35 /* CMakeLists.txt */,
 				42D671CF1D3069BB00D42C35 /* Constants.h */,
 				42D671D61D3069BB00D42C35 /* ErrorDispatcher.cc */,
@@ -511,6 +516,15 @@
 			);
 			name = unix;
 			path = "../../core/lib/libuv-cmake/libuv/src/unix";
+			sourceTree = "<group>";
+		};
+		F45EE635212467BD003548BA /* Refactor */ = {
+			isa = PBXGroup;
+			children = (
+				F4965AB9212590D800DB30B5 /* RtspService.cc */,
+				F4965ABA212590D800DB30B5 /* RtspService.h */,
+			);
+			name = Refactor;
 			sourceTree = "<group>";
 		};
 		F46D0DD91F320425000782DD /* Transports */ = {
@@ -692,6 +706,7 @@
 				42D672281D3069BB00D42C35 /* ISocketHandlerDelegate.h in Headers */,
 				F4C4F60A20AEE853009313CD /* DispatchQueue.h in Headers */,
 				42D672211D3069BB00D42C35 /* H264Depacketizer.h in Headers */,
+				F4965ABC212590D800DB30B5 /* RtspService.h in Headers */,
 				42D6722B1D3069BB00D42C35 /* MimeTypes.h in Headers */,
 				42D6723F1D3069BB00D42C35 /* RtspResponse.h in Headers */,
 				42D672391D3069BB00D42C35 /* RtpPacket.h in Headers */,
@@ -870,6 +885,7 @@
 				42D6721E1D3069BB00D42C35 /* FireableEvent.cc in Sources */,
 				F4589E081ED85627004F023D /* dl.c in Sources */,
 				F4388E4C1F333AD80064A24F /* UdpTransport.cc in Sources */,
+				F4965ABB212590D800DB30B5 /* RtspService.cc in Sources */,
 				F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */,
 				42D6720D1D3069BB00D42C35 /* Base64.cc in Sources */,
 				F4589E161ED85627004F023D /* signal.c in Sources */,

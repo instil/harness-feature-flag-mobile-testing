@@ -20,7 +20,7 @@ namespace Surge {
         ~BasicDigestAuthenticator() { }
 
         std::vector<std::string> AuthenticationHeaders(const std::string &username, const std::string &password) override;
-        std::vector<std::string> UnauthorizedError(const Response *response) override;
+        std::vector<std::string> UnauthorizedError(const std::string &username, const std::string &password, const RtspResponse *response) override;
 
     private:
         std::string username;

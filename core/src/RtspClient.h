@@ -1,11 +1,15 @@
-// -*-c++-*-
-// Copyright (c) 2017 Instil Software.
 //
-// This file is subject to the terms and conditions defined in
-// file 'LICENSE.txt', which is part of this source code package.
+//  RtspClient.hpp
+//  SurgeCore
+//
+//  Created by Paul Shields on 15/08/2018.
+//  Copyright © 2018 Instil. All rights reserved.
+//
 
-#ifndef __RTSP_CLIENT_H__
-#define __RTSP_CLIENT_H__
+#ifndef RtspClient_h
+#define RtspClient_h
+
+#include <stdio.h>
 
 #include "Surge.h"
 #include "ErrorDispatcher.h"
@@ -23,122 +27,136 @@
 #include "DispatchQueue.h"
 
 #include "ITLSClient.h"
-
 #include "AuthenticationService.h"
-
 #include "DateTime.h"
 
 #include <string>
 #include <vector>
 
+#include "RtspService.h"
+
 namespace Surge {
 
     class RtspClient : public ISocketHandlerDelegate, public TransportDelegate, private SurgeUtil::Runnable {
+
     public:
-        RtspClient(IRtspClientDelegate * const delegate, bool useInterleavedTcpTransport = false);
+        RtspClient(IRtspClientDelegate * const delegate, bool forceInterleavedTcp = false);
 
         ~RtspClient();
 
-        void SetTransport(const std::string& url);
+        void Connect(const std::string& url, std::function<void(bool)> callback);
+        void Disconnect();
 
-        void Describe(const std::string& url,
-                      std::function<void(Surge::DescribeResponse*)> callback);
+        void SetCredentials(const std::string& user, const std::string& password);
 
-        void Describe(const std::string& url,
-                      const std::string& user,
-                      const std::string& password,
-                      std::function<void(Surge::DescribeResponse*)> callback);
+        void Describe(std::function<void(Surge::DescribeResponse*)> callback);
 
         void Setup(const SessionDescription& sessionDescription,
-                   bool serverAllowsAggregate,
                    std::function<void(Surge::SetupResponse*)> callback);
 
-        void Play(bool waitForResponse,
-                  std::function<void(Surge::RtspResponse*)> callback);
+        void Play(std::function<void(Surge::RtspResponse*)> callback = NULL);
 
         void Pause(std::function<void(Surge::RtspResponse*)> callback = NULL);
 
-        void Options(std::function<void(RtspResponse*)> callback);
+        void Options(std::function<void(Surge::RtspResponse*)> callback);
 
-        void Options(const std::string& url,
-                     std::function<void(Surge::RtspResponse*)> callback);
-
-        void Teardown(std::function<void(Surge::RtspResponse*)> callback = NULL,
-                      bool waitForResponse = false);
+        void Teardown(std::function<void(Surge::RtspResponse*)> callback = NULL);
 
         void KeepAlive(std::function<void(Surge::RtspResponse*)> callback);
-        
-        void StopStream();
 
-        IRtspClientDelegate* GetDelegate() const { return m_delegate; }
+    private:
+        void SetTransport(const std::string& url);
+        void CreateDepacketizer();
 
-        void SocketReadFailed() override {
-            NotifyDelegateTimeout();
-        }
+        void StartHousekeepingThread();
+        void StopHousekeepingThread();
 
-        void AnnounceReceived() override {
-            NotifyDelegateAnnounce();
-        }
+        void ProcessRtpPacket(const RtpPacket* packet);
+        void CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet);
 
-        void RedirectReceived() override {
-            NotifyDelgateRedirect();
-        }
-
-        void SetTimeRange(SurgeUtil::DateTime *startDate, SurgeUtil::DateTime *endDate) {
-            if (this->startDate != nullptr) {
-                delete this->startDate;
+    private:
+        void NotifyDelegateOfExtendedRtpHeader(const unsigned char *extendedHeaderBuffer, size_t length) {
+            if (delegate != nullptr) {
+                delegate->ClientReceivedExtendedHeader(extendedHeaderBuffer, length);
             }
-            if (this->endDate != nullptr) {
-                delete this->endDate;
-            }
-
-            this->startDate = startDate;
-            this->endDate = endDate;
         }
 
-        void SetStartTime(SurgeUtil::DateTime *startDate) {
-            if (this->startDate != nullptr) {
-                delete this->startDate;
+        void NotifyDelegateOfAvailableFrame(const std::vector<unsigned char> &frame) {
+            if (dropFrame) {
+                ClearDroppedFrameFlag();
+                return;
             }
 
-            this->startDate = startDate;
+            if (delegate != nullptr) {
+                delegate->ClientReceivedFrame(frame.data(),
+                                              frame.size(),
+                                              depacketizer->GetWidth(),
+                                              depacketizer->GetHeight(),
+                                              1,
+                                              1);
+            }
         }
 
-        void SetEndTime(SurgeUtil::DateTime *endDate) {
-            if (this->endDate != nullptr) {
-                delete this->endDate;
+        void DropNextFrame() {
+            dropFrame = true;
+        }
+
+        void ClearDroppedFrameFlag() {
+            dropFrame = false;
+        }
+
+    private:
+        void NotifyDelegateTimeout() {
+            GetDispatcher().FailureForClient(this, ERROR_TYPE::LOST_CONNECTION);
+        }
+
+        void NotifyDelgateRedirect() {
+            GetDispatcher().FailureForClient(this, ERROR_TYPE::REDIRECT);
+        }
+
+        void NotifyDelegateAnnounce() {
+            GetDispatcher().FailureForClient(this, ERROR_TYPE::ANNOUNCE);
+        }
+
+    public:
+        IRtspClientDelegate *GetDelegate() const {
+            return delegate;
+        }
+
+        void SetTimeRange(SurgeUtil::DateTime *startTime, SurgeUtil::DateTime *endTime) {
+            if (startTime) {
+                if (this->startTime) {
+                    delete startTime;
+                }
+                this->startTime = startTime;
             }
 
-            this->endDate = endDate;
-        }
-        
-        void ResetTimeToLive() {
-            if (this->startDate != nullptr) {
-                delete this->startDate;
+            if (endTime) {
+                if (this->endTime) {
+                    delete endTime;
+                }
+                this->endTime = endTime;
             }
-            if (this->endDate != nullptr) {
-                delete this->endDate;
-            }
-            
-            this->startDate = nullptr;
-            this->endDate = nullptr;
-        }
-        
-        void SetSessionDescriptionFactory(SessionDescriptionFactory *factory) {
-            delete this->factory;
-            this->factory = factory;
         }
 
         int GetTimeout() {
-            return this->m_timeout;
+            return this->timeout;
         }
 
         void SetTimeout(int timeout) {
-            this->m_timeout = timeout;
+            this->timeout = timeout;
         }
-        
+
         bool IsInterleavedTransport() {
             return useInterleavedTcpTransport;
+        }
+
+        int GetPacketBufferDelay() {
+            return packetBuffer->GetBufferDelay();
+        }
+
+        void SetPacketBufferDelay(int bufferDelayMilliseconds) {
+            packetBuffer->SetBufferDelay(bufferDelayMilliseconds);
         }
 
         void SetTLSCertificateValidationEnabled(bool tlsCertificateValidationEnabled) {
@@ -175,112 +193,60 @@ namespace Surge {
             authService->Remove(index);
         }
 
-    private:
+    public: // Inherited from TransportDelegate
+        void RtpPacketReceived(RtpPacket *packet) override;
+
+    private: // Inherited from SurgeUtil::Runnable
         void Run() override;
 
-        void StartSession();
-
-        void ProcessRtpPacket(const RtpPacket* packet);
-
-        void CreateDepacketizer();
-        
-        int GetNextSequenceNumber() { return m_sequenceNumber++; }
-
-        void NotifyDelegateOfAvailableFrame(const std::vector<unsigned char> &frame) {
-            if (dropFrame) {
-                ClearDroppedFrameFlag();
-                return;
-            }
-            
-            if (m_delegate != nullptr) {
-                m_delegate->ClientReceivedFrame(frame.data(),
-                                                frame.size(),
-                                                depacketizer->GetWidth(),
-                                                depacketizer->GetHeight(),
-                                                1,
-                                                1);
-            }
-        }
-        
-        void DropNextFrame() {
-            dropFrame = true;
-        }
-        
-        void ClearDroppedFrameFlag() {
-            dropFrame = false;
-        }
-        
-        void NotifyDelegateOfExtendedRtpHeader(const unsigned char *extendedHeaderBuffer, size_t length) {
-            if (m_delegate != nullptr) {
-                m_delegate->ClientReceivedExtendedHeader(extendedHeaderBuffer, length);
-            }
+    public: // Inherited from ISocketHandlerDelegate
+        void SocketReadFailed() override {
+            NotifyDelegateTimeout();
         }
 
-        void NotifyDelegateTimeout() {
-            GetDispatcher().FailureForClient(this, ERROR_TYPE::LOST_CONNECTION);
+        void AnnounceReceived() override {
+            NotifyDelegateAnnounce();
         }
 
-        void NotifyDelgateRedirect() {
-            GetDispatcher().FailureForClient(this, ERROR_TYPE::REDIRECT);
+        void RedirectReceived() override {
+            NotifyDelgateRedirect();
         }
 
-        void NotifyDelegateAnnounce() {
-            GetDispatcher().FailureForClient(this, ERROR_TYPE::ANNOUNCE);
-        }
-
-        void SetupRtspConnection(const std::string& url, std::function<void(int)> callback);
-
-        bool m_isPlaying;
-
+    private:
+        std::string url;
+        bool isPlaying;
         bool useInterleavedTcpTransport;
 
-        SessionDescription m_sessionDescription;
-        std::vector<unsigned char> *frameBuffer;
+        SurgeUtil::DateTime *startTime;
+        SurgeUtil::DateTime *endTime;
+        int timeout;
 
-        Depacketizer *depacketizer;
-        IRtspClientDelegate * const m_delegate;
-        bool processedFirstPayload;
-        long long int m_lastKeepAliveMs;
-        int m_keeepAliveIntervalInSeconds;
-        int m_sequenceNumber;
-        int m_timeout;
-        std::string m_url;
-        std::string m_session;
-        Surge::ITransportInterface *m_transport;
-        SurgeUtil::StoppableThread m_thread;
-        SurgeUtil::Mutex m_mutex;
-        
-        SurgeUtil::DateTime *startDate;
-        SurgeUtil::DateTime *endDate;
-        SessionDescriptionFactory *factory;
+        IRtspClientDelegate *delegate;
 
-        Surge::DispatchQueue *dispatchQueue;
-
+        Surge::ITransportInterface *transport;
         Surge::ITLSClient *tlsClient;
+        Surge::RtpPacketBuffer *packetBuffer;
+        Surge::DispatchQueue *dispatchQueue;
+        Surge::Depacketizer *depacketizer;
+
         bool tlsCertificateValidationEnabled;
         bool tlsSelfSignedCertsAllowed;
 
+        RtspService *rtspService;
         AuthenticationService *authService;
 
-        void RtpPacketReceived(RtpPacket *packet) override;
-                
-    public:
-        Surge::RtpPacketBuffer *packetBuffer;
-        
-        int GetPacketBufferDelay() {
-            return packetBuffer->GetBufferDelay();
-        }
-        
-        void SetPacketBufferDelay(int bufferDelayMilliseconds) {
-            packetBuffer->SetBufferDelay(bufferDelayMilliseconds);
-        }
-        
-    public:
-        void CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet);
-        long long lastPacketSequenceNum = MAX_SEQ_NUM;
-        bool dropFrame = false;
+        SessionDescription sessionDescription;
+        std::vector<unsigned char> *frameBuffer;
+
+        SurgeUtil::StoppableThread housekeepingThread;
+        long long timeLastPacketWasProcessed;
+        long long lastKeepAliveMs;
+        long long keepAliveIntervalInSeconds;
+        bool processedFirstPayload;
+        long long lastPacketSequenceNum;
+        bool dropFrame;
     };
-    
+
 }
 
-#endif //__RTSP_CLIENT_H__
+#endif /* RtspClient_h */

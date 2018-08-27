@@ -37,12 +37,14 @@ void Surge::TLSClient::StartClient(ISecureTransport *transport) {
 }
 
 void Surge::TLSClient::StopClient() {
+    INFO(BIO_pending(appBio));
     if (ssl != nullptr) {
+        SSL_set_quiet_shutdown(ssl, 1);
         SSL_shutdown(ssl);
-        BIO_free(appBio);
-        BIO_free(openSSLBio);
-        SSL_CTX_free(sslContext);
+
         SSL_free(ssl);
+        BIO_free(appBio);
+        SSL_CTX_free(sslContext);
 
         ssl = nullptr;
         sslContext = nullptr;

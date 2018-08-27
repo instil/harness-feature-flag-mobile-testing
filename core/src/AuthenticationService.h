@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "BaseAuthenticator.h"
-#include "Response.h"
+#include "RtspResponse.h"
 #include "ITransportInterface.h"
 
 namespace Surge {
@@ -22,8 +22,8 @@ namespace Surge {
         AuthenticationService();
         ~AuthenticationService();
 
-        void GenerateAuthHeaders(const std::string &username, const std::string &password);
-        void ExecuteFirstBytesOnTheWireAuthentication(const std::string &username, const std::string &password);
+        void GenerateAuthHeaders();
+        void ExecuteFirstBytesOnTheWireAuthentication();
 
         void Add(BaseAuthenticator *authenticator) {
             authenticators.push_back(authenticator);
@@ -49,10 +49,18 @@ namespace Surge {
             this->transport = transport;
         }
 
+        void SetCredentials(std::string username, std::string password) {
+            this->username = username;
+            this->password = password;
+        }
+
 
     private:
         std::vector<BaseAuthenticator*> authenticators;
         ITransportInterface *transport;
+
+        std::string username;
+        std::string password;
 
         std::string currentAuthHeaders;
     };

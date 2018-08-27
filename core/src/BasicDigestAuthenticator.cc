@@ -25,7 +25,8 @@ std::vector<std::string> Surge::BasicDigestAuthenticator::AuthenticationHeaders(
     return std::vector<std::string>();
 }
 
-std::vector<std::string> Surge::BasicDigestAuthenticator::UnauthorizedError(const Response *response) {
-    // TODO: Digest auth
-    return std::vector<std::string>();
+std::vector<std::string> Surge::BasicDigestAuthenticator::UnauthorizedError(const std::string &username, const std::string &password, const RtspResponse *response) {
+    std::vector<std::string> result;
+
+    return result;
 }

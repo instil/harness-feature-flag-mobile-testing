@@ -25,9 +25,9 @@ namespace Surge {
 
     class RtspResponse {
     public:
-        RtspResponse(const Response* resp) : m_code(500), m_body(), m_headers() {
-            const std::string buffer = resp->StringDump();
-            std::vector<std::string> lines = SurgeUtil::StringSplit(buffer, "\r\n");
+        RtspResponse(const Response* resp) : m_code(500), m_body(), m_headers(), m_rawResponse() {
+            m_rawResponse = resp->StringDump();
+            std::vector<std::string> lines = SurgeUtil::StringSplit(m_rawResponse, "\r\n");
 
             if (lines.size() < 1) {
                 ostringstream message;
@@ -74,7 +74,7 @@ namespace Surge {
             }
         }
 
-        RtspResponse(int code, std::string body): m_code(code), m_body(body), m_headers() {}
+        RtspResponse(int code, std::string body): m_code(code), m_body(body), m_headers(), m_rawResponse() {}
 
         virtual ~RtspResponse() { }
 
@@ -86,7 +86,7 @@ namespace Surge {
 
         size_t GetBodyLength() const { return GetBodyString().length(); }
 
-        const std::map<std::string, std::string> GetHeaders() const { return m_headers; }
+        const std::map<std::string, std::string> &GetHeaders() const { return m_headers; }
 
         virtual const bool Ok() const { return GetCode() == 200; }
 
@@ -102,11 +102,14 @@ namespace Surge {
             
             return header_value;
         }
+
+        const std::string GetRawResponse() { return m_rawResponse; }
         
     private:
         int m_code;
         std::string m_body;
         std::map<std::string, std::string> m_headers;
+        std::string m_rawResponse;
     };
     
 };

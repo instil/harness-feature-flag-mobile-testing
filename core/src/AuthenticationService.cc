@@ -8,7 +8,7 @@
 
 #include "AuthenticationService.h"
 
-Surge::AuthenticationService::AuthenticationService() : transport(nullptr) { }
+Surge::AuthenticationService::AuthenticationService() : transport(nullptr), username(""), password("") { }
 
 Surge::AuthenticationService::~AuthenticationService() {
     std::for_each(authenticators.begin(),
@@ -18,12 +18,12 @@ Surge::AuthenticationService::~AuthenticationService() {
                   });
 }
 
-void Surge::AuthenticationService::GenerateAuthHeaders(const std::string &username, const std::string &password) {
+void Surge::AuthenticationService::GenerateAuthHeaders() {
     currentAuthHeaders.clear();
 
     std::for_each(authenticators.begin(),
                   authenticators.end(),
-                  [this, username, password](auto authenticator) {
+                  [this](auto authenticator) {
                       auto newHeaders = authenticator->AuthenticationHeaders(username, password);
 
                       std::for_each(newHeaders.begin(),
@@ -35,7 +35,7 @@ void Surge::AuthenticationService::GenerateAuthHeaders(const std::string &userna
                   });
 }
 
-void Surge::AuthenticationService::ExecuteFirstBytesOnTheWireAuthentication(const std::string &username, const std::string &password) {
+void Surge::AuthenticationService::ExecuteFirstBytesOnTheWireAuthentication() {
     if (!transport) {
         ERROR("Authenticator error: No transport is set, so could not send any bytes down the wire.");
         return;
@@ -43,7 +43,7 @@ void Surge::AuthenticationService::ExecuteFirstBytesOnTheWireAuthentication(cons
 
     std::for_each(authenticators.begin(),
                   authenticators.end(),
-                  [this, username, password](auto authenticator) {
+                  [this](auto authenticator) {
                       auto bytesToSend = authenticator->FirstBytesOnTheWireAuthentication(username, password);
 
                       if (bytesToSend.size() > 0) {

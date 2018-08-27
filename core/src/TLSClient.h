@@ -68,15 +68,12 @@ namespace Surge {
                     return READ_FROM_TRANSPORT;
 
                 case SSL_ERROR_WANT_X509_LOOKUP:  // 4
-                    return UNKNOWN_ERROR;
                 case SSL_ERROR_ZERO_RETURN: // 5
                     return UNKNOWN_ERROR;
                 case SSL_ERROR_SYSCALL: //6
                     return READ_FROM_TRANSPORT;
                 case SSL_ERROR_WANT_CONNECT: //7
-                    return UNKNOWN_ERROR;
                 case SSL_ERROR_WANT_ACCEPT: //8
-                    return UNKNOWN_ERROR;
                 default:
                     return UNKNOWN_ERROR;
             }

@@ -1,14 +1,48 @@
 //
-//  UIImageView.swift
-//  SurgeiOSSwiftDemo
+//  UIKitExtensions.swift
+//  SurgeiOSSwiftDemoApp
 //
-//  Created by Stevey Brown on 22/08/2018.
+//  Created by Stevey Brown on 28/08/2018.
 //  Copyright © 2018 Instil. All rights reserved.
 //
 
 import UIKit
-import CoreImage
-import CoreGraphics
+
+//MARK: UIViewController
+
+extension UIViewController {
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+}
+
+//MARK: UICollectionView
+
+extension UICollectionView {
+    func configureEmptyDataSourceMessage(_ message: String = "No Data", render: Bool = true) {
+        if !render {
+            self.backgroundView = nil
+            return
+        }
+        let label = UILabel()
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.text = message
+        self.backgroundView = label
+    }
+}
+
+//MARK: UIColor
+
+extension UIColor {
+    static var primaryTint: UIColor {
+        return UIColor(red: 54.0/255.0, green: 121.0/255.0, blue: 166.0/255.0, alpha: 1.0)
+    }
+}
+
+//MARK: UIImageView
 
 extension UIImageView {
     func enableFaceDetection(inset: UIEdgeInsets) {
@@ -41,7 +75,7 @@ extension UIImageView {
             
             faceViewBounds.size.width = min(faceViewBounds.origin.x + faceViewBounds.size.width + inset.left + inset.right, ciImageSize.width)
             faceViewBounds.size.width = faceViewBounds.size.width - faceViewBounds.origin.x
-                        
+            
             faceViewBounds = faceViewBounds.applying(CGAffineTransform(scaleX: scale, y: scale))
             faceViewBounds.origin.x += offsetX
             faceViewBounds.origin.y += offsetY
@@ -50,7 +84,7 @@ extension UIImageView {
             faceBox.layer.borderWidth = 2
             faceBox.layer.borderColor = UIColor.red.cgColor
             faceBox.backgroundColor = UIColor.clear
-
+            
             self.addSubview(faceBox)
         }
     }

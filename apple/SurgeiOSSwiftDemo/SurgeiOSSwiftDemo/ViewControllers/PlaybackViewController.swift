@@ -8,43 +8,29 @@
 
 import UIKit
 
-extension UICollectionView {
-    func configureEmptyDataSourceMessage(_ message: String = "No Data", render: Bool = true) {
-        if !render {
-            self.backgroundView = nil
-            return
-        }
-        let label = UILabel()
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.text = message
-        self.backgroundView = label
-    }
-}
-
 /// Custom Layout for playback collection view
 class PlaybackLayout: UICollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
-        self.sectionInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        self.sectionInset = UIEdgeInsets.zero
         self.sectionInsetReference = .fromSafeArea
         self.minimumLineSpacing = 0.0
         self.minimumInteritemSpacing = 0.0
 
-        guard let cv = self.collectionView else { return }
+        guard let collectionView = self.collectionView else { return }
         
-        if cv.numberOfItems(inSection: 0) == 1 {
-            self.itemSize = CGSize(width: cv.bounds.width - (self.sectionInset.left + self.sectionInset.right) , height: cv.bounds.height)
-        } else if cv.numberOfItems(inSection: 0) == 2 {
-            self.itemSize = CGSize(width: cv.bounds.width - (self.sectionInset.left + self.sectionInset.right), height: cv.bounds.height / 2)
+        if collectionView.numberOfItems(inSection: 0) == 1 {
+            self.itemSize = CGSize(width: collectionView.bounds.width - (self.sectionInset.left + self.sectionInset.right) , height: collectionView.bounds.height)
+        } else if collectionView.numberOfItems(inSection: 0) == 2 {
+            self.itemSize = CGSize(width: collectionView.bounds.width - (self.sectionInset.left + self.sectionInset.right), height: collectionView.bounds.height / 2)
         } else {
-            self.itemSize = CGSize(width: cv.bounds.width / 2, height: cv.bounds.height / 2)
+            self.itemSize = CGSize(width: collectionView.bounds.width / 2, height: collectionView.bounds.height / 2)
         }
     }
 }
 
 class PlaybackViewController: UIViewController {
-    @IBOutlet weak var collectionView: UICollectionView! {
+    @IBOutlet var collectionView: UICollectionView! {
         didSet {
             collectionView.register(UINib(nibName: "StreamCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "StreamCollectionViewCell")
             collectionView.dataSource = self
@@ -66,8 +52,8 @@ class PlaybackViewController: UIViewController {
         
         // Populate with two sample streams
         #if DEBUG
-        let address1 = RSTPStream(address: "rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov")
-        let address2 = RSTPStream(address: "rtsp://webcam01.bigskyresort.com:554/axis-media/media.amp")
+        let address1 = RtspStream(address: "rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov")
+        let address2 = RtspStream(address: "rtsp://webcam01.bigskyresort.com:554/axis-media/media.amp")
         
         manager.startStreamWithAddress(address1)
         manager.startStreamWithAddress(address2)
@@ -113,7 +99,7 @@ extension PlaybackViewController: UICollectionViewDataSource {
 
 // MARK: Stored addresses view controller delegate
 extension PlaybackViewController: StoredAddressesViewControllerDelegate {
-    func selectedStream(_ stream: RSTPStream) {
+    func selectedStream(_ stream: RtspStream) {
         manager.startStreamWithAddress(stream)
         self.collectionView.reloadSections(IndexSet(integer: 0))
     }

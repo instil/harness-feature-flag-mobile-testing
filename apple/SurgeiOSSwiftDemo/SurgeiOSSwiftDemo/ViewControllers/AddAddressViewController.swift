@@ -8,15 +8,7 @@
 
 import UIKit
 
-extension UIViewController {
-    func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-}
-
-enum FieldType: Int {
+enum FieldType: Int, CaseIterable {
     case address = 0
     case name, username, password
     
@@ -31,7 +23,7 @@ enum FieldType: Int {
 }
 
 class AddAddressViewController: UITableViewController {
-    var streamDetails = RSTPStream()
+    var streamDetails = RtspStream()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,22 +44,24 @@ class AddAddressViewController: UITableViewController {
             return
         }
         
-        var existingStreams = RSTPStream.savedStreams()
-        // Check for duplicated stream address
-        guard existingStreams.filter({ $0.address == self.streamDetails.address }).count == 0 else {
+        var existingStreams: [RtspStream] = []
+        existingStreams.restoreFromCache()
+        
+        if existingStreams.contains(self.streamDetails) {
             self.showAlert(title: "Already Added", message: "The stream address is already added as a saved stream.")
             return
         }
         
         existingStreams.append(self.streamDetails)
-        RSTPStream.saveStreams(streams: existingStreams)
+        existingStreams.saveToCache()
+
         self.navigationController?.popViewController(animated: true)
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return FieldType.allCases.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

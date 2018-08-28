@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="61k-m3-Ezu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="61k-m3-Ezu">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -83,7 +83,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EMA-Ck-YWp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1693" y="-103"/>
+            <point key="canvasLocation" x="1825" y="-122"/>
         </scene>
         <!--Stored Addresses View Controller-->
         <scene sceneID="der-vE-uQ0">
@@ -104,40 +104,25 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtl-kp-dfS">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <items>
-                                    <barButtonItem systemItem="trash" id="Tc2-zd-L1y">
-                                        <connections>
-                                            <action selector="deleteAddressesAction:" destination="qTn-62-W1A" id="GYK-Iw-DXN"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="hNb-tF-BGw" firstAttribute="leading" secondItem="ZVr-oZ-6Gp" secondAttribute="leading" id="DbP-na-fww"/>
-                            <constraint firstItem="ZVr-oZ-6Gp" firstAttribute="bottom" secondItem="gtl-kp-dfS" secondAttribute="bottom" id="HLm-MI-8is"/>
+                            <constraint firstItem="ZVr-oZ-6Gp" firstAttribute="bottom" secondItem="hNb-tF-BGw" secondAttribute="bottom" id="FLb-zC-w9M"/>
                             <constraint firstItem="ZVr-oZ-6Gp" firstAttribute="trailing" secondItem="hNb-tF-BGw" secondAttribute="trailing" id="SLb-P0-J2T"/>
-                            <constraint firstItem="gtl-kp-dfS" firstAttribute="leading" secondItem="ZVr-oZ-6Gp" secondAttribute="leading" id="b5E-7F-kAG"/>
                             <constraint firstItem="hNb-tF-BGw" firstAttribute="top" secondItem="ZVr-oZ-6Gp" secondAttribute="top" id="bi3-gy-n3P"/>
-                            <constraint firstItem="gtl-kp-dfS" firstAttribute="trailing" secondItem="ZVr-oZ-6Gp" secondAttribute="trailing" id="mRZ-jG-aZW"/>
-                            <constraint firstItem="ZVr-oZ-6Gp" firstAttribute="bottom" secondItem="hNb-tF-BGw" secondAttribute="bottom" id="xAd-RA-3zH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ZVr-oZ-6Gp"/>
                     </view>
                     <navigationItem key="navigationItem" id="jh5-Q9-zsW"/>
                     <connections>
                         <outlet property="collectionView" destination="hNb-tF-BGw" id="rl4-mD-JMZ"/>
-                        <outlet property="toolbar" destination="gtl-kp-dfS" id="uam-Dh-rO2"/>
-                        <outlet property="toolbarBottomConstraint" destination="HLm-MI-8is" id="YHf-Uv-4wj"/>
                         <segue destination="oRX-Wq-1FE" kind="show" identifier="addAddress" id="4LK-LW-Yae"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fPb-7v-Bbz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2438" y="-104"/>
+            <point key="canvasLocation" x="2596" y="-123"/>
         </scene>
         <!--Add Address View Controller-->
         <scene sceneID="2bH-Rc-F8V">

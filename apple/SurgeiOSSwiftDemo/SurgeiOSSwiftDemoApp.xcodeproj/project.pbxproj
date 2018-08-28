@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A0AD23A21358D6F00060FAB /* MutableCollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0AD23921358D6F00060FAB /* MutableCollectionExtensions.swift */; };
+		9A97CF2D21355AF300C8A43A /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A97CF2C21355AF300C8A43A /* UIKitExtensions.swift */; };
 		9AD0D599212C03AA00D84897 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0D598212C03AA00D84897 /* AppDelegate.swift */; };
 		9AD0D59B212C03AA00D84897 /* PlaybackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0D59A212C03AA00D84897 /* PlaybackViewController.swift */; };
 		9AD0D59E212C03AA00D84897 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0D59C212C03AA00D84897 /* Main.storyboard */; };
@@ -23,9 +25,8 @@
 		9AD0D5D1212C442E00D84897 /* AddAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0D5D0212C442E00D84897 /* AddAddressViewController.swift */; };
 		9AD0D5D3212C44E000D84897 /* DataEntryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0D5D2212C44E000D84897 /* DataEntryTableViewCell.xib */; };
 		9AD0D5D5212C454600D84897 /* DataEntryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0D5D4212C454600D84897 /* DataEntryTableViewCell.swift */; };
-		9AD0D5D8212C554200D84897 /* RSTPStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0D5D7212C554200D84897 /* RSTPStream.swift */; };
+		9AD0D5D8212C554200D84897 /* RtspStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0D5D7212C554200D84897 /* RtspStream.swift */; };
 		9AD0D5DA212C555E00D84897 /* PlaybackStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0D5D9212C555E00D84897 /* PlaybackStream.swift */; };
-		9AD0D5DD212D762900D84897 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD0D5DC212D762900D84897 /* UIImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9A0AD23921358D6F00060FAB /* MutableCollectionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutableCollectionExtensions.swift; sourceTree = "<group>"; };
+		9A97CF2C21355AF300C8A43A /* UIKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtensions.swift; sourceTree = "<group>"; };
 		9AD0D595212C03AA00D84897 /* SurgeiOSSwiftDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurgeiOSSwiftDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD0D598212C03AA00D84897 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9AD0D59A212C03AA00D84897 /* PlaybackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
@@ -60,9 +63,8 @@
 		9AD0D5D0212C442E00D84897 /* AddAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressViewController.swift; sourceTree = "<group>"; };
 		9AD0D5D2212C44E000D84897 /* DataEntryTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DataEntryTableViewCell.xib; sourceTree = "<group>"; };
 		9AD0D5D4212C454600D84897 /* DataEntryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataEntryTableViewCell.swift; sourceTree = "<group>"; };
-		9AD0D5D7212C554200D84897 /* RSTPStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSTPStream.swift; sourceTree = "<group>"; };
+		9AD0D5D7212C554200D84897 /* RtspStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtspStream.swift; sourceTree = "<group>"; };
 		9AD0D5D9212C555E00D84897 /* PlaybackStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackStream.swift; sourceTree = "<group>"; };
-		9AD0D5DC212D762900D84897 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,7 +139,7 @@
 		9AD0D5D6212C553500D84897 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9AD0D5D7212C554200D84897 /* RSTPStream.swift */,
+				9AD0D5D7212C554200D84897 /* RtspStream.swift */,
 				9AD0D5D9212C555E00D84897 /* PlaybackStream.swift */,
 			);
 			path = Models;
@@ -146,7 +148,8 @@
 		9AD0D5DB212D761900D84897 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				9AD0D5DC212D762900D84897 /* UIImageView.swift */,
+				9A97CF2C21355AF300C8A43A /* UIKitExtensions.swift */,
+				9A0AD23921358D6F00060FAB /* MutableCollectionExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -230,13 +233,14 @@
 				9AD0D5C4212C0CA300D84897 /* StreamCollectionViewCell.swift in Sources */,
 				9AD0D5CB212C33DC00D84897 /* StoredAddressesViewController.swift in Sources */,
 				9AD0D5CF212C385F00D84897 /* AddressCollectionViewCell.swift in Sources */,
-				9AD0D5D8212C554200D84897 /* RSTPStream.swift in Sources */,
+				9AD0D5D8212C554200D84897 /* RtspStream.swift in Sources */,
 				9AD0D599212C03AA00D84897 /* AppDelegate.swift in Sources */,
-				9AD0D5DD212D762900D84897 /* UIImageView.swift in Sources */,
 				9AD0D5C8212C103500D84897 /* PlaybackManager.swift in Sources */,
 				9AD0D5D5212C454600D84897 /* DataEntryTableViewCell.swift in Sources */,
 				9AD0D5DA212C555E00D84897 /* PlaybackStream.swift in Sources */,
 				9AD0D5D1212C442E00D84897 /* AddAddressViewController.swift in Sources */,
+				9A0AD23A21358D6F00060FAB /* MutableCollectionExtensions.swift in Sources */,
+				9A97CF2D21355AF300C8A43A /* UIKitExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

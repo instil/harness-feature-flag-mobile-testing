@@ -8,12 +8,6 @@
 
 import UIKit
 
-extension UIColor {
-    static var primaryTint: UIColor {
-        return UIColor(red: 54.0/255.0, green: 121.0/255.0, blue: 166.0/255.0, alpha: 1.0)
-    }
-}
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?

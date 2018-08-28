@@ -14,7 +14,7 @@ class PlaybackManager: NSObject {
     
     // MARK: API
     
-    func startStreamWithAddress(_ address: RSTPStream) {
+    func startStreamWithAddress(_ address: RtspStream) {
         let stream = PlaybackStream(withRSTPStream: address)
         stream.start()
         self.streams.append(stream)

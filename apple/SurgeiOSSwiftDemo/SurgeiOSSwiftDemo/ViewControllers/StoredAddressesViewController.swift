@@ -10,18 +10,18 @@ import UIKit
 
 class FullWidthVerticalLayout: UICollectionViewFlowLayout {
     override func prepare() {
-        guard let cv = self.collectionView else { return }
-        self.sectionInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        guard let collectionView = self.collectionView else { return }
+        self.sectionInset = UIEdgeInsets.zero
         self.sectionInsetReference = .fromSafeArea
         self.minimumLineSpacing = 0.0
         self.minimumInteritemSpacing = 0.0
-        let offsets = (self.sectionInset.left + self.sectionInset.right) + (cv.contentInset.left + cv.contentInset.right)
-        self.itemSize = CGSize(width: cv.bounds.width - offsets , height: 45)
+        let offsets = (self.sectionInset.left + self.sectionInset.right) + (collectionView.contentInset.left + collectionView.contentInset.right)
+        self.itemSize = CGSize(width: collectionView.bounds.width - offsets , height: 45)
     }
 }
 
 protocol StoredAddressesViewControllerDelegate: class  {
-    func selectedStream(_ stream: RSTPStream)
+    func selectedStream(_ stream: RtspStream)
 }
 
 class StoredAddressesViewController: UIViewController {
@@ -29,7 +29,7 @@ class StoredAddressesViewController: UIViewController {
         case displaying, editing, searching
     }
     
-    @IBOutlet weak var collectionView: UICollectionView! {
+    @IBOutlet var collectionView: UICollectionView! {
         didSet {
             collectionView.register(UINib(nibName: "AddressCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "AddressCollectionViewCell")
             collectionView.collectionViewLayout = FullWidthVerticalLayout()
@@ -37,14 +37,8 @@ class StoredAddressesViewController: UIViewController {
             collectionView.delegate = self
         }
     }
-    @IBOutlet weak var toolbar: UIToolbar! {
-        didSet {
-            toolbar.tintColor = UIColor.primaryTint
-        }
-    }
-    @IBOutlet weak var toolbarBottomConstraint: NSLayoutConstraint!
     
-    var addresses: [RSTPStream] = [] {
+    var addresses: [RtspStream] = [] {
         didSet {
             self.collectionView.reloadData()
         }
@@ -54,11 +48,12 @@ class StoredAddressesViewController: UIViewController {
             configureViewForState(viewState)
         }
     }
-    var searchedAddresses: [RSTPStream] = []
+    var searchedAddresses: [RtspStream] = []
     var toBeDeletedAddressesCache: [String] = []
     var cancelButton: UIBarButtonItem!
     var addButton: UIBarButtonItem!
     var editButton: UIBarButtonItem!
+    var deleteButton: UIBarButtonItem!
     
     weak var delegate: StoredAddressesViewControllerDelegate?
     
@@ -69,17 +64,20 @@ class StoredAddressesViewController: UIViewController {
         cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(StoredAddressesViewController.dismissViewAction))
         addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(StoredAddressesViewController.addAddressAction))
         editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(StoredAddressesViewController.toggleToolbarAction))
-
+        deleteButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action:  #selector(StoredAddressesViewController.deleteAddressesAction))
+        deleteButton.tintColor = UIColor.primaryTint
+    
         self.navigationItem.leftBarButtonItem = cancelButton
         self.navigationItem.rightBarButtonItems = [addButton, editButton]
+        self.setToolbarItems([deleteButton], animated: false)
         
-        hideToolbar()
         setUpSearchController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.addresses = RSTPStream.savedStreams()
+        self.addresses.restoreFromCache()
+        self.collectionView.reloadData()
     }
     
     private func setUpSearchController() {
@@ -105,31 +103,16 @@ class StoredAddressesViewController: UIViewController {
         switch state {
         case .editing:
             self.editButton.title = "Cancel"
-            showToolbar()
+            self.navigationController?.setToolbarHidden(false, animated: true)
             self.navigationItem.leftBarButtonItem = nil
             self.navigationItem.rightBarButtonItems = [editButton]
         case .displaying:
             self.editButton.title = "Edit"
-            hideToolbar()
+            self.navigationController?.setToolbarHidden(true, animated: true)
             self.navigationItem.leftBarButtonItem = cancelButton
             self.navigationItem.rightBarButtonItems = [addButton, editButton]
         case .searching:
             break
-        }
-    }
-    
-    private func showToolbar() {
-        self.toolbarBottomConstraint.constant = 0
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    private func hideToolbar() {
-        let frame = self.toolbar.frame
-        self.toolbarBottomConstraint.constant = -(frame.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom)!)
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
         }
     }
     
@@ -143,13 +126,12 @@ class StoredAddressesViewController: UIViewController {
         self.performSegue(withIdentifier: "addAddress", sender: self)
     }
     
-    @IBAction func deleteAddressesAction(_ sender: UIBarButtonItem) {
+    @objc func deleteAddressesAction() {
         self.addresses = self.addresses.filter { !toBeDeletedAddressesCache.contains($0.address) }
         self.viewState = .displaying
-        self.collectionView.reloadData()
         
-        // Update storage on disk
-        RSTPStream.saveStreams(streams: self.addresses)
+        self.addresses.saveToCache()
+        self.collectionView.reloadData()
     }
     
     @objc func toggleToolbarAction() {

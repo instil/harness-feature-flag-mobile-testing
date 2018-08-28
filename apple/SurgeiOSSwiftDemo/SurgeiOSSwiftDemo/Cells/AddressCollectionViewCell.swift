@@ -9,29 +9,20 @@
 import UIKit
 
 class AddressCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var selectionButton: UIButton! {
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var subtitleLabel: UILabel!
+    @IBOutlet var selectionButton: UIButton! {
         didSet {
             selectionButton.tintColor = UIColor.primaryTint
         }
     }
     @IBOutlet weak var selectionButtonViewContainer: UIView!
-    @IBOutlet weak var primaryStackView: UIStackView!
     
     func toggleEditMode(_ isInEditMode: Bool, withDeletionToggled: Bool = false) {
-        if isInEditMode {
-            self.selectionButtonViewContainer.isHidden = false
-            self.selectionButton.isHidden = false
-        } else {
-            self.selectionButtonViewContainer.isHidden = true
-            self.selectionButton.isHidden = true
-        }
+        self.selectionButtonViewContainer.isHidden = !isInEditMode
+        self.selectionButton.isHidden = !isInEditMode
         
-        if withDeletionToggled {
-            self.selectionButton.imageView?.image = UIImage(named: "circle-checked-icon")
-        } else {
-            self.selectionButton.imageView?.image = UIImage(named: "circle-outline-icon")
-        }
+        let image = withDeletionToggled ? UIImage(named: "circle-checked-icon") : UIImage(named: "circle-outline-icon")
+        self.selectionButton.imageView?.image = image
     }
 }

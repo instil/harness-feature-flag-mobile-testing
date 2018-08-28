@@ -9,17 +9,17 @@
 import Foundation
 import SurgeiOS
 
-class PlaybackStream: NSObject {
+class PlaybackStream: NSObject, SurgeRtspPlayerDelegate {
     enum PlayingState {
         case playing, paused, stopped, none
     }
     
     private(set) var player = SurgeRtspPlayer()
-    private(set) var details: RSTPStream
+    private(set) var details: RtspStream
     
     var status = PlayingState.none
     
-    init(withRSTPStream details: RSTPStream) {
+    init(withRSTPStream details: RtspStream) {
         self.details = details
         super.init()
         self.player.delegate = self
@@ -59,10 +59,8 @@ class PlaybackStream: NSObject {
             self.status = .paused
         }
     }
-}
-
-//MARK: SurgeRtspPlayerDelegate
-extension PlaybackStream: SurgeRtspPlayerDelegate {
+    
+    //MARK: SurgeRtspPlayerDelegate
     func rtspPlayerInitiatedPlayback(_ player: SurgeRtspPlayer) {
         print("Initiated Playback!!")
     }

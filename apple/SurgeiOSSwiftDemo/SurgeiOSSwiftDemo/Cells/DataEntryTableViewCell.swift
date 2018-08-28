@@ -13,23 +13,16 @@ class DataEntryTableViewCell: UITableViewCell {
     // Callback for when textfield changes
     var inputChanged: ((FieldType, String) -> Void)?
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var inputTextfield: UITextField! {
-        didSet {
-            inputTextfield.tintColor = .black
-            inputTextfield.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        }
-    }
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var inputTextfield: UITextField!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
     }
     
-    @objc private func textFieldDidChange(textField: UITextField){
-        guard let inputType = self.inputType else {
-            fatalError("Input Type must be set during cell creation")
-        }
-        self.inputChanged?(inputType, textField.text ?? "")
+    @IBAction func textfieldDidChangeAction(_ sender: UITextField) {
+        guard let inputType = self.inputType else { return }
+        self.inputChanged?(inputType, sender.text ?? "")
     }
 }

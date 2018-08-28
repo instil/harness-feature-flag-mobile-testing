@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SURTestFaceDetectionImageView: UIImageView {
+class FaceDetectionImageView: UIImageView {
     var timer = Timer()
     var faceDetectionEnabled = false {
         didSet {
@@ -33,15 +33,11 @@ class SURTestFaceDetectionImageView: UIImageView {
 class StreamCollectionViewCell: UICollectionViewCell {
     typealias CloseStreamCallback = (PlaybackStream) -> Void
     
-    @IBOutlet weak var playingIndicatorImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var playerImageView: SURTestFaceDetectionImageView!
-    @IBOutlet weak var removeButton: UIButton!
-    @IBOutlet weak var faceToggleButton: UIButton! {
-        didSet {
-            faceToggleButton.tintColor = .white
-        }
-    }
+    @IBOutlet var playingIndicatorImageView: UIImageView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var playerImageView: FaceDetectionImageView!
+    @IBOutlet var removeButton: UIButton!
+    @IBOutlet var faceToggleButton: UIButton!
     
     weak var stream: PlaybackStream?
     var streamSelectedToCloseCallback: CloseStreamCallback?
@@ -56,6 +52,12 @@ class StreamCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         self.playerImageView.image = nil
         self.stream = nil
+    }
+    
+    func configureCellWithStream(_ stream: PlaybackStream, withRemoveCallback: @escaping (PlaybackStream) -> Void) {
+        self.stream = stream
+        self.streamSelectedToCloseCallback = withRemoveCallback
+        configureStream()
     }
     
     private func configureStream() {
@@ -105,13 +107,5 @@ class StreamCollectionViewCell: UICollectionViewCell {
         } else {
             sender.setImage(UIImage(named: "face-off-icon"), for: .normal)
         }
-    }
-}
-
-extension StreamCollectionViewCell {
-    func configureCellWithStream(_ stream: PlaybackStream, withRemoveCallback: @escaping (PlaybackStream) -> Void) {
-        self.stream = stream
-        self.streamSelectedToCloseCallback = withRemoveCallback
-        configureStream()
     }
 }

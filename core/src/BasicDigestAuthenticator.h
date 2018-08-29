@@ -13,6 +13,8 @@
 
 #include "BaseAuthenticator.h"
 #include "Helpers.h"
+#include "Md5.h"
+#include "DateTime.h"
 
 #define DEFAULT_DIGEST_ALGORITHM MD5
 #define DEFAULT_DIGEST_QOP DEFAULT
@@ -39,6 +41,12 @@ namespace Surge {
         std::vector<std::string> GenerateAuthHeadersFor(const std::string &url, const std::string &method, const std::string &username, const std::string &password) override;
         bool UpdateAuthForUnauthorizedError(const RtspResponse *response) override;
 
+        void Reset() override {
+            usingDigestAuth = false;
+            nonceCount = 0;
+            cnonce = GenerateNonce();
+        }
+
     private:
         std::vector<std::string> BasicAuthHeaderFrom(const std::string &username, const std::string &password);
         std::vector<std::string> DigestAuthHeaderFrom(const std::string &url, const std::string &method, const std::string &username, const std::string &password);
@@ -60,6 +68,11 @@ namespace Surge {
             }
 
             return DEFAULT_DIGEST_QOP;
+        }
+
+    private:
+        std::string GenerateNonce() {
+            return SurgeUtil::Md5::Generate(SurgeUtil::DateTime::CurrentTime().ConvertToISO());
         }
 
     private:

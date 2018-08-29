@@ -51,7 +51,16 @@ namespace Surge {
             this->username = username;
             this->password = password;
 
-            // TODO: Reset authenticators
+            ForEachAuthenticator([this](auto authenticator) {
+                authenticator->Reset();
+            });
+        }
+
+    private:
+        void ForEachAuthenticator(std::function<void(BaseAuthenticator*)> callback) {
+            std::for_each(authenticators.begin(),
+                          authenticators.end(),
+                          callback);
         }
 
 

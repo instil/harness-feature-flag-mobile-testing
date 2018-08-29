@@ -8,10 +8,11 @@
 
 #include "BasicDigestAuthenticator.h"
 #include "Base64.h"
-#include "Md5.h"
 #include "Regex.h"
 
-Surge::BasicDigestAuthenticator::BasicDigestAuthenticator() : usingDigestAuth(false), nonce(), cnonce("4c2031e933365ee87bd8c378f8aa7c68"), nonceCount(0), realm(), algorithmString(), qopString() { }
+Surge::BasicDigestAuthenticator::BasicDigestAuthenticator() : nonce(), realm(), algorithmString(), qopString() {
+    Reset();
+}
 
 std::vector<std::string> Surge::BasicDigestAuthenticator::GenerateAuthHeadersFor(const std::string &url, const std::string &method, const std::string &username, const std::string &password) {
     if (username.length() > 0 && password.length() > 0) {
@@ -106,7 +107,7 @@ bool Surge::BasicDigestAuthenticator::UpdateAuthForUnauthorizedError(const RtspR
         realm = realmHeader[1];
         algorithmString = "";
         qopString = "";
-        ++nonceCount;   // TODO: Need to reset string length
+        ++nonceCount;
 
         if (algorithmHeader.size() >= 2) {
             algorithmString = algorithmHeader[1];

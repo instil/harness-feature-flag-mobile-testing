@@ -31,6 +31,8 @@ namespace Surge {
         virtual bool UpdateAuthForUnauthorizedError(const RtspResponse *response) {
             return false;
         };
+
+        virtual void Reset() { }
     };
 }
 

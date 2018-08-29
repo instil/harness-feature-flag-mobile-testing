@@ -22,8 +22,9 @@ namespace Surge {
         AuthenticationService();
         ~AuthenticationService();
 
-        void GenerateAuthHeaders();
+        std::string GenerateAuthHeadersFor(const std::string &method);
         void ExecuteFirstBytesOnTheWireAuthentication();
+        bool UpdateAuthForUnauthorizedError(const RtspResponse *response);
 
         void Add(BaseAuthenticator *authenticator) {
             authenticators.push_back(authenticator);
@@ -41,17 +42,16 @@ namespace Surge {
             authenticators.erase(authenticators.begin() + index);
         }
 
-        std::string& AuthHeaders() {
-            return currentAuthHeaders;
-        }
-
         void SetTransport(ITransportInterface *transport) {
             this->transport = transport;
         }
 
-        void SetCredentials(std::string username, std::string password) {
+        void SetStreamCredentials(std::string url, std::string username, std::string password) {
+            this->url = url;
             this->username = username;
             this->password = password;
+
+            // TODO: Reset authenticators
         }
 
 
@@ -59,10 +59,9 @@ namespace Surge {
         std::vector<BaseAuthenticator*> authenticators;
         ITransportInterface *transport;
 
+        std::string url;
         std::string username;
         std::string password;
-
-        std::string currentAuthHeaders;
     };
 }
 

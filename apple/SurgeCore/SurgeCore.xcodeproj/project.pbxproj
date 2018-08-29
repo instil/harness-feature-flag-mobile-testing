@@ -86,6 +86,7 @@
 		F417EA2F20F3698500ED51EE /* SecureInterleavedTCPTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */; };
 		F4388E4C1F333AD80064A24F /* UdpTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4388E4A1F333AD80064A24F /* UdpTransport.cc */; };
 		F4388E4D1F333AD80064A24F /* UdpTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F4388E4B1F333AD80064A24F /* UdpTransport.h */; };
+		F43D0C412121CB3C006799F1 /* Md5.h in Headers */ = {isa = PBXBuildFile; fileRef = F43D0C3F2121CB3C006799F1 /* Md5.h */; };
 		F43E1C1220DA7DF900143083 /* Queue.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E1C1020DA7DF900143083 /* Queue.h */; };
 		F4589E041ED85627004F023D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A51ED8427A001B56E0 /* async.c */; };
 		F4589E051ED85627004F023D /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A71ED8427A001B56E0 /* core.c */; };
@@ -128,6 +129,7 @@
 		F47D1E6E210B239000302481 /* AuthenticationService.h in Headers */ = {isa = PBXBuildFile; fileRef = F47D1E6C210B239000302481 /* AuthenticationService.h */; };
 		F490E03720DD5BC000D30214 /* TLSClient.cc in Sources */ = {isa = PBXBuildFile; fileRef = F490E03520DD5BC000D30214 /* TLSClient.cc */; };
 		F490E03820DD5BC000D30214 /* TLSClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F490E03620DD5BC000D30214 /* TLSClient.h */; };
+		F494F3FB21230FD20054091C /* Regex.h in Headers */ = {isa = PBXBuildFile; fileRef = F494F3F921230FD20054091C /* Regex.h */; };
 		F4965ABB212590D800DB30B5 /* RtspService.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4965AB9212590D800DB30B5 /* RtspService.cc */; };
 		F4965ABC212590D800DB30B5 /* RtspService.h in Headers */ = {isa = PBXBuildFile; fileRef = F4965ABA212590D800DB30B5 /* RtspService.h */; };
 		F49699702109D77600B7EE4E /* BaseAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F496996E2109D77600B7EE4E /* BaseAuthenticator.h */; };
@@ -135,6 +137,8 @@
 		F49699742109FA2B00B7EE4E /* BasicDigestAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F49699722109FA2B00B7EE4E /* BasicDigestAuthenticator.h */; };
 		F49A7E941F3B0D29007FCBD2 /* RtpPacketBuffer.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */; };
 		F49A7E951F3B0D29007FCBD2 /* RtpPacketBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */; };
+		F49CB1FE2136E8130038EA57 /* Md5Algorithm.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49CB1FC2136E8130038EA57 /* Md5Algorithm.cc */; };
+		F49CB1FF2136E8130038EA57 /* Md5Algorithm.h in Headers */ = {isa = PBXBuildFile; fileRef = F49CB1FD2136E8130038EA57 /* Md5Algorithm.h */; };
 		F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4C4F60720AEE853009313CD /* DispatchQueue.cc */; };
 		F4C4F60A20AEE853009313CD /* DispatchQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C4F60820AEE853009313CD /* DispatchQueue.h */; };
 		F4FA24C31ED8427A001B56E0 /* atomic-ops.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24A61ED8427A001B56E0 /* atomic-ops.h */; };
@@ -237,6 +241,7 @@
 		F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SecureInterleavedTCPTransport.h; path = ../../core/src/SecureInterleavedTCPTransport.h; sourceTree = "<group>"; };
 		F4388E4A1F333AD80064A24F /* UdpTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpTransport.cc; path = ../../core/src/UdpTransport.cc; sourceTree = "<group>"; };
 		F4388E4B1F333AD80064A24F /* UdpTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpTransport.h; path = ../../core/src/UdpTransport.h; sourceTree = "<group>"; };
+		F43D0C3F2121CB3C006799F1 /* Md5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Md5.h; path = ../../core/src/Md5.h; sourceTree = "<group>"; };
 		F43E1C1020DA7DF900143083 /* Queue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = ../../core/src/Queue.h; sourceTree = "<group>"; };
 		F45BDA6C1E1FB88F00496E62 /* fs-poll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "fs-poll.c"; path = "../../core/lib/libuv-cmake/libuv/src/fs-poll.c"; sourceTree = "<group>"; };
 		F45BDA6D1E1FB88F00496E62 /* heap-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "heap-inl.h"; path = "../../core/lib/libuv-cmake/libuv/src/heap-inl.h"; sourceTree = "<group>"; };
@@ -259,6 +264,7 @@
 		F48DFB1920E27AE900BA39A8 /* TransportDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TransportDelegate.h; path = ../../core/src/TransportDelegate.h; sourceTree = "<group>"; };
 		F490E03520DD5BC000D30214 /* TLSClient.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TLSClient.cc; path = ../../core/src/TLSClient.cc; sourceTree = "<group>"; };
 		F490E03620DD5BC000D30214 /* TLSClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSClient.h; path = ../../core/src/TLSClient.h; sourceTree = "<group>"; };
+		F494F3F921230FD20054091C /* Regex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Regex.h; path = ../../core/src/Regex.h; sourceTree = "<group>"; };
 		F4965AB9212590D800DB30B5 /* RtspService.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = RtspService.cc; path = ../../core/src/RtspService.cc; sourceTree = "<group>"; };
 		F4965ABA212590D800DB30B5 /* RtspService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RtspService.h; path = ../../core/src/RtspService.h; sourceTree = "<group>"; };
 		F496996E2109D77600B7EE4E /* BaseAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseAuthenticator.h; path = ../../core/src/BaseAuthenticator.h; sourceTree = "<group>"; };
@@ -266,6 +272,8 @@
 		F49699722109FA2B00B7EE4E /* BasicDigestAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BasicDigestAuthenticator.h; path = ../../core/src/BasicDigestAuthenticator.h; sourceTree = "<group>"; };
 		F49A7E921F3B0D29007FCBD2 /* RtpPacketBuffer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RtpPacketBuffer.cc; path = ../../core/src/RtpPacketBuffer.cc; sourceTree = "<group>"; };
 		F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtpPacketBuffer.h; path = ../../core/src/RtpPacketBuffer.h; sourceTree = "<group>"; };
+		F49CB1FC2136E8130038EA57 /* Md5Algorithm.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Md5Algorithm.cc; path = ../../core/src/Md5Algorithm.cc; sourceTree = "<group>"; };
+		F49CB1FD2136E8130038EA57 /* Md5Algorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Md5Algorithm.h; path = ../../core/src/Md5Algorithm.h; sourceTree = "<group>"; };
 		F4C4F60720AEE853009313CD /* DispatchQueue.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DispatchQueue.cc; path = ../../core/src/DispatchQueue.cc; sourceTree = "<group>"; };
 		F4C4F60820AEE853009313CD /* DispatchQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DispatchQueue.h; path = ../../core/src/DispatchQueue.h; sourceTree = "<group>"; };
 		F4FA24A51ED8427A001B56E0 /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
@@ -567,11 +575,11 @@
 		F496996C2109D72E00B7EE4E /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				F47D1E6B210B239000302481 /* AuthenticationService.cc */,
+				F47D1E6C210B239000302481 /* AuthenticationService.h */,
 				F496996E2109D77600B7EE4E /* BaseAuthenticator.h */,
 				F49699712109FA2B00B7EE4E /* BasicDigestAuthenticator.cc */,
 				F49699722109FA2B00B7EE4E /* BasicDigestAuthenticator.h */,
-				F47D1E6B210B239000302481 /* AuthenticationService.cc */,
-				F47D1E6C210B239000302481 /* AuthenticationService.h */,
 			);
 			name = Authentication;
 			sourceTree = "<group>";
@@ -642,10 +650,14 @@
 				42D671DD1D3069BB00D42C35 /* Helpers.h */,
 				42D671DE1D3069BB00D42C35 /* ILoggingDelegate.h */,
 				42D671E41D3069BB00D42C35 /* Logging.h */,
+				F43D0C3F2121CB3C006799F1 /* Md5.h */,
+				F49CB1FC2136E8130038EA57 /* Md5Algorithm.cc */,
+				F49CB1FD2136E8130038EA57 /* Md5Algorithm.h */,
 				42D671EA1D3069BB00D42C35 /* Mutex.cc */,
 				42D671EB1D3069BB00D42C35 /* Mutex.h */,
 				42D671EC1D3069BB00D42C35 /* MutexLocker.h */,
 				F43E1C1020DA7DF900143083 /* Queue.h */,
+				F494F3F921230FD20054091C /* Regex.h */,
 				42D6720A1D3069BB00D42C35 /* Url.h */,
 				42D6720B1D3069BB00D42C35 /* WaitableEvent.h */,
 				42D6720C1D3069BB00D42C35 /* WaitableEvents.cc */,
@@ -702,6 +714,7 @@
 				F4FA24D71ED8427A001B56E0 /* spinlock.h in Headers */,
 				42D672141D3069BB00D42C35 /* BitstreamWriter.h in Headers */,
 				42D6721F1D3069BB00D42C35 /* FireableEvent.h in Headers */,
+				F49CB1FF2136E8130038EA57 /* Md5Algorithm.h in Headers */,
 				42D6724A1D3069BB00D42C35 /* Teardown.h in Headers */,
 				42D672281D3069BB00D42C35 /* ISocketHandlerDelegate.h in Headers */,
 				F4C4F60A20AEE853009313CD /* DispatchQueue.h in Headers */,
@@ -723,6 +736,7 @@
 				42D672231D3069BB00D42C35 /* Helpers.h in Headers */,
 				42D672501D3069BB00D42C35 /* Url.h in Headers */,
 				42D6722A1D3069BB00D42C35 /* Logging.h in Headers */,
+				F43D0C412121CB3C006799F1 /* Md5.h in Headers */,
 				F46D0DE21F322D36000782DD /* InterleavedRtspTransport.h in Headers */,
 				42D672511D3069BB00D42C35 /* WaitableEvent.h in Headers */,
 				F45BDAA01E1FB88F00496E62 /* queue.h in Headers */,
@@ -741,6 +755,7 @@
 				42D672441D3069BB00D42C35 /* SessionDescriptionV0.h in Headers */,
 				42D672321D3069BB00D42C35 /* MutexLocker.h in Headers */,
 				42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */,
+				F494F3FB21230FD20054091C /* Regex.h in Headers */,
 				42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */,
 				42D6724C1D3069BB00D42C35 /* Thread.h in Headers */,
 				42D6723C1D3069BB00D42C35 /* RtspCommand.h in Headers */,
@@ -878,6 +893,7 @@
 				F4589E041ED85627004F023D /* async.c in Sources */,
 				F45BDACA1E1FB88F00496E62 /* version.c in Sources */,
 				42D672301D3069BB00D42C35 /* Mutex.cc in Sources */,
+				F49CB1FE2136E8130038EA57 /* Md5Algorithm.cc in Sources */,
 				42D672201D3069BB00D42C35 /* H264Depacketizer.cc in Sources */,
 				F4589E181ED85627004F023D /* tcp.c in Sources */,
 				42D672381D3069BB00D42C35 /* RtpPacket.cc in Sources */,

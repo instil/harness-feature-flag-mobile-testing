@@ -18,22 +18,25 @@ Surge::AuthenticationService::~AuthenticationService() {
                   });
 }
 
-void Surge::AuthenticationService::GenerateAuthHeaders() {
-    currentAuthHeaders.clear();
+std::string Surge::AuthenticationService::GenerateAuthHeadersFor(const std::string &method) {
+    std::string result;
 
     std::for_each(authenticators.begin(),
                   authenticators.end(),
-                  [this](auto authenticator) {
-                      auto newHeaders = authenticator->AuthenticationHeaders(username, password);
+                  [this, method, &result](auto authenticator) {
+                    auto newHeaders = authenticator->GenerateAuthHeadersFor(url, method, username, password);
 
-                      std::for_each(newHeaders.begin(),
+                    std::for_each(newHeaders.begin(),
                                     newHeaders.end(),
-                                    [this](auto header) {
-                                        currentAuthHeaders += header;
-                                        currentAuthHeaders += "\r\n";
+                                    [this, &result](auto header) {
+                                        result += header;
+                                        result += "\r\n";
                                     });
-                  });
+                    });
+
+    return result;
 }
+
 
 void Surge::AuthenticationService::ExecuteFirstBytesOnTheWireAuthentication() {
     if (!transport) {
@@ -50,4 +53,16 @@ void Surge::AuthenticationService::ExecuteFirstBytesOnTheWireAuthentication() {
                           transport->ArbitraryDataTransaction(bytesToSend.data(), bytesToSend.size());
                       }
                   });
+}
+
+bool Surge::AuthenticationService::UpdateAuthForUnauthorizedError(const RtspResponse *response) {
+    bool result = false;
+
+    std::for_each(authenticators.begin(),
+                  authenticators.end(),
+                  [this, &result, response](auto authenticator) {
+                      result |= authenticator->UpdateAuthForUnauthorizedError(response);
+                  });
+
+    return result;
 }

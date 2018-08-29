@@ -22,6 +22,16 @@ namespace SurgeUtil {
 
     int RandomEvenNumberBetween(int min, int max);
 
+    bool StringEqualsInsensitive(const std::string &one, const std::string &two);
+
+    std::string IntToFixedLengthString(const unsigned int input, const unsigned int length);
+
+    struct StringEqualsInsensitivePredicate {
+        bool operator()(int c1, int c2) const {
+            return std::toupper(c1) == std::toupper(c2);
+        }
+    };
+
 };
 
 #endif //__HELPERS_H__

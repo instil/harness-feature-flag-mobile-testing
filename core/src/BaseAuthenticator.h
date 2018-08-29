@@ -20,7 +20,7 @@ namespace Surge {
     public:
         virtual ~BaseAuthenticator() { }
 
-        virtual std::vector<std::string> AuthenticationHeaders(const std::string &username, const std::string &password) {
+        virtual std::vector<std::string> GenerateAuthHeadersFor(const std::string &url, const std::string &method, const std::string &username, const std::string &password) {
             return std::vector<std::string>();
         };
         
@@ -28,8 +28,8 @@ namespace Surge {
             return std::vector<char>();
         };
 
-        virtual std::vector<std::string> UnauthorizedError(const std::string &username, const std::string &password, const RtspResponse *response) {
-            return std::vector<std::string>();
+        virtual bool UpdateAuthForUnauthorizedError(const RtspResponse *response) {
+            return false;
         };
     };
 }

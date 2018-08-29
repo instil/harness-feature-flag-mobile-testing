@@ -12,7 +12,7 @@ class ObjectiveCAuthenticator : public Surge::BaseAuthenticator {
 public:
     ObjectiveCAuthenticator(id<SurgeAuthenticator> authenticator) : authenticator(authenticator) { }
 
-    std::vector<std::string> AuthenticationHeaders(const std::string &username, const std::string &password) override;
+    std::vector<std::string> GenerateAuthHeadersFor(const std::string &url, const std::string &method, const std::string &username, const std::string &password) override;
     std::vector<char> FirstBytesOnTheWireAuthentication(const std::string &username, const std::string &password) override;
 
 private:

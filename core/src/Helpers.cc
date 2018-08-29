@@ -6,6 +6,8 @@
 #include "Helpers.h"
 
 #include <fcntl.h>
+#include <sstream>
+#include <iomanip>
 
 
 int SurgeUtil::SetNonBlocking(const int fd)
@@ -63,4 +65,14 @@ int SurgeUtil::RandomEvenNumberBetween(int min, int max) {
     max /= 2;
 
     return 2 * (rand() % (max - min)) + min;
+}
+
+bool SurgeUtil::StringEqualsInsensitive(const std::string &one, const std::string &two) {
+    return std::equal(one.begin(), one.end(), two.begin(), two.end(), StringEqualsInsensitivePredicate());
+}
+
+std::string SurgeUtil::IntToFixedLengthString(const unsigned int input, const unsigned int length) {
+    std::stringstream ss;
+    ss << std::setw(length) << std::setfill('0') << input;
+    return ss.str();
 }

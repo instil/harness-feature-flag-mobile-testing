@@ -53,10 +53,9 @@ void Surge::RtspService::Describe(const SurgeUtil::DateTime *startTime, std::fun
 }
 
 void Surge::RtspService::Setup(const SessionDescription& sessionDescription, std::function<void(Surge::SetupResponse*)> callback) {
-//    std::string setupUrl = (sessionDescription.IsControlUrlComplete()) ?
-//        sessionDescription.GetControl():
-//        streamUrl + "/" + sessionDescription.GetControl();
-    std::string setupUrl = streamUrl;
+    std::string setupUrl = (sessionDescription.IsControlUrlComplete()) ?
+        sessionDescription.GetControl():
+        streamUrl + "/" + sessionDescription.GetControl();
 
     RtspCommand* setup = RtspCommandFactory::SetupRequest(setupUrl, NextSequenceNumber(), transport);
 

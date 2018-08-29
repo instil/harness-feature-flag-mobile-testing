@@ -76,13 +76,11 @@ Surge::RtspClient::~RtspClient() {
 
 void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)> callback) {
     // TODO: What to do if stream is connected?
-
-    INFO("Opening connection to URL: " << url);
-
+    
     this->url = url;
     isPlaying = false;
 
-    SetTransport(url);
+    SetTransport(this->url);
 
     SurgeUtil::Url url_model(url);
 
@@ -98,7 +96,7 @@ void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)
     });
 }
 
-void Surge::RtspClient::SetTransport(const std::string& url) {
+void Surge::RtspClient::SetTransport(std::string& url) {
     if (transport != nullptr) {
         delete transport;
     }
@@ -128,6 +126,9 @@ void Surge::RtspClient::SetTransport(const std::string& url) {
                                                       nullptr,
                                                       this);
         packetBuffer->SetBufferDelay(0);
+
+        // TODO: Make this much simpler, easier to read, less error prone with the non-const paramter etc.
+        url = "rtsp://" + parsedUrl.GetHost() + ":" + std::to_string(parsedUrl.GetPort()) + parsedUrl.GetFullPath();
     }
 
     transport->SetDelegate(this);
@@ -146,7 +147,7 @@ void Surge::RtspClient::Disconnect() {
 }
 
 void Surge::RtspClient::SetCredentials(const std::string& user, const std::string& password) {
-    authService->SetCredentials(user, password);
+    authService->SetStreamCredentials(url, user, password);
 }
 
 void Surge::RtspClient::Describe(std::function<void(Surge::DescribeResponse*)> callback) {
@@ -155,7 +156,6 @@ void Surge::RtspClient::Describe(std::function<void(Surge::DescribeResponse*)> c
     DEBUG("Executing Auth calls");
 
     authService->ExecuteFirstBytesOnTheWireAuthentication();
-    authService->GenerateAuthHeaders();
 
     DEBUG("Sending DESCRIBE request");
 
@@ -172,7 +172,7 @@ void Surge::RtspClient::Describe(std::function<void(Surge::DescribeResponse*)> c
     };
 
     rtspService->Describe(startTime, [this, runCallback] (Surge::DescribeResponse *response) {
-        if (response != nullptr && !response->Ok() && authService->GenerateUnauthorizedErrorAuthHeaders(response)) {
+        if (response != nullptr && !response->Ok() && authService->UpdateAuthForUnauthorizedError(response)) {
             rtspService->Describe(startTime, runCallback);
             return;
         }
@@ -211,7 +211,7 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription, std:
     };
 
     rtspService->Setup(sessionDescription, [this, &sessionDescription, runCallback] (Surge::SetupResponse *response) {
-        if (response != nullptr && !response->Ok() && authService->GenerateUnauthorizedErrorAuthHeaders(response)) {
+        if (response != nullptr && !response->Ok() && authService->UpdateAuthForUnauthorizedError(response)) {
             rtspService->Setup(sessionDescription, runCallback);
         }
 
@@ -259,7 +259,7 @@ void Surge::RtspClient::Play(std::function<void(Surge::RtspResponse*)> callback)
     };
 
     rtspService->Play(startTime, endTime, [this, runCallback] (Surge::RtspResponse *response) {
-        if (response != nullptr && !response->Ok() && authService->GenerateUnauthorizedErrorAuthHeaders(response)) {
+        if (response != nullptr && !response->Ok() && authService->UpdateAuthForUnauthorizedError(response)) {
             rtspService->Play(startTime, endTime, runCallback);
         }
 
@@ -285,7 +285,7 @@ void Surge::RtspClient::Pause(std::function<void(Surge::RtspResponse*)> callback
     };
 
     rtspService->Pause([this, runCallback] (Surge::RtspResponse *response) {
-        if (response != nullptr && !response->Ok() && authService->GenerateUnauthorizedErrorAuthHeaders(response)) {
+        if (response != nullptr && !response->Ok() && authService->UpdateAuthForUnauthorizedError(response)) {
             rtspService->Pause(runCallback);
         }
 
@@ -309,7 +309,7 @@ void Surge::RtspClient::Options(std::function<void(Surge::RtspResponse*)> callba
     };
 
     rtspService->Options([this, runCallback] (Surge::RtspResponse *response) {
-        if (response != nullptr && !response->Ok() && authService->GenerateUnauthorizedErrorAuthHeaders(response)) {
+        if (response != nullptr && !response->Ok() && authService->UpdateAuthForUnauthorizedError(response)) {
             rtspService->Options(runCallback);
         }
 
@@ -335,7 +335,7 @@ void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callb
     };
 
     rtspService->Teardown([this, runCallback] (Surge::RtspResponse *response) {
-        if (response != nullptr && !response->Ok() && authService->GenerateUnauthorizedErrorAuthHeaders(response)) {
+        if (response != nullptr && !response->Ok() && authService->UpdateAuthForUnauthorizedError(response)) {
             rtspService->Teardown(runCallback);
         }
 
@@ -359,7 +359,7 @@ void Surge::RtspClient::KeepAlive(std::function<void(Surge::RtspResponse*)> call
     };
 
     rtspService->KeepAlive([this, runCallback] (Surge::RtspResponse *response) {
-        if (response != nullptr && !response->Ok() && authService->GenerateUnauthorizedErrorAuthHeaders(response)) {
+        if (response != nullptr && !response->Ok() && authService->UpdateAuthForUnauthorizedError(response)) {
             rtspService->KeepAlive(runCallback);
         }
 

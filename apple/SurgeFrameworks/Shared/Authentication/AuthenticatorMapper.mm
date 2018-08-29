@@ -7,7 +7,7 @@
 
 #import "AuthenticatorMapper.h"
 
-std::vector<std::string> ObjectiveCAuthenticator::AuthenticationHeaders(const std::string &username, const std::string &password) {
+std::vector<std::string> ObjectiveCAuthenticator::GenerateAuthHeadersFor(const std::string &url, const std::string &method, const std::string &username, const std::string &password) {
     NSString *user = [NSString stringWithCString:username.c_str() encoding:[NSString defaultCStringEncoding]];
     NSString *pass = [NSString stringWithCString:password.c_str() encoding:[NSString defaultCStringEncoding]];
 

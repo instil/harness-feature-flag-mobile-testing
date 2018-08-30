@@ -334,15 +334,13 @@ private:
 - (void)pause {
     SurgeLogInfo(@"Pausing playback of %@", self.url);
     __weak typeof(self) weakSelf = self;
-    void(^callback)(bool) = ^(bool success) {
-        if (success && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
+    self.client->Pause([weakSelf](Surge::RtspResponse *pauseResponse) {
+        if (pauseResponse->Ok() && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.delegate rtspPlayerDidStopPlayback:weakSelf];
             });
         }
-    };
-    self.client->Pause([=](Surge::RtspResponse *pauseResponse) {
-        callback(pauseResponse->Ok());
+
         delete pauseResponse;
     });
 }

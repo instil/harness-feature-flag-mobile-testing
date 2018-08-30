@@ -91,8 +91,7 @@ void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)
             ERROR("Could not connect to the supplied URL to initiate streaming. Incorrect URL?");
         }
 
-//        dispatchQueue->Dispatch([callback, result]() { callback(result == 0); });
-        callback(result == 0);
+        dispatchQueue->Dispatch([callback, result]() { callback(result == 0); });
     });
 }
 
@@ -273,7 +272,7 @@ void Surge::RtspClient::Pause(std::function<void(Surge::RtspResponse*)> callback
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
         isPlaying = false;
 
-        if (response != nullptr && response->Ok()) {
+        if (response == nullptr || !response->Ok()) {
             ERROR("PAUSE command failed");
 
             if (response != nullptr) {
@@ -297,7 +296,7 @@ void Surge::RtspClient::Options(std::function<void(Surge::RtspResponse*)> callba
     DEBUG("Sending OPTIONS request");
 
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
-        if (response != nullptr && response->Ok()) {
+        if (response == nullptr || !response->Ok()) {
             ERROR("OPTIONS command failed");
 
             if (response != nullptr) {
@@ -323,7 +322,7 @@ void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callb
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
         StopHousekeepingThread();
 
-        if (response != nullptr && response->Ok()) {
+        if (response == nullptr || !response->Ok()) {
             ERROR("TEARDOWN command failed");
 
             if (response != nullptr) {
@@ -347,7 +346,7 @@ void Surge::RtspClient::KeepAlive(std::function<void(Surge::RtspResponse*)> call
     DEBUG("Sending Keep-Alive request");
 
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
-        if (response != nullptr && response->Ok()) {
+        if (response == nullptr || !response->Ok()) {
             ERROR("Keep-Alive command failed");
 
             if (response != nullptr) {

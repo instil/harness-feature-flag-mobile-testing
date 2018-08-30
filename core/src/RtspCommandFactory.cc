@@ -61,7 +61,7 @@ namespace Surge {
         RtspCommand* PauseRequest(const std::string& url,
                                   const std::string& session,
                                   int nextSequenceNumber) {
-            return new class PauseRequest(url, session, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(PLAY)));
+            return new class PauseRequest(url, session, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(PAUSE)));
         }
 
         RtspCommand* KeepAliveRequest(const std::string& url,

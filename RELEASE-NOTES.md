@@ -6,11 +6,16 @@
 
 * TLS encryption - Added support for streaming TLS encrypted RTSP streams over TCP, triggered using `rtsps://` as the stream protocol.
 * Added the ability for the user to provide a custom authenticator, used to inject headers into the RTSP requests to any arbitrary data through the socket.
+* Digest authentication support, supporting the standard RFC 2069 implementation and all the MD5 variants defined in RFC 2617.
 
 ###### Fixes
 
 * Fixed a memory leak within the H264 decoder.
 * Fixed a memory leak with cleaning up after processing a frame of data, at the core level.
+
+###### Misc
+
+* Major refactor to the Core RTSP Client, reorganising code into smaller, easier to read and more easily testable classes.
 
 
 ### v1.1.2

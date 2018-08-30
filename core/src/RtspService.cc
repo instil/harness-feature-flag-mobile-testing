@@ -160,7 +160,7 @@ void Surge::RtspService::Options(std::function<void(Surge::RtspResponse*)> callb
     // TODO: No session set error handling
 
     RtspCommand* options = RtspCommandFactory::OptionsRequest(streamUrl, session, NextSequenceNumber());
-    transport->RtspTransaction(options, [&](Response *raw_resp) {
+    transport->RtspTransaction(options, [callback](Response *raw_resp) {
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to OPTIONS!");
             callback(nullptr);
@@ -186,7 +186,7 @@ void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> call
     // TODO: No session set error handling
 
     RtspCommand* teardown = RtspCommandFactory::TeardownRequest(streamUrl, session, NextSequenceNumber());
-    transport->RtspTransaction(teardown, [&](Response *raw_resp) {
+    transport->RtspTransaction(teardown, [callback](Response *raw_resp) {
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to TEARDOWN!");
             if (callback) {
@@ -214,7 +214,7 @@ void Surge::RtspService::KeepAlive(std::function<void(Surge::RtspResponse*)> cal
     // TODO: No session set error handling
 
     RtspCommand* keep_alive = RtspCommandFactory::KeepAliveRequest(streamUrl, session, NextSequenceNumber());
-    transport->RtspTransaction(keep_alive, [&](Response *raw_resp) {
+    transport->RtspTransaction(keep_alive, [callback](Response *raw_resp) {
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to Keep-Alive!");
             callback(nullptr);

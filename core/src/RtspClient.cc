@@ -167,7 +167,7 @@ void Surge::RtspClient::Describe(std::function<void(Surge::DescribeResponse*)> c
             }
         }
 
-        dispatchQueue->Dispatch([callback, &response]() { callback(response); });
+        dispatchQueue->Dispatch([callback, response]() { callback(response); });
     };
 
     rtspService->Describe(startTime, [this, runCallback] (Surge::DescribeResponse *response) {
@@ -206,7 +206,7 @@ void Surge::RtspClient::Setup(const SessionDescription& sessionDescription, std:
             }
         }
 
-        dispatchQueue->Dispatch([callback, &response]() { callback(response); });
+        dispatchQueue->Dispatch([callback, response]() { callback(response); });
     };
 
     rtspService->Setup(sessionDescription, [this, &sessionDescription, runCallback] (Surge::SetupResponse *response) {
@@ -254,7 +254,7 @@ void Surge::RtspClient::Play(std::function<void(Surge::RtspResponse*)> callback)
 
         StartHousekeepingThread();
 
-        dispatchQueue->Dispatch([callback, &response]() { callback(response); });
+        dispatchQueue->Dispatch([callback, response]() { callback(response); });
     };
 
     rtspService->Play(startTime, endTime, [this, runCallback] (Surge::RtspResponse *response) {
@@ -280,7 +280,7 @@ void Surge::RtspClient::Pause(std::function<void(Surge::RtspResponse*)> callback
             }
         }
 
-        dispatchQueue->Dispatch([callback, &response]() { callback(response); });
+        dispatchQueue->Dispatch([callback, response]() { callback(response); });
     };
 
     rtspService->Pause([this, runCallback] (Surge::RtspResponse *response) {
@@ -304,7 +304,7 @@ void Surge::RtspClient::Options(std::function<void(Surge::RtspResponse*)> callba
             }
         }
 
-        dispatchQueue->Dispatch([callback, &response]() { callback(response); });
+        dispatchQueue->Dispatch([callback, response]() { callback(response); });
     };
 
     rtspService->Options([this, runCallback] (Surge::RtspResponse *response) {
@@ -330,7 +330,7 @@ void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callb
             }
         }
 
-        dispatchQueue->Dispatch([callback, &response]() { callback(response); });
+        dispatchQueue->Dispatch([callback, response]() { callback(response); });
     };
 
     rtspService->Teardown([this, runCallback] (Surge::RtspResponse *response) {
@@ -354,7 +354,7 @@ void Surge::RtspClient::KeepAlive(std::function<void(Surge::RtspResponse*)> call
             }
         }
 
-        dispatchQueue->Dispatch([callback, &response]() { callback(response); });
+        dispatchQueue->Dispatch([callback, response]() { callback(response); });
     };
 
     rtspService->KeepAlive([this, runCallback] (Surge::RtspResponse *response) {
@@ -431,12 +431,12 @@ void Surge::RtspClient::Run() {
                     // notify delegate via error dispatcher
                     ERROR("Failed to get response to keep alive");
                     NotifyDelegateTimeout();
-                    StopHousekeepingThread();
+                    Disconnect();
                 } else if (!resp->Ok()) {
                     ERROR("Failed Keep-Alive request: " << resp->GetCode());
                     delete resp;
                     NotifyDelegateTimeout();
-                    StopHousekeepingThread();
+                    Disconnect();
                 } else {
                     DEBUG("Keep Alive response received.");
                     lastKeepAliveMs = SurgeUtil::DateTime::CurrentTimeInMilliseconds();

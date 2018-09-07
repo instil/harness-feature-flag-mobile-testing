@@ -56,7 +56,7 @@ void Surge::Transport::StopRunning() {
 }
 /*  Network  */
 
-void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
+void Surge::Transport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)> callback) {
     if (!m_threadRunning) {
         if (m_loop == nullptr) {
             m_loop = uvw::Loop::create();
@@ -65,7 +65,7 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
         m_timer = m_loop->resource<uvw::TimerHandle>();
     }
 
-    m_streamIp = ResolveHostnameToIP(host, port);
+    m_streamIp = ResolveHostnameToIP(url.GetHost(), url.GetPort());
 
     m_tcp->once<uvw::ErrorEvent>([&, callback](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("Error occured on connect");
@@ -85,7 +85,11 @@ void Surge::Transport::RtspTcpOpen(const std::string& host, int port, std::funct
 
     INFO("Connecting to TCP port");
     SafeRunLibuvCommand([&]() {
-        m_tcp->connect(m_streamIp, port);
+        if (SurgeUtil::Url::IpIsIPv6(m_streamIp)) {
+            m_tcp->connect<uvw::IPv6>(m_streamIp, url.GetPort());
+        } else {
+            m_tcp->connect<uvw::IPv4>(m_streamIp, url.GetPort());
+        }
     });
 }
 
@@ -186,49 +190,11 @@ void Surge::Transport::AttachCallbacksToLibuv() {
 }
 
 void Surge::Transport::Run() {
-    
-//    m_tcp->clear();
-//
-//    m_tcp->on<uvw::ErrorEvent>([this](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
-//        ERROR("ERROR");
-//        NotifyDelegateOfReadFailure();
-//    });
-//
-//    m_tcp->on<uvw::ListenEvent>([](const uvw::ListenEvent &listenEvent, uvw::TcpHandle &tcp) {
-//        INFO("Listening");
-//    });
-//
-//    m_tcp->on<uvw::ShutdownEvent>([](const uvw::ShutdownEvent &shutdownEvent, uvw::TcpHandle &tcp) {
-//        ERROR("Shutdown");
-//    });
-//
-//    m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) {
-//        DEBUG("Sent request to stream, wait for a response");
-//    });
-//
-//    m_tcp->on<uvw::DataEvent>([this](const uvw::DataEvent &dataEvent, uvw::TcpHandle &tcp) {
-////        DEBUG("Data received, handing received data");
-//        RtspHandleReceive(dataEvent.data.get(), dataEvent.length);
-//    });
-//
-//    m_tcp->on<uvw::EndEvent>([this](const uvw::EndEvent &endEvent, uvw::TcpHandle &tcp) {
-//        ERROR("Loop ended prematurely, closing TCP port");
-//        m_threadRunning = false;
-//
-//        NotifyDelegateOfReadFailure();
-//    });
-//
-//    m_timer->on<uvw::TimerEvent>([this](const uvw::TimerEvent &timerEvent, uvw::TimerHandle &timer) {
-//        INFO("RTSP timeout triggered, cancelling RTSP request.");
-//        rtspCallback(nullptr);
-//    });
-
     while (m_threadRunning) {
         if (executingLibuvCommand) {
             m_loop->run();
         }
     }
-    
 
     // After closing a handle, run the libuv loop once to allow libuv to call the
     // associated close event callback and clean up the resource.

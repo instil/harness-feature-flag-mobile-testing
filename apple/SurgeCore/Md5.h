@@ -2,18 +2,18 @@
 //  Md5.h
 //  SurgeCore
 //
-//  Created by Paul Shields on 26/07/2018.
+//  Created by Paul Shields on 07/09/2018.
 //  Copyright © 2018 Instil. All rights reserved.
 //
 
 #ifndef Md5_h
 #define Md5_h
 
-#include "Md5Algorithm.h"
+#import "Md5Algorithm.h"
 
 namespace SurgeUtil {
     namespace Md5 {
-        std::string Generate(const std::string &source) {
+        static std::string Generate(const std::string &source) {
             MD5_CTX md5handler;
             unsigned char md5digest[MD5_DIGEST_LENGTH];
             MD5_Init(&md5handler);
@@ -30,4 +30,4 @@ namespace SurgeUtil {
     }
 }
 
-#endif /* Md5_h */
+#endif /* NotMd5_h */

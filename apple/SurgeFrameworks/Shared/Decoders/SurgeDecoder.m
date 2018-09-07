@@ -74,7 +74,8 @@
     dispatch_async(self.decoderQueue, ^{
         CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
         [self createDecompressionSessionIfRequired:formatDescription];
-        if (self.formatDescription != NULL && CMFormatDescriptionEqual(self.formatDescription, formatDescription)) {
+        if (self.formatDescription != NULL &&
+            CMFormatDescriptionEqual(self.formatDescription, formatDescription)) {
             [self decodeSampleBuffer:sampleBuffer];
         }
         CFRelease(sampleBuffer);

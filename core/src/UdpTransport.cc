@@ -26,8 +26,8 @@ void Surge::UdpTransport::StopRunning() {
     Surge::Transport::StopRunning();
 }
 
-void Surge::UdpTransport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)>callback) {
-    Transport::RtspTcpOpen(host, port, callback);
+void Surge::UdpTransport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)>callback) {
+    Transport::RtspTcpOpen(url, callback);
     
     if (m_udp != nullptr) {
         m_udp->close();
@@ -52,7 +52,12 @@ void Surge::UdpTransport::RtspTcpOpen(const std::string& host, int port, std::fu
     });
 
     DEBUG("Binding to port " << m_rtpClientPort << " for UDP RTP data.");
-    m_udp->bind("0.0.0.0", m_rtpClientPort);
+    if (SurgeUtil::Url::IpIsIPv6(m_streamIp)) {
+        m_udp->bind<uvw::IPv6>("::0", m_rtpClientPort);
+    } else {
+        m_udp->bind<uvw::IPv4>("0.0.0.0", m_rtpClientPort);
+    }
+
     m_udp->recv();
 }
 

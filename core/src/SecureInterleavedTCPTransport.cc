@@ -18,11 +18,11 @@ Surge::SecureInterleavedTCPTransport::~SecureInterleavedTCPTransport() {
     }
 }
 
-void Surge::SecureInterleavedTCPTransport::RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) {
+void Surge::SecureInterleavedTCPTransport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)> callback) {
     INFO("Starting TLS Client");
     tlsClient->StartClient(this);
 
-    Transport::RtspTcpOpen(host, port, [&, callback] (int result) {
+    Transport::RtspTcpOpen(url, [&, callback] (int result) {
         if (result == 0) {
             INFO("Opening TLS connection");
             tlsClient->OpenTLSConnection([&, callback](Surge::TLSStatus result) {

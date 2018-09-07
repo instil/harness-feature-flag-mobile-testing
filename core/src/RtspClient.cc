@@ -84,9 +84,7 @@ void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)
 
     SurgeUtil::Url url_model(url);
 
-    std::string host = url_model.GetHost();
-    int port = url_model.GetPort();
-    transport->RtspTcpOpen(host, port, [this, callback](int result) {
+    transport->RtspTcpOpen(url_model, [this, callback](int result) {
         if (result != 0) {
             ERROR("Could not connect to the supplied URL to initiate streaming. Incorrect URL?");
         }
@@ -105,7 +103,7 @@ void Surge::RtspClient::SetTransport(std::string& url) {
 
     SurgeUtil::Url parsedUrl = SurgeUtil::Url(url);
 
-    if (parsedUrl.GetScheme() == "rtsp://") {
+    if (parsedUrl.GetProtocol() == "rtsp") {
         if (useInterleavedTcpTransport) {
             INFO("Using Interleaved TCP Transport");
             transport = new InterleavedRtspTransport(nullptr, this);
@@ -126,8 +124,7 @@ void Surge::RtspClient::SetTransport(std::string& url) {
                                                       this);
         packetBuffer->SetBufferDelay(0);
 
-        // TODO: Make this much simpler, easier to read, less error prone with the non-const paramter etc.
-        url = "rtsp://" + parsedUrl.GetHost() + ":" + std::to_string(parsedUrl.GetPort()) + parsedUrl.GetFullPath();
+        url = parsedUrl.WithRtspProtocol();
     }
 
     transport->SetDelegate(this);

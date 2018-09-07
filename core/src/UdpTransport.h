@@ -23,7 +23,7 @@ namespace Surge {
         
         void StopRunning() override;
         
-        void RtspTcpOpen(const std::string& host, int port, std::function<void(int)> callback) override;
+        void RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)> callback) override;
         
         bool IsInterleavedTransport() override { return false; };
         

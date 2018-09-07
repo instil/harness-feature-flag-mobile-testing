@@ -82,11 +82,11 @@
 		42D674791D30847400D42C35 /* testrunner.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674781D30847400D42C35 /* testrunner.cc */; };
 		42D676351D3084B200D42C35 /* gmock-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674E71D3084B100D42C35 /* gmock-all.cc */; };
 		42D677241D30857B00D42C35 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D6771A1D30857B00D42C35 /* gtest-all.cc */; };
+		F412B948213EDA1400B4A7EA /* Url.cc in Sources */ = {isa = PBXBuildFile; fileRef = F412B947213EDA1400B4A7EA /* Url.cc */; };
 		F417EA2E20F3698500ED51EE /* SecureInterleavedTCPTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */; };
 		F417EA2F20F3698500ED51EE /* SecureInterleavedTCPTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */; };
 		F4388E4C1F333AD80064A24F /* UdpTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4388E4A1F333AD80064A24F /* UdpTransport.cc */; };
 		F4388E4D1F333AD80064A24F /* UdpTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F4388E4B1F333AD80064A24F /* UdpTransport.h */; };
-		F43D0C412121CB3C006799F1 /* Md5.h in Headers */ = {isa = PBXBuildFile; fileRef = F43D0C3F2121CB3C006799F1 /* Md5.h */; };
 		F43E1C1220DA7DF900143083 /* Queue.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E1C1020DA7DF900143083 /* Queue.h */; };
 		F4589E041ED85627004F023D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A51ED8427A001B56E0 /* async.c */; };
 		F4589E051ED85627004F023D /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A71ED8427A001B56E0 /* core.c */; };
@@ -139,6 +139,7 @@
 		F49A7E951F3B0D29007FCBD2 /* RtpPacketBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */; };
 		F49CB1FE2136E8130038EA57 /* Md5Algorithm.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49CB1FC2136E8130038EA57 /* Md5Algorithm.cc */; };
 		F49CB1FF2136E8130038EA57 /* Md5Algorithm.h in Headers */ = {isa = PBXBuildFile; fileRef = F49CB1FD2136E8130038EA57 /* Md5Algorithm.h */; };
+		F4A3272F2142AB4F00F293B8 /* TransportProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = F4A3272E2142AB4F00F293B8 /* TransportProtocol.h */; };
 		F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4C4F60720AEE853009313CD /* DispatchQueue.cc */; };
 		F4C4F60A20AEE853009313CD /* DispatchQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C4F60820AEE853009313CD /* DispatchQueue.h */; };
 		F4FA24C31ED8427A001B56E0 /* atomic-ops.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24A61ED8427A001B56E0 /* atomic-ops.h */; };
@@ -237,11 +238,11 @@
 		42D674781D30847400D42C35 /* testrunner.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testrunner.cc; path = ../../../core/test/testrunner.cc; sourceTree = "<group>"; };
 		42D674E71D3084B100D42C35 /* gmock-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gmock-all.cc"; sourceTree = "<group>"; };
 		42D6771A1D30857B00D42C35 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
+		F412B947213EDA1400B4A7EA /* Url.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Url.cc; path = ../../core/src/Url.cc; sourceTree = "<group>"; };
 		F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SecureInterleavedTCPTransport.cc; path = ../../core/src/SecureInterleavedTCPTransport.cc; sourceTree = "<group>"; };
 		F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SecureInterleavedTCPTransport.h; path = ../../core/src/SecureInterleavedTCPTransport.h; sourceTree = "<group>"; };
 		F4388E4A1F333AD80064A24F /* UdpTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpTransport.cc; path = ../../core/src/UdpTransport.cc; sourceTree = "<group>"; };
 		F4388E4B1F333AD80064A24F /* UdpTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpTransport.h; path = ../../core/src/UdpTransport.h; sourceTree = "<group>"; };
-		F43D0C3F2121CB3C006799F1 /* Md5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Md5.h; path = ../../core/src/Md5.h; sourceTree = "<group>"; };
 		F43E1C1020DA7DF900143083 /* Queue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = ../../core/src/Queue.h; sourceTree = "<group>"; };
 		F45BDA6C1E1FB88F00496E62 /* fs-poll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "fs-poll.c"; path = "../../core/lib/libuv-cmake/libuv/src/fs-poll.c"; sourceTree = "<group>"; };
 		F45BDA6D1E1FB88F00496E62 /* heap-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "heap-inl.h"; path = "../../core/lib/libuv-cmake/libuv/src/heap-inl.h"; sourceTree = "<group>"; };
@@ -274,6 +275,8 @@
 		F49A7E931F3B0D29007FCBD2 /* RtpPacketBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtpPacketBuffer.h; path = ../../core/src/RtpPacketBuffer.h; sourceTree = "<group>"; };
 		F49CB1FC2136E8130038EA57 /* Md5Algorithm.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Md5Algorithm.cc; path = ../../core/src/Md5Algorithm.cc; sourceTree = "<group>"; };
 		F49CB1FD2136E8130038EA57 /* Md5Algorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Md5Algorithm.h; path = ../../core/src/Md5Algorithm.h; sourceTree = "<group>"; };
+		F4A3272E2142AB4F00F293B8 /* TransportProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TransportProtocol.h; path = ../../core/src/TransportProtocol.h; sourceTree = "<group>"; };
+		F4A327322142AD1500F293B8 /* Md5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Md5.h; sourceTree = "<group>"; };
 		F4C4F60720AEE853009313CD /* DispatchQueue.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DispatchQueue.cc; path = ../../core/src/DispatchQueue.cc; sourceTree = "<group>"; };
 		F4C4F60820AEE853009313CD /* DispatchQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DispatchQueue.h; path = ../../core/src/DispatchQueue.h; sourceTree = "<group>"; };
 		F4FA24A51ED8427A001B56E0 /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
@@ -538,6 +541,7 @@
 		F46D0DD91F320425000782DD /* Transports */ = {
 			isa = PBXGroup;
 			children = (
+				F4A3272E2142AB4F00F293B8 /* TransportProtocol.h */,
 				F46D0DDA1F320DE7000782DD /* iTransportInterface.h */,
 				F46D0DDB1F3211C5000782DD /* Transport.cc */,
 				F46D0DDC1F3211C5000782DD /* Transport.h */,
@@ -650,7 +654,6 @@
 				42D671DD1D3069BB00D42C35 /* Helpers.h */,
 				42D671DE1D3069BB00D42C35 /* ILoggingDelegate.h */,
 				42D671E41D3069BB00D42C35 /* Logging.h */,
-				F43D0C3F2121CB3C006799F1 /* Md5.h */,
 				F49CB1FC2136E8130038EA57 /* Md5Algorithm.cc */,
 				F49CB1FD2136E8130038EA57 /* Md5Algorithm.h */,
 				42D671EA1D3069BB00D42C35 /* Mutex.cc */,
@@ -658,9 +661,11 @@
 				42D671EC1D3069BB00D42C35 /* MutexLocker.h */,
 				F43E1C1020DA7DF900143083 /* Queue.h */,
 				F494F3F921230FD20054091C /* Regex.h */,
+				F412B947213EDA1400B4A7EA /* Url.cc */,
 				42D6720A1D3069BB00D42C35 /* Url.h */,
 				42D6720B1D3069BB00D42C35 /* WaitableEvent.h */,
 				42D6720C1D3069BB00D42C35 /* WaitableEvents.cc */,
+				F4A327322142AD1500F293B8 /* Md5.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -736,7 +741,6 @@
 				42D672231D3069BB00D42C35 /* Helpers.h in Headers */,
 				42D672501D3069BB00D42C35 /* Url.h in Headers */,
 				42D6722A1D3069BB00D42C35 /* Logging.h in Headers */,
-				F43D0C412121CB3C006799F1 /* Md5.h in Headers */,
 				F46D0DE21F322D36000782DD /* InterleavedRtspTransport.h in Headers */,
 				42D672511D3069BB00D42C35 /* WaitableEvent.h in Headers */,
 				F45BDAA01E1FB88F00496E62 /* queue.h in Headers */,
@@ -755,6 +759,7 @@
 				42D672441D3069BB00D42C35 /* SessionDescriptionV0.h in Headers */,
 				42D672321D3069BB00D42C35 /* MutexLocker.h in Headers */,
 				42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */,
+				F4A3272F2142AB4F00F293B8 /* TransportProtocol.h in Headers */,
 				F494F3FB21230FD20054091C /* Regex.h in Headers */,
 				42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */,
 				42D6724C1D3069BB00D42C35 /* Thread.h in Headers */,
@@ -891,6 +896,7 @@
 				F4589E141ED85627004F023D /* pthread-barrier.c in Sources */,
 				F45BDA9C1E1FB88F00496E62 /* fs-poll.c in Sources */,
 				F4589E041ED85627004F023D /* async.c in Sources */,
+				F412B948213EDA1400B4A7EA /* Url.cc in Sources */,
 				F45BDACA1E1FB88F00496E62 /* version.c in Sources */,
 				42D672301D3069BB00D42C35 /* Mutex.cc in Sources */,
 				F49CB1FE2136E8130038EA57 /* Md5Algorithm.cc in Sources */,

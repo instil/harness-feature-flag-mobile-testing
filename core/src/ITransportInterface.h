@@ -12,6 +12,7 @@
 #include "SetupResponse.h"
 #include "RtpPacket.h"
 #include "ISocketHandlerDelegate.h"
+#include "Url.h"
 
 #include <string>
 
@@ -24,7 +25,7 @@ namespace Surge {
 
         virtual bool IsInterleavedTransport() = 0;
 
-        virtual void RtspTcpOpen(const std::string&, int, std::function<void(int)>) = 0;
+        virtual void RtspTcpOpen(SurgeUtil::Url&, std::function<void(int)>) = 0;
 
         virtual void StartRunning() = 0;
 

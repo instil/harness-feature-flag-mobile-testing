@@ -20,7 +20,7 @@ namespace Surge {
         ~Transport();
         
     public:
-        void RtspTcpOpen(const std::string&, int, std::function<void(int)>) override;
+        void RtspTcpOpen(SurgeUtil::Url&, std::function<void(int)>) override;
         void StartRunning() override;
         void StopRunning() override;
         void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;

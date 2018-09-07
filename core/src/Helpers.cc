@@ -49,6 +49,10 @@ std::vector<std::string> SurgeUtil::StringSplit(const std::string& input, std::s
     return output;
 }
 
+bool SurgeUtil::StringContains(const std::string& haystack, const std::string &needle) {
+    return haystack.find(needle) != std::string::npos;
+}
+
 std::string SurgeUtil::FindKeyAndValuePair(const std::vector<std::string>* values, const std::string& key)
 {
     for (auto it = values->begin(); it != values->end(); ++it) {

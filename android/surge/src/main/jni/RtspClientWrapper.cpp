@@ -33,10 +33,10 @@ void JNICALL Java_co_instil_surge_client_RtspClient_load(JNIEnv *env, jclass cal
 }
 
 JNIEXPORT
-JNIEXPORT jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClientInstance(JNIEnv *env,
-                                                                                          jobject callingObject,
-                                                                                          jobject delegate,
-                                                                                          jboolean isInterleavedTcpTransport) {
+jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClientInstance(JNIEnv *env,
+                                                                                jobject callingObject,
+                                                                                jobject delegate,
+                                                                                jboolean isInterleavedTcpTransport) {
     JavaVM *jvm;
     env->GetJavaVM(&jvm);
 
@@ -45,60 +45,40 @@ JNIEXPORT jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClien
 }
 
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_options__Lco_instil_surge_callbacks_ResponseCallback_2(JNIEnv *env, jobject callingObject, jobject callback) {
+void JNICALL Java_co_instil_surge_client_RtspClient_connect(JNIEnv *env, jobject callingObject, jstring url, jobject callback) {
     Surge::RtspClient *client = getClient(env, callingObject);
 
     jobject globalCallback = env->NewGlobalRef(callback);
 
-    client->Options([=](Surge::RtspResponse *response) {
+    client->Connect(convertString(env, url), [=](bool result) {
         JNIEnv *env = classLoader->getEnv();
 
-        callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
-        env->DeleteGlobalRef(globalCallback);
+        callBooleanCallback(classLoader, globalCallback, result);
 
+        env->DeleteGlobalRef(globalCallback);
         classLoader->detatchJniEnv();
     });
 }
 
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_options__Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2 (JNIEnv *env, jobject callingObject, jstring url, jobject callback) {
+void JNICALL Java_co_instil_surge_client_RtspClient_disconnect(JNIEnv *env, jobject callingObject) {
     Surge::RtspClient *client = getClient(env, callingObject);
-
-    jobject globalCallback = env->NewGlobalRef(callback);
-
-    client->Options(convertString(env, url), [=](Surge::RtspResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
-
-        callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
-        env->DeleteGlobalRef(globalCallback);
-
-        classLoader->detatchJniEnv();
-    });
+    client->Disconnect();
 }
 
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2(JNIEnv *env, jobject callingObject, jstring url, jobject callback) {
+void JNICALL Java_co_instil_surge_client_RtspClient_setCredentials(JNIEnv *env, jobject callingObject, jstring username, jstring password) {
     Surge::RtspClient *client = getClient(env, callingObject);
-
-    jobject globalCallback = env->NewGlobalRef(callback);
-
-    client->Describe(convertString(env, url), [=](Surge::DescribeResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
-
-        callResponseCallback(classLoader, globalCallback, convertDescribeResponse(classLoader, response));
-        env->DeleteGlobalRef(globalCallback);
-
-        classLoader->detatchJniEnv();
-    });
+    client->SetCredentials(convertString(env, username), convertString(env, password));
 }
 
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2(JNIEnv *env, jobject callingObject, jstring url, jstring user, jstring password, jobject callback) {
+void JNICALL Java_co_instil_surge_client_RtspClient_describe(JNIEnv *env, jobject callingObject, jobject callback) {
     Surge::RtspClient *client = getClient(env, callingObject);
 
     jobject globalCallback = env->NewGlobalRef(callback);
 
-    client->Describe(convertString(env, url), convertString(env, user), convertString(env, password), [=](Surge::DescribeResponse *response) {
+    client->Describe([=](Surge::DescribeResponse *response) {
         JNIEnv *env = classLoader->getEnv();
 
         callResponseCallback(classLoader, globalCallback, convertDescribeResponse(classLoader, response));
@@ -117,7 +97,7 @@ void JNICALL Java_co_instil_surge_client_RtspClient_setup(JNIEnv *env, jobject c
 
     jobject globalCallback = env->NewGlobalRef(callback);
 
-    client->Setup(convertSessionDescription(env, jSessionDescription), false, [=](Surge::SetupResponse *response) {
+    client->Setup(convertSessionDescription(env, jSessionDescription), [=](Surge::SetupResponse *response) {
         JNIEnv *env = classLoader->getEnv();
 
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
@@ -131,10 +111,10 @@ void JNICALL Java_co_instil_surge_client_RtspClient_setup(JNIEnv *env, jobject c
 }
 
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_play__ (JNIEnv *env, jobject callingObject) {
+void JNICALL Java_co_instil_surge_client_RtspClient_play__(JNIEnv *env, jobject callingObject) {
     Surge::RtspClient *client = getClient(env, callingObject);
 
-    client->Play(true, [&](Surge::RtspResponse *response) { });
+    client->Play([&](Surge::RtspResponse *response) { });
 }
 
 JNIEXPORT
@@ -143,7 +123,7 @@ void JNICALL Java_co_instil_surge_client_RtspClient_play__Lco_instil_surge_callb
 
     jobject globalCallback = env->NewGlobalRef(callback);
 
-    client->Play(true, [&](Surge::RtspResponse *response) {
+    client->Play([&](Surge::RtspResponse *response) {
         JNIEnv *env = classLoader->getEnv();
 
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
@@ -177,46 +157,36 @@ void JNICALL Java_co_instil_surge_client_RtspClient_pause__Lco_instil_surge_call
         classLoader->detatchJniEnv();
     });
 }
-
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_setStartTime(JNIEnv *env, jobject callingObject, jobject jStartDate) {
+void JNICALL Java_co_instil_surge_client_RtspClient_options__Lco_instil_surge_callbacks_ResponseCallback_2(JNIEnv *env, jobject callingObject, jobject callback) {
     Surge::RtspClient *client = getClient(env, callingObject);
-    SurgeUtil::DateTime startDate = convertDate(env, jStartDate);
-    client->SetStartTime(startDate);
+
+    jobject globalCallback = env->NewGlobalRef(callback);
+
+    client->Options([=](Surge::RtspResponse *response) {
+        JNIEnv *env = classLoader->getEnv();
+
+        callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
+        env->DeleteGlobalRef(globalCallback);
+
+        classLoader->detatchJniEnv();
+    });
 }
 
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_clearStartTime(JNIEnv *env, jobject callingObject) {
+void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobject callingObject, jobject callback) {
     Surge::RtspClient *client = getClient(env, callingObject);
-    client->ClearStartTime();
-}
 
-JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_setTimeRange (JNIEnv *env, jobject callingObject, jobject jStartDate, jobject jEndDate) {
-    Surge::RtspClient *client = getClient(env, callingObject);
-    SurgeUtil::DateTime startDate = convertDate(env, jStartDate);
-    SurgeUtil::DateTime endDate = convertDate(env, jEndDate);
-    client->SetTimeRange(startDate, endDate);
-}
+    jobject globalCallback = env->NewGlobalRef(callback);
 
+    client->Teardown([=](Surge::RtspResponse *response) {
+        JNIEnv *env = classLoader->getEnv();
 
-JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_setEndTime(JNIEnv *env, jobject callingObject, jobject jEndDate) {
-    Surge::RtspClient *client = getClient(env, callingObject);
-    SurgeUtil::DateTime endDate = convertDate(env, jEndDate);
-    client->SetEndTime(endDate);
-}
+        callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
+        env->DeleteGlobalRef(globalCallback);
 
-JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_clearEndTime(JNIEnv *env, jobject callingObject) {
-    Surge::RtspClient *client = getClient(env, callingObject);
-    client->ClearEndTime();
-}
-
-JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobject callingObject) {
-    Surge::RtspClient *client = getClient(env, callingObject);
-    client->StopStream();
+        classLoader->detatchJniEnv();
+    });
 }
 
 JNIEXPORT
@@ -236,23 +206,9 @@ void JNICALL Java_co_instil_surge_client_RtspClient_keepAlive(JNIEnv *env, jobje
 }
 
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_close(JNIEnv *env, jobject callingObject) {
+void JNICALL Java_co_instil_surge_client_RtspClient_setTimeRange(JNIEnv *env, jobject callingObject, jobject startTime, jobject endTime) {
     Surge::RtspClient *client = getClient(env, callingObject);
-    SurgeJni::RtspClientDelegateWrapper *delegate = (SurgeJni::RtspClientDelegateWrapper *)client->GetDelegate();
-
-    client->StopStream();
-
-    if (delegate->GetJavaDelegate() != NULL) {
-        env->DeleteWeakGlobalRef(delegate->GetJavaDelegate());
-    }
-    delete delegate;
-    delete client;
-}
-
-JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_stopStream(JNIEnv *env, jobject callingObject) {
-    Surge::RtspClient *client = getClient(env, callingObject);
-    client->StopStream();
+    client->SetTimeRange(convertDate(env, startTime), convertDate(env, endTime));
 }
 
 JNIEXPORT
@@ -271,4 +227,47 @@ JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_setPacketBufferDelay(JNIEnv *env, jobject callingObject, jint packetBufferDelay) {
     Surge::RtspClient *client = getClient(env, callingObject);
     client->SetPacketBufferDelay(packetBufferDelay);
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_setTLSCertificateValidationEnabled(JNIEnv *env, jobject callingObject, jboolean isEnabled) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->SetTLSCertificateValidationEnabled(isEnabled);
+}
+
+JNIEXPORT
+jboolean JNICALL Java_co_instil_surge_client_RtspClient_isTLSCertificateValidationEnabled(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    return static_cast<jboolean>(client->IsTLSCertificateValidationEnabled());
+}
+
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTLSSelfSignedCertsAllowed(JNIEnv *env, jobject callingObject, jboolean isEnabled) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->SetTLSSelfSignedCertsAllowed(isEnabled);
+}
+
+JNIEXPORT
+jboolean JNICALL Java_co_instil_surge_client_RtspClient_tlsSelfSignedCertsAllowed(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    return static_cast<jboolean>(client->TLSSelfSignedCertsAllowed());
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_setTLSTrustedCertificate(JNIEnv *env, jobject callingObject, jstring certificate) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->SetTLSTrustedCertificate(convertString(env, certificate));
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_close(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    SurgeJni::RtspClientDelegateWrapper *delegate = (SurgeJni::RtspClientDelegateWrapper *)client->GetDelegate();
+
+    client->Disconnect();
+
+    if (delegate->GetJavaDelegate() != NULL) {
+        env->DeleteWeakGlobalRef(delegate->GetJavaDelegate());
+    }
+    delete delegate;
+    delete client;
 }

@@ -25,35 +25,35 @@ JNIEXPORT jlong JNICALL Java_co_instil_surge_client_RtspClient_createNativeClien
 
 /*
  * Class:     co_instil_surge_client_RtspClient
- * Method:    options
+ * Method:    connect
+ * Signature: (Ljava/lang/String;Lco/instil/surge/callbacks/BooleanCallback;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_connect
+  (JNIEnv *, jobject, jstring, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    disconnect
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_disconnect
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    setCredentials
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setCredentials
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    describe
  * Signature: (Lco/instil/surge/callbacks/ResponseCallback;)V
  */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_options__Lco_instil_surge_callbacks_ResponseCallback_2
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_describe
   (JNIEnv *, jobject, jobject);
-
-/*
- * Class:     co_instil_surge_client_RtspClient
- * Method:    options
- * Signature: (Ljava/lang/String;Lco/instil/surge/callbacks/ResponseCallback;)V
- */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_options__Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2
-  (JNIEnv *, jobject, jstring, jobject);
-
-/*
- * Class:     co_instil_surge_client_RtspClient
- * Method:    describe
- * Signature: (Ljava/lang/String;Lco/instil/surge/callbacks/ResponseCallback;)V
- */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2
-  (JNIEnv *, jobject, jstring, jobject);
-
-/*
- * Class:     co_instil_surge_client_RtspClient
- * Method:    describe
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lco/instil/surge/callbacks/ResponseCallback;)V
- */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_describe__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Lco_instil_surge_callbacks_ResponseCallback_2
-  (JNIEnv *, jobject, jstring, jstring, jstring, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -97,51 +97,19 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_pause__Lco_instil_
 
 /*
  * Class:     co_instil_surge_client_RtspClient
- * Method:    setTimeRange
- * Signature: (Ljava/util/Date;Ljava/util/Date;)V
+ * Method:    options
+ * Signature: (Lco/instil/surge/callbacks/ResponseCallback;)V
  */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTimeRange
-  (JNIEnv *, jobject, jobject, jobject);
-
-/*
- * Class:     co_instil_surge_client_RtspClient
- * Method:    setStartTime
- * Signature: (Ljava/util/Date;)V
- */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setStartTime
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_options
   (JNIEnv *, jobject, jobject);
-
-/*
- * Class:     co_instil_surge_client_RtspClient
- * Method:    clearStartTime
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_clearStartTime
-  (JNIEnv *, jobject);
-
-/*
- * Class:     co_instil_surge_client_RtspClient
- * Method:    setEndTime
- * Signature: (Ljava/util/Date;)V
- */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setEndTime
-  (JNIEnv *, jobject, jobject);
-
-/*
- * Class:     co_instil_surge_client_RtspClient
- * Method:    clearEndTime
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_clearEndTime
-  (JNIEnv *, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    tearDown
- * Signature: ()V
+ * Signature: (Lco/instil/surge/callbacks/ResponseCallback;)V
  */
 JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_tearDown
-  (JNIEnv *, jobject);
+  (JNIEnv *, jobject, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -153,19 +121,11 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_keepAlive
 
 /*
  * Class:     co_instil_surge_client_RtspClient
- * Method:    close
- * Signature: ()V
+ * Method:    setTimeRange
+ * Signature: (Ljava/util/Date;Ljava/util/Date;)V
  */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_close
-  (JNIEnv *, jobject);
-
-/*
- * Class:     co_instil_surge_client_RtspClient
- * Method:    stopStream
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_stopStream
-  (JNIEnv *, jobject);
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTimeRange
+  (JNIEnv *, jobject, jobject, jobject);
 
 /*
  * Class:     co_instil_surge_client_RtspClient
@@ -190,6 +150,54 @@ JNIEXPORT jint JNICALL Java_co_instil_surge_client_RtspClient_getPacketBufferDel
  */
 JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setPacketBufferDelay
   (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    setTLSCertificateValidationEnabled
+ * Signature: (Z)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTLSCertificateValidationEnabled
+  (JNIEnv *, jobject, jboolean);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    isTLSCertificateValidationEnabled
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_co_instil_surge_client_RtspClient_isTLSCertificateValidationEnabled
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    setTLSSelfSignedCertsAllowed
+ * Signature: (Z)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTLSSelfSignedCertsAllowed
+  (JNIEnv *, jobject, jboolean);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    tlsSelfSignedCertsAllowed
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_co_instil_surge_client_RtspClient_tlsSelfSignedCertsAllowed
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    setTLSTrustedCertificate
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTLSTrustedCertificate
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    close
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_close
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

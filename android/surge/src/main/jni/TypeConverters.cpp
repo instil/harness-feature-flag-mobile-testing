@@ -169,7 +169,11 @@ Surge::SessionDescription SurgeJni::JavaTypeConverters::convertSessionDescriptio
     return sessionDescription;
 }
 
-SurgeUtil::DateTime SurgeJni::JavaTypeConverters::convertDate(JNIEnv *env, jobject jDate) {
+SurgeUtil::DateTime* SurgeJni::JavaTypeConverters::convertDate(JNIEnv *env, jobject jDate) {
+    if (jDate == NULL) {
+        return nullptr;
+    }
+
     jclass dateClass = env->FindClass("java/util/Date");
     jmethodID getTimeMethod = env->GetMethodID(dateClass, "getTime", "()J");
     jlong jTimestamp = env->CallLongMethod(jDate, getTimeMethod);
@@ -177,16 +181,14 @@ SurgeUtil::DateTime SurgeJni::JavaTypeConverters::convertDate(JNIEnv *env, jobje
     time_t timestamp = (time_t)(jTimestamp / 1000);
     struct tm *timeInfo = std::gmtime(&timestamp);
 
-    SurgeUtil::DateTime surgeDateTime = SurgeUtil::DateTime();
-    surgeDateTime.Year = timeInfo->tm_year + 1900;  // tm_year == years since 1900
-    surgeDateTime.Month = timeInfo->tm_mon + 1;     // tm_mon starts at 0, Java and Surge start at 1
-    surgeDateTime.Day = timeInfo->tm_mday;
-    surgeDateTime.Hour = timeInfo->tm_hour;
-    surgeDateTime.Minute = timeInfo->tm_min;
-    surgeDateTime.Second = timeInfo->tm_sec;
-    surgeDateTime.Nanosecond = 0;
-
-    return surgeDateTime;
+    return new SurgeUtil::DateTime(
+            timeInfo->tm_year + 1900,  // tm_year == years since 1900
+            timeInfo->tm_mon + 1,     // tm_mon starts at 0, Java and Surge start at 1
+            timeInfo->tm_mday,
+            timeInfo->tm_hour,
+            timeInfo->tm_min,
+            timeInfo->tm_sec,
+            0);
 }
 
 void SurgeJni::JavaTypeConverters::callResponseCallback(SurgeJni::ClassLoader *classLoader, jobject jResponseCallback, jobject jResponse) {
@@ -194,5 +196,13 @@ void SurgeJni::JavaTypeConverters::callResponseCallback(SurgeJni::ClassLoader *c
 
     jclass cls = classLoader->findClass("co/instil/surge/callbacks/ResponseCallback");
     jmethodID method = env->GetMethodID(cls, "response", "(Lco/instil/surge/client/Response;)V");
+    env->CallVoidMethod(jResponseCallback, method, jResponse);
+}
+
+void SurgeJni::JavaTypeConverters::callBooleanCallback(SurgeJni::ClassLoader *classLoader, jobject jResponseCallback, jboolean jResponse) {
+    JNIEnv *env = classLoader->getEnv();
+
+    jclass cls = classLoader->findClass("co/instil/surge/callbacks/BooleanCallback");
+    jmethodID method = env->GetMethodID(cls, "response", "(Z)V");
     env->CallVoidMethod(jResponseCallback, method, jResponse);
 }

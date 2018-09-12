@@ -60,6 +60,7 @@ namespace Surge {
             // Algorithm == MD5, or empty default
             return DEFAULT_DIGEST_ALGORITHM;
         }
+
         DigestQop DigestQopFromString(std::string value) {
             if (SurgeUtil::StringEqualsInsensitive(value, "auth")) {
                 return AUTH;

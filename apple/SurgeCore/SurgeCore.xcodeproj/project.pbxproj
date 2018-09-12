@@ -82,6 +82,7 @@
 		42D674791D30847400D42C35 /* testrunner.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674781D30847400D42C35 /* testrunner.cc */; };
 		42D676351D3084B200D42C35 /* gmock-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D674E71D3084B100D42C35 /* gmock-all.cc */; };
 		42D677241D30857B00D42C35 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D6771A1D30857B00D42C35 /* gtest-all.cc */; };
+		F402FBBF2146A4E6001496EA /* Md5.h in Headers */ = {isa = PBXBuildFile; fileRef = F402FBBE2146A4E6001496EA /* Md5.h */; };
 		F412B948213EDA1400B4A7EA /* Url.cc in Sources */ = {isa = PBXBuildFile; fileRef = F412B947213EDA1400B4A7EA /* Url.cc */; };
 		F417EA2E20F3698500ED51EE /* SecureInterleavedTCPTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */; };
 		F417EA2F20F3698500ED51EE /* SecureInterleavedTCPTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */; };
@@ -238,6 +239,7 @@
 		42D674781D30847400D42C35 /* testrunner.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testrunner.cc; path = ../../../core/test/testrunner.cc; sourceTree = "<group>"; };
 		42D674E71D3084B100D42C35 /* gmock-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gmock-all.cc"; sourceTree = "<group>"; };
 		42D6771A1D30857B00D42C35 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
+		F402FBBE2146A4E6001496EA /* Md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Md5.h; path = ../../core/src/Md5.h; sourceTree = "<group>"; };
 		F412B947213EDA1400B4A7EA /* Url.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Url.cc; path = ../../core/src/Url.cc; sourceTree = "<group>"; };
 		F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SecureInterleavedTCPTransport.cc; path = ../../core/src/SecureInterleavedTCPTransport.cc; sourceTree = "<group>"; };
 		F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SecureInterleavedTCPTransport.h; path = ../../core/src/SecureInterleavedTCPTransport.h; sourceTree = "<group>"; };
@@ -276,7 +278,6 @@
 		F49CB1FC2136E8130038EA57 /* Md5Algorithm.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Md5Algorithm.cc; path = ../../core/src/Md5Algorithm.cc; sourceTree = "<group>"; };
 		F49CB1FD2136E8130038EA57 /* Md5Algorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Md5Algorithm.h; path = ../../core/src/Md5Algorithm.h; sourceTree = "<group>"; };
 		F4A3272E2142AB4F00F293B8 /* TransportProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TransportProtocol.h; path = ../../core/src/TransportProtocol.h; sourceTree = "<group>"; };
-		F4A327322142AD1500F293B8 /* Md5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Md5.h; sourceTree = "<group>"; };
 		F4C4F60720AEE853009313CD /* DispatchQueue.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DispatchQueue.cc; path = ../../core/src/DispatchQueue.cc; sourceTree = "<group>"; };
 		F4C4F60820AEE853009313CD /* DispatchQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DispatchQueue.h; path = ../../core/src/DispatchQueue.h; sourceTree = "<group>"; };
 		F4FA24A51ED8427A001B56E0 /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
@@ -665,7 +666,7 @@
 				42D6720A1D3069BB00D42C35 /* Url.h */,
 				42D6720B1D3069BB00D42C35 /* WaitableEvent.h */,
 				42D6720C1D3069BB00D42C35 /* WaitableEvents.cc */,
-				F4A327322142AD1500F293B8 /* Md5.h */,
+				F402FBBE2146A4E6001496EA /* Md5.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -709,6 +710,7 @@
 				F4FA24CC1ED8427A001B56E0 /* internal.h in Headers */,
 				F49699702109D77600B7EE4E /* BaseAuthenticator.h in Headers */,
 				F45BDAC91E1FB88F00496E62 /* uv-common.h in Headers */,
+				F402FBBF2146A4E6001496EA /* Md5.h in Headers */,
 				42D672241D3069BB00D42C35 /* ILoggingDelegate.h in Headers */,
 				42D672151D3069BB00D42C35 /* Constants.h in Headers */,
 				42D6722D1D3069BB00D42C35 /* MJPEGDepacketizer.h in Headers */,

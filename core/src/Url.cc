@@ -51,9 +51,9 @@ std::string SurgeUtil::Url::GetPath() {
 }
 
 std::string SurgeUtil::Url::AsString() {
-    return GetProtocol() + "://" + GetHost() + ":" + std::to_string(GetPort()) + GetFullPath();
+    return GetProtocol() + "://" + GetHost() + ":" + std::to_string(GetPort()) + "/" + GetFullPath();
 }
 
 std::string SurgeUtil::Url::WithRtspProtocol() {
-    return std::string(RTSP_PROTOCOL) + "://" + GetHost() + ":" + std::to_string(GetPort()) + GetFullPath();
+    return std::string(RTSP_PROTOCOL) + "://" + GetHost() + ":" + std::to_string(GetPort()) + "/" + GetFullPath();
 }

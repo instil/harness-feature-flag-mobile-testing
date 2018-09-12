@@ -38,9 +38,11 @@ namespace SurgeJni {
 
         Surge::SessionDescription convertSessionDescription(JNIEnv *env, jobject jSessionDescription);
 
-        SurgeUtil::DateTime convertDate(JNIEnv *env, jobject jDate);
+        SurgeUtil::DateTime* convertDate(JNIEnv *env, jobject jDate);
 
         void callResponseCallback(SurgeJni::ClassLoader *classLoader, jobject jResponseCallback, jobject jResponse);
+
+        void callBooleanCallback(SurgeJni::ClassLoader *classLoader, jobject jResponseCallback, jboolean jResponse);
     }
 }
 

@@ -7,6 +7,7 @@
 
 package co.instil.surge.client;
 
+import co.instil.surge.callbacks.BooleanCallback;
 import co.instil.surge.callbacks.ResponseCallback;
 
 import java.util.Date;
@@ -39,13 +40,13 @@ public class RtspClient implements AutoCloseable {
 
     private native long createNativeClientInstance(RtspClientDelegate delegate, boolean isInterleavedTcpTransport);
 
-    public native void options(ResponseCallback callback);
+    public native void connect(String url, BooleanCallback callback);
 
-    public native void options(String url, ResponseCallback callback);
+    public native void disconnect();
 
-    public native void describe(String url, ResponseCallback callback);
+    public native void setCredentials(String username, String password);
 
-    public native void describe(String url, String username, String password, ResponseCallback callback);
+    public native void describe(ResponseCallback callback);
 
     public native void setup(SessionDescription sessionDescription, ResponseCallback callback);
 
@@ -57,27 +58,29 @@ public class RtspClient implements AutoCloseable {
 
     public native void pause(ResponseCallback callback);
 
-    public native void setTimeRange(Date startTime, Date endtime);
+    public native void options(ResponseCallback callback);
 
-    public native void setStartTime(Date startTime);
-
-    public native void clearStartTime();
-
-    public native void setEndTime(Date endTime);
-
-    public native void clearEndTime();
-
-    public native void tearDown();
+    public native void tearDown(ResponseCallback callback);
 
     public native void keepAlive(ResponseCallback callback);
 
-    public native void close();
-
-    public native void stopStream();
+    public native void setTimeRange(Date startTime, Date endtime);
 
     public native boolean isInterleavedTransport();
 
     public native int getPacketBufferDelay();
 
     public native void setPacketBufferDelay(int packetBufferDelay);
+
+    public native void setTLSCertificateValidationEnabled(boolean tlsCertificateValidationEnabled);
+
+    public native boolean isTLSCertificateValidationEnabled();
+
+    public native void setTLSSelfSignedCertsAllowed(boolean tlsSelfSignedCertsAllowed);
+
+    public native boolean tlsSelfSignedCertsAllowed();
+
+    public native void setTLSTrustedCertificate(String fileUrl);
+
+    public native void close();
 }

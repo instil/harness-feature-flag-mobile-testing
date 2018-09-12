@@ -117,42 +117,42 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
         logger.debug("Initating playback of {}", url);
 
-        if (startTime != null) {
-            rtspClient.setStartTime(startTime);
-        }
-        if (endTime != null) {
-            rtspClient.setEndTime(endTime);
-        }
+        rtspClient.setTimeRange(startTime, endTime);
 
-        rtspClient.describe(url, username, password, rawResponse -> {
-            DescribeResponse response = (DescribeResponse) rawResponse;
+        rtspClient.connect(url, result -> {
+            rtspClient.setCredentials(username, password);
 
-            if (response == null) {
-                callback.response(RtspErrorCode.UNKNOWN_FAILURE);
-                return;
-            }
+            rtspClient.describe(rawResponse -> {
+                DescribeResponse response = (DescribeResponse) rawResponse;
 
-            if (response.getStatusCode() != RtspErrorCode.SUCCESS ||
-                    response.getSessionDescriptions() == null ||
-                    response.getSessionDescriptions().length == 0) {
-                callback.response(response.getStatusCode());
-                return;
-            }
+                if (response == null) {
+                    callback.response(RtspErrorCode.UNKNOWN_FAILURE);
+                    return;
+                }
 
-            for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
-                logger.debug(sessionDescription.toString());
-            }
+                if (response.getStatusCode() != RtspErrorCode.SUCCESS ||
+                        response.getSessionDescriptions() == null ||
+                        response.getSessionDescriptions().length == 0) {
+                    callback.response(response.getStatusCode());
+                    return;
+                }
 
-            setSessionDescriptions(response.getSessionDescriptions());
-            if (sessionDescriptions.length > 0) {
-                setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
-                        errorCode -> callback.response(errorCode));
-            } else {
-                throw new RuntimeException("No session description available, is the stream active?");
-            }
+                for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
+                    logger.debug(sessionDescription.toString());
+                }
 
-            startFpsCounter();
+                setSessionDescriptions(response.getSessionDescriptions());
+                if (sessionDescriptions.length > 0) {
+                    setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
+                            errorCode -> callback.response(errorCode));
+                } else {
+                    throw new RuntimeException("No session description available, is the stream active?");
+                }
+
+                startFpsCounter();
+            });
         });
+
     }
 
     private void setupStream(SessionDescription sessionDescription, final PlayerCallback callback) {
@@ -221,9 +221,11 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      */
     public void stop() {
         logger.debug("Stopping playback of {}", url);
-        rtspClient.stopStream();
         stopFpsCounter();
         decoder = null;
+
+        rtspClient.tearDown(response ->
+                rtspClient.disconnect());
     }
 
     /**
@@ -237,17 +239,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     public void seek(Date startTime, Date endTime) {
         rtspClient.pause();
 
-        if (startTime != null) {
-            rtspClient.setStartTime(startTime);
-        } else {
-            rtspClient.clearStartTime();
-        }
-
-        if (endTime != null) {
-            rtspClient.setEndTime(endTime);
-        } else {
-            rtspClient.clearEndTime();
-        }
+        rtspClient.setTimeRange(startTime, endTime);
 
         rtspClient.play();
     }
@@ -422,5 +414,45 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      */
     public void setPacketBufferDelay(int packetBufferDelay) {
         rtspClient.setPacketBufferDelay(packetBufferDelay);
+    }
+
+    /**
+     * Enables/disables TLS certificate validation when streaming from a TLS protected RTSP stream. Default: true.
+     * @param tlsCertificateValidationEnabled Enable/disbale disables TLS certificate validation.
+     */
+    public void setTLSCertificateValidationEnabled(boolean tlsCertificateValidationEnabled) {
+        rtspClient.setTLSCertificateValidationEnabled(tlsCertificateValidationEnabled);
+    }
+
+    /**
+     * Is TLS certificate validation when streaming from a TLS protected RTSP stream enabled or disabled?
+     * @return Is TLS certificate validation when streaming from a TLS protected RTSP stream enabled or disabled?
+     */
+    public boolean isTLSCertificateValidationEnabled() {
+        return rtspClient.isTLSCertificateValidationEnabled();
+    }
+
+    /**
+     * Allows/disallows self signed TLS certificates from being used when streaming from a TLS protected RTSP stream. Default: true.
+     * @param tlsSelfSignedCertsAllowed Allowed/disallow self signed TLS certificates.
+     */
+    public void setTLSSelfSignedCertsAllowed(boolean tlsSelfSignedCertsAllowed) {
+        rtspClient.setTLSSelfSignedCertsAllowed(tlsSelfSignedCertsAllowed);
+    }
+
+    /**
+     * Are self signed certifiates allowed for streaming from a TLS protected RTSP stream?
+     * @return Are self signed certifiates allowed for streaming from a TLS protected RTSP stream?
+     */
+    public boolean tlsSelfSignedCertsAllowed() {
+        return rtspClient.tlsSelfSignedCertsAllowed();
+    }
+
+    /**
+     * Optional: The path to a trusted root certificate used to validate a TLS certificate received through the TLS handshaking process.
+     * @param fileUrl URL of the root certificate.
+     */
+    public void setTLSTrustedCertificate(String fileUrl) {
+        rtspClient.setTLSTrustedCertificate(fileUrl);
     }
 }

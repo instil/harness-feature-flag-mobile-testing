@@ -14,6 +14,8 @@ include_directories(../../core/lib/libuv-cmake/libuv/src)
 include_directories(../../core/lib/uvw/src)
 include_directories(../../core/src)
 
+include(../../core/lib/openssl-mobile/openssl-android.cmake)
+
 set(LIBUV_SRC_DIR ../../core/lib/libuv-cmake/libuv/src)
 file(GLOB SurgeDependancies
   ${LIBUV_SRC_DIR}/*.c
@@ -38,3 +40,4 @@ add_library(surge SHARED ${SurgeSources} ${SurgeJniSources} ${SurgeDependancies}
 
 find_library(NdkLogLib log)
 target_link_libraries(surge ${NdkLogLib})
+target_link_libraries(surge ${OpenSSL})

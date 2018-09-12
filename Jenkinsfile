@@ -9,6 +9,10 @@ node("ios && android") {
     }
 
     gitlabCommitStatus {
+        stage("Acquiring Dependencies") {
+            acquireDependencies()
+        }
+        
         stage("Build Apple Frameworks") {
             buildAppleFrameworks()
         }
@@ -20,6 +24,14 @@ node("ios && android") {
         stage("Build Xamarin DLLs") {
             buildXamarinDlls()
         }
+    }
+}
+
+def acquireDependencies() {
+    try {
+        sh "./FIRST-RUN.sh --no-build"
+    } catch(e) {
+        slackNotifyError("Failed to acquire Surge dependencies, see ${env.BUILD_URL}console")
     }
 }
 

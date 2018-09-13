@@ -176,6 +176,8 @@ namespace Surge {
         }
 
         void SetTLSTrustedCertificate(const std::string& fileUrl) {
+            tlsRootCertificateUrl = fileUrl;
+
             if (tlsClient != nullptr) {
                 tlsClient->SetTrustedCertificate(fileUrl);
             }
@@ -220,6 +222,7 @@ namespace Surge {
         SurgeUtil::DateTime *startTime;
         SurgeUtil::DateTime *endTime;
         int timeout;
+        std::string tlsRootCertificateUrl;
 
         IRtspClientDelegate *delegate;
 

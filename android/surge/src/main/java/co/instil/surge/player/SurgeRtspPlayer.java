@@ -7,6 +7,14 @@
 
 package co.instil.surge.player;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Date;
 
@@ -454,5 +462,47 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      */
     public void setTLSTrustedCertificate(String fileUrl) {
         rtspClient.setTLSTrustedCertificate(fileUrl);
+    }
+
+    /**
+     * Optional: The path to a trusted root certificate used to validate a TLS certificate received through the TLS handshaking process.
+     * @param rawResourceId ID of the raw resource pointing tot he root certificate to load into Surge.
+     * @param context Context fo the running app.
+     */
+    public void setTLSTrustedCertificate(int rawResourceId, Context context) {
+        File cachefile = extractResourceIntoCacheFile(rawResourceId, context);
+        setTLSTrustedCertificate(cachefile.getAbsolutePath());
+    }
+
+    private File extractResourceIntoCacheFile(int rawResourceId, Context context) {
+        File file = null;
+
+        try {
+            InputStream rootCertificate = context.getResources().openRawResource(rawResourceId);
+
+            File tmpDir = context.getCacheDir();
+            file = File.createTempFile(String.valueOf(rawResourceId), ".tmp", tmpDir);
+            file.deleteOnExit();
+
+            OutputStream outStream = new FileOutputStream(file);
+
+            byte[] buffer = new byte[8 * 1024];
+            int bytesRead;
+            while ((bytesRead = rootCertificate.read(buffer)) != -1) {
+                outStream.write(buffer, 0, bytesRead);
+            }
+
+            rootCertificate.close();
+            outStream.close();
+
+        } catch (Resources.NotFoundException e) {
+            logger.error("Could not find file in the app resources with ID " + rawResourceId);
+            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("Could not write to the cache directory.");
+            e.printStackTrace();
+        }
+
+        return file;
     }
 }

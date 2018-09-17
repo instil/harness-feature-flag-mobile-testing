@@ -193,6 +193,30 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTLSTrustedCerti
 
 /*
  * Class:     co_instil_surge_client_RtspClient
+ * Method:    AddAuthenticator
+ * Signature: (Lco/instil/surge/authentication/SurgeAuthenticator;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_AddAuthenticator
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    RemoveAuthenticator
+ * Signature: (Lco/instil/surge/authentication/SurgeAuthenticator;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticator__Lco_instil_surge_authentication_SurgeAuthenticator_2
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    RemoveAuthenticator
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticator__I
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
  * Method:    close
  * Signature: ()V
  */

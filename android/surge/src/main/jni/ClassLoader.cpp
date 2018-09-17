@@ -44,5 +44,7 @@ JNIEnv* SurgeJni::ClassLoader::getEnv() {
 }
 
 void SurgeJni::ClassLoader::detatchJniEnv() {
-    jvm->DetachCurrentThread();
+    if (jvmToBeDetatched) {
+        jvm->DetachCurrentThread();
+    }
 }

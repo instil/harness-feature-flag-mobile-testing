@@ -7,6 +7,7 @@
 
 package co.instil.surge.client;
 
+import co.instil.surge.authentication.SurgeAuthenticator;
 import co.instil.surge.callbacks.BooleanCallback;
 import co.instil.surge.callbacks.ResponseCallback;
 
@@ -81,6 +82,12 @@ public class RtspClient implements AutoCloseable {
     public native boolean tlsSelfSignedCertsAllowed();
 
     public native void setTLSTrustedCertificate(String fileUrl);
+
+    public native void AddAuthenticator(SurgeAuthenticator authenticator);
+
+    public native void RemoveAuthenticator(SurgeAuthenticator authenticator);
+
+    public native void RemoveAuthenticator(int index);
 
     public native void close();
 }

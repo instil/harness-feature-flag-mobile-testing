@@ -7,6 +7,7 @@
 #include "RtspClientDelegateWrapper.h"
 #include "RtspLoggingDelegateWrapper.h"
 #include "TypeConverters.h"
+#include "JavaAuthenticator.h"
 
 using namespace SurgeJni::JavaTypeConverters;
 using namespace SurgeJni::NativeTypeConverters;
@@ -256,6 +257,24 @@ JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_setTLSTrustedCertificate(JNIEnv *env, jobject callingObject, jstring certificate) {
     Surge::RtspClient *client = getClient(env, callingObject);
     client->SetTLSTrustedCertificate(convertString(env, certificate));
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_AddAuthenticator(JNIEnv *env, jobject callingObject, jobject jAuthenticator) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    SurgeJni::JavaAuthenticator *authenticator = new SurgeJni::JavaAuthenticator(jAuthenticator, classLoader);
+    client->AddAuthenticator(authenticator);
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticator__Lco_instil_surge_authentication_SurgeAuthenticator_2(JNIEnv *env, jobject callingObject, jobject jAuthenticator) {
+    // TODO!
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticator__I(JNIEnv *env, jobject callingObject, jint authenticatorId) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->RemoveAuthenticator((unsigned int)authenticatorId);
 }
 
 JNIEXPORT

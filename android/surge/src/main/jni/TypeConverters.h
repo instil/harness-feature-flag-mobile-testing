@@ -44,6 +44,39 @@ namespace SurgeJni {
 
         void callBooleanCallback(SurgeJni::ClassLoader *classLoader, jobject jResponseCallback, jboolean jResponse);
     }
+
+    namespace JavaTypeConverters {
+
+        template <class T>
+        std::vector<T> convertList(SurgeJni::ClassLoader *classLoader, jobject jList, std::function<T(jobject)> innerConverter) {
+            JNIEnv *env = classLoader->getEnv();
+
+            jclass listClass = env->FindClass("java/util/List");
+            jmethodID listSizeMethod = env->GetMethodID(listClass, "size", "()I");
+            jmethodID listGetMethod = env->GetMethodID(listClass, "get", "(I)Ljava/lang/Object;");
+
+            jint listSize = env->CallIntMethod(jList, listSizeMethod);
+
+            std::vector<T> result;
+            result.reserve((unsigned long)listSize);
+
+            for (jint i = 0; i < listSize; i++) {
+                jobject jItem = env->CallObjectMethod(jList, listGetMethod, i);
+                T item = innerConverter(jItem);
+                result.emplace_back(item);
+            }
+
+            return result;
+        }
+
+        template <class T>
+        std::vector<T> convertList(SurgeJni::ClassLoader *classLoader, jobject jList) {
+            return convertList<T>(classLoader, jList, [](jobject jItem) {
+                return (T)jItem;
+            });
+
+        }
+    }
 }
 
 

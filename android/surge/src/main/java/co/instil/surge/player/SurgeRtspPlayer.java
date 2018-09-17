@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Date;
 
+import co.instil.surge.authentication.SurgeAuthenticator;
 import co.instil.surge.callbacks.PlayerCallback;
 import co.instil.surge.client.DescribeResponse;
 import co.instil.surge.client.ExtendedHeader;
@@ -55,6 +56,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     protected SurgeSurface surface = null;
     private Decoder decoder;
+
+    private SurgeAuthenticator customAuthenticator;
 
     public SurgeRtspPlayer() {
         rtspClient = generateRtspClient(false);
@@ -472,6 +475,28 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     public void setTLSTrustedCertificate(int rawResourceId, Context context) {
         File cachefile = extractResourceIntoCacheFile(rawResourceId, context);
         setTLSTrustedCertificate(cachefile.getAbsolutePath());
+    }
+
+    /**
+     * Gets the current custom authenticator assigned to Surge, being used to provide authentication to the stream.
+     * @return The current custom authenticator assigned to Surge, being used to provide authentication to the stream.
+     */
+    public SurgeAuthenticator GetAuthenticator() {
+        return customAuthenticator;
+    }
+
+    /**
+     * Optional: Sets a custom authenticator to be used to authenticate Surge with stream.
+     * @param authenticator Custom authenticator to be used to authenticate Surge with stream.
+     */
+    public void SetAuthenticator(SurgeAuthenticator authenticator) {
+        if (customAuthenticator != null) {
+            rtspClient.RemoveAuthenticator(1);
+        }
+
+        customAuthenticator = authenticator;
+
+        rtspClient.AddAuthenticator(customAuthenticator);
     }
 
     private File extractResourceIntoCacheFile(int rawResourceId, Context context) {

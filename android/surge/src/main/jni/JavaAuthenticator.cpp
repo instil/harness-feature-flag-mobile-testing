@@ -38,5 +38,18 @@ std::vector<std::string> SurgeJni::JavaAuthenticator::GenerateAuthHeadersFor(con
 }
 
 std::vector<char> SurgeJni::JavaAuthenticator::FirstBytesOnTheWireAuthentication(const std::string &username, const std::string &password) {
-    return std::vector<char>();
+    JNIEnv *env = classLoader->getEnv();
+
+    jstring jUsername = NativeTypeConverters::convertString(env, username);
+    jstring jPassword = NativeTypeConverters::convertString(env, password);
+
+    jclass javaAuthenticatorClass = classLoader->findClass("co/instil/surge/authentication/SurgeAuthenticator");
+    jmethodID firstBytesOnTheWireAuthenticationMethod = env->GetMethodID(javaAuthenticatorClass, "firstBytesOnTheWireAuthentication", "(Ljava/lang/String;Ljava/lang/String;)[B");
+    jbyteArray payload = (jbyteArray)env->CallObjectMethod(javaAuthenticator, firstBytesOnTheWireAuthenticationMethod, jUsername, jPassword);
+
+    std::vector<char> result = JavaTypeConverters::convertByteArrayToVector(classLoader, payload);
+
+    classLoader->detatchJniEnv();
+
+    return result;
 }

@@ -191,6 +191,17 @@ SurgeUtil::DateTime* SurgeJni::JavaTypeConverters::convertDate(JNIEnv *env, jobj
             0);
 }
 
+std::vector<char> SurgeJni::JavaTypeConverters::convertByteArrayToVector(ClassLoader *classLoader, jbyteArray jByteArray) {
+    jboolean isCopy;
+    JNIEnv *env = classLoader->getEnv();
+
+    int length = env->GetArrayLength(jByteArray);
+    std::vector<char> result(length);
+    env->GetByteArrayRegion(jByteArray, 0, length, (jbyte*)result.data());
+
+    return result;
+}
+
 void SurgeJni::JavaTypeConverters::callResponseCallback(SurgeJni::ClassLoader *classLoader, jobject jResponseCallback, jobject jResponse) {
     JNIEnv *env = classLoader->getEnv();
 

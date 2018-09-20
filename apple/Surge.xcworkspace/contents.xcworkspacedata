@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/stevey/instil/Surge/apple/SurgeiOSSwiftDemo/SurgeiOSSwiftDemoApp.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:SurgeCore/SurgeCore.xcodeproj">
    </FileRef>
    <FileRef

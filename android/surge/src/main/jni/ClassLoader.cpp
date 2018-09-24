@@ -3,10 +3,14 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#include <Logging.h>
 #include "ClassLoader.h"
+
+SurgeJni::ClassLoader *SurgeJni::ClassLoader::classLoaderSingleton = nullptr;
 
 SurgeJni::ClassLoader::ClassLoader(JNIEnv *jniEnv) {
     jniEnv->GetJavaVM(&this->jvm);
+    GenerateDetachKeyForJvm();
 
     jclass randomClass = jniEnv->FindClass("co/instil/surge/player/SurgeRtspPlayer");
     jclass classClass = jniEnv->GetObjectClass(randomClass);
@@ -16,6 +20,10 @@ SurgeJni::ClassLoader::ClassLoader(JNIEnv *jniEnv) {
     this->classLoader = jniEnv->NewGlobalRef(jniEnv->CallObjectMethod(randomClass, getClassLoaderMethod));
 
     this->findClassMethod = jniEnv->GetMethodID(classLoaderClass, "findClass", "(Ljava/lang/String;)Ljava/lang/Class;");
+}
+
+SurgeJni::ClassLoader::~ClassLoader() {
+    jvm->DetachCurrentThread();
 }
 
 jclass SurgeJni::ClassLoader::findClass(const char* name) {
@@ -29,11 +37,10 @@ jclass SurgeJni::ClassLoader::findClass(const char* name) {
 JNIEnv* SurgeJni::ClassLoader::getEnv() {
     JNIEnv *env;
     int status = jvm->GetEnv((void **) &env, JNI_VERSION_1_6);
-    jvmToBeDetatched = false;
 
     if (status < 0) {
         status = jvm->AttachCurrentThread(&env, NULL);
-        jvmToBeDetatched = true;
+        pthread_setspecific(detachKey, &env);
 
         if (status < 0) {
             return nullptr;
@@ -41,10 +48,4 @@ JNIEnv* SurgeJni::ClassLoader::getEnv() {
     }
 
     return env;
-}
-
-void SurgeJni::ClassLoader::detatchJniEnv() {
-    if (jvmToBeDetatched) {
-        jvm->DetachCurrentThread();
-    }
 }

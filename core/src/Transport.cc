@@ -48,7 +48,7 @@ void Surge::Transport::StopRunning() {
         return;
     }
     m_threadRunning = false;
-    m_loop->stop();
+    m_libuvCloser->send();
 
     if (m_thread.IsRunning()) {
         m_thread.WaitUntilStopped();
@@ -63,6 +63,7 @@ void Surge::Transport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)>
         }
         m_tcp = m_loop->resource<uvw::TcpHandle>();
         m_timer = m_loop->resource<uvw::TimerHandle>();
+        m_libuvCloser = m_loop->resource<uvw::AsyncHandle>();
     }
 
     m_streamIp = ResolveHostnameToIP(url.GetHost(), url.GetPort());
@@ -167,8 +168,9 @@ void Surge::Transport::AttachCallbacksToLibuv() {
         ERROR("Shutdown");
     });
 
-    m_tcp->on<uvw::WriteEvent>([](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) {
+    m_tcp->on<uvw::WriteEvent>([this](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) {
         DEBUG("Sent request to stream, wait for a response");
+        this->StartRtspTimer();
     });
 
     m_tcp->on<uvw::DataEvent>([this](const uvw::DataEvent &dataEvent, uvw::TcpHandle &tcp) {
@@ -186,6 +188,11 @@ void Surge::Transport::AttachCallbacksToLibuv() {
     m_timer->on<uvw::TimerEvent>([this](const uvw::TimerEvent &timerEvent, uvw::TimerHandle &timer) {
         INFO("RTSP timeout triggered, cancelling RTSP request.");
         rtspCallback(nullptr);
+    });
+
+    m_libuvCloser->on<uvw::AsyncEvent>([this](const uvw::AsyncEvent &asyncEvent, uvw::AsyncHandle &asyncHandle) {
+        DEBUG("Transport thread: triggering stop request.");
+        m_loop->stop();
     });
 }
 
@@ -266,6 +273,7 @@ bool Surge::Transport::HandleRtspPacket() {
         }
         
         if (rtspCallback != nullptr) {
+            StopRtspTimer();
             rtspCallback(new Response(rtsp_buffer, rtsp_buffer_length));
         }
         

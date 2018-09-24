@@ -94,6 +94,7 @@ namespace Surge {
         std::shared_ptr<uvw::Loop> m_loop;
         std::shared_ptr<uvw::TcpHandle> m_tcp;
         std::shared_ptr<uvw::TimerHandle> m_timer;
+        std::shared_ptr<uvw::AsyncHandle> m_libuvCloser;
 
         SurgeUtil::StoppableThread m_thread;
         std::atomic<bool> m_threadRunning;

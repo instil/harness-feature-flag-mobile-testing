@@ -9,13 +9,11 @@
 SurgeJni::JavaAuthenticator::JavaAuthenticator(jobject javaAuthenticator, ClassLoader *classLoader) : classLoader(classLoader) {
     JNIEnv *env = classLoader->getEnv();
     this->javaAuthenticator = env->NewGlobalRef(javaAuthenticator);
-    classLoader->detatchJniEnv();
 }
 
 SurgeJni::JavaAuthenticator::~JavaAuthenticator() {
     JNIEnv *env = classLoader->getEnv();
     env->DeleteGlobalRef(javaAuthenticator);
-    classLoader->detatchJniEnv();
 }
 
 std::vector<std::string> SurgeJni::JavaAuthenticator::GenerateAuthHeadersFor(const std::string &url, const std::string &method, const std::string &username, const std::string &password) {
@@ -35,8 +33,6 @@ std::vector<std::string> SurgeJni::JavaAuthenticator::GenerateAuthHeadersFor(con
         });
     }
 
-    classLoader->detatchJniEnv();
-
     return result;
 }
 
@@ -55,8 +51,6 @@ std::vector<char> SurgeJni::JavaAuthenticator::FirstBytesOnTheWireAuthentication
     if (payload != NULL) {
         result = JavaTypeConverters::convertByteArrayToVector(classLoader, payload);
     }
-
-    classLoader->detatchJniEnv();
 
     return result;
 }

@@ -7,16 +7,21 @@
 
 package co.instil.surgeandroiddemoapp;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.EditText;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -32,9 +37,11 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
     private static Logger logger = LoggerFactory.getLogger(MainActivity.class);
 
-    private final SurgeRtspPlayer player = new SurgeRtspPlayer();
-    private int currentPaletteIndex = 0;
     private TextureView textureView;
+
+    private final SurgeRtspPlayer player = new SurgeRtspPlayer();
+    private SurgeSurface surface;
+    private boolean isPlaying = false;
 
     private static final Calendar calendar = Calendar.getInstance();
 
@@ -42,9 +49,16 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textureView = (TextureView) findViewById(R.id.textureView);
+
+        textureView = findViewById(R.id.textureView);
         textureView.setSurfaceTextureListener(this);
+
         player.delegate = this;
+        player.setInterleavedTransport(true);
+
+        player.setTLSCertificateValidationEnabled(false);
+        player.setTLSSelfSignedCertsAllowed(true);
+
         calendar.setTimeZone(TimeZone.getTimeZone("Europe/London"));
     }
 
@@ -52,15 +66,36 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
         logger.debug("textureView.isAvailable: {}", textureView.isAvailable());
 
-        SurgeSurface surface = new SurgeSurface(surfaceTexture, width, height);
+        drawSolidColorOnSurfaceTexture(Color.BLACK, surfaceTexture);
 
-        player.initiatePlaybackOf("rtsp://192.168.1.52:8554/test",
+        surface = new SurgeSurface(surfaceTexture, width, height);
+    }
+
+    public void startStream(View view) {
+        if (isPlaying) {
+            player.stop();
+        }
+
+        isPlaying = true;
+
+        EditText urlTextField = findViewById(R.id.url);
+        String url = urlTextField.getText().toString();
+
+        player.initiatePlaybackOf(url,
                 surface,
                 errorCode -> System.out.println("Finished starting stream"));
     }
 
+    public void stopStream(View view) {
+        if (isPlaying) {
+            isPlaying = false;
+            player.stop();
+        }
+    }
+
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        isPlaying = false;
         player.stop();
         return false;
     }
@@ -73,15 +108,6 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     }
 
-    public void seekBackAnHour(View view) {
-        logger.debug("Seeking back an hour");
-
-        calendar.add(Calendar.HOUR, -1);
-        Date timeAnHourago = calendar.getTime();
-
-        player.seek(timeAnHourago, null);
-    }
-
     @Override
     public void rtspPlayerDidTimeout() {
 
@@ -90,5 +116,25 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     @Override
     public void rtspPlayerDidUpdateFps(int fps) {
         logger.debug("Updated fps: " + fps);
+    }
+
+    private void seekBackAnHour(View view) {
+        logger.debug("Seeking back an hour");
+
+        calendar.add(Calendar.HOUR, -1);
+        Date timeAnHourago = calendar.getTime();
+
+        player.seek(timeAnHourago, null);
+    }
+
+    private void drawSolidColorOnSurfaceTexture(int color, SurfaceTexture surfaceTexture) {
+        Surface surface = new Surface(surfaceTexture);
+        Canvas canvas = surface.lockCanvas(null);
+        Paint painter = new Paint();
+        painter.setColor(color);
+        painter.setStyle(Paint.Style.FILL);
+        canvas.drawRect(0, 0, 0, 0, painter);
+        surface.unlockCanvasAndPost(canvas);
+        surface.release();
     }
 }

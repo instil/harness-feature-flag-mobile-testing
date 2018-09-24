@@ -21,19 +21,47 @@ namespace SurgeJni {
     class ClassLoader {
 
     public:
-        ClassLoader(JNIEnv *jniEnv);
+        static ClassLoader *Instance() {
+            return classLoaderSingleton;
+        }
 
+        static void AttachToJvm(JNIEnv *jniEnv) {
+            if (classLoaderSingleton != nullptr) {
+                delete classLoaderSingleton;
+            }
+
+            classLoaderSingleton = new ClassLoader(jniEnv);
+        }
+
+    private:
+        static ClassLoader *classLoaderSingleton;
+
+    public:
         jclass findClass(const char* name);
-
         JNIEnv* getEnv();
-        void detatchJniEnv();
+
+    private:
+        ClassLoader(JNIEnv *env);
+        ~ClassLoader();
+
+        void GenerateDetachKeyForJvm() {
+            pthread_key_create(&detachKey, DetatchJvmThread);
+        }
+
+        void DetachCurrentThread() {
+            jvm->DetachCurrentThread();
+        }
+
+        static void DetatchJvmThread(void *rawEnv) {
+            DEBUG("Detaching JVM Thread");
+            classLoaderSingleton->DetachCurrentThread();
+        }
 
     private:
         JavaVM *jvm;
         jobject classLoader;
         jmethodID findClassMethod;
-
-        bool jvmToBeDetatched = false;
+        pthread_key_t detachKey;
     };
 }
 

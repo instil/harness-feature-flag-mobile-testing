@@ -22,15 +22,23 @@ file(GLOB SurgeDependancies
   ${LIBUV_SRC_DIR}/unix/*.c)
 file(GLOB SurgeDependanciesExclude
   ${LIBUV_SRC_DIR}/unix/aix.c
+  ${LIBUV_SRC_DIR}/unix/aix-common.c
+  ${LIBUV_SRC_DIR}/unix/bsd-ifaddrs.c
+  ${LIBUV_SRC_DIR}/unix/cygwin.c
   ${LIBUV_SRC_DIR}/unix/darwin-proctitle.c
   ${LIBUV_SRC_DIR}/unix/darwin.c
   ${LIBUV_SRC_DIR}/unix/freebsd.c
   ${LIBUV_SRC_DIR}/unix/fsevents.c
+  ${LIBUV_SRC_DIR}/unix/ibmi.c
   ${LIBUV_SRC_DIR}/unix/kqueue.c
   ${LIBUV_SRC_DIR}/unix/netbsd.c
   ${LIBUV_SRC_DIR}/unix/openbsd.c
+  ${LIBUV_SRC_DIR}/unix/no-fsevents.c
+  ${LIBUV_SRC_DIR}/unix/no-proctitle.c
   ${LIBUV_SRC_DIR}/unix/os390.c
   ${LIBUV_SRC_DIR}/unix/os390-syscalls.c
+  ${LIBUV_SRC_DIR}/unix/posix-poll.c
+  ${LIBUV_SRC_DIR}/unix/posix-hrtime.c
   ${LIBUV_SRC_DIR}/unix/sunos.c)
 list(REMOVE_ITEM SurgeDependancies ${SurgeDependanciesExclude})
 

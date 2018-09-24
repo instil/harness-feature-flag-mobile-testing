@@ -98,7 +98,7 @@ std::string Surge::Transport::ResolveHostnameToIP(const std::string& host, const
     char ip[128] = { 0 };
     
     auto request = m_loop->resource<uvw::GetAddrInfoReq>();
-    auto result = request->getNodeAddrInfoSync(host);
+    auto result = request->nodeAddrInfoSync(host);
 
     if (result.second->ai_family == AF_INET) {
         uv_ip4_name((struct sockaddr_in*) result.second->ai_addr, ip, sizeof(ip));

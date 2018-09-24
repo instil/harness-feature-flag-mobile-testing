@@ -86,6 +86,8 @@
 		F412B948213EDA1400B4A7EA /* Url.cc in Sources */ = {isa = PBXBuildFile; fileRef = F412B947213EDA1400B4A7EA /* Url.cc */; };
 		F417EA2E20F3698500ED51EE /* SecureInterleavedTCPTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */; };
 		F417EA2F20F3698500ED51EE /* SecureInterleavedTCPTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */; };
+		F42DB20E2159238E009D0495 /* timer.c in Sources */ = {isa = PBXBuildFile; fileRef = F42DB20C2159238E009D0495 /* timer.c */; };
+		F42DB20F2159238E009D0495 /* uv-data-getter-setters.c in Sources */ = {isa = PBXBuildFile; fileRef = F42DB20D2159238E009D0495 /* uv-data-getter-setters.c */; };
 		F4388E4C1F333AD80064A24F /* UdpTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4388E4A1F333AD80064A24F /* UdpTransport.cc */; };
 		F4388E4D1F333AD80064A24F /* UdpTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F4388E4B1F333AD80064A24F /* UdpTransport.h */; };
 		F43E1C1220DA7DF900143083 /* Queue.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E1C1020DA7DF900143083 /* Queue.h */; };
@@ -105,13 +107,11 @@
 		F4589E111ED85627004F023D /* poll.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24B41ED8427A001B56E0 /* poll.c */; };
 		F4589E121ED85627004F023D /* process.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24B51ED8427A001B56E0 /* process.c */; };
 		F4589E131ED85627004F023D /* proctitle.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24B61ED8427A001B56E0 /* proctitle.c */; };
-		F4589E141ED85627004F023D /* pthread-barrier.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24B71ED8427A001B56E0 /* pthread-barrier.c */; };
 		F4589E151ED85627004F023D /* pthread-fixes.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24B81ED8427A001B56E0 /* pthread-fixes.c */; };
 		F4589E161ED85627004F023D /* signal.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24B91ED8427A001B56E0 /* signal.c */; };
 		F4589E171ED85627004F023D /* stream.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24BB1ED8427A001B56E0 /* stream.c */; };
 		F4589E181ED85627004F023D /* tcp.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24BC1ED8427A001B56E0 /* tcp.c */; };
 		F4589E191ED85627004F023D /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24BD1ED8427A001B56E0 /* thread.c */; };
-		F4589E1A1ED85627004F023D /* timer.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24BE1ED8427A001B56E0 /* timer.c */; };
 		F4589E1B1ED85627004F023D /* tty.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24BF1ED8427A001B56E0 /* tty.c */; };
 		F4589E1C1ED85627004F023D /* udp.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24C01ED8427A001B56E0 /* udp.c */; };
 		F45BDA9C1E1FB88F00496E62 /* fs-poll.c in Sources */ = {isa = PBXBuildFile; fileRef = F45BDA6C1E1FB88F00496E62 /* fs-poll.c */; };
@@ -243,6 +243,8 @@
 		F412B947213EDA1400B4A7EA /* Url.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Url.cc; path = ../../core/src/Url.cc; sourceTree = "<group>"; };
 		F417EA2C20F3698500ED51EE /* SecureInterleavedTCPTransport.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SecureInterleavedTCPTransport.cc; path = ../../core/src/SecureInterleavedTCPTransport.cc; sourceTree = "<group>"; };
 		F417EA2D20F3698500ED51EE /* SecureInterleavedTCPTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SecureInterleavedTCPTransport.h; path = ../../core/src/SecureInterleavedTCPTransport.h; sourceTree = "<group>"; };
+		F42DB20C2159238E009D0495 /* timer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = timer.c; path = "../../core/lib/libuv-cmake/libuv/src/timer.c"; sourceTree = "<group>"; };
+		F42DB20D2159238E009D0495 /* uv-data-getter-setters.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "uv-data-getter-setters.c"; path = "../../core/lib/libuv-cmake/libuv/src/uv-data-getter-setters.c"; sourceTree = "<group>"; };
 		F4388E4A1F333AD80064A24F /* UdpTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpTransport.cc; path = ../../core/src/UdpTransport.cc; sourceTree = "<group>"; };
 		F4388E4B1F333AD80064A24F /* UdpTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpTransport.h; path = ../../core/src/UdpTransport.h; sourceTree = "<group>"; };
 		F43E1C1020DA7DF900143083 /* Queue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = ../../core/src/Queue.h; sourceTree = "<group>"; };
@@ -298,14 +300,12 @@
 		F4FA24B41ED8427A001B56E0 /* poll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = poll.c; sourceTree = "<group>"; };
 		F4FA24B51ED8427A001B56E0 /* process.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = process.c; sourceTree = "<group>"; };
 		F4FA24B61ED8427A001B56E0 /* proctitle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = proctitle.c; sourceTree = "<group>"; };
-		F4FA24B71ED8427A001B56E0 /* pthread-barrier.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "pthread-barrier.c"; sourceTree = "<group>"; };
 		F4FA24B81ED8427A001B56E0 /* pthread-fixes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "pthread-fixes.c"; sourceTree = "<group>"; };
 		F4FA24B91ED8427A001B56E0 /* signal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = signal.c; sourceTree = "<group>"; };
 		F4FA24BA1ED8427A001B56E0 /* spinlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spinlock.h; sourceTree = "<group>"; };
 		F4FA24BB1ED8427A001B56E0 /* stream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stream.c; sourceTree = "<group>"; };
 		F4FA24BC1ED8427A001B56E0 /* tcp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tcp.c; sourceTree = "<group>"; };
 		F4FA24BD1ED8427A001B56E0 /* thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = thread.c; sourceTree = "<group>"; };
-		F4FA24BE1ED8427A001B56E0 /* timer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = timer.c; sourceTree = "<group>"; };
 		F4FA24BF1ED8427A001B56E0 /* tty.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tty.c; sourceTree = "<group>"; };
 		F4FA24C01ED8427A001B56E0 /* udp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udp.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -481,6 +481,8 @@
 		F45BDA6B1E1FB86F00496E62 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				F42DB20C2159238E009D0495 /* timer.c */,
+				F42DB20D2159238E009D0495 /* uv-data-getter-setters.c */,
 				F45BDA6C1E1FB88F00496E62 /* fs-poll.c */,
 				F45BDA6D1E1FB88F00496E62 /* heap-inl.h */,
 				F45BDA6E1E1FB88F00496E62 /* inet.c */,
@@ -515,14 +517,12 @@
 				F4FA24B41ED8427A001B56E0 /* poll.c */,
 				F4FA24B51ED8427A001B56E0 /* process.c */,
 				F4FA24B61ED8427A001B56E0 /* proctitle.c */,
-				F4FA24B71ED8427A001B56E0 /* pthread-barrier.c */,
 				F4FA24B81ED8427A001B56E0 /* pthread-fixes.c */,
 				F4FA24B91ED8427A001B56E0 /* signal.c */,
 				F4FA24BA1ED8427A001B56E0 /* spinlock.h */,
 				F4FA24BB1ED8427A001B56E0 /* stream.c */,
 				F4FA24BC1ED8427A001B56E0 /* tcp.c */,
 				F4FA24BD1ED8427A001B56E0 /* thread.c */,
-				F4FA24BE1ED8427A001B56E0 /* timer.c */,
 				F4FA24BF1ED8427A001B56E0 /* tty.c */,
 				F4FA24C01ED8427A001B56E0 /* udp.c */,
 			);
@@ -887,7 +887,7 @@
 				42D672431D3069BB00D42C35 /* SessionDescriptionV0.cc in Sources */,
 				F4589E1B1ED85627004F023D /* tty.c in Sources */,
 				F45BDAC81E1FB88F00496E62 /* uv-common.c in Sources */,
-				F4589E1A1ED85627004F023D /* timer.c in Sources */,
+				F42DB20E2159238E009D0495 /* timer.c in Sources */,
 				F45BDAA11E1FB88F00496E62 /* threadpool.c in Sources */,
 				42D672521D3069BB00D42C35 /* WaitableEvents.cc in Sources */,
 				F4589E1C1ED85627004F023D /* udp.c in Sources */,
@@ -895,9 +895,9 @@
 				42D6724B1D3069BB00D42C35 /* Thread.cc in Sources */,
 				42D672111D3069BB00D42C35 /* BitstreamReader.cc in Sources */,
 				F4589E0F1ED85627004F023D /* loop.c in Sources */,
-				F4589E141ED85627004F023D /* pthread-barrier.c in Sources */,
 				F45BDA9C1E1FB88F00496E62 /* fs-poll.c in Sources */,
 				F4589E041ED85627004F023D /* async.c in Sources */,
+				F42DB20F2159238E009D0495 /* uv-data-getter-setters.c in Sources */,
 				F412B948213EDA1400B4A7EA /* Url.cc in Sources */,
 				F45BDACA1E1FB88F00496E62 /* version.c in Sources */,
 				42D672301D3069BB00D42C35 /* Mutex.cc in Sources */,

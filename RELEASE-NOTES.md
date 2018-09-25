@@ -15,6 +15,7 @@
 
 ###### Misc
 
+* Updated the libuv dependency to v1.23.1.
 * Major refactor to the Core RTSP Client, reorganising code into smaller, easier to read and more easily testable classes.
 
 

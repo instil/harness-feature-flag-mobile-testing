@@ -310,7 +310,7 @@ private:
 - (void)play:(void (^)(RtspErrorCode)) callback {
     SurgeLogInfo(@"Starting/resuming playback of %@", self.url);
     self.client->Play([=](Surge::RtspResponse *playResponse) {
-                          if (callback) {
+                          if (playResponse) {
                               callback((RtspErrorCode)playResponse->GetCode());
                           } else {
                               callback(RtspErrorCodeUnknownFailure);

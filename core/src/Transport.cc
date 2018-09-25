@@ -127,6 +127,7 @@ void Surge::Transport::ArbitraryDataTransaction(const char *data, const size_t l
 
     SafeRunLibuvCommand([&]() {
         m_tcp->write(GenerateRtspDataPtr((char *) data, length), length);
+        this->StartRtspTimer();
         m_tcp->read();
     });
 }
@@ -155,6 +156,10 @@ std::unique_ptr<char[]> Surge::Transport::GenerateRtspDataPtr(char *data, size_t
 }
 
 void Surge::Transport::AttachCallbacksToLibuv() {
+    m_tcp->clear();
+    m_timer->clear();
+    m_libuvCloser->clear();
+
     m_tcp->on<uvw::ErrorEvent>([this](const uvw::ErrorEvent &error, uvw::TcpHandle &tcp) {
         ERROR("ERROR");
         NotifyDelegateOfReadFailure();
@@ -170,7 +175,6 @@ void Surge::Transport::AttachCallbacksToLibuv() {
 
     m_tcp->on<uvw::WriteEvent>([this](const uvw::WriteEvent &writeEvent, uvw::TcpHandle &tcp) {
         DEBUG("Sent request to stream, wait for a response");
-        this->StartRtspTimer();
     });
 
     m_tcp->on<uvw::DataEvent>([this](const uvw::DataEvent &dataEvent, uvw::TcpHandle &tcp) {
@@ -277,7 +281,6 @@ bool Surge::Transport::HandleRtspPacket() {
             rtspCallback(new Response(rtsp_buffer, rtsp_buffer_length));
         }
         
-        StopRtspTimer();
         RemoveDataFromStartOfBuffer(rtsp_buffer_length);
     } else {
         return false;

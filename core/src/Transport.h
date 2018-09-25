@@ -9,6 +9,7 @@
 #include "ITransportInterface.h"
 #include "StoppableThread.h"
 #include "Constants.h"
+#include "TransportDelegate.h"
 
 #include "uvw.hpp"
 
@@ -16,7 +17,7 @@ namespace Surge {
     class Transport : public ITransportInterface, private SurgeUtil::Runnable {
     
     public:
-        Transport(ISocketHandlerDelegate *delegate);
+        Transport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate);
         ~Transport();
         
     public:
@@ -30,10 +31,6 @@ namespace Surge {
         
         void SetDelegate(ISocketHandlerDelegate * const delegate) override {
             m_delegate = delegate;
-        }
-        
-        void SetRtpCallback(std::function<void(RtpPacket*)> callback) override {
-            rtpCallback = callback;
         }
         
         bool IsRunning() override {
@@ -103,9 +100,9 @@ namespace Surge {
         std::atomic<bool> executingLibuvCommand;
 
         ISocketHandlerDelegate *m_delegate;
+        TransportDelegate *transportDelegate;
         
         std::vector<unsigned char> m_receivedBuffer;
-        std::function<void(RtpPacket*)> rtpCallback;
     };
 }
 

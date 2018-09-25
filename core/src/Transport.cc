@@ -8,7 +8,7 @@
 using SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
 
 
-Surge::Transport::Transport(ISocketHandlerDelegate *delegate) : m_rtspTimeoutTime(uvw::TimerHandle::Time(DEFAULT_TRANSACTION_TIMEOUT_MS)), m_threadRunning(false), executingLibuvCommand(false), m_delegate(delegate)
+Surge::Transport::Transport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate) : m_rtspTimeoutTime(uvw::TimerHandle::Time(DEFAULT_TRANSACTION_TIMEOUT_MS)), m_threadRunning(false), executingLibuvCommand(false), m_delegate(delegate), transportDelegate(transportDelegate)
 { }
 
 Surge::Transport::~Transport() {

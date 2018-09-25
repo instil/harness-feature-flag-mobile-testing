@@ -9,12 +9,11 @@ using SurgeUtil::Constants::DEFAULT_RTP_INTERLEAVED_CHANNEL;
 using SurgeUtil::Constants::DEFAULT_RTCP_INTERLEAVED_CHANNEL;
 using SurgeUtil::Constants::DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE;
 
-Surge::InterleavedRtspTransport::InterleavedRtspTransport(ISocketHandlerDelegate * const delegate, TransportDelegate * const transportDelegate):
-Transport(delegate),
+Surge::InterleavedRtspTransport::InterleavedRtspTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate * const delegate):
+Transport(transportDelegate, delegate),
 m_readBufferSize(DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE),
 m_rtpInterleavedChannel(DEFAULT_RTP_INTERLEAVED_CHANNEL),
-m_rtcpInterleavedChannel(DEFAULT_RTCP_INTERLEAVED_CHANNEL),
-transportDelegate(transportDelegate) { }
+m_rtcpInterleavedChannel(DEFAULT_RTCP_INTERLEAVED_CHANNEL) { }
 
 bool Surge::InterleavedRtspTransport::HandlePacket(const char* buffer, size_t size) {
     if (!BufferContainsRtpPacket()) {
@@ -31,7 +30,7 @@ bool Surge::InterleavedRtspTransport::HandlePacket(const char* buffer, size_t si
     
     if (have_whole_packet && channel == m_rtpInterleavedChannel) {
         try {
-            if (rtpCallback != nullptr) {
+            if (transportDelegate != nullptr) {
                 RtpPacket* pack = new RtpPacket(&(m_receivedBuffer[4]), packet_length);
                 transportDelegate->RtpPacketReceived(pack);
             } else {

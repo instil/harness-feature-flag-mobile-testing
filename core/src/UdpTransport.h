@@ -18,7 +18,7 @@ namespace Surge {
     class UdpTransport : public Transport {
         
     public:
-        UdpTransport(ISocketHandlerDelegate *delegate);
+        UdpTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate);
         ~UdpTransport();
         
         void StopRunning() override;

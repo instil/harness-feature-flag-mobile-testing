@@ -10,7 +10,7 @@
 
 #include "Logging.h"
 
-Surge::SecureInterleavedTCPTransport::SecureInterleavedTCPTransport(ITLSClient *tlsClient, ISocketHandlerDelegate *delegate, TransportDelegate *test) : tlsClient(tlsClient), Surge::InterleavedRtspTransport(delegate, test) { }
+Surge::SecureInterleavedTCPTransport::SecureInterleavedTCPTransport(ITLSClient *tlsClient, TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate) : tlsClient(tlsClient), Surge::InterleavedRtspTransport(transportDelegate, delegate) { }
 
 Surge::SecureInterleavedTCPTransport::~SecureInterleavedTCPTransport() {
     if (tlsClient != nullptr) {

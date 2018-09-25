@@ -6,7 +6,7 @@
 #include "UdpTransport.h"
 #include "Logging.h"
 
-Surge::UdpTransport::UdpTransport(ISocketHandlerDelegate *delegate) : Surge::Transport(delegate) {
+Surge::UdpTransport::UdpTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate) : Surge::Transport(transportDelegate, delegate) {
     m_rtpClientPort = GetRandomRtpPort();
 }
 
@@ -62,11 +62,11 @@ void Surge::UdpTransport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(in
 }
 
 bool Surge::UdpTransport::HandleRtpPacket(const char* data, size_t size) {
-    if (rtpCallback != nullptr) {
+    if (transportDelegate != nullptr) {
         RtpPacket* pack = new RtpPacket((unsigned char*)data, size);
-        rtpCallback(pack);
+        transportDelegate->RtpPacketReceived(pack);
     }
-    
+
     return true;
 }
 

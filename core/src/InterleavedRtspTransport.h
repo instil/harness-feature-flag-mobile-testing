@@ -13,7 +13,7 @@
 namespace Surge {
     class InterleavedRtspTransport : public Surge::Transport {
     public:
-        InterleavedRtspTransport(ISocketHandlerDelegate * const delegate, TransportDelegate * const transportDelegate);
+        InterleavedRtspTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate * const delegate);
         
         std::string GetTransportHeaderString() const override {
             char rtp_channel[12];
@@ -51,8 +51,6 @@ namespace Surge {
         int m_readBufferSize;
         int m_rtpInterleavedChannel;
         int m_rtcpInterleavedChannel;
-
-        TransportDelegate *transportDelegate;
     };
 }
 

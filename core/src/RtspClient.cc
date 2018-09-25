@@ -75,7 +75,10 @@ Surge::RtspClient::~RtspClient() {
 }
 
 void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)> callback) {
-    // TODO: What to do if stream is connected?
+    if (transport != nullptr && transport->IsRunning()) {
+        INFO("Trying to open a conenction while another connection is already running. Forcing disconnection.");
+        Disconnect();
+    }
     
     this->url = url;
     isPlaying = false;
@@ -134,8 +137,6 @@ void Surge::RtspClient::SetTransport(std::string& url) {
 }
 
 void Surge::RtspClient::Disconnect() {
-    // TODO: Issue teardown if needed
-
     StopHousekeepingThread();
 
     if (transport->IsRunning()) {
@@ -148,7 +149,12 @@ void Surge::RtspClient::SetCredentials(const std::string& user, const std::strin
 }
 
 void Surge::RtspClient::Describe(std::function<void(Surge::DescribeResponse*)> callback) {
-    // TODO: Check for connection already established
+    if (transport == nullptr || !transport->IsRunning()) {
+        ERROR("Could not execute RTSP request - transport is not running, no connection is available.");
+        callback(nullptr);
+        return;
+    }
+
 
     DEBUG("Executing Auth calls");
 
@@ -179,6 +185,12 @@ void Surge::RtspClient::Describe(std::function<void(Surge::DescribeResponse*)> c
 }
 
 void Surge::RtspClient::Setup(const SessionDescription& sessionDescription, std::function<void(Surge::SetupResponse*)> callback) {
+    if (transport == nullptr || !transport->IsRunning()) {
+        ERROR("Could not execute RTSP request - transport is not running, no connection is available.");
+        callback(nullptr);
+        return;
+    }
+
     DEBUG("Sending SETUP request");
 
     this->sessionDescription = sessionDescription;
@@ -237,6 +249,12 @@ void Surge::RtspClient::CreateDepacketizer() {
 }
 
 void Surge::RtspClient::Play(std::function<void(Surge::RtspResponse*)> callback) {
+    if (transport == nullptr || !transport->IsRunning()) {
+        ERROR("Could not execute RTSP request - transport is not running, no connection is available.");
+        callback(nullptr);
+        return;
+    }
+
     DEBUG("Sending PLAY request");
 
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
@@ -265,6 +283,12 @@ void Surge::RtspClient::Play(std::function<void(Surge::RtspResponse*)> callback)
 }
 
 void Surge::RtspClient::Pause(std::function<void(Surge::RtspResponse*)> callback) {
+    if (transport == nullptr || !transport->IsRunning()) {
+        ERROR("Could not execute RTSP request - transport is not running, no connection is available.");
+        callback(nullptr);
+        return;
+    }
+
     DEBUG("Sending PAUSE request");
 
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
@@ -291,6 +315,12 @@ void Surge::RtspClient::Pause(std::function<void(Surge::RtspResponse*)> callback
 }
 
 void Surge::RtspClient::Options(std::function<void(Surge::RtspResponse*)> callback) {
+    if (transport == nullptr || !transport->IsRunning()) {
+        ERROR("Could not execute RTSP request - transport is not running, no connection is available.");
+        callback(nullptr);
+        return;
+    }
+
     DEBUG("Sending OPTIONS request");
 
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
@@ -315,6 +345,12 @@ void Surge::RtspClient::Options(std::function<void(Surge::RtspResponse*)> callba
 }
 
 void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callback) {
+    if (transport == nullptr || !transport->IsRunning()) {
+        ERROR("Could not execute RTSP request - transport is not running, no connection is available.");
+        callback(nullptr);
+        return;
+    }
+
     DEBUG("Sending TEARDOWN request");
 
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
@@ -341,6 +377,12 @@ void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callb
 }
 
 void Surge::RtspClient::KeepAlive(std::function<void(Surge::RtspResponse*)> callback) {
+    if (transport == nullptr || !transport->IsRunning()) {
+        ERROR("Could not execute RTSP request - transport is not running, no connection is available.");
+        callback(nullptr);
+        return;
+    }
+
     DEBUG("Sending Keep-Alive request");
 
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
@@ -389,15 +431,6 @@ void Surge::RtspClient::RtpPacketReceived(RtpPacket *packet) {
 void Surge::RtspClient::Run() {
     timeLastPacketWasProcessed = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
 
-    transport->SetRtpCallback([&](RtpPacket* packet) {
-        if (packet != nullptr) {
-            packetBuffer->AddPacketToBuffer(packet);
-
-            long long int test = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
-            timeLastPacketWasProcessed = test;
-        }
-    });
-
     while (true) {
         auto firedEvents = SurgeUtil::WaitableEvents::WaitFor({housekeepingThread.StopRequested()}, 1000);
 
@@ -444,7 +477,6 @@ void Surge::RtspClient::Run() {
         }
     }
 
-    transport->SetRtpCallback([&](RtpPacket* packet) { delete packet; });
     INFO("Rtsp Client is Finished");
 }
 

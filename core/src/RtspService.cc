@@ -89,7 +89,11 @@ void Surge::RtspService::Setup(const SessionDescription& sessionDescription, std
 }
 
 void Surge::RtspService::Play(const SurgeUtil::DateTime *startTime, const SurgeUtil::DateTime *endTime, std::function<void(Surge::RtspResponse*)> callback) {
-    // TODO: No session set error handling
+    if (session.empty()) {
+        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        callback(nullptr);
+        return;
+    }
 
     RtspCommand* play;
 
@@ -128,7 +132,11 @@ void Surge::RtspService::Play(const SurgeUtil::DateTime *startTime, const SurgeU
 }
 
 void Surge::RtspService::Pause(std::function<void(Surge::RtspResponse*)> callback) {
-    // TODO: No session set error handling
+    if (session.empty()) {
+        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        callback(nullptr);
+        return;
+    }
 
     RtspCommand* pause = RtspCommandFactory::PauseRequest(streamUrl, session, NextSequenceNumber());
     transport->RtspTransaction(pause, [=](Response *raw_resp) {
@@ -157,7 +165,11 @@ void Surge::RtspService::Pause(std::function<void(Surge::RtspResponse*)> callbac
 }
 
 void Surge::RtspService::Options(std::function<void(Surge::RtspResponse*)> callback) {
-    // TODO: No session set error handling
+    if (session.empty()) {
+        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        callback(nullptr);
+        return;
+    }
 
     RtspCommand* options = RtspCommandFactory::OptionsRequest(streamUrl, session, NextSequenceNumber());
     transport->RtspTransaction(options, [callback](Response *raw_resp) {
@@ -183,7 +195,11 @@ void Surge::RtspService::Options(std::function<void(Surge::RtspResponse*)> callb
 }
 
 void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> callback) {
-    // TODO: No session set error handling
+    if (session.empty()) {
+        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        callback(nullptr);
+        return;
+    }
 
     RtspCommand* teardown = RtspCommandFactory::TeardownRequest(streamUrl, session, NextSequenceNumber());
     transport->RtspTransaction(teardown, [callback](Response *raw_resp) {
@@ -211,7 +227,11 @@ void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> call
 }
 
 void Surge::RtspService::KeepAlive(std::function<void(Surge::RtspResponse*)> callback) {
-    // TODO: No session set error handling
+    if (session.empty()) {
+        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        callback(nullptr);
+        return;
+    }
 
     RtspCommand* keep_alive = RtspCommandFactory::KeepAliveRequest(streamUrl, session, NextSequenceNumber());
     transport->RtspTransaction(keep_alive, [callback](Response *raw_resp) {

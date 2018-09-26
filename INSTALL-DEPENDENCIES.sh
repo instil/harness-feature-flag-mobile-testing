@@ -4,10 +4,10 @@
 
 printHelp() {
 	echo ""
-	echo "Surge FIRST-RUN script usage:"
+	echo "Surge Install Dependencies script usage:"
 	echo ""
-	echo "./FIRST-RUN.sh: Checks out the repositories submodules and builds those that need compilation."
-	echo "./FIRST-RUN.sh --no-build: Checks out the repositories submodules but downloads the binaries for the compilation-required libraries."
+	echo "./INSTALL-DEPENDENCIES.sh: Checks out the repositories submodules and builds those that need compilation."
+	echo "./INSTALL-DEPENDENCIES.sh --no-build: Checks out the repositories submodules but downloads the binaries for the compilation-required libraries."
 	echo ""
 }
 

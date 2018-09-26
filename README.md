@@ -36,16 +36,16 @@ A Gradle project is located under `android/build.gradle`, which contains the And
 
 ## Building
 
-Prior to building the library ensure that you have cloned the project and acquired all its required dependencies by running the first run script.
+Prior to building the library ensure that you have cloned the project and acquired all its required dependencies by running the first-run Install Dependencies script.
 
 ```bash
-$ ./FIRST-RUN.sh
+$ ./INSTALL-DEPENDENCIES.sh
 ```
 
 Note that this script takes a while to complete due to the OpenSSL dependency - on average it takes around 20 minutes to build. If you need the dependencies quickly, you can use the following to download pre-built binaries of all dependencies that require compilation.
 
 ```bash
-$ ./FIRST-RUN.sh --no-build
+$ ./INSTALL-DEPENDENCIES.sh --no-build
 ```
 
 ### iOS

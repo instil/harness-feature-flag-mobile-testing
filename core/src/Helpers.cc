@@ -71,8 +71,8 @@ int SurgeUtil::RandomEvenNumberBetween(int min, int max) {
     return 2 * (rand() % (max - min)) + min;
 }
 
-bool SurgeUtil::StringEqualsInsensitive(const std::string &one, const std::string &two) {
-    return std::equal(one.begin(), one.end(), two.begin(), two.end(), StringEqualsInsensitivePredicate());
+bool SurgeUtil::CaseInsensitiveStringEquals(const std::string &firstString, const std::string &secondString) {
+    return std::equal(firstString.begin(), firstString.end(), secondString.begin(), secondString.end(), CaseInsensitiveStringEqualsPredicate());
 }
 
 std::string SurgeUtil::IntToFixedLengthString(const unsigned int input, const unsigned int length) {

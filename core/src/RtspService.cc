@@ -8,11 +8,13 @@
 
 #include "RtspService.h"
 
+#define NO_SESSION_AVAILABLE_ERROR "Session is not set, you must first execute a successful SETUP command before running this method."
+
 Surge::RtspService::RtspService() : transport(nullptr), authService(nullptr), sequenceNumber(1), sessionDescriptionFactory(new SessionDescriptionFactory()), session() { }
 
 Surge::RtspService::~RtspService() {
     if (sessionDescriptionFactory != nullptr) {
-        delete  sessionDescriptionFactory;
+        delete sessionDescriptionFactory;
     }
 }
 
@@ -90,7 +92,7 @@ void Surge::RtspService::Setup(const SessionDescription& sessionDescription, std
 
 void Surge::RtspService::Play(const SurgeUtil::DateTime *startTime, const SurgeUtil::DateTime *endTime, std::function<void(Surge::RtspResponse*)> callback) {
     if (session.empty()) {
-        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        ERROR(NO_SESSION_AVAILABLE_ERROR);
         callback(nullptr);
         return;
     }
@@ -133,7 +135,7 @@ void Surge::RtspService::Play(const SurgeUtil::DateTime *startTime, const SurgeU
 
 void Surge::RtspService::Pause(std::function<void(Surge::RtspResponse*)> callback) {
     if (session.empty()) {
-        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        ERROR(NO_SESSION_AVAILABLE_ERROR);
         callback(nullptr);
         return;
     }
@@ -166,7 +168,7 @@ void Surge::RtspService::Pause(std::function<void(Surge::RtspResponse*)> callbac
 
 void Surge::RtspService::Options(std::function<void(Surge::RtspResponse*)> callback) {
     if (session.empty()) {
-        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        ERROR(NO_SESSION_AVAILABLE_ERROR);
         callback(nullptr);
         return;
     }
@@ -196,7 +198,7 @@ void Surge::RtspService::Options(std::function<void(Surge::RtspResponse*)> callb
 
 void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> callback) {
     if (session.empty()) {
-        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        ERROR(NO_SESSION_AVAILABLE_ERROR);
         callback(nullptr);
         return;
     }
@@ -228,7 +230,7 @@ void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> call
 
 void Surge::RtspService::KeepAlive(std::function<void(Surge::RtspResponse*)> callback) {
     if (session.empty()) {
-        ERROR("Session is not set, you must first successfully execute a SETUP command beroe running this method.");
+        ERROR(NO_SESSION_AVAILABLE_ERROR);
         callback(nullptr);
         return;
     }
@@ -244,7 +246,7 @@ void Surge::RtspService::KeepAlive(std::function<void(Surge::RtspResponse*)> cal
         try {
             resp = new RtspResponse(raw_resp);
         } catch (const std::exception& e) {
-            ERROR("Invalid KeepaliveResponse: " << e.what());
+            ERROR("Invalid Keep-alive Response: " << e.what());
             resp = nullptr;
         }
 

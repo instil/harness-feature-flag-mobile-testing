@@ -10,7 +10,7 @@
 @protocol SurgeAuthenticator<NSObject>
 
 @optional
--(NSArray*) authenticationHeadersForUsername:(NSString*)username andPassword:(NSString*)password;
--(NSData*) firstBytesOnTheWireAuthenticationWithUsername:(NSString*)username andPassword:(NSString*)password;
+- (NSArray *)authenticationHeadersForUsername:(NSString *)username andPassword:(NSString *)password;
+- (NSData *)firstBytesOnTheWireAuthenticationWithUsername:(NSString *)username andPassword:(NSString *)password;
 
 @end

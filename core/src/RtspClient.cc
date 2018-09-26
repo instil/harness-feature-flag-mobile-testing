@@ -83,7 +83,7 @@ void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)
     this->url = url;
     isPlaying = false;
 
-    SetTransport(this->url);
+    GenerateTransportFromUrl(this->url);
 
     SurgeUtil::Url url_model(url);
 
@@ -96,7 +96,7 @@ void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)
     });
 }
 
-void Surge::RtspClient::SetTransport(std::string& url) {
+void Surge::RtspClient::GenerateTransportFromUrl(std::string& url) {
     if (transport != nullptr) {
         delete transport;
     }

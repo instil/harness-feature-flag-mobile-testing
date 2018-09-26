@@ -65,7 +65,7 @@ namespace Surge {
         void KeepAlive(std::function<void(Surge::RtspResponse*)> callback);
 
     private:
-        void SetTransport(std::string& url);
+        void GenerateTransportFromUrl(std::string& url);
         void CreateDepacketizer();
 
         void StartHousekeepingThread();

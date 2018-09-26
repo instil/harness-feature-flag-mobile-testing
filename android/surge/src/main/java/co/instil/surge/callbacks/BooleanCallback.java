@@ -8,7 +8,7 @@
 package co.instil.surge.callbacks;
 
 /**
- *
+ * Java callback interface to allow a user to define a callback that provides a boolean response.
  */
 public interface BooleanCallback {
     void response(boolean result);

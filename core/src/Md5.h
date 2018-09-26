@@ -30,4 +30,4 @@ namespace SurgeUtil {
     }
 }
 
-#endif /* NotMd5_h */
+#endif /* Md5_h */

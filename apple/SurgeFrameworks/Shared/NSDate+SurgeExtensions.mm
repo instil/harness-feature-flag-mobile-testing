@@ -7,7 +7,7 @@
 
 @implementation NSDate (SurgeExtensions)
 
-- (SurgeUtil::DateTime *) toSurgeDateTime {
+- (SurgeUtil::DateTime *)toSurgeDateTime {
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
     [calendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];

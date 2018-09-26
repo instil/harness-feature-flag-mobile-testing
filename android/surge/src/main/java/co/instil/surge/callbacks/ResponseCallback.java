@@ -10,9 +10,8 @@ package co.instil.surge.callbacks;
 import co.instil.surge.client.Response;
 
 /**
- * Created by paulshields on 05/04/2017.
+ * Java callback interface to allow a user to define a callback that provides a HTTP response object as a response.
  */
-
 public interface ResponseCallback {
     void response(Response response);
 }

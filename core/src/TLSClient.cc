@@ -62,34 +62,26 @@ void Surge::TLSClient::InitializeOpenSSL() {
 }
 
 void Surge::TLSClient::GenerateSSLContext() {
-    // Support all TLS/SSL versions?
     const SSL_METHOD* method = SSLv23_method();
     if (method == NULL) {
-        ERROR("Error?");
+        ERROR("TLS: Could not define the methods of TLS encryption we accept.");
     }
 
-    // Creates a new SSL_CTX object as framework to establish TLS/SSL enabled connections.
     sslContext = SSL_CTX_new(method);
     if (sslContext == NULL) {
-        ERROR("Error?");
+        ERROR("TLS: Could not generate an initial SSL context.");
     }
 
-    // Verify vertificate callback
     SSL_CTX_set_verify(sslContext, SSL_VERIFY_PEER, VerifyCertificate);
-
-    //
     SSL_CTX_set_read_ahead(sslContext, true);
-
     SSL_CTX_load_verify_locations(sslContext, trustedCertificate.c_str(), NULL);
     SSL_CTX_set_verify_depth(sslContext, 4);
 
-    // Disables SSL & compression support
     const long flags = SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION;
     SSL_CTX_set_options(sslContext, flags);
 }
 
 void Surge::TLSClient::SetupSSL() {
-    // Creates a new SSL structure which is needed to hold the data for a TLS/SSL connection
     ssl = SSL_new(sslContext);
 
     // Set SSL object to client mode
@@ -99,11 +91,8 @@ void Surge::TLSClient::SetupSSL() {
     // where data written to either half of the pair is buffered and can be read from the other half.
     // Very useful: https://www.openssl.org/docs/man1.1.0/crypto/BIO_s_bio.html
     BIO_new_bio_pair(&appBio, 0, &openSSLBio, 0);
-
-    // Connects the BIOs rbio and wbio for the read and write operations of the TLS/SSL (encrypted) side of ssl.
     SSL_set_bio(ssl, openSSLBio, openSSLBio);
 
-    // Store a pointer to this object in the SSL client so it can be accessed in any (static) callback functions.
     StoreItemInSSLObject(ssl, SSL_TLS_CLIENT_STORE_LOCATION, this);
 }
 

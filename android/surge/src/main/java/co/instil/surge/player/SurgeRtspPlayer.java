@@ -429,15 +429,15 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     /**
      * Enables/disables TLS certificate validation when streaming from a TLS protected RTSP stream. Default: true.
-     * @param tlsCertificateValidationEnabled Enable/disbale disables TLS certificate validation.
+     * @param tlsCertificateValidationEnabled Enable/disable disables TLS certificate validation.
      */
     public void setTLSCertificateValidationEnabled(boolean tlsCertificateValidationEnabled) {
         rtspClient.setTLSCertificateValidationEnabled(tlsCertificateValidationEnabled);
     }
 
     /**
-     * Is TLS certificate validation when streaming from a TLS protected RTSP stream enabled or disabled?
-     * @return Is TLS certificate validation when streaming from a TLS protected RTSP stream enabled or disabled?
+     * Is TLS certificate validation enabled or disabled, when streaming from a TLS protected RTSP stream?
+     * @return Is TLS certificate validation enabled or disabled, when streaming from a TLS protected RTSP stream?
      */
     public boolean isTLSCertificateValidationEnabled() {
         return rtspClient.isTLSCertificateValidationEnabled();
@@ -445,7 +445,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     /**
      * Allows/disallows self signed TLS certificates from being used when streaming from a TLS protected RTSP stream. Default: true.
-     * @param tlsSelfSignedCertsAllowed Allowed/disallow self signed TLS certificates.
+     * @param tlsSelfSignedCertsAllowed Allow/disallow self signed TLS certificates.
      */
     public void setTLSSelfSignedCertsAllowed(boolean tlsSelfSignedCertsAllowed) {
         rtspClient.setTLSSelfSignedCertsAllowed(tlsSelfSignedCertsAllowed);
@@ -453,7 +453,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     /**
      * Are self signed certifiates allowed for streaming from a TLS protected RTSP stream?
-     * @return Are self signed certifiates allowed for streaming from a TLS protected RTSP stream?
+     * @return True if self signed certificates are allowed for streaming from a TLS protected RTSP stream, otherwise false
      */
     public boolean tlsSelfSignedCertsAllowed() {
         return rtspClient.tlsSelfSignedCertsAllowed();
@@ -469,8 +469,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     /**
      * Optional: The path to a trusted root certificate used to validate a TLS certificate received through the TLS handshaking process.
-     * @param rawResourceId ID of the raw resource pointing tot he root certificate to load into Surge.
-     * @param context Context fo the running app.
+     * @param rawResourceId ID of the raw resource pointing to the root certificate to load into Surge.
+     * @param context Context of the running app.
      */
     public void setTLSTrustedCertificate(int rawResourceId, Context context) {
         File cachefile = extractResourceIntoCacheFile(rawResourceId, context);
@@ -486,8 +486,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     }
 
     /**
-     * Optional: Sets a custom authenticator to be used to authenticate Surge with stream.
-     * @param authenticator Custom authenticator to be used to authenticate Surge with stream.
+     * Optional: Sets a custom authenticator to be used to authenticate Surge with a stream.
+     * @param authenticator Custom authenticator to be used to authenticate Surge with a stream.
      */
     public void SetAuthenticator(SurgeAuthenticator authenticator) {
         if (customAuthenticator != null) {

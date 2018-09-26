@@ -10,7 +10,7 @@ package co.instil.surge.callbacks;
 import co.instil.surge.player.RtspErrorCode;
 
 /**
- *
+ * Java callback interface to allow a user to define a callback that provides an RTSP error code as a response.
  */
 public interface PlayerCallback {
     void response(RtspErrorCode errorCode);

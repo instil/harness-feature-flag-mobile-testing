@@ -12,6 +12,6 @@
 /**
  * Convert an NSDate object into a Surge compatible DateTime object
  */
-- (SurgeUtil::DateTime *) toSurgeDateTime;
+- (SurgeUtil::DateTime *)toSurgeDateTime;
 
 @end

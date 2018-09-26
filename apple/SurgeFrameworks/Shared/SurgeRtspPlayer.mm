@@ -468,7 +468,7 @@ private:
     }
 }
 
-- (bool)tlsCertificateVerificationEnabled {
+- (BOOL)tlsCertificateVerificationEnabled {
     return self.client->IsTLSCertificateValidationEnabled();
 }
 
@@ -476,7 +476,7 @@ private:
     self.client->SetTLSCertificateValidationEnabled(tlsCertificateVerificationEnabled);
 }
 
-- (bool)tlsSelfSignedCertificateAllowed {
+- (BOOL)tlsSelfSignedCertificateAllowed {
     return self.client->IsTLSCertificateValidationEnabled();
 }
 
@@ -485,7 +485,7 @@ private:
 }
 
 - (void)setTlsTrustedCertificatePath:(NSURL *)tlsTrustedCertificatePath {
-    if (![tlsTrustedCertificatePath isFileURL]) {
+    if (!tlsTrustedCertificatePath.isFileURL) {
         [NSException raise:@"Invalid Trusted Certificate Path" format:@"URI provided is not a local file URL"];
     }
 

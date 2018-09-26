@@ -53,7 +53,7 @@ namespace Surge {
 
     private:
         DigestAlgorithm DigestAlgorithmFromString(std::string value) {
-            if (SurgeUtil::StringEqualsInsensitive(value, "MD5-Sess")) {
+            if (SurgeUtil::CaseInsensitiveStringEquals(value, "MD5-Sess")) {
                 return MD5SESS;
             }
 
@@ -62,9 +62,9 @@ namespace Surge {
         }
 
         DigestQop DigestQopFromString(std::string value) {
-            if (SurgeUtil::StringEqualsInsensitive(value, "auth")) {
+            if (SurgeUtil::CaseInsensitiveStringEquals(value, "auth")) {
                 return AUTH;
-            } else if (SurgeUtil::StringEqualsInsensitive(value, "auth-int")) {
+            } else if (SurgeUtil::CaseInsensitiveStringEquals(value, "auth-int")) {
                 return AUTH_INT;
             }
 

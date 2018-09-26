@@ -54,7 +54,8 @@ namespace Surge {
         SurgeUtil::Queue<std::function<void()>> taskQueue;
 
         SurgeUtil::FireableEvent taskAvailableEvent;
-        SurgeUtil::StoppableThread dispatchThread;    };
+        SurgeUtil::StoppableThread dispatchThread;
+    };
 }
 
 #endif /* DispatchQueue_h */

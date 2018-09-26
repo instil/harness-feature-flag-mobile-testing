@@ -27,7 +27,7 @@ void Surge::RtpPacketBuffer::AddToBuffer(RtpPacket *packet) {
             LogMissedPackets(numPacketsLost);
         }
 
-            RtpPacketBufferItem item(packet, SurgeUtil::DateTime::CurrentTimeInMilliseconds() + bufferDelayMilliseconds);
+        RtpPacketBufferItem item(packet, SurgeUtil::DateTime::CurrentTimeInMilliseconds() + bufferDelayMilliseconds);
         buffer.push_back(item);
         return;
     }

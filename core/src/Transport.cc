@@ -118,6 +118,7 @@ void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function
     SafeRunLibuvCommand([&]() {
         m_tcp->write(GenerateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
                    command->PointerLength());
+        this->StartRtspTimer();
         m_tcp->read();
     });
 }
@@ -127,7 +128,6 @@ void Surge::Transport::ArbitraryDataTransaction(const char *data, const size_t l
 
     SafeRunLibuvCommand([&]() {
         m_tcp->write(GenerateRtspDataPtr((char *) data, length), length);
-        this->StartRtspTimer();
         m_tcp->read();
     });
 }

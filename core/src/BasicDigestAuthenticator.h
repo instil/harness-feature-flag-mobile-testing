@@ -51,6 +51,17 @@ namespace Surge {
         std::vector<std::string> BasicAuthHeaderFrom(const std::string &username, const std::string &password);
         std::vector<std::string> DigestAuthHeaderFrom(const std::string &url, const std::string &method, const std::string &username, const std::string &password);
 
+        std::string DigestHashOneFrom(const std::string &username,
+                                      const std::string &password,
+                                      const DigestAlgorithm &algorithm,
+                                      const DigestQop &qop);
+        std::string DigestHashTwoFrom(const std::string &method,
+                                      const std::string &url,
+                                      const DigestQop &qop);
+        std::string DigestResponseHashFrom(const std::string &hashOne,
+                                           const std::string &hashTwo,
+                                           const DigestQop &qop);
+
     private:
         DigestAlgorithm DigestAlgorithmFromString(std::string value) {
             if (SurgeUtil::CaseInsensitiveStringEquals(value, "MD5-Sess")) {

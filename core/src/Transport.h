@@ -58,8 +58,9 @@ namespace Surge {
                 m_delegate->RedirectReceived();
             }
         }
-        
-        std::unique_ptr<char[]> GenerateRtspDataPtr(char *data, size_t length);
+
+        void RtspTransaction(const char *data, const size_t length, std::function<void(Response*)> callback);
+        std::unique_ptr<char[]> GenerateRtspDataPtr(const char *data, size_t length);
         void SafeRunLibuvCommand(std::function<void()> commandsToRun);
         void AttachCallbacksToLibuv();
         virtual void RtspHandleReceive(const char* buffer, size_t size);

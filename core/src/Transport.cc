@@ -111,13 +111,17 @@ std::string Surge::Transport::ResolveHostnameToIP(const std::string& host, const
 }
 
 void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) {
+    RtspTransaction((char *)command->BytesPointer(), command->PointerLength(), callback);
+}
+
+void Surge::Transport::RtspTransaction(const char *data, const size_t length, std::function<void(Response*)> callback) {
     DEBUG("Sending command to server");
-    
+
     rtspCallback = callback;
-  
+
     SafeRunLibuvCommand([&]() {
-        m_tcp->write(GenerateRtspDataPtr((char *)command->BytesPointer(), command->PointerLength()),
-                   command->PointerLength());
+        m_tcp->write(GenerateRtspDataPtr(data, length),
+                     length);
         this->StartRtspTimer();
         m_tcp->read();
     });
@@ -149,7 +153,7 @@ void Surge::Transport::StopRtspTimer() {
     m_timer->stop();
 }
 
-std::unique_ptr<char[]> Surge::Transport::GenerateRtspDataPtr(char *data, size_t length) {
+std::unique_ptr<char[]> Surge::Transport::GenerateRtspDataPtr(const char *data, size_t length) {
     char *dataCopy = new char[length];
     memcpy(dataCopy, data, length);
     return std::unique_ptr<char[]>(dataCopy);

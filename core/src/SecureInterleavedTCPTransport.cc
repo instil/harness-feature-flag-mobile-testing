@@ -32,7 +32,6 @@ void Surge::SecureInterleavedTCPTransport::RtspTcpOpen(SurgeUtil::Url &url, std:
     });
 }
 
-/** TODO: Find a way to make more generic; leave writing to the socket to the superclass somehow */
 void Surge::SecureInterleavedTCPTransport::RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) {
     DEBUG("Sending TLS encrypted RTSP command to server");
 
@@ -44,11 +43,7 @@ void Surge::SecureInterleavedTCPTransport::RtspTransaction(const RtspCommand* co
         return;
     }
 
-    SafeRunLibuvCommand([&]() {
-        m_tcp->write(GenerateRtspDataPtr(response.Data(), response.Size()),
-                    response.Size());
-        m_tcp->read();
-    });
+    Transport::RtspTransaction(response.Data(), response.Size(), callback);
 }
 
 void Surge::SecureInterleavedTCPTransport::RtspHandleReceive(const char* buffer, size_t size) {

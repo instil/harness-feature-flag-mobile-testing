@@ -4,10 +4,10 @@ using UIKit;
 using Foundation;
 using ObjCRuntime;
 using CoreGraphics;
+using System.Collections.Generic;
 
-namespace SurgeXamariniOSBindings
-{
-	/*! \mainpage Surge
+namespace SurgeXamariniOSBindings {
+    /*! \mainpage Surge
      *
 	 * Surge is a high performance Real-Time Streaming Protocol (RTSP) and Real-Time Transport Protocol (RTP) implementation with support for multiple languages and platforms. RTP can handle many AV formats and Surge currently supports the most popular formats below.
 	 * 
@@ -16,56 +16,55 @@ namespace SurgeXamariniOSBindings
 	 * - MJPEG
 	 */
 
-	/// <summary>
-	/// The core class used to start and control playback of an RTSP stream on iOS.
-	/// </summary>
-	[BaseType(typeof(NSObject))]
-    public interface SurgeRtspPlayer
-    {
-		/// <summary>
-		/// Initiate playback of the RTSP stream.
-		/// 
-		/// This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
-		/// Once completed, Surge will notify the user of the requests result via the Surge RTSP delegate.
-		/// If successful, the video stream will start playing on the provided ImageView associated with the SurgeRtspPlayer#PlayerView property.
-		/// 
-		/// \sa SurgeRtspPlayerDelegate
-		/// </summary>
-		/// <param name="url">The RTSP stream URL.</param>
-		[Export("initiatePlaybackOf:")]
-		void InitiatePlaybackOf(NSUrl url);
+    /// <summary>
+    /// The core class used to start and control playback of an RTSP stream on iOS.
+    /// </summary>
+    [BaseType(typeof(NSObject))]
+    public interface SurgeRtspPlayer {
+        /// <summary>
+        /// Initiate playback of the RTSP stream.
+        /// 
+        /// This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
+        /// Once completed, Surge will notify the user of the requests result via the Surge RTSP delegate.
+        /// If successful, the video stream will start playing on the provided ImageView associated with the SurgeRtspPlayer#PlayerView property.
+        /// 
+        /// \sa SurgeRtspPlayerDelegate
+        /// </summary>
+        /// <param name="url">The RTSP stream URL.</param>
+        [Export("initiatePlaybackOf:")]
+        void InitiatePlaybackOf(NSUrl url);
 
-		/// <summary>
-		/// Initiate playback of a basic auth protected RTSP stream.
-		/// 
-		/// This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
-		/// Once completed, Surge will notify the user of the requests result via the Surge RTSP delegate.
-		/// If successful, the video stream will start playing on the provided ImageView associated with the SurgeRtspPlayer#PlayerView property.
-		/// 
-		/// \sa SurgeRtspPlayerDelegate
-		/// </summary>
-		/// <param name="url">The RTSP stream URL.</param>
-		/// <param name="username">Username used to authenticate the stream.</param>
-		/// <param name="password">Password associated with the provided username.</param>
-		[Export("initiatePlaybackOf:withUsername:andPassword:")]
+        /// <summary>
+        /// Initiate playback of a basic auth protected RTSP stream.
+        /// 
+        /// This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
+        /// Once completed, Surge will notify the user of the requests result via the Surge RTSP delegate.
+        /// If successful, the video stream will start playing on the provided ImageView associated with the SurgeRtspPlayer#PlayerView property.
+        /// 
+        /// \sa SurgeRtspPlayerDelegate
+        /// </summary>
+        /// <param name="url">The RTSP stream URL.</param>
+        /// <param name="username">Username used to authenticate the stream.</param>
+        /// <param name="password">Password associated with the provided username.</param>
+        [Export("initiatePlaybackOf:withUsername:andPassword:")]
         void InitiatePlaybackOf(NSUrl url, NSString username, NSString password);
 
-		/// <summary>
-		/// Initiate playback of the a basic auth protected RTSP stream.
-		/// 
-		/// This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
-		/// Once completed, Surge will notify the user of the requests result via the Surge RTSP delegate.
-		/// If successful, the video stream will start playing on the provided ImageView associated with the SurgeRtspPlayer#PlayerView property.
-		/// 
-		/// \sa SurgeRtspPlayerDelegate
-		/// </summary>
-		/// <param name="url">The RTSP stream URL.</param>
-		/// <param name="username">Username used to authenticate the stream.</param>
-		/// <param name="password">Password associated with the provided username.</param>
-		/// <param name="startTime">If the RTSP stream supports recorded video, timestamp to start playing video from.</param>
-		/// <param name="endTime">If the RTSP stream supports recorded video, timestamp to finish playing video at.</param>
-		[Export("initiatePlaybackOf:withUsername:andPassword:startingAt:andEndingAt:")]
-		void InitiatePlaybackOf(NSUrl url, NSString username, NSString password, NSDate startTime, [NullAllowed] NSDate endTime);
+        /// <summary>
+        /// Initiate playback of the a basic auth protected RTSP stream.
+        /// 
+        /// This will issue the required DESCRIBE, SETUP and PLAY RTSP requests to start stream playback.
+        /// Once completed, Surge will notify the user of the requests result via the Surge RTSP delegate.
+        /// If successful, the video stream will start playing on the provided ImageView associated with the SurgeRtspPlayer#PlayerView property.
+        /// 
+        /// \sa SurgeRtspPlayerDelegate
+        /// </summary>
+        /// <param name="url">The RTSP stream URL.</param>
+        /// <param name="username">Username used to authenticate the stream.</param>
+        /// <param name="password">Password associated with the provided username.</param>
+        /// <param name="startTime">If the RTSP stream supports recorded video, timestamp to start playing video from.</param>
+        /// <param name="endTime">If the RTSP stream supports recorded video, timestamp to finish playing video at.</param>
+        [Export("initiatePlaybackOf:withUsername:andPassword:startingAt:andEndingAt:")]
+        void InitiatePlaybackOf(NSUrl url, NSString username, NSString password, NSDate startTime, [NullAllowed] NSDate endTime);
 
         /// <summary>
         /// Stop playback of the stream, issuing the TEARDOWN RTSP request.
@@ -81,11 +80,11 @@ namespace SurgeXamariniOSBindings
         [Export("pause")]
         void Pause();
 
-		/// <summary>
-		/// Resumes playback of a paused stream.
-		/// </summary>
-		[Export("play")]
-		void Play();
+        /// <summary>
+        /// Resumes playback of a paused stream.
+        /// </summary>
+        [Export("play")]
+        void Play();
 
         /// <summary>
         /// The ImageView that Surge will use to play the RTSP video stream on.
@@ -100,110 +99,167 @@ namespace SurgeXamariniOSBindings
         /// side to ensure it does not get garbage collected.
         /// </summary>
         [Export("delegate")]
-		SurgeRtspPlayerDelegate ClientDelegate { get; set; }
+        SurgeRtspPlayerDelegate ClientDelegate { get; set; }
 
-		/// <summary>
-		/// Frames per second measured from the currently playing stream.
-		/// </summary>
-		[Export("framesPerSecond")]
-		int FramesPerSecond { get; }
+        /// <summary>
+        /// Frames per second measured from the currently playing stream.
+        /// </summary>
+        [Export("framesPerSecond")]
+        int FramesPerSecond { get; }
 
-		/// <summary>
-		/// Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal.
+        /// <summary>
+        /// Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal.
         /// 
         /// Default value: 5000ms
-		/// </summary>
-		[Export("timeout")]
-		int Timeout { get; set; }
+        /// </summary>
+        [Export("timeout")]
+        int Timeout { get; set; }
 
-		/// <summary>
-		/// If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
-		/// </summary>
-		[Export("interleavedTcpTransport")]
-		bool InterleavedTcpTransport { get; set; }
+        /// <summary>
+        /// If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
+        /// </summary>
+        [Export("interleavedTcpTransport")]
+        bool InterleavedTcpTransport { get; set; }
 
-		/// <summary>
-		/// Time delay, in milliseconds, between Surge receiving a packet containing video data and the 
+        /// <summary>
+        /// Time delay, in milliseconds, between Surge receiving a packet containing video data and the 
         /// frame data being decoded for viewing. Used for error correction and packet reordering 
         /// purposes for the UDP transport. 
         /// 
         /// Default: 200ms
-		/// </summary>
-		[Export("packetBufferDelay")]
-		int PacketBufferDelay { get; set; }
-	}
+        /// </summary>
+        [Export("packetBufferDelay")]
+        int PacketBufferDelay { get; set; }
+
+        /// <summary>
+        /// Enables/disables TLS certificate validation when streaming from a TLS protected RTSP stream. Default: true
+        /// </summary>
+        /// <value><c>true</c> if TLS certificate verification is enabled; otherwise, <c>false</c>.</value>
+        [Export("tlsCertificateVerificationEnabled")]
+        bool TlsCertificateVerificationEnabled { get; set; }
+
+        /// <summary>
+        /// Allows/disallows self signed TLS certificates from being used when streaming from a TLS protected RTSP stream. Default: true
+        /// </summary>
+        /// <value><c>true</c> if a TLS self signed certificate is allowed; otherwise, <c>false</c>.</value>
+        [Export("tlsSelfSignedCertificateAllowed")]
+        bool TlsSelfSignedCertificateAllowed { get; set; }
+
+        /// <summary>
+        /// Optional: The path to a trusted root certificate used to validate a TLS certificate received through the TLS handshaking process.
+        /// </summary>
+        /// <value>Paht to the TLS trusted certificate.</value>
+        [Export("tlsTrustedCertificatePath")]
+        NSUrl TlsTrustedCertificatePath { get; set; }
+
+        /// <summary>
+        /// Optional: Custom RTSP authentication logic, can be used if a provided RTSP stream is protected by a bespoke non-standard authentication method.
+        /// </summary>
+        /// <value>The custom authenticator.</value>
+        [Export("authenticator")]
+        SurgeAuthenticator Authenticator { get; set; }
+    }
 
     /// <summary>
     /// Surge RTSP Delegate interface used to provide a notification of Surge library events.
     /// </summary>
     [BaseType(typeof(NSObject))]
-    [Model][Protocol]
-    public interface SurgeRtspPlayerDelegate
-    {
-		/// <summary>
-		/// Called once a stream has not received a frame from the RTSP stream within the defined timeout peroid as defined by SurgeRtspPlayer#Timeout.
-		/// </summary>
-		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
-		[Abstract]
+    [Model]
+    [Protocol]
+    public interface SurgeRtspPlayerDelegate {
+        /// <summary>
+        /// Called once a stream has not received a frame from the RTSP stream within the defined timeout peroid as defined by SurgeRtspPlayer#Timeout.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        [Abstract]
         [Export("rtspPlayerDidTimeout:")]
         void RtspPlayerDidTimeout(SurgeRtspPlayer player);
 
-		/// <summary>
-		/// Called once stream playback has successfully started.
-		/// </summary>
-		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
-		[Abstract]
+        /// <summary>
+        /// Called once stream playback has successfully started.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        [Abstract]
         [Export("rtspPlayerInitiatedPlayback:")]
         void RtspPlayerInitiatedPlayback(SurgeRtspPlayer player);
 
-		/// <summary>
-		/// Called if a stream has failed to successfully start playback.
-		/// </summary>
+        /// <summary>
+        /// Called if a stream has failed to successfully start playback.
+        /// </summary>
         /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
         /// <param name="errorCode">RTSP error code causing playback to fail.</param>
-		[Abstract]
+        [Abstract]
         [Export("rtspPlayerFailedToInitiatePlayback:withErrorCode:")]
         void RtspPlayerFailedToInitiatePlayback(SurgeRtspPlayer player, RtspErrorCode errorCode);
 
-		/// <summary>
-		/// Called when the player begins or resumes playback of a stream.
-		/// </summary>
-		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
-		[Abstract]
-		[Export("rtspPlayerDidBeginPlayback:")]
-		void RtspPlayerDidBeginPlayback(SurgeRtspPlayer player);
+        /// <summary>
+        /// Called when the player begins or resumes playback of a stream.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        [Abstract]
+        [Export("rtspPlayerDidBeginPlayback:")]
+        void RtspPlayerDidBeginPlayback(SurgeRtspPlayer player);
 
-		/// <summary>
-		/// Called when the player stops or pauses playback of a stream.
-		/// </summary>
-		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
-		[Abstract]
-		[Export("rtspPlayerDidStopPlayback:")]
-		void RtspPlayerDidStopPlayback(SurgeRtspPlayer player);
+        /// <summary>
+        /// Called when the player stops or pauses playback of a stream.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        [Abstract]
+        [Export("rtspPlayerDidStopPlayback:")]
+        void RtspPlayerDidStopPlayback(SurgeRtspPlayer player);
 
-		/// <summary>
-		/// Called when the player enters the buffering state.
-		/// </summary>
-		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
-		[Abstract]
-		[Export("rtspPlayerDidBeginBuffering:")]
-		void RtspPlayerDidBeginBuffering(SurgeRtspPlayer player);
+        /// <summary>
+        /// Called when the player enters the buffering state.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        [Abstract]
+        [Export("rtspPlayerDidBeginBuffering:")]
+        void RtspPlayerDidBeginBuffering(SurgeRtspPlayer player);
 
-		/// <summary>
-		/// Called when the player exits the buffering state.
-		/// </summary>
-		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
-		[Abstract]
-		[Export("rtspPlayerDidStopBuffering:")]
-		void RtspPlayerDidStopBuffering(SurgeRtspPlayer player);
+        /// <summary>
+        /// Called when the player exits the buffering state.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        [Abstract]
+        [Export("rtspPlayerDidStopBuffering:")]
+        void RtspPlayerDidStopBuffering(SurgeRtspPlayer player);
 
-		/// <summary>
-		/// Guaranteed to be called at most once per second with the current player frame rate.
-		/// </summary>
-		/// <param name="player">The Surge RTSP Player that called the delegate method.</param>
-		[Abstract]
-		[Export("rtspPlayer:didObservePlaybackFrameRate:")]
-		void RtspPlayerDidObservePlaybackFramerate(SurgeRtspPlayer player, int framerate);
+        /// <summary>
+        /// Guaranteed to be called at most once per second with the current player frame rate.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
+        [Abstract]
+        [Export("rtspPlayer:didObservePlaybackFrameRate:")]
+        void RtspPlayerDidObservePlaybackFramerate(SurgeRtspPlayer player, int framerate);
+    }
+
+    /// <summary>
+    /// Authenticator class used to inject custom authentication logic into Surge.
+    /// </summary>
+    [BaseType(typeof(NSObject))]
+    [Model]
+    [Protocol]
+    public interface SurgeAuthenticator {
+
+        /// <summary>
+        /// Provides Surge with custom headers to append to each RTSP request.
+        /// </summary>
+        /// <returns>List of headers to append to each RTSP request.</returns>
+        /// <param name="username">Username provided to authenticate the stream with.</param>
+        /// <param name="password">Password provided to authenticate the stream with.</param>
+        [Abstract]
+        [Export("authenticationHeadersForUsername:andPassword:")]
+        List<String> AuthenticationHeaders(String username, String password);
+
+        /// <summary>
+        /// Provides a payload to be sent, encrypted (if applicable), down the pipe to authenticate the stream
+        /// before Surge will attempt to execute any RTSP requests.
+        /// </summary>
+        /// <returns>payload to be sent down the pipe to authenticate the RTSP stream.</returns>
+        /// <param name="username">Username provided to authenticate the stream with.</param>
+        /// <param name="password">Password provided to authenticate the stream with.</param>
+        [Abstract]
+        [Export("firstBytesOnTheWireAuthenticationWithUsername:andPassword:")]
+        byte[] FirstBytesOnTheWireAuthentication(String username, String password);
     }
 }
-

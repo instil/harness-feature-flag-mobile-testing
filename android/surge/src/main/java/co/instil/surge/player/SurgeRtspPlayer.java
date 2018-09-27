@@ -481,7 +481,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      * Gets the current custom authenticator assigned to Surge, being used to provide authentication to the stream.
      * @return The current custom authenticator assigned to Surge, being used to provide authentication to the stream.
      */
-    public SurgeAuthenticator GetAuthenticator() {
+    public SurgeAuthenticator getAuthenticator() {
         return customAuthenticator;
     }
 
@@ -489,7 +489,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      * Optional: Sets a custom authenticator to be used to authenticate Surge with a stream.
      * @param authenticator Custom authenticator to be used to authenticate Surge with a stream.
      */
-    public void SetAuthenticator(SurgeAuthenticator authenticator) {
+    public void setAuthenticator(SurgeAuthenticator authenticator) {
         if (customAuthenticator != null) {
             rtspClient.RemoveAuthenticator(1);
         }

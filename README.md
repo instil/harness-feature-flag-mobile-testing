@@ -19,9 +19,9 @@ Surge seeks to address these issues by being designed from the ground up to exec
 - [Paul Shields](mailto:paul.shields@instil.co) (Developer)
 - [Niall Kelly](mailto:niall.kelly@instil.co) (Developer)
 
-## Release Notes
+## Changelog
 
-See [RELEASE-NOTES.md](RELEASE-NOTES.md) for notes on the changes between each release of Surge.
+See [CHANGELOG.md](CHANGELOG.md) for notes on the changes between each release of Surge.
 
 ## Development
 

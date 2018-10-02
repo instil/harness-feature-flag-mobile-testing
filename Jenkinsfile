@@ -29,9 +29,10 @@ node("ios && android") {
 
 def acquireDependencies() {
     try {
-        sh "./FIRST-RUN.sh --no-build"
+        sh "./INSTALL-DEPENDENCIES.sh --no-build"
     } catch(e) {
         slackNotifyError("Failed to acquire Surge dependencies, see ${env.BUILD_URL}console")
+        error "Build failed"
     }
 }
 

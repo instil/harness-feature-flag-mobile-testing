@@ -249,7 +249,7 @@ namespace SurgeXamariniOSBindings {
         /// <param name="password">Password provided to authenticate the stream with.</param>
         [Abstract]
         [Export("authenticationHeadersForUsername:andPassword:")]
-        List<String> AuthenticationHeaders(String username, String password);
+        String[] AuthenticationHeaders(String username, String password);
 
         /// <summary>
         /// Provides a payload to be sent, encrypted (if applicable), down the pipe to authenticate the stream
@@ -260,6 +260,6 @@ namespace SurgeXamariniOSBindings {
         /// <param name="password">Password provided to authenticate the stream with.</param>
         [Abstract]
         [Export("firstBytesOnTheWireAuthenticationWithUsername:andPassword:")]
-        byte[] FirstBytesOnTheWireAuthentication(String username, String password);
+        NSData FirstBytesOnTheWireAuthentication(String username, String password);
     }
 }

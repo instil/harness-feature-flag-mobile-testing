@@ -139,6 +139,10 @@ namespace Surge {
             }
         }
 
+        void SetSessionDescriptionFactory(SessionDescriptionFactory *factory) {
+            rtspService->SetCustomSessionDescriptionFactory(factory);
+        }
+
         int GetTimeout() {
             return this->timeout;
         }

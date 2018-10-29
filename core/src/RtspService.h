@@ -53,6 +53,7 @@ namespace Surge {
         }
 
         void SetCustomSessionDescriptionFactory(SessionDescriptionFactory *factory) {
+            delete this->sessionDescriptionFactory;
             this->sessionDescriptionFactory = factory;
         }
 

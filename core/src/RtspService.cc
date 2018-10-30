@@ -178,6 +178,7 @@ void Surge::RtspService::Options(std::function<void(Surge::RtspResponse*)> callb
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to OPTIONS!");
             callback(nullptr);
+            return;
         }
 
         RtspResponse* resp = nullptr;
@@ -210,6 +211,7 @@ void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> call
             if (callback) {
                 callback(nullptr);
             }
+            return;
         }
 
         RtspResponse* resp = nullptr;
@@ -240,6 +242,7 @@ void Surge::RtspService::KeepAlive(std::function<void(Surge::RtspResponse*)> cal
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to Keep-Alive!");
             callback(nullptr);
+            return;
         }
 
         RtspResponse* resp = nullptr;

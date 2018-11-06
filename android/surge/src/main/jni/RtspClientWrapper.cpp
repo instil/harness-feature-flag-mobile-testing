@@ -26,8 +26,7 @@ Surge::RtspClient* getClient(JNIEnv *env, jobject callingObject) {
 
 JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_load(JNIEnv *env, jclass callingClass) {
-    SurgeJni::ClassLoader::AttachToJvm(env);
-    classLoader = SurgeJni::ClassLoader::Instance();
+    classLoader = new SurgeJni::ClassLoader(env);
 
     static SurgeJni::RtspLoggingDelegateWrapper *delegate = new SurgeJni::RtspLoggingDelegateWrapper();
     SurgeUtil::Logger& logger = SurgeUtil::Logger::GetInstance();
@@ -53,11 +52,13 @@ void JNICALL Java_co_instil_surge_client_RtspClient_connect(JNIEnv *env, jobject
     jobject globalCallback = env->NewGlobalRef(callback);
 
     client->Connect(convertString(env, url), [=](bool result) {
-        JNIEnv *env = classLoader->getEnv();
+        JNIEnv *env = classLoader->AttachToJvm();
 
         callBooleanCallback(classLoader, globalCallback, result);
 
         env->DeleteGlobalRef(globalCallback);
+
+        classLoader->DetachFromJvm();
     });
 }
 
@@ -80,13 +81,15 @@ void JNICALL Java_co_instil_surge_client_RtspClient_describe(JNIEnv *env, jobjec
     jobject globalCallback = env->NewGlobalRef(callback);
 
     client->Describe([=](Surge::DescribeResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
+        JNIEnv *env = classLoader->AttachToJvm();
 
         callResponseCallback(classLoader, globalCallback, convertDescribeResponse(classLoader, response));
 
         if (globalCallback != NULL) {
             env->DeleteGlobalRef(globalCallback);
         }
+
+        classLoader->DetachFromJvm();
     });
 }
 
@@ -97,13 +100,15 @@ void JNICALL Java_co_instil_surge_client_RtspClient_setup(JNIEnv *env, jobject c
     jobject globalCallback = env->NewGlobalRef(callback);
 
     client->Setup(convertSessionDescription(env, jSessionDescription), [=](Surge::SetupResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
+        JNIEnv *env = classLoader->AttachToJvm();
 
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
 
         if (globalCallback != NULL) {
             env->DeleteGlobalRef(globalCallback);
         }
+
+        classLoader->DetachFromJvm();
     });
 }
 
@@ -121,10 +126,12 @@ void JNICALL Java_co_instil_surge_client_RtspClient_play__Lco_instil_surge_callb
     jobject globalCallback = env->NewGlobalRef(callback);
 
     client->Play([&](Surge::RtspResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
+        JNIEnv *env = classLoader->AttachToJvm();
 
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
         env->DeleteGlobalRef(globalCallback);
+
+        classLoader->DetachFromJvm();
     });
 }
 
@@ -144,10 +151,12 @@ void JNICALL Java_co_instil_surge_client_RtspClient_pause__Lco_instil_surge_call
     jobject globalCallback = env->NewGlobalRef(callback);
 
     client->Pause([=](Surge::RtspResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
+        JNIEnv *env = classLoader->AttachToJvm();
 
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
         env->DeleteGlobalRef(globalCallback);
+
+        classLoader->DetachFromJvm();
     });
 }
 JNIEXPORT
@@ -157,10 +166,12 @@ void JNICALL Java_co_instil_surge_client_RtspClient_options__Lco_instil_surge_ca
     jobject globalCallback = env->NewGlobalRef(callback);
 
     client->Options([=](Surge::RtspResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
+        JNIEnv *env = classLoader->AttachToJvm();
 
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
         env->DeleteGlobalRef(globalCallback);
+
+        classLoader->DetachFromJvm();
     });
 }
 
@@ -171,10 +182,12 @@ void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobjec
     jobject globalCallback = env->NewGlobalRef(callback);
 
     client->Teardown([=](Surge::RtspResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
+        JNIEnv *env = classLoader->AttachToJvm();
 
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
         env->DeleteGlobalRef(globalCallback);
+
+        classLoader->DetachFromJvm();
     });
 }
 
@@ -185,10 +198,12 @@ void JNICALL Java_co_instil_surge_client_RtspClient_keepAlive(JNIEnv *env, jobje
     jobject globalCallback = env->NewGlobalRef(callback);
 
     client->KeepAlive([=](Surge::RtspResponse *response) {
-        JNIEnv *env = classLoader->getEnv();
+        JNIEnv *env = classLoader->AttachToJvm();
 
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));
         env->DeleteGlobalRef(globalCallback);
+
+        classLoader->DetachFromJvm();
     });
 }
 

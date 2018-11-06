@@ -6,11 +6,10 @@
 #include <Logging.h>
 #include "ClassLoader.h"
 
-SurgeJni::ClassLoader *SurgeJni::ClassLoader::classLoaderSingleton = nullptr;
+thread_local int SurgeJni::ClassLoader::jniEnvCount = 0;
 
 SurgeJni::ClassLoader::ClassLoader(JNIEnv *jniEnv) {
     jniEnv->GetJavaVM(&this->jvm);
-    GenerateDetachKeyForJvm();
 
     jclass randomClass = jniEnv->FindClass("co/instil/surge/player/SurgeRtspPlayer");
     jclass classClass = jniEnv->GetObjectClass(randomClass);
@@ -27,25 +26,34 @@ SurgeJni::ClassLoader::~ClassLoader() {
 }
 
 jclass SurgeJni::ClassLoader::findClass(const char* name) {
-    JNIEnv *env = this->getEnv();
+    JNIEnv *env = AttachToJvm();
     jstring className = env->NewStringUTF(name);
     jclass result = static_cast<jclass>(env->CallObjectMethod(this->classLoader, this->findClassMethod, className));
     env->DeleteLocalRef(className);
+    DetachFromJvm();
     return result;
 }
 
-JNIEnv* SurgeJni::ClassLoader::getEnv() {
+JNIEnv* SurgeJni::ClassLoader::AttachToJvm() {
     JNIEnv *env;
     int status = jvm->GetEnv((void **) &env, JNI_VERSION_1_6);
 
     if (status < 0) {
         status = jvm->AttachCurrentThread(&env, NULL);
-        pthread_setspecific(detachKey, &env);
+        TrackNewThreadAttachedToJvm();
 
         if (status < 0) {
             return nullptr;
         }
+    } else {
+        TrackExistingJniEnvAcquired();
     }
 
     return env;
+}
+
+void SurgeJni::ClassLoader::DetachFromJvm() {
+    if (ShouldDetachJniEnv()) {
+        jvm->DetachCurrentThread();
+    }
 }

@@ -7,18 +7,20 @@
 
 
 SurgeJni::JavaAuthenticator::JavaAuthenticator(jobject javaAuthenticator, ClassLoader *classLoader) : classLoader(classLoader) {
-    JNIEnv *env = classLoader->getEnv();
+    JNIEnv *env = classLoader->AttachToJvm();
     this->javaAuthenticator = env->NewGlobalRef(javaAuthenticator);
+    classLoader->DetachFromJvm();
 }
 
 SurgeJni::JavaAuthenticator::~JavaAuthenticator() {
-    JNIEnv *env = classLoader->getEnv();
+    JNIEnv *env = classLoader->AttachToJvm();
     env->DeleteGlobalRef(javaAuthenticator);
+    classLoader->DetachFromJvm();
 }
 
 std::vector<std::string> SurgeJni::JavaAuthenticator::GenerateAuthHeadersFor(const std::string &url, const std::string &method, const std::string &username, const std::string &password) {
     std::vector<std::string> result;
-    JNIEnv *env = classLoader->getEnv();
+    JNIEnv *env = classLoader->AttachToJvm();
 
     jstring jUsername = NativeTypeConverters::convertString(env, username);
     jstring jPassword = NativeTypeConverters::convertString(env, password);
@@ -33,13 +35,15 @@ std::vector<std::string> SurgeJni::JavaAuthenticator::GenerateAuthHeadersFor(con
         });
     }
 
+    classLoader->DetachFromJvm();
+
     return result;
 }
 
 std::vector<char> SurgeJni::JavaAuthenticator::FirstBytesOnTheWireAuthentication(const std::string &username, const std::string &password) {
     std::vector<char> result;
 
-    JNIEnv *env = classLoader->getEnv();
+    JNIEnv *env = classLoader->AttachToJvm();
 
     jstring jUsername = NativeTypeConverters::convertString(env, username);
     jstring jPassword = NativeTypeConverters::convertString(env, password);
@@ -51,6 +55,8 @@ std::vector<char> SurgeJni::JavaAuthenticator::FirstBytesOnTheWireAuthentication
     if (payload != NULL) {
         result = JavaTypeConverters::convertByteArrayToVector(classLoader, payload);
     }
+
+    classLoader->DetachFromJvm();
 
     return result;
 }

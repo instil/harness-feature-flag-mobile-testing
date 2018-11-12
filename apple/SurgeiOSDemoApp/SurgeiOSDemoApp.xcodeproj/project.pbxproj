@@ -13,6 +13,8 @@
 		426E881F1CDA40AE00C7FF25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 426E881D1CDA40AE00C7FF25 /* LaunchScreen.storyboard */; };
 		426E882A1CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88291CDA40AE00C7FF25 /* SurgeiOSDemoAppTests.m */; };
 		426E88351CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */; };
+		7C11393A2199D5C500E0360C /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1139202199CF2E00E0360C /* SurgeiOS.framework */; };
+		7C11393B2199D5C500E0360C /* SurgeiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1139202199CF2E00E0360C /* SurgeiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7C1AD4EB1F8D20AD00F17E78 /* PlaybackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1AD4EA1F8D20AD00F17E78 /* PlaybackManager.m */; };
 		7C1AD4EE1F8D20DC00F17E78 /* PlaybackStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C1AD4ED1F8D20DC00F17E78 /* PlaybackStream.m */; };
 		7C55BE6B1F75140300CCDD43 /* NSArray+RtspAddressStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */; };
@@ -29,8 +31,6 @@
 		7CC3D3971F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3D3961F73F97D00BE38E4 /* AddressSearchResultsTableViewController.m */; };
 		7CD256741D9E71B700300A88 /* AddressesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256731D9E71B700300A88 /* AddressesTableViewController.m */; };
 		7CD256771D9E722C00300A88 /* PlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD256761D9E722C00300A88 /* PlaybackViewController.m */; };
-		F4FA48CF1E93E74F006554AC /* SurgeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */; };
-		F4FA48D01E93E74F006554AC /* SurgeiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,13 +51,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		F4FA48D11E93E74F006554AC /* Embed Frameworks */ = {
+		7C11393C2199D5C600E0360C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F4FA48D01E93E74F006554AC /* SurgeiOS.framework in Embed Frameworks */,
+				7C11393B2199D5C500E0360C /* SurgeiOS.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,11 +78,11 @@
 		426E88301CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SurgeiOSDemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		426E88341CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeiOSDemoAppUITests.m; sourceTree = "<group>"; };
 		426E88361CDA40AE00C7FF25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C1139202199CF2E00E0360C /* SurgeiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SurgeiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C1AD4E91F8D20AD00F17E78 /* PlaybackManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlaybackManager.h; sourceTree = "<group>"; };
 		7C1AD4EA1F8D20AD00F17E78 /* PlaybackManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlaybackManager.m; sourceTree = "<group>"; };
 		7C1AD4EC1F8D20DC00F17E78 /* PlaybackStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlaybackStream.h; sourceTree = "<group>"; };
 		7C1AD4ED1F8D20DC00F17E78 /* PlaybackStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlaybackStream.m; sourceTree = "<group>"; };
-		7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SurgeiOS.framework; path = "../DerivedData/Surge/Build/Products/Debug-iphoneos/SurgeiOS.framework"; sourceTree = "<group>"; };
 		7C55BE661F7513FC00CCDD43 /* NSArray+RtspAddressStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+RtspAddressStorage.h"; sourceTree = "<group>"; };
 		7C55BE671F7513FC00CCDD43 /* NSArray+RtspAddressStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RtspAddressStorage.m"; sourceTree = "<group>"; };
 		7C55BE691F7513FC00CCDD43 /* RtspAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtspAddress.h; sourceTree = "<group>"; };
@@ -106,7 +106,6 @@
 		7CD256731D9E71B700300A88 /* AddressesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AddressesTableViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		7CD256751D9E722C00300A88 /* PlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackViewController.h; sourceTree = "<group>"; };
 		7CD256761D9E722C00300A88 /* PlaybackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackViewController.m; sourceTree = "<group>"; tabWidth = 4; };
-		F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SurgeiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4FA48CF1E93E74F006554AC /* SurgeiOS.framework in Frameworks */,
+				7C11393A2199D5C500E0360C /* SurgeiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +137,7 @@
 		426E88031CDA40AD00C7FF25 = {
 			isa = PBXGroup;
 			children = (
-				F4FA48CE1E93E74F006554AC /* SurgeiOS.framework */,
+				7C1139202199CF2E00E0360C /* SurgeiOS.framework */,
 				426E880E1CDA40AE00C7FF25 /* SurgeiOSDemoApp */,
 				426E88281CDA40AE00C7FF25 /* SurgeiOSDemoAppTests */,
 				426E88331CDA40AE00C7FF25 /* SurgeiOSDemoAppUITests */,
@@ -219,7 +218,6 @@
 		426E88461CDA411B00C7FF25 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7C43DA141D9BBAF900E4D1CD /* SurgeiOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -274,7 +272,7 @@
 				426E88081CDA40AE00C7FF25 /* Sources */,
 				426E88091CDA40AE00C7FF25 /* Frameworks */,
 				426E880A1CDA40AE00C7FF25 /* Resources */,
-				F4FA48D11E93E74F006554AC /* Embed Frameworks */,
+				7C11393C2199D5C600E0360C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -333,6 +331,12 @@
 					426E880B1CDA40AE00C7FF25 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = M6W9FG2WLN;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.GameCenter.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 					426E88241CDA40AE00C7FF25 = {
 						CreatedOnToolsVersion = 7.3;
@@ -579,11 +583,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M6W9FG2WLN;
 				INFOPLIST_FILE = SurgeiOSDemoApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoApp;
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.surgedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = NO;
+				VALID_ARCHS = "arm64 arm64e armv7s";
 			};
 			name = Debug;
 		};
@@ -591,11 +600,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = M6W9FG2WLN;
 				INFOPLIST_FILE = SurgeiOSDemoApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOSDemoApp;
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.surgedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = NO;
+				VALID_ARCHS = "arm64 arm64e armv7s";
 			};
 			name = Release;
 		};

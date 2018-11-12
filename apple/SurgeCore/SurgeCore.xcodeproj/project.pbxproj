@@ -33,7 +33,7 @@
 		42D672271D3069BB00D42C35 /* IRtspClientDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E11D3069BB00D42C35 /* IRtspClientDelegate.h */; };
 		42D672281D3069BB00D42C35 /* ISocketHandlerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E21D3069BB00D42C35 /* ISocketHandlerDelegate.h */; };
 		42D6722A1D3069BB00D42C35 /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E41D3069BB00D42C35 /* Logging.h */; };
-		42D6722B1D3069BB00D42C35 /* MimeTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E51D3069BB00D42C35 /* MimeTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42D6722B1D3069BB00D42C35 /* MimeTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E51D3069BB00D42C35 /* MimeTypes.h */; };
 		42D6722C1D3069BB00D42C35 /* MJPEGDepacketizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671E61D3069BB00D42C35 /* MJPEGDepacketizer.cc */; };
 		42D6722D1D3069BB00D42C35 /* MJPEGDepacketizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671E71D3069BB00D42C35 /* MJPEGDepacketizer.h */; };
 		42D6722E1D3069BB00D42C35 /* MP4VDepacketizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671E81D3069BB00D42C35 /* MP4VDepacketizer.cc */; };
@@ -54,7 +54,7 @@
 		42D6723D1D3069BB00D42C35 /* RtspCommandFactory.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671F71D3069BB00D42C35 /* RtspCommandFactory.cc */; };
 		42D6723E1D3069BB00D42C35 /* RtspCommandFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671F81D3069BB00D42C35 /* RtspCommandFactory.h */; };
 		42D6723F1D3069BB00D42C35 /* RtspResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671F91D3069BB00D42C35 /* RtspResponse.h */; };
-		42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671FA1D3069BB00D42C35 /* SessionDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671FA1D3069BB00D42C35 /* SessionDescription.h */; };
 		42D672411D3069BB00D42C35 /* SessionDescriptionFactory.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671FB1D3069BB00D42C35 /* SessionDescriptionFactory.cc */; };
 		42D672421D3069BB00D42C35 /* SessionDescriptionFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 42D671FC1D3069BB00D42C35 /* SessionDescriptionFactory.h */; };
 		42D672431D3069BB00D42C35 /* SessionDescriptionV0.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42D671FD1D3069BB00D42C35 /* SessionDescriptionV0.cc */; };
@@ -703,6 +703,8 @@
 			files = (
 				42D672491D3069BB00D42C35 /* Surge.h in Headers */,
 				F4FA24C31ED8427A001B56E0 /* atomic-ops.h in Headers */,
+				42D6722B1D3069BB00D42C35 /* MimeTypes.h in Headers */,
+				42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */,
 				42D6720E1D3069BB00D42C35 /* Base64.h in Headers */,
 				42D6722F1D3069BB00D42C35 /* MP4VDepacketizer.h in Headers */,
 				42D6721A1D3069BB00D42C35 /* Describe.h in Headers */,
@@ -727,7 +729,6 @@
 				F4C4F60A20AEE853009313CD /* DispatchQueue.h in Headers */,
 				42D672211D3069BB00D42C35 /* H264Depacketizer.h in Headers */,
 				F4965ABC212590D800DB30B5 /* RtspService.h in Headers */,
-				42D6722B1D3069BB00D42C35 /* MimeTypes.h in Headers */,
 				42D6723F1D3069BB00D42C35 /* RtspResponse.h in Headers */,
 				42D672391D3069BB00D42C35 /* RtpPacket.h in Headers */,
 				42D672181D3069BB00D42C35 /* DateTime.h in Headers */,
@@ -760,7 +761,6 @@
 				42D672311D3069BB00D42C35 /* Mutex.h in Headers */,
 				42D672441D3069BB00D42C35 /* SessionDescriptionV0.h in Headers */,
 				42D672321D3069BB00D42C35 /* MutexLocker.h in Headers */,
-				42D672401D3069BB00D42C35 /* SessionDescription.h in Headers */,
 				F4A3272F2142AB4F00F293B8 /* TransportProtocol.h in Headers */,
 				F494F3FB21230FD20054091C /* Regex.h in Headers */,
 				42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */,
@@ -1000,6 +1000,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -1045,6 +1046,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -1069,6 +1071,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos appletvsimulator appletvos";
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};
@@ -1091,6 +1094,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos appletvsimulator appletvos";
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 			};

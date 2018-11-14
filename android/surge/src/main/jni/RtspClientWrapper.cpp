@@ -199,6 +199,18 @@ void JNICALL Java_co_instil_surge_client_RtspClient_setTimeRange(JNIEnv *env, jo
 }
 
 JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_setStartTime(JNIEnv *env, jobject callingObject, jobject startTime) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->SetStartTime(convertDate(env, startTime));
+}
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_setEndTime(JNIEnv *env, jobject callingObject, jobject endTime) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->SetEndTime(convertDate(env, endTime));
+}
+
+JNIEXPORT
 jboolean JNICALL Java_co_instil_surge_client_RtspClient_isInterleavedTransport (JNIEnv *env, jobject callingObject) {
     Surge::RtspClient *client = getClient(env, callingObject);
     return (jboolean)client->IsInterleavedTransport();

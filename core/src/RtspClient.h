@@ -124,13 +124,20 @@ namespace Surge {
         }
 
         void SetTimeRange(SurgeUtil::DateTime *startTime, SurgeUtil::DateTime *endTime) {
+            SetStartTime(startTime);
+            SetEndTime(endTime);
+        }
+
+        void SetStartTime(SurgeUtil::DateTime *startTime) {
             if (startTime) {
                 if (this->startTime) {
                     delete startTime;
                 }
                 this->startTime = startTime;
             }
+        }
 
+        void SetEndTime(SurgeUtil::DateTime *endTime) {
             if (endTime) {
                 if (this->endTime) {
                     delete endTime;

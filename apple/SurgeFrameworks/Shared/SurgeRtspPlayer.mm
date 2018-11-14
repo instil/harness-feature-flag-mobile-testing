@@ -345,6 +345,18 @@ private:
     });
 }
 
+- (void)teardown:(void (^)(RtspErrorCode)) callback {
+    __weak typeof(self) weakSelf = self;
+    self.client->Teardown([weakSelf, callback](Surge::RtspResponse *teardownResponse) {
+        if (teardownResponse) {
+            callback((RtspErrorCode)teardownResponse->GetCode());
+        } else {
+            callback(RtspErrorCodeUnknownFailure);
+        }
+        delete teardownResponse;
+    });
+}
+
 - (void)stop {
     SurgeLogInfo(@"Stopping playback of %@", self.url);
     self.client->Teardown([self] (bool teardownResult) {

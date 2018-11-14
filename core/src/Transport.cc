@@ -139,7 +139,7 @@ void Surge::Transport::ArbitraryDataTransaction(const char *data, const size_t l
 
 void Surge::Transport::SafeRunLibuvCommand(std::function<void()> commandsToRun) {
     executingLibuvCommand = false;
-    m_loop->stop();
+    m_libuvCloser->send();
     commandsToRun();
     executingLibuvCommand = true;
 }

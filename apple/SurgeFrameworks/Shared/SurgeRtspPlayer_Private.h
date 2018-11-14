@@ -27,6 +27,11 @@
 - (void)setupStream:(Surge::SessionDescription)sessionDescription withCallback:(void (^)(RtspErrorCode))callback;
 
 /**
+ * Send a TEARDOWN message to the RTSP stream
+ */
+- (void)teardown:(void (^)(RtspErrorCode)) callback;
+
+/**
  * Select the preferred initial Session Description, returned from the last DESCRIBE message
  */
 - (Surge::SessionDescription)selectPreferredSessionDescription;

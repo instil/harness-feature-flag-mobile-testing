@@ -11,41 +11,46 @@ namespace Surge {
 
     namespace RtspCommandFactory {
 
-        AuthenticationService *authService;
+//        AuthenticationService *authService;
 
         void SetAuthService(AuthenticationService *service) {
-            authService = service;
+//            authService = service;
         }
 
         RtspCommand* DescribeRequest(const std::string& url,
-                                     int nextSequenceNumber) {
+                                     int nextSequenceNumber,
+                                     AuthenticationService *authService) {
             return new class DescribeRequest(url, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(DESCRIBE)));
         }
         
         RtspCommand* DescribeRequest(const std::string& url,
                                      int nextSequenceNumber,
-                                     SurgeUtil::DateTime startDate) {
+                                     SurgeUtil::DateTime startDate,
+                                     AuthenticationService *authService) {
             return new class DescribeRequest(url, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(DESCRIBE)), startDate);
         }
 
         
         RtspCommand* SetupRequest(const std::string& url,
                                   int nextSequenceNumber,
-                                  const ITransportInterface *transport) {
+                                  const ITransportInterface *transport,
+                                  AuthenticationService *authService) {
             return new class SetupRequest(url, nextSequenceNumber, transport, authService->GenerateAuthHeadersFor(Method(SETUP)));
         }
 
         
         RtspCommand* PlayRequest(const std::string& url,
                                  const std::string& session,
-                                 int nextSequenceNumber) {
+                                 int nextSequenceNumber,
+                                 AuthenticationService *authService) {
             return new class PlayRequest(url, session, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(PLAY)));
         }
         
         RtspCommand* PlayRequest(const std::string& url,
                                  const std::string& session,
                                  int nextSequenceNumber,
-                                  SurgeUtil::DateTime startDate) {
+                                  SurgeUtil::DateTime startDate,
+                                AuthenticationService *authService) {
             return new class PlayRequest(url, session, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(PLAY)), startDate);
         }
         
@@ -53,32 +58,37 @@ namespace Surge {
                                  const std::string& session,
                                  int nextSequenceNumber,
                                  SurgeUtil::DateTime startDate,
-                                 SurgeUtil::DateTime endDate) {
+                                 SurgeUtil::DateTime endDate,
+                                AuthenticationService *authService) {
             return new class PlayRequest(url, session, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(PLAY)), startDate, endDate);
         }
 
         
         RtspCommand* PauseRequest(const std::string& url,
                                   const std::string& session,
-                                  int nextSequenceNumber) {
+                                  int nextSequenceNumber,
+                                  AuthenticationService *authService) {
             return new class PauseRequest(url, session, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(PAUSE)));
         }
 
         RtspCommand* KeepAliveRequest(const std::string& url,
                                       const std::string& session,
-                                      int nextSequenceNumber) {
+                                      int nextSequenceNumber,
+                                      AuthenticationService *authService) {
             return new class OptionsRequest(url, session, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(OPTIONS)));
         }
 
         RtspCommand* OptionsRequest(const std::string& url,
                                     const std::string& session,
-                                    int nextSequenceNumber) {
+                                    int nextSequenceNumber,
+                                    AuthenticationService *authService) {
             return new class OptionsRequest(url, session, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(OPTIONS)));
         }
 
         RtspCommand* TeardownRequest(const std::string& url,
                                      const std::string& session,
-                                     int nextSequenceNumber) {
+                                     int nextSequenceNumber,
+                                     AuthenticationService *authService) {
             return new class TeardownRequest(url, session, nextSequenceNumber, authService->GenerateAuthHeadersFor(Method(TEARDOWN)));
         }
     }

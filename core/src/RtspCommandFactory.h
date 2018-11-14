@@ -38,46 +38,56 @@ namespace Surge {
         void SetAuthService(AuthenticationService *authService);
 
         RtspCommand* DescribeRequest(const std::string& url,
-                                     int nextSequenceNumber);
+                                     int nextSequenceNumber,
+                                     AuthenticationService *authService);
 
         RtspCommand* DescribeRequest(const std::string& url,
                                      int nextSequenceNumber,
-                                     const SurgeUtil::DateTime startDate);
+                                     const SurgeUtil::DateTime startDate,
+                                     AuthenticationService *authService);
         
         RtspCommand* SetupRequest(const std::string& url,
                                   int nextSequenceNumber,
-                                  const ITransportInterface *transport);
+                                  const ITransportInterface *transport,
+                                  AuthenticationService *authService);
 
         RtspCommand* PlayRequest(const std::string& url,
                                  const std::string& session,
-                                 int nextSequenceNumber);
-        
-        RtspCommand* PlayRequest(const std::string& url,
-                                 const std::string& session,
                                  int nextSequenceNumber,
-                                 const SurgeUtil::DateTime startDate);
+                                 AuthenticationService *authService);
         
         RtspCommand* PlayRequest(const std::string& url,
                                  const std::string& session,
                                  int nextSequenceNumber,
                                  const SurgeUtil::DateTime startDate,
-                                 const SurgeUtil::DateTime endDate);
+                                 AuthenticationService *authService);
+        
+        RtspCommand* PlayRequest(const std::string& url,
+                                 const std::string& session,
+                                 int nextSequenceNumber,
+                                 const SurgeUtil::DateTime startDate,
+                                 const SurgeUtil::DateTime endDate,
+                                 AuthenticationService *authService);
 
         RtspCommand* PauseRequest(const std::string& url,
                                   const std::string& session,
-                                  int nextSequenceNumber);
+                                  int nextSequenceNumber,
+                                  AuthenticationService *authService);
 
         RtspCommand* KeepAliveRequest(const std::string& url,
                                       const std::string& session,
-                                      int nextSequenceNumber);
+                                      int nextSequenceNumber,
+                                      AuthenticationService *authService);
 
         RtspCommand* OptionsRequest(const std::string& url,
                                     const std::string& session,
-                                    int nextSequenceNumber);
+                                    int nextSequenceNumber,
+                                    AuthenticationService *authService);
 
         RtspCommand* TeardownRequest(const std::string& url,
                                      const std::string& session,
-                                     int nextSequenceNumber);
+                                     int nextSequenceNumber,
+                                     AuthenticationService *authService);
     };
     
 }

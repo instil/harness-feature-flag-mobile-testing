@@ -1,5 +1,18 @@
 ## Changelog
 
+### v1.2.1
+
+###### Fixes
+
+* Updated the configuration used to build the Surge OpenSSL dependency on iOS to avoid triggering a non-public API usage rejection when submitting to the app store.
+* Fixes a crash in RtspService cause when a TEARDOWN request fails.
+* Fixed an issue with changing the start/end time on a stream once an initial start/end time has been set.
+* Changed how we handle JNIEnv objects on Android to help with crashes relating to native thread not detaching from the JVM correctly or holding onto local references indefinitely.
+
+###### Misc
+
+* Readded previously removed SurgeCore API methods used in Tyco Surge.
+
 ### v1.2
 
 ###### Features

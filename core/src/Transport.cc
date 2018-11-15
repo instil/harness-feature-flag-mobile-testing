@@ -199,7 +199,7 @@ void Surge::Transport::AttachCallbacksToLibuv() {
     });
 
     m_libuvCloser->on<uvw::AsyncEvent>([this](const uvw::AsyncEvent &asyncEvent, uvw::AsyncHandle &asyncHandle) {
-        DEBUG("Transport thread: triggering stop request.");
+        DEBUG("Stopping transport thread.");
         m_loop->stop();
     });
 }

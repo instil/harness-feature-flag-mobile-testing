@@ -35,8 +35,6 @@ namespace Surge {
 
     namespace RtspCommandFactory {
         
-        void SetAuthService(AuthenticationService *authService);
-
         RtspCommand* DescribeRequest(const std::string& url,
                                      int nextSequenceNumber,
                                      AuthenticationService *authService);

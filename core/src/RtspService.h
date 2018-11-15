@@ -49,7 +49,6 @@ namespace Surge {
 
         void SetAuthService(AuthenticationService *authService) {
             this->authService = authService;
-            RtspCommandFactory::SetAuthService(authService);
         }
 
         void SetCustomSessionDescriptionFactory(SessionDescriptionFactory *factory) {

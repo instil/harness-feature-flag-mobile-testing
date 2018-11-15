@@ -11,12 +11,6 @@ namespace Surge {
 
     namespace RtspCommandFactory {
 
-//        AuthenticationService *authService;
-
-        void SetAuthService(AuthenticationService *service) {
-//            authService = service;
-        }
-
         RtspCommand* DescribeRequest(const std::string& url,
                                      int nextSequenceNumber,
                                      AuthenticationService *authService) {

@@ -9,7 +9,7 @@
 #ifndef TransportDelegate_h
 #define TransportDelegate_h
 
-#include "RTPPacket.h"
+#include "RtpPacket.h"
 
 namespace Surge {
 

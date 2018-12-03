@@ -205,7 +205,7 @@ void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> call
     }
 
     RtspCommand* teardown = RtspCommandFactory::TeardownRequest(streamUrl, session, NextSequenceNumber(), authService);
-    transport->RtspTransaction(teardown, [callback](Response *raw_resp) {
+    transport->RtspTransaction(teardown, [this, callback](Response *raw_resp) {
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to TEARDOWN!");
             if (callback) {
@@ -224,6 +224,7 @@ void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> call
         }
         delete raw_resp;
 
+        ResetSequenceNumber();
         callback(resp);
     });
 

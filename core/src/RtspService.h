@@ -61,6 +61,10 @@ namespace Surge {
             return sequenceNumber++;
         }
 
+        void ResetSequenceNumber() {
+            sequenceNumber = 1;
+        }
+
     private:
         std::string streamUrl;
 

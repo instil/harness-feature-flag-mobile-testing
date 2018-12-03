@@ -125,7 +125,7 @@ void JNICALL Java_co_instil_surge_client_RtspClient_play__Lco_instil_surge_callb
 
     jobject globalCallback = env->NewGlobalRef(callback);
 
-    client->Play([&](Surge::RtspResponse *response) {
+    client->Play([=](Surge::RtspResponse *response) {
         JNIEnv *env = classLoader->AttachToJvm();
 
         callResponseCallback(classLoader, globalCallback, convertResponse(classLoader, response));

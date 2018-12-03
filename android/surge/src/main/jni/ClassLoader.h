@@ -9,6 +9,9 @@
 #include <jni.h>
 #include <cstdlib>
 
+#include <android/log.h>
+#include <string>
+
 
 namespace SurgeJni {
 
@@ -35,11 +38,7 @@ namespace SurgeJni {
         }
 
         void TrackExistingJniEnvAcquired() {
-            if (jniEnvCount < 1) {
-                jniEnvCount = -1;
-            } else {
-                ++jniEnvCount;
-            }
+            ++jniEnvCount;
         }
 
         bool ShouldDetachJniEnv() {

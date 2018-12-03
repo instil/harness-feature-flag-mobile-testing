@@ -8,6 +8,7 @@
 * Fixes a crash in RtspService cause when a TEARDOWN request fails.
 * Fixed an issue with changing the start/end time on a stream once an initial start/end time has been set.
 * Changed how we handle JNIEnv objects on Android to help with crashes relating to native thread not detaching from the JVM correctly or holding onto local references indefinitely.
+* Changed the `initiatePlaybackOf` method to return the result of the `PLAY` call rather than the `SETUP` response.
 
 ###### Misc
 

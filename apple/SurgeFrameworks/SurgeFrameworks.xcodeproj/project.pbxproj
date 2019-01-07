@@ -20,13 +20,11 @@
 		4241D51E1CBB07F80087BAAF /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4241D51D1CBB07F80087BAAF /* AppKit.framework */; };
 		425630EF1CBAA31700E347C0 /* SurgeRtspPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 42EFF7861CAADB330056B9F3 /* SurgeRtspPlayer.mm */; };
 		426A40E41CB1A3F200A4712B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A40E31CB1A3F200A4712B /* UIKit.framework */; };
-		42AD016A1CE6267E00EA072F /* BitstreamReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01661CE6267E00EA072F /* BitstreamReader.h */; };
 		42AD016B1CE6267E00EA072F /* BitstreamReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01661CE6267E00EA072F /* BitstreamReader.h */; };
 		42AD016C1CE6267E00EA072F /* BitstreamReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01661CE6267E00EA072F /* BitstreamReader.h */; };
 		42AD016D1CE6267E00EA072F /* BitstreamReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01671CE6267E00EA072F /* BitstreamReader.m */; };
 		42AD016E1CE6267E00EA072F /* BitstreamReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01671CE6267E00EA072F /* BitstreamReader.m */; };
 		42AD016F1CE6267E00EA072F /* BitstreamReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01671CE6267E00EA072F /* BitstreamReader.m */; };
-		42AD01781CE6317800EA072F /* BitstreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01761CE6317800EA072F /* BitstreamWriter.h */; };
 		42AD01791CE6317800EA072F /* BitstreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01761CE6317800EA072F /* BitstreamWriter.h */; };
 		42AD017A1CE6317800EA072F /* BitstreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01761CE6317800EA072F /* BitstreamWriter.h */; };
 		42AD017B1CE6317800EA072F /* BitstreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 42AD01771CE6317800EA072F /* BitstreamWriter.m */; };
@@ -35,66 +33,68 @@
 		42D672541D306A1A00D42C35 /* libSurgeCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D672531D306A1A00D42C35 /* libSurgeCore.a */; };
 		42D672561D306A2600D42C35 /* libSurgeCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D672551D306A2600D42C35 /* libSurgeCore.a */; };
 		42D672581D306A2E00D42C35 /* libSurgeCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D672571D306A2E00D42C35 /* libSurgeCore.a */; };
-		42DCC2EF1CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E21CC2D68A00497306 /* SurgeNalUnitParser.h */; };
 		42DCC2F01CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E21CC2D68A00497306 /* SurgeNalUnitParser.h */; };
 		42DCC2F11CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E21CC2D68A00497306 /* SurgeNalUnitParser.h */; };
 		42DCC2F21CC2D68A00497306 /* SurgeNalUnitParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2E31CC2D68A00497306 /* SurgeNalUnitParser.m */; };
 		42DCC2F31CC2D68A00497306 /* SurgeNalUnitParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2E31CC2D68A00497306 /* SurgeNalUnitParser.m */; };
 		42DCC2F41CC2D68A00497306 /* SurgeNalUnitParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2E31CC2D68A00497306 /* SurgeNalUnitParser.m */; };
-		42DCC2F51CC2D68A00497306 /* SurgeNalUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E41CC2D68A00497306 /* SurgeNalUnit.h */; };
 		42DCC2F61CC2D68A00497306 /* SurgeNalUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E41CC2D68A00497306 /* SurgeNalUnit.h */; };
 		42DCC2F71CC2D68A00497306 /* SurgeNalUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E41CC2D68A00497306 /* SurgeNalUnit.h */; };
 		42DCC2F81CC2D68A00497306 /* SurgeNalUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2E51CC2D68A00497306 /* SurgeNalUnit.m */; };
 		42DCC2F91CC2D68A00497306 /* SurgeNalUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2E51CC2D68A00497306 /* SurgeNalUnit.m */; };
 		42DCC2FA1CC2D68A00497306 /* SurgeNalUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2E51CC2D68A00497306 /* SurgeNalUnit.m */; };
-		42DCC2FE1CC2D68A00497306 /* SurgeH264Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E71CC2D68A00497306 /* SurgeH264Decoder.h */; };
 		42DCC2FF1CC2D68A00497306 /* SurgeH264Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E71CC2D68A00497306 /* SurgeH264Decoder.h */; };
 		42DCC3001CC2D68A00497306 /* SurgeH264Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E71CC2D68A00497306 /* SurgeH264Decoder.h */; };
 		42DCC3011CC2D68A00497306 /* SurgeH264Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2E81CC2D68A00497306 /* SurgeH264Decoder.m */; };
 		42DCC3021CC2D68A00497306 /* SurgeH264Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2E81CC2D68A00497306 /* SurgeH264Decoder.m */; };
 		42DCC3031CC2D68A00497306 /* SurgeH264Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2E81CC2D68A00497306 /* SurgeH264Decoder.m */; };
-		42DCC3041CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2EB1CC2D68A00497306 /* SurgeMp4vDecoder.h */; };
 		42DCC3051CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2EB1CC2D68A00497306 /* SurgeMp4vDecoder.h */; };
 		42DCC3061CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2EB1CC2D68A00497306 /* SurgeMp4vDecoder.h */; };
 		42DCC3081CC2D68A00497306 /* SurgeMp4vDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2EC1CC2D68A00497306 /* SurgeMp4vDecoder.m */; };
 		42DCC3091CC2D68A00497306 /* SurgeMp4vDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2EC1CC2D68A00497306 /* SurgeMp4vDecoder.m */; };
-		42DCC30A1CC2D68A00497306 /* SurgeDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2ED1CC2D68A00497306 /* SurgeDecoder.h */; };
 		42DCC30B1CC2D68A00497306 /* SurgeDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2ED1CC2D68A00497306 /* SurgeDecoder.h */; };
 		42DCC30C1CC2D68A00497306 /* SurgeDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2ED1CC2D68A00497306 /* SurgeDecoder.h */; };
 		42DCC30D1CC2D68A00497306 /* SurgeDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2EE1CC2D68A00497306 /* SurgeDecoder.m */; };
 		42DCC30E1CC2D68A00497306 /* SurgeDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2EE1CC2D68A00497306 /* SurgeDecoder.m */; };
 		42DCC30F1CC2D68A00497306 /* SurgeDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2EE1CC2D68A00497306 /* SurgeDecoder.m */; };
 		42DCC3101CC30C5300497306 /* SurgeMp4vDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC2EC1CC2D68A00497306 /* SurgeMp4vDecoder.m */; };
-		42DCC3131CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC3111CC31B1100497306 /* SurgeMjpegDecoder.h */; };
 		42DCC3141CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC3111CC31B1100497306 /* SurgeMjpegDecoder.h */; };
 		42DCC3151CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC3111CC31B1100497306 /* SurgeMjpegDecoder.h */; };
 		42DCC3161CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC3121CC31B1100497306 /* SurgeMjpegDecoder.m */; };
 		42DCC3171CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC3121CC31B1100497306 /* SurgeMjpegDecoder.m */; };
 		42DCC3181CC31B1100497306 /* SurgeMjpegDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DCC3121CC31B1100497306 /* SurgeMjpegDecoder.m */; };
-		42EE5C151CA35C4D00204F31 /* SurgeiOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EE5C141CA35C4D00204F31 /* SurgeiOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42EE5C2F1CA35C8100204F31 /* SurgeTvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EE5C2E1CA35C8100204F31 /* SurgeTvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42EFF7871CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF7851CAADB330056B9F3 /* SurgeRtspPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42EFF7881CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF7851CAADB330056B9F3 /* SurgeRtspPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42EFF7891CAADB330056B9F3 /* SurgeRtspPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 42EFF7861CAADB330056B9F3 /* SurgeRtspPlayer.mm */; };
-		42EFF88E1CAD40410056B9F3 /* SurgeLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */; };
 		42EFF8901CAD40410056B9F3 /* SurgeLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */; };
-		F41D9E4D1D940B95005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
+		7C1139282199D10100E0360C /* SurgeAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7C1139292199D10100E0360C /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
+		7C11392A2199D10100E0360C /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
+		7C11392B2199D10100E0360C /* SurgeNalUnitParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E21CC2D68A00497306 /* SurgeNalUnitParser.h */; };
+		7C11392C2199D10100E0360C /* SurgeNalUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E41CC2D68A00497306 /* SurgeNalUnit.h */; };
+		7C11392D2199D10100E0360C /* SurgeH264Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2E71CC2D68A00497306 /* SurgeH264Decoder.h */; };
+		7C11392E2199D10100E0360C /* SurgeMjpegDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC3111CC31B1100497306 /* SurgeMjpegDecoder.h */; };
+		7C11392F2199D10100E0360C /* SurgeMp4vDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2EB1CC2D68A00497306 /* SurgeMp4vDecoder.h */; };
+		7C1139302199D10100E0360C /* BitstreamReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01661CE6267E00EA072F /* BitstreamReader.h */; };
+		7C1139312199D10100E0360C /* BitstreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 42AD01761CE6317800EA072F /* BitstreamWriter.h */; };
+		7C1139322199D10100E0360C /* SurgeDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 42DCC2ED1CC2D68A00497306 /* SurgeDecoder.h */; };
+		7C1139332199D10100E0360C /* SurgeLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF88C1CAD40410056B9F3 /* SurgeLogging.h */; };
+		7C1139342199D10100E0360C /* SurgeRtspPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EFF7851CAADB330056B9F3 /* SurgeRtspPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7C1139352199D10100E0360C /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
+		7C1139362199D10100E0360C /* SurgeiOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 42EE5C141CA35C4D00204F31 /* SurgeiOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F41D9E4E1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
 		F41D9E4F1D940B96005D2B0A /* SurgeRtspPlayer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */; };
 		F45A89D220F50833003C4D81 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D020F50833003C4D81 /* libcrypto.a */; };
 		F45A89D320F50833003C4D81 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D120F50833003C4D81 /* libssl.a */; };
-		F48C83D3210F44B100A632BF /* SurgeAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F48C83D4210F44B200A632BF /* SurgeAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F48C83D5210F44B300A632BF /* SurgeAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F48C83D6210F44B800A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
 		F48C83D7210F44B900A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
-		F4905BE6210F17B000903D27 /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
 		F4905BE7210F17B000903D27 /* AuthenticatorMapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */; };
 		F4905BE8210F17B400903D27 /* AuthenticatorMapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */; };
 		F4905BE9210F17B400903D27 /* AuthenticatorMapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */; };
 		F497B42F20E120A20067D92A /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F497B42D20E120A10067D92A /* libssl.a */; };
 		F497B43020E120A20067D92A /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F497B42E20E120A20067D92A /* libcrypto.a */; };
-		F4B2A0101D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
 		F4B2A0111D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
 		F4B2A0121D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */; };
 		F4B2A0131D4B87C100979ABB /* NSDate+SurgeExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */; };
@@ -391,28 +391,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42EE5C0F1CA35C4D00204F31 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F48C83D3210F44B100A632BF /* SurgeAuthenticator.h in Headers */,
-				42EFF7871CAADB330056B9F3 /* SurgeRtspPlayer.h in Headers */,
-				F41D9E4D1D940B95005D2B0A /* SurgeRtspPlayer_Private.h in Headers */,
-				42AD016A1CE6267E00EA072F /* BitstreamReader.h in Headers */,
-				42EFF88E1CAD40410056B9F3 /* SurgeLogging.h in Headers */,
-				42DCC3041CC2D68A00497306 /* SurgeMp4vDecoder.h in Headers */,
-				42EE5C151CA35C4D00204F31 /* SurgeiOS.h in Headers */,
-				42AD01781CE6317800EA072F /* BitstreamWriter.h in Headers */,
-				42DCC2FE1CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
-				42DCC3131CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
-				42DCC2F51CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
-				42DCC30A1CC2D68A00497306 /* SurgeDecoder.h in Headers */,
-				F4905BE6210F17B000903D27 /* AuthenticatorMapper.h in Headers */,
-				42DCC2EF1CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
-				F4B2A0101D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		42EE5C291CA35C8100204F31 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -432,6 +410,28 @@
 				42DCC2F01CC2D68A00497306 /* SurgeNalUnitParser.h in Headers */,
 				F48C83D4210F44B200A632BF /* SurgeAuthenticator.h in Headers */,
 				F4B2A0111D4B87C100979ABB /* NSDate+SurgeExtensions.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7C1139272199D0EB00E0360C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C1139282199D10100E0360C /* SurgeAuthenticator.h in Headers */,
+				7C1139342199D10100E0360C /* SurgeRtspPlayer.h in Headers */,
+				7C1139362199D10100E0360C /* SurgeiOS.h in Headers */,
+				7C1139292199D10100E0360C /* AuthenticatorMapper.h in Headers */,
+				7C11392A2199D10100E0360C /* NSDate+SurgeExtensions.h in Headers */,
+				7C11392B2199D10100E0360C /* SurgeNalUnitParser.h in Headers */,
+				7C11392C2199D10100E0360C /* SurgeNalUnit.h in Headers */,
+				7C11392D2199D10100E0360C /* SurgeH264Decoder.h in Headers */,
+				7C11392E2199D10100E0360C /* SurgeMjpegDecoder.h in Headers */,
+				7C11392F2199D10100E0360C /* SurgeMp4vDecoder.h in Headers */,
+				7C1139302199D10100E0360C /* BitstreamReader.h in Headers */,
+				7C1139312199D10100E0360C /* BitstreamWriter.h in Headers */,
+				7C1139322199D10100E0360C /* SurgeDecoder.h in Headers */,
+				7C1139332199D10100E0360C /* SurgeLogging.h in Headers */,
+				7C1139352199D10100E0360C /* SurgeRtspPlayer_Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,8 +461,8 @@
 			buildConfigurationList = 42EE5C171CA35C4D00204F31 /* Build configuration list for PBXNativeTarget "SurgeiOS" */;
 			buildPhases = (
 				42EE5C0D1CA35C4D00204F31 /* Sources */,
+				7C1139272199D0EB00E0360C /* Headers */,
 				42EE5C0E1CA35C4D00204F31 /* Frameworks */,
-				42EE5C0F1CA35C4D00204F31 /* Headers */,
 				42EE5C101CA35C4D00204F31 /* Resources */,
 			);
 			buildRules = (
@@ -810,6 +810,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -873,6 +874,7 @@
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64 arm64e armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1034,6 +1036,7 @@
 					"$(PROJECT_DIR)/../../core/src",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -1067,6 +1070,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../../core/src",
 				);
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};

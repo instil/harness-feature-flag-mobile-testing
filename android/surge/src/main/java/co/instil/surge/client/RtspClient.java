@@ -66,6 +66,8 @@ public class RtspClient implements AutoCloseable {
     public native void keepAlive(ResponseCallback callback);
 
     public native void setTimeRange(Date startTime, Date endtime);
+    public native void setStartTime(Date startTime);
+    public native void setEndTime(Date endtime);
 
     public native boolean isInterleavedTransport();
 

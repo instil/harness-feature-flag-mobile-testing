@@ -9,6 +9,9 @@
 #include <jni.h>
 #include <cstdlib>
 
+#include <android/log.h>
+#include <string>
+
 
 namespace SurgeJni {
 
@@ -21,47 +24,34 @@ namespace SurgeJni {
     class ClassLoader {
 
     public:
-        static ClassLoader *Instance() {
-            return classLoaderSingleton;
-        }
-
-        static void AttachToJvm(JNIEnv *jniEnv) {
-            if (classLoaderSingleton != nullptr) {
-                delete classLoaderSingleton;
-            }
-
-            classLoaderSingleton = new ClassLoader(jniEnv);
-        }
-
-    private:
-        static ClassLoader *classLoaderSingleton;
-
-    public:
-        jclass findClass(const char* name);
-        JNIEnv* getEnv();
-
-    private:
         ClassLoader(JNIEnv *env);
         ~ClassLoader();
 
-        void GenerateDetachKeyForJvm() {
-            pthread_key_create(&detachKey, DetatchJvmThread);
+    public:
+        jclass findClass(const char* name);
+        JNIEnv* AttachToJvm();
+        void DetachFromJvm();
+
+    private:
+        void TrackNewThreadAttachedToJvm() {
+            ++jniEnvCount;
         }
 
-        void DetachCurrentThread() {
-            jvm->DetachCurrentThread();
+        void TrackExistingJniEnvAcquired() {
+            ++jniEnvCount;
         }
 
-        static void DetatchJvmThread(void *rawEnv) {
-            DEBUG("Detaching JVM Thread");
-            classLoaderSingleton->DetachCurrentThread();
+        bool ShouldDetachJniEnv() {
+            return jniEnvCount == -1 ? false : --jniEnvCount == 0;
         }
+
 
     private:
         JavaVM *jvm;
+        thread_local static int jniEnvCount;
+
         jobject classLoader;
         jmethodID findClassMethod;
-        pthread_key_t detachKey;
     };
 }
 

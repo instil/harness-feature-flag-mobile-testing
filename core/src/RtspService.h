@@ -49,16 +49,20 @@ namespace Surge {
 
         void SetAuthService(AuthenticationService *authService) {
             this->authService = authService;
-            RtspCommandFactory::SetAuthService(authService);
         }
 
         void SetCustomSessionDescriptionFactory(SessionDescriptionFactory *factory) {
+            delete this->sessionDescriptionFactory;
             this->sessionDescriptionFactory = factory;
         }
 
     private:
         unsigned int NextSequenceNumber() {
             return sequenceNumber++;
+        }
+
+        void ResetSequenceNumber() {
+            sequenceNumber = 1;
         }
 
     private:

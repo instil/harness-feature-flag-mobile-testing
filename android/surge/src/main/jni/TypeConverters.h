@@ -51,7 +51,7 @@ namespace SurgeJni {
 
         template <class T>
         std::vector<T> convertList(SurgeJni::ClassLoader *classLoader, jobject jList, std::function<T(jobject)> innerConverter) {
-            JNIEnv *env = classLoader->getEnv();
+            JNIEnv *env = classLoader->AttachToJvm();
 
             jclass listClass = env->FindClass("java/util/List");
             jmethodID listSizeMethod = env->GetMethodID(listClass, "size", "()I");
@@ -67,6 +67,8 @@ namespace SurgeJni {
                 T item = innerConverter(jItem);
                 result.emplace_back(item);
             }
+
+            classLoader->DetachFromJvm();
 
             return result;
         }

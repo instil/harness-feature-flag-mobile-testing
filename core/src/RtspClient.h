@@ -124,19 +124,30 @@ namespace Surge {
         }
 
         void SetTimeRange(SurgeUtil::DateTime *startTime, SurgeUtil::DateTime *endTime) {
+            SetStartTime(startTime);
+            SetEndTime(endTime);
+        }
+
+        void SetStartTime(SurgeUtil::DateTime *startTime) {
             if (startTime) {
                 if (this->startTime) {
-                    delete startTime;
+                    delete this->startTime;
                 }
                 this->startTime = startTime;
             }
+        }
 
+        void SetEndTime(SurgeUtil::DateTime *endTime) {
             if (endTime) {
                 if (this->endTime) {
-                    delete endTime;
+                    delete this->endTime;
                 }
                 this->endTime = endTime;
             }
+        }
+
+        void SetSessionDescriptionFactory(SessionDescriptionFactory *factory) {
+            rtspService->SetCustomSessionDescriptionFactory(factory);
         }
 
         int GetTimeout() {

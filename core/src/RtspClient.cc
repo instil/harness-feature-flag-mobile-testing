@@ -57,6 +57,7 @@ Surge::RtspClient::~RtspClient() {
     delete rtspService;
     delete frameBuffer;
     delete transport;
+    delete packetBuffer;
 
     if (depacketizer != nullptr) {
         delete depacketizer;
@@ -76,7 +77,7 @@ Surge::RtspClient::~RtspClient() {
 
 void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)> callback) {
     if (transport != nullptr && transport->IsRunning()) {
-        INFO("Trying to open a conenction while another connection is already running. Forcing disconnection.");
+        INFO("Trying to open a connection while another connection is already running. Forcing disconnection.");
         Disconnect();
     }
     
@@ -139,7 +140,7 @@ void Surge::RtspClient::GenerateTransportFromUrl(std::string& url) {
 void Surge::RtspClient::Disconnect() {
     StopHousekeepingThread();
 
-    if (transport->IsRunning()) {
+    if (transport != nullptr && transport->IsRunning()) {
         transport->StopRunning();
     }
 }

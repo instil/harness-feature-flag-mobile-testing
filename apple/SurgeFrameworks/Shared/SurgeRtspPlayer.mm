@@ -132,9 +132,16 @@ private:
 }
 
 - (void)dealloc {
-    self.client->Disconnect();
-    delete self.client;
-    delete self.clientDelegate;
+    if (_client != nullptr) {
+        _client->Disconnect();
+        delete _client;
+    }
+
+    if (_clientDelegate != nullptr) {
+        delete _clientDelegate;
+    }
+
+    [_decoder deinit];
 }
 
 #pragma mark - Public API
@@ -258,12 +265,15 @@ private:
 }
 
 - (void)describe:(void (^)(std::vector<Surge::SessionDescription>, RtspErrorCode))callback {
-    self.client->Connect(std::string(self.url.absoluteString.UTF8String), [self, callback](bool result) {
+    Surge::RtspClient *client = self.client;
+    std::string username = std::string(self.username.UTF8String);
+    std::string password = std::string(self.password.UTF8String);
 
-        self.client->SetCredentials(std::string(self.username.UTF8String),
-                                    std::string(self.password.UTF8String));
+    self.client->Connect(std::string(self.url.absoluteString.UTF8String), [client, username, password, callback](bool result) {
 
-        self.client->Describe([=](Surge::DescribeResponse *describeResponse) {
+        client->SetCredentials(username, password);
+
+        client->Describe([callback](Surge::DescribeResponse *describeResponse) {
 
                                   std::vector<Surge::SessionDescription> descriptions = std::vector<Surge::SessionDescription>();
                                   int errorCode = (int)RtspErrorCodeUnknownFailure;
@@ -287,7 +297,7 @@ private:
     
     [self initialiseDecoderForStream:sessionDescription];
     self.client->Setup(sessionDescription,
-                       [=](Surge::SetupResponse *setupResponse) {
+                       [callback](Surge::SetupResponse *setupResponse) {
                            if (setupResponse != nullptr) {
                                callback((RtspErrorCode)setupResponse->GetCode());
                                delete setupResponse;
@@ -309,7 +319,7 @@ private:
 
 - (void)play:(void (^)(RtspErrorCode)) callback {
     SurgeLogInfo(@"Starting/resuming playback of %@", self.url);
-    self.client->Play([=](Surge::RtspResponse *playResponse) {
+    self.client->Play([callback](Surge::RtspResponse *playResponse) {
                           if (playResponse) {
                               callback((RtspErrorCode)playResponse->GetCode());
                           } else {
@@ -346,8 +356,7 @@ private:
 }
 
 - (void)teardown:(void (^)(RtspErrorCode)) callback {
-    __weak typeof(self) weakSelf = self;
-    self.client->Teardown([weakSelf, callback](Surge::RtspResponse *teardownResponse) {
+    self.client->Teardown([callback](Surge::RtspResponse *teardownResponse) {
         if (teardownResponse) {
             callback((RtspErrorCode)teardownResponse->GetCode());
         } else {
@@ -359,14 +368,19 @@ private:
 
 - (void)stop {
     SurgeLogInfo(@"Stopping playback of %@", self.url);
-    self.client->Teardown([self] (bool teardownResult) {
-        self.client->Disconnect();
-
-        if ([self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
-            [self.delegate rtspPlayerDidStopPlayback:self];
+    __weak typeof(self) weakSelf = self;
+    self.client->Teardown([weakSelf] (bool teardownResult) {
+        if (weakSelf == nil) {
+            return;
         }
 
-        [self.decoder deinit];
+        weakSelf.client->Disconnect();
+
+        if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
+            [weakSelf.delegate rtspPlayerDidStopPlayback:weakSelf];
+        }
+
+        [weakSelf.decoder deinit];
     });
 }
 

@@ -258,6 +258,8 @@ void Surge::RtspClient::Play(std::function<void(Surge::RtspResponse*)> callback)
 
     DEBUG("Sending PLAY request");
 
+    enableVideoFramePublishing();
+
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
         isPlaying = response != nullptr && response->Ok();
 
@@ -353,6 +355,8 @@ void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callb
     }
 
     DEBUG("Sending TEARDOWN request");
+
+    disableVideoFramePublishing();
 
     auto runCallback = [this, callback](Surge::RtspResponse *response) {
         StopHousekeepingThread();

@@ -87,7 +87,7 @@ namespace Surge {
                 return;
             }
 
-            if (delegate != nullptr) {
+            if (delegate != nullptr && sendFrameToDelegate()) {
                 delegate->ClientReceivedFrame(frame.data(),
                                               frame.size(),
                                               depacketizer->GetWidth(),
@@ -259,6 +259,21 @@ namespace Surge {
         bool processedFirstPayload;
         long long lastPacketSequenceNum;
         bool dropFrame;
+
+    private:
+        bool shouldSendFrameToDelegate = true;
+
+        bool sendFrameToDelegate() {
+            return shouldSendFrameToDelegate;
+        }
+
+        void enableVideoFramePublishing() {
+            shouldSendFrameToDelegate = true;
+        }
+
+        void disableVideoFramePublishing() {
+            shouldSendFrameToDelegate = false;
+        }
     };
 
 }

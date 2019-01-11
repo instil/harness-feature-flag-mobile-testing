@@ -219,6 +219,8 @@ void Surge::Transport::Run() {
     m_loop->run<uvw::Loop::Mode::NOWAIT>();
     m_tcp->close();
     m_loop->run<uvw::Loop::Mode::NOWAIT>();
+    m_libuvCloser->close();
+    m_loop->run<uvw::Loop::Mode::NOWAIT>();
 
     m_loop->clear();
     m_loop->run<uvw::Loop::Mode::NOWAIT>();

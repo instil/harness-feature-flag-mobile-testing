@@ -9,7 +9,11 @@
 
 Surge::RtpPacketBuffer::RtpPacketBuffer(int bufferDelayMilliseconds) : bufferDelayMilliseconds(bufferDelayMilliseconds), packetAvailableCallback(nullptr) { }
 
-Surge::RtpPacketBuffer::~RtpPacketBuffer() { }
+Surge::RtpPacketBuffer::~RtpPacketBuffer() {
+    std::for_each(buffer.begin(), buffer.end(), [](RtpPacketBufferItem item) {
+        delete item.packet;
+    });
+}
 
 void Surge::RtpPacketBuffer::AddPacketToBuffer(RtpPacket *packet) {
     AddToBuffer(packet);

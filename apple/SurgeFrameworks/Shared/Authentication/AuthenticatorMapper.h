@@ -16,7 +16,7 @@ public:
     std::vector<char> FirstBytesOnTheWireAuthentication(const std::string &username, const std::string &password) override;
 
 private:
-    id<SurgeAuthenticator> authenticator;
+    __weak id<SurgeAuthenticator> authenticator;
 };
 
 @interface AuthenticatorMapper : NSObject

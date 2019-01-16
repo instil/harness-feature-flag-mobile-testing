@@ -12,6 +12,7 @@
 #define QUANTIZATIONTABLEHEADERSIZE 4
 #define RESTART_MIN 64
 #define RESTART_MAX 127
+#define DYNAMICALLYDEFINEDQUANTIZATIONTABLE_MINQVALUE 128
 
 // https://tools.ietf.org/html/rfc2435
 /*
@@ -338,7 +339,7 @@ size_t Surge::MJPEGDepacketizer::ProcessPacketHeaders(const unsigned char *paylo
     }
 
     size_t combinedHeadersSize = JPEGHEADERSIZE + restartHeaderSize;
-    if (fragmentOffset == 0) {
+    if (fragmentOffset == 0 && qValue >= DYNAMICALLYDEFINEDQUANTIZATIONTABLE_MINQVALUE) {
         combinedHeadersSize += QUANTIZATIONTABLEHEADERSIZE + quantizationTableLength;
     }
     
@@ -366,7 +367,7 @@ void Surge::MJPEGDepacketizer::ParseQuantizationTable(const unsigned char *quant
                                                       int qValue,
                                                       unsigned char *lumq,
                                                       unsigned char *chrq) {
-    if (quantizationTableLength > 0) {
+    if (qValue >= DYNAMICALLYDEFINEDQUANTIZATIONTABLE_MINQVALUE && quantizationTableLength > 0) {
         int quantizationTableDataPosition = 0;
         size_t lumqPosition;
         for (lumqPosition = 0; lumqPosition < 64 && lumqPosition < quantizationTableLength; lumqPosition++) {

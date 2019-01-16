@@ -60,7 +60,7 @@ public:
 class RtspClientDelegateWrapper : public Surge::IRtspClientDelegate {
 public:
  
-    RtspClientDelegateWrapper(id<SurgeRtspClientDelegate> delegate) : delegate(delegate) {}
+    RtspClientDelegateWrapper(__weak id<SurgeRtspClientDelegate> delegate) : delegate(delegate) {}
 
     void ClientDidTimeout() {
         [delegate rtspClientDidTimeout];
@@ -369,18 +369,22 @@ private:
 - (void)stop {
     SurgeLogInfo(@"Stopping playback of %@", self.url);
     __weak typeof(self) weakSelf = self;
-    self.client->Teardown([weakSelf] (bool teardownResult) {
+    Surge::RtspClient *client = self.client;
+    __weak SurgeDecoder *decoder = self.decoder;
+    __weak id<SurgeRtspPlayerDelegate> delegate = self.delegate;
+
+    self.client->Teardown([weakSelf, client, decoder, delegate] (bool teardownResult) {
         if (weakSelf == nil) {
             return;
         }
 
-        weakSelf.client->Disconnect();
+        client->Disconnect();
 
-        if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
-            [weakSelf.delegate rtspPlayerDidStopPlayback:weakSelf];
+        if ([delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
+            [delegate rtspPlayerDidStopPlayback:weakSelf];
         }
 
-        [weakSelf.decoder deinit];
+        [decoder deinit];
     });
 }
 

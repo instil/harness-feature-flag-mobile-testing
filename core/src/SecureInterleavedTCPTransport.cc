@@ -12,12 +12,6 @@
 
 Surge::SecureInterleavedTCPTransport::SecureInterleavedTCPTransport(ITLSClient *tlsClient, TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate) : tlsClient(tlsClient), Surge::InterleavedRtspTransport(transportDelegate, delegate) { }
 
-Surge::SecureInterleavedTCPTransport::~SecureInterleavedTCPTransport() {
-    if (tlsClient != nullptr) {
-        delete tlsClient;
-    }
-}
-
 void Surge::SecureInterleavedTCPTransport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)> callback) {
     INFO("Starting TLS Client");
     tlsClient->StartClient(this);

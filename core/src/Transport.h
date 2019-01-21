@@ -104,6 +104,8 @@ namespace Surge {
         TransportDelegate *transportDelegate;
         
         std::vector<unsigned char> m_receivedBuffer;
+
+        SurgeUtil::Mutex threadManipulationMutex;
     };
 }
 

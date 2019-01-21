@@ -5,6 +5,8 @@
 
 #include "Transport.h"
 
+#include "MutexLocker.h"
+
 using SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
 
 
@@ -26,11 +28,13 @@ Surge::Transport::~Transport() {
 /*  Thread handling  */
 
 void Surge::Transport::StartRunning() {
-    DEBUG("Starting transport");
+    SurgeUtil::MutexLocker lock { threadManipulationMutex };
 
     if (IsRunning()) {
         return;
     }
+
+    DEBUG("Starting transport thread");
 
     if (m_receivedBuffer.size() > 0) {
         DEBUG("Transport packet buffer clear required.");
@@ -42,18 +46,23 @@ void Surge::Transport::StartRunning() {
 }
 
 void Surge::Transport::StopRunning() {
-    DEBUG("Stopping transport");
+    SurgeUtil::MutexLocker lock { threadManipulationMutex };
 
     if (!IsRunning()) {
         return;
     }
+
+    DEBUG("Stopping transport thread");
+    
     m_threadRunning = false;
+
     m_libuvCloser->send();
 
     if (m_thread.IsRunning()) {
         m_thread.WaitUntilStopped();
     }
 }
+
 /*  Network  */
 
 void Surge::Transport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)> callback) {
@@ -136,7 +145,6 @@ void Surge::Transport::ArbitraryDataTransaction(const char *data, const size_t l
     });
 }
 
-
 void Surge::Transport::SafeRunLibuvCommand(std::function<void()> commandsToRun) {
     executingLibuvCommand = false;
     m_libuvCloser->send();
@@ -199,7 +207,7 @@ void Surge::Transport::AttachCallbacksToLibuv() {
     });
 
     m_libuvCloser->on<uvw::AsyncEvent>([this](const uvw::AsyncEvent &asyncEvent, uvw::AsyncHandle &asyncHandle) {
-        DEBUG("Stopping transport thread.");
+        DEBUG("Processing request to stop transport thread.");
         m_loop->stop();
     });
 }

@@ -67,17 +67,7 @@ void Surge::Transport::StopRunning() {
 
 void Surge::Transport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)> callback) {
     if (!m_threadRunning) {
-        if (m_loop == nullptr) {
-            m_loop = uvw::Loop::create();
-        }
-        m_tcp = m_loop->resource<uvw::TcpHandle>();
-        m_timer = m_loop->resource<uvw::TimerHandle>();
-        m_libuvCloser = m_loop->resource<uvw::AsyncHandle>();
-        m_libuvCommandNotifier = m_loop->resource<uvw::AsyncHandle>();
-
-        m_libuvCommandNotifier->on<uvw::AsyncEvent>([this](const uvw::AsyncEvent &asyncEvent, uvw::AsyncHandle &asyncHandle) {
-            m_loop->stop();
-        });
+        InitializeLibuv();
     }
 
     m_streamIp = ResolveHostnameToIP(url.GetHost(), url.GetPort());
@@ -87,9 +77,8 @@ void Surge::Transport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)>
         callback(error.code());
     });
 
-
     m_tcp->once<uvw::ConnectEvent>([&, callback](const uvw::ConnectEvent &connectEvent, uvw::TcpHandle &tcp) {
-        AttachCallbacksToLibuv();
+        AttachRtspCallbacksToLibuv();
 
         INFO("Connected");
         callback(0);
@@ -155,20 +144,26 @@ void Surge::Transport::ArbitraryDataTransaction(const char *data, const size_t l
     });
 }
 
+/*  Libuv Management  */
+
+void Surge::Transport::InitializeLibuv() {
+    if (m_loop == nullptr) {
+        m_loop = uvw::Loop::create();
+    }
+    m_tcp = m_loop->resource<uvw::TcpHandle>();
+    m_timer = m_loop->resource<uvw::TimerHandle>();
+    m_libuvCloser = m_loop->resource<uvw::AsyncHandle>();
+    m_libuvCommandNotifier = m_loop->resource<uvw::AsyncHandle>();
+
+    m_libuvCommandNotifier->on<uvw::AsyncEvent>([this](const uvw::AsyncEvent &asyncEvent, uvw::AsyncHandle &asyncHandle) {
+        m_loop->stop();
+    });
+}
 void Surge::Transport::SafeRunLibuvCommand(std::function<void()> commandsToRun) {
     executingLibuvCommand = false;
     m_libuvCommandNotifier->send();
     commandsToRun();
     executingLibuvCommand = true;
-}
-
-void Surge::Transport::StartRtspTimer() {
-    DEBUG("Started RTSP transaction timeout timer.");
-    m_timer->start(m_rtspTimeoutTime, uvw::TimerHandle::Time(0));
-}
-
-void Surge::Transport::StopRtspTimer() {
-    m_timer->stop();
 }
 
 std::unique_ptr<char[]> Surge::Transport::GenerateRtspDataPtr(const char *data, size_t length) {
@@ -177,7 +172,7 @@ std::unique_ptr<char[]> Surge::Transport::GenerateRtspDataPtr(const char *data, 
     return std::unique_ptr<char[]>(dataCopy);
 }
 
-void Surge::Transport::AttachCallbacksToLibuv() {
+void Surge::Transport::AttachRtspCallbacksToLibuv() {
     m_tcp->clear();
     m_timer->clear();
     m_libuvCloser->clear();
@@ -222,17 +217,10 @@ void Surge::Transport::AttachCallbacksToLibuv() {
     });
 }
 
-void Surge::Transport::Run() {
-    while (m_threadRunning) {
-        if (executingLibuvCommand) {
-            m_loop->run();
-        }
-    }
-
+void Surge::Transport::CloseAndCleanUpLibuv() {
     // After closing a handle, run the libuv loop once to allow libuv to call the
     // associated close event callback and clean up the resource.
-    INFO("Closing transport");
-    
+
     m_timer->close();
     m_loop->run<uvw::Loop::Mode::NOWAIT>();
     m_tcp->close();
@@ -244,7 +232,29 @@ void Surge::Transport::Run() {
 
     m_loop->clear();
     m_loop->run<uvw::Loop::Mode::NOWAIT>();
+}
 
+
+void Surge::Transport::StartRtspTimer() {
+    DEBUG("Started RTSP transaction timeout timer.");
+    m_timer->start(m_rtspTimeoutTime, uvw::TimerHandle::Time(0));
+}
+
+void Surge::Transport::StopRtspTimer() {
+    m_timer->stop();
+}
+
+/*  Libuv Thread  */
+
+void Surge::Transport::Run() {
+    while (m_threadRunning) {
+        if (executingLibuvCommand) {
+            m_loop->run();
+        }
+    }
+
+    INFO("Closing transport");
+    CloseAndCleanUpLibuv();
     INFO("Transport stopped");
 }
 

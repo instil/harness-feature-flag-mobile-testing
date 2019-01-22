@@ -59,10 +59,13 @@ namespace Surge {
             }
         }
 
+        void InitializeLibuv();
+        void CloseAndCleanUpLibuv();
+        void AttachRtspCallbacksToLibuv();
+
         void RtspTransaction(const char *data, const size_t length, std::function<void(Response*)> callback);
         std::unique_ptr<char[]> GenerateRtspDataPtr(const char *data, size_t length);
         void SafeRunLibuvCommand(std::function<void()> commandsToRun);
-        void AttachCallbacksToLibuv();
         virtual void RtspHandleReceive(const char* buffer, size_t size);
         bool HandleRtspPacket();
         void AppendDataToBuffer(const char* buffer, size_t size);

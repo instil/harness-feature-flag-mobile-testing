@@ -73,6 +73,11 @@ void Surge::Transport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)>
         m_tcp = m_loop->resource<uvw::TcpHandle>();
         m_timer = m_loop->resource<uvw::TimerHandle>();
         m_libuvCloser = m_loop->resource<uvw::AsyncHandle>();
+        m_libuvCommandNotifier = m_loop->resource<uvw::AsyncHandle>();
+
+        m_libuvCommandNotifier->on<uvw::AsyncEvent>([this](const uvw::AsyncEvent &asyncEvent, uvw::AsyncHandle &asyncHandle) {
+            m_loop->stop();
+        });
     }
 
     m_streamIp = ResolveHostnameToIP(url.GetHost(), url.GetPort());
@@ -88,6 +93,11 @@ void Surge::Transport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)>
 
         INFO("Connected");
         callback(0);
+    });
+
+    m_libuvCloser->once<uvw::AsyncEvent>([this](const uvw::AsyncEvent &asyncEvent, uvw::AsyncHandle &asyncHandle) {
+        m_tcp->close();
+        m_loop->stop();
     });
 
     INFO("Starting the Transport thread");
@@ -147,7 +157,7 @@ void Surge::Transport::ArbitraryDataTransaction(const char *data, const size_t l
 
 void Surge::Transport::SafeRunLibuvCommand(std::function<void()> commandsToRun) {
     executingLibuvCommand = false;
-    m_libuvCloser->send();
+    m_libuvCommandNotifier->send();
     commandsToRun();
     executingLibuvCommand = true;
 }
@@ -228,6 +238,8 @@ void Surge::Transport::Run() {
     m_tcp->close();
     m_loop->run<uvw::Loop::Mode::NOWAIT>();
     m_libuvCloser->close();
+    m_loop->run<uvw::Loop::Mode::NOWAIT>();
+    m_libuvCommandNotifier->close();
     m_loop->run<uvw::Loop::Mode::NOWAIT>();
 
     m_loop->clear();

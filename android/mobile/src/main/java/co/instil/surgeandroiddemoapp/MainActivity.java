@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     private final SurgeRtspPlayer player = new SurgeRtspPlayer();
     private SurgeSurface surface;
     private boolean isPlaying = false;
+    private boolean isPaused = false;
 
     private static final Calendar calendar = Calendar.getInstance();
 
@@ -86,10 +87,17 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
                 errorCode -> System.out.println("Finished starting stream"));
     }
 
-    public void stopStream(View view) {
-        if (isPlaying) {
-            isPlaying = false;
-            player.stop();
+    public void pauseStream(View view) {
+        if (isPlaying && !isPaused) {
+            isPaused = true;
+            player.pause();
+        }
+    }
+
+    public void playStream(View view) {
+        if (isPlaying && isPaused) {
+            isPaused = false;
+            player.play();
         }
     }
 

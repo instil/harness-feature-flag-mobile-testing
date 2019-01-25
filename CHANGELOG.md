@@ -1,5 +1,15 @@
 ## Changelog
 
+### v1.2.2
+
+###### Fixes
+
+* Removed a retain cycle in the custom authentication logic on iOS.
+* Fixed a file descriptor leak relating to a change in functionality in the upgrade in the libuv dependency.
+* Changed the MJPEG depacketizer to take into account certain MJPEG streams that do not contain their quantization tables in the headers.
+* Fixed a session description parsing issue for ONVIF cameras.
+* Fixed a number of dealloc related crashes.
+
 ### v1.2.1
 
 ###### Fixes

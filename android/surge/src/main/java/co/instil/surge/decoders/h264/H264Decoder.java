@@ -51,6 +51,8 @@ public abstract class H264Decoder implements Decoder {
     private NaluSegment sequenceParameterSet;
     private ByteBuffer[] inputBuffers = null;
     private DeviceExaminer deviceExaminer;
+    private H264Packet lastSPSPacket = null;
+    private H264Packet lastPPSPacket = null;
 
 
     /**
@@ -110,7 +112,22 @@ public abstract class H264Decoder implements Decoder {
             }
 
             for (NaluSegment unit : segments) {
-                onReceiveH264Packet(new H264Packet(unit, presentationTime));
+                H264Packet packet = new H264Packet(unit, presentationTime);
+                if (packet.isKeyFrame())  {
+                    if (lastSPSPacket != null) {
+                        onReceiveH264Packet(lastSPSPacket);
+                    }
+                    if (lastPPSPacket != null) {
+                        onReceiveH264Packet(lastPPSPacket);
+                    }
+                    onReceiveH264Packet(packet);
+                } else if (packet.isSequenceParameterSet()) {
+                    lastSPSPacket = packet;
+                } else if (packet.isPictureParameterSet()) {
+                    lastPPSPacket = packet;
+                } else {
+                    onReceiveH264Packet(packet);
+                }
             }
 
         } catch (Exception ex) {

@@ -113,7 +113,7 @@ public abstract class H264Decoder implements Decoder {
 
             for (NaluSegment unit : segments) {
                 H264Packet packet = new H264Packet(unit, presentationTime);
-                if (packet.isKeyFrame())  {
+                if (packet.isKeyFrame()) {
                     if (lastSPSPacket != null) {
                         onReceiveH264Packet(lastSPSPacket);
                     }

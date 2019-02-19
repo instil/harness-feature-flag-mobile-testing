@@ -206,6 +206,15 @@ namespace Surge {
             authService->Remove(index);
         }
 
+        bool RtpPacketTypeIsValid(RtpPacket *packet) {
+            // Although RTSP has it's own methods for sending separate streams of data
+            // to the client, it's possible (as per the RTP spec) for the RTSP stream to
+            // send multiple types of data down the same open port. This simply filters
+            // out any unexpected RTP packets (that are likely containing metadata).
+            
+            return packet->GetType() == sessionDescription.GetPayloadType();
+        }
+
     public: // Inherited from TransportDelegate
         void RtpPacketReceived(RtpPacket *packet) override;
 

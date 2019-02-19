@@ -10,15 +10,25 @@
 #include "MimeTypes.h"
 #include "Helpers.h"
 #include "Logging.h"
+#include "Regex.h"
 
 #include <string>
 
+#define EXTRACT_PAYLOAD_TYPE_REGEX "rtpmap:([0-9]+)"
 
 namespace Surge {
 
     class SessionDescriptionV0: public SessionDescription {
     public:
         SessionDescriptionV0(const std::string& rawSessionDescription);
+
+    private:
+        void ExtractPayloadTypeFrom(std::string &rtpMap) {
+            auto result = SurgeUtil::Regex::Split(rtpMap, EXTRACT_PAYLOAD_TYPE_REGEX);
+            if (result.size() >= 2) {
+                payloadType = stoi(result[1]);
+            }
+        }
     };
     
 }

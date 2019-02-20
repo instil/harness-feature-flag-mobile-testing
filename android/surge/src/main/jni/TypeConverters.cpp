@@ -186,8 +186,9 @@ Surge::SessionDescription SurgeJni::JavaTypeConverters::convertSessionDescriptio
     int width = callAndConvertIntGetterOn(jSessionDescription(env), env, "getWidth", javaSessionDescription);
     int height = callAndConvertIntGetterOn(jSessionDescription(env), env, "getHeight", javaSessionDescription);
     int bitrate = callAndConvertIntGetterOn(jSessionDescription(env), env, "getBitrate", javaSessionDescription);
+    int payloadType = callAndConvertIntGetterOn(jSessionDescription(env), env, "getPayloadType", javaSessionDescription);
 
-    Surge::SessionDescription sessionDescription(type, controlUrl, rtpMap, formatParameters, isNative, framerate, fpsFraction, width, height, bitrate);
+    Surge::SessionDescription sessionDescription(type, controlUrl, rtpMap, formatParameters, isNative, framerate, fpsFraction, width, height, bitrate, payloadType);
     return sessionDescription;
 }
 

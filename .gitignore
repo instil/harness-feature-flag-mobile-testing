@@ -32,3 +32,6 @@ obj/
 packages/
 *.aar
 *.framework/
+
+# Visual Studio Code
+.vs

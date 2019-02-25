@@ -133,7 +133,7 @@
     timingInfo.decodeTimeStamp = kCMTimeInvalid;
     timingInfo.presentationTimeStamp = CMTimeMakeWithSeconds(presentationTime, 1);
     
-    OSStatus result = CMSampleBufferCreate(kCFAllocatorDefault,
+    return CMSampleBufferCreate(kCFAllocatorDefault,
                                 *blockBuffer,
                                 true,
                                 NULL,
@@ -145,8 +145,6 @@
                                 numberOfSamples,
                                 &blockLength,
                                 sampleBuffer);
-
-    return result;
 }
 
 

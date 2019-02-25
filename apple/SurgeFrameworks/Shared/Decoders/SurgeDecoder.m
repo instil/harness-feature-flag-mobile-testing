@@ -9,7 +9,6 @@
 @interface SurgeDecoder()
 @property (nonatomic, strong) dispatch_queue_t decoderQueue;
 @property (nonatomic, strong) dispatch_queue_t framerateQueue;
-@property (nonatomic, assign) CMVideoFormatDescriptionRef formatDescription;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
 @property (nonatomic, assign) int framePerSecondCounter;
 @end
@@ -51,6 +50,7 @@
 - (void)freeVideoDecompressionSession {
     if (_decompressionSession) {
         SurgeLogInfo("Decompression Session freed");
+        VTDecompressionSessionWaitForAsynchronousFrames(_decompressionSession);
         VTDecompressionSessionInvalidate(_decompressionSession);
         CFRelease(_decompressionSession);
         _decompressionSession = NULL;
@@ -73,7 +73,6 @@
 - (void)enqueueSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     dispatch_async(self.decoderQueue, ^{
         CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
-        [self createDecompressionSessionIfRequired:formatDescription];
         if (self.formatDescription != NULL &&
             CMFormatDescriptionEqual(self.formatDescription, formatDescription)) {
             [self decodeSampleBuffer:sampleBuffer];
@@ -83,16 +82,14 @@
 }
 
 - (void)createDecompressionSessionIfRequired:(CMFormatDescriptionRef)formatDescription {
-    if (!self.decompressionSession) {
-        [self freeFormatDescription];
-        self.formatDescription = formatDescription;
+    if (CMFormatDescriptionEqual(self.formatDescription, formatDescription)) {
         [self createDecompressionSession:formatDescription];
     }
 }
 
 - (void)createDecompressionSession:(CMFormatDescriptionRef)formatDescription {
     [self freeVideoDecompressionSession];
-    
+
     VTDecompressionOutputCallbackRecord callBackRecord;
     callBackRecord.decompressionOutputCallback = decompressionSessionDecodeFrameCallback;
     callBackRecord.decompressionOutputRefCon = (__bridge void *)self;
@@ -108,14 +105,13 @@
     [destinationImageBufferAttributes setValue:@(kCVPixelFormatType_32BGRA) forKey:(__bridge NSString *)kCVPixelBufferPixelFormatTypeKey];
     [destinationImageBufferAttributes setValue:@YES forKey:(__bridge NSString *)kCVPixelBufferCGImageCompatibilityKey];
 #endif
-    
+
     OSStatus status =  VTDecompressionSessionCreate(NULL,
                                                     formatDescription,
                                                     (__bridge CFDictionaryRef)decoderSpecification,
                                                     (__bridge CFDictionaryRef)destinationImageBufferAttributes,
                                                     &callBackRecord,
                                                     &_decompressionSession);
-    
     if(status != noErr) {
         SurgeLogError(@"Failed to create video decompression session with error code %d", (int)status);
     } else {
@@ -185,6 +181,14 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
        [self.delegate decoderFramerateUpdated:self.framesPerSecond];
        [self updateFramesPerSecond];
     });
+}
+
+- (void)setFormatDescription:(CMVideoFormatDescriptionRef)formatDescription {
+    if (!CMFormatDescriptionEqual(formatDescription, _formatDescription)) {
+        [self freeFormatDescription];
+        _formatDescription = formatDescription;
+        [self createDecompressionSessionIfRequired:formatDescription];
+    }
 }
 
 @end

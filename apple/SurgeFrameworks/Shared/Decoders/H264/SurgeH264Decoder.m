@@ -8,7 +8,6 @@
 #import "SurgeLogging.h"
 
 @interface SurgeH264Decoder ()
-@property (nonatomic, assign) CMVideoFormatDescriptionRef formatDescription;
 @end
 
 @implementation SurgeH264Decoder
@@ -38,6 +37,7 @@
         NSArray *idrs = [SurgeNalUnitParser filteredArrayOfNalUnits:nalUnits ofType:nalUnitType];
         SurgeNalUnit *nalUnit = [idrs lastObject];
         blockLength = nalUnit.length;
+
         [self createBlockBuffer:&blockBuffer forNalUnit:nalUnit];
     }
     
@@ -49,7 +49,7 @@
              andNumberOfSamples:1
               withFrameDuration:duration
             andPresentationTime:presentationTime];
-        
+
         [self enqueueSampleBuffer:sampleBuffer];
 
         CFRelease(blockBuffer);
@@ -65,10 +65,6 @@
         CMFormatDescriptionRef formatDescription;
         OSStatus status = [self createVideoFormatDescription:&formatDescription fromNalUnits:nalUnits];
         if (status == noErr) {
-            if (self.formatDescription) {
-                CFRelease(self.formatDescription);
-            }
-
             self.formatDescription = formatDescription;
         }
     }
@@ -137,7 +133,7 @@
     timingInfo.decodeTimeStamp = kCMTimeInvalid;
     timingInfo.presentationTimeStamp = CMTimeMakeWithSeconds(presentationTime, 1);
     
-    return CMSampleBufferCreate(kCFAllocatorDefault,
+    OSStatus result = CMSampleBufferCreate(kCFAllocatorDefault,
                                 *blockBuffer,
                                 true,
                                 NULL,
@@ -149,6 +145,8 @@
                                 numberOfSamples,
                                 &blockLength,
                                 sampleBuffer);
+
+    return result;
 }
 
 

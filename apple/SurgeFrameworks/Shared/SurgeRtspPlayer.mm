@@ -271,8 +271,14 @@ private:
 
     self.client->Connect(std::string(self.url.absoluteString.UTF8String), [client, username, password, callback](bool result) {
 
-        client->SetCredentials(username, password);
+        if (!result) {
+            if (callback) {
+                callback(std::vector<Surge::SessionDescription>(0), RtspErrorCodeUnknownFailure);
+            }
+            return;
+        }
 
+        client->SetCredentials(username, password);
         client->Describe([callback](Surge::DescribeResponse *describeResponse) {
 
                                   std::vector<Surge::SessionDescription> descriptions = std::vector<Surge::SessionDescription>();

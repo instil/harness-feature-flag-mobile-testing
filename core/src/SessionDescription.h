@@ -27,7 +27,8 @@ namespace Surge {
                               fpsFraction(-1),
                               width(-1),
                               height(-1),
-                              bitrate(0) { }
+                              bitrate(0),
+                              payloadType(0) { }
         
         SessionDescription(RtspSessionType type,
                            std::string control,
@@ -38,7 +39,8 @@ namespace Surge {
                            int fpsFraction,
                            int width,
                            int height,
-                           int bitrate)
+                           int bitrate,
+                           uint8_t payloadType)
                 : type(type),
                   control(control),
                   rtpMap(rtpMap),
@@ -48,7 +50,8 @@ namespace Surge {
                   fpsFraction(fpsFraction),
                   width(width),
                   height(height),
-                  bitrate(bitrate) { }
+                  bitrate(bitrate),
+                  payloadType(payloadType) { }
 
         virtual ~SessionDescription() { }
 
@@ -73,6 +76,8 @@ namespace Surge {
         const int GetHeight() const { return height; }
         
         const int GetBitrate() const { return bitrate; }
+
+        const uint8_t GetPayloadType() const { return payloadType; }
         
         const std::string GetFmtpH264ConfigParameters() const {
             if (type != RtspSessionType::H264) {
@@ -128,7 +133,8 @@ namespace Surge {
         std::string control;
         std::string rtpMap;
         std::string formatParameters;
-        
+        uint8_t payloadType;
+
         bool isNative;
         int framerate;
         int fpsFraction;

@@ -80,11 +80,12 @@ jobject SurgeJni::NativeTypeConverters::convertSessionDescription(SurgeJni::Clas
     jint width = sessionDescription.GetWidth();
     jint height = sessionDescription.GetHeight();
     jint bitrate = sessionDescription.GetBitrate();
+    jint payloadType = sessionDescription.GetPayloadType();
 
     jclass sessionDescriptionClass = classLoader->findClass("co/instil/surge/client/SessionDescription");
-    jmethodID constructor = env->GetMethodID(sessionDescriptionClass, "<init>", "(Lco/instil/surge/client/SessionType;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZIIIII)V");
+    jmethodID constructor = env->GetMethodID(sessionDescriptionClass, "<init>", "(Lco/instil/surge/client/SessionType;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IZIIIII)V");
 
-    jobject result = env->NewObject(sessionDescriptionClass, constructor, type, controlUrl, formatParameters, rtpMap, isNative, framerate, fpsFraction, width, height, bitrate);
+    jobject result = env->NewObject(sessionDescriptionClass, constructor, type, controlUrl, formatParameters, rtpMap, payloadType, isNative, framerate, fpsFraction, width, height, bitrate);
     classLoader->DetachFromJvm();
 
     return result;
@@ -186,8 +187,9 @@ Surge::SessionDescription SurgeJni::JavaTypeConverters::convertSessionDescriptio
     int width = callAndConvertIntGetterOn(jSessionDescription(env), env, "getWidth", javaSessionDescription);
     int height = callAndConvertIntGetterOn(jSessionDescription(env), env, "getHeight", javaSessionDescription);
     int bitrate = callAndConvertIntGetterOn(jSessionDescription(env), env, "getBitrate", javaSessionDescription);
+    int payloadType = callAndConvertIntGetterOn(jSessionDescription(env), env, "getPayloadType", javaSessionDescription);
 
-    Surge::SessionDescription sessionDescription(type, controlUrl, rtpMap, formatParameters, isNative, framerate, fpsFraction, width, height, bitrate);
+    Surge::SessionDescription sessionDescription(type, controlUrl, rtpMap, formatParameters, isNative, framerate, fpsFraction, width, height, bitrate, payloadType);
     return sessionDescription;
 }
 

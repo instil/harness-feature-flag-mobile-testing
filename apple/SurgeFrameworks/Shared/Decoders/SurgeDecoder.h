@@ -45,6 +45,7 @@
 
 @property (nonatomic, weak) id<SurgeDecoderDelegate> delegate;
 
+@property (nonatomic, assign) CMVideoFormatDescriptionRef formatDescription;
 @property (nonatomic, assign) NSUInteger framesPerSecond;
 
 @end

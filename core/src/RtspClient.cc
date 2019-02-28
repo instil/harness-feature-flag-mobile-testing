@@ -427,7 +427,11 @@ void Surge::RtspClient::StopHousekeepingThread() {
 
 void Surge::RtspClient::RtpPacketReceived(RtpPacket *packet) {
     if (packet != nullptr) {
-        packetBuffer->AddPacketToBuffer(packet);
+        if (RtpPacketTypeIsValid(packet)) {
+            packetBuffer->AddPacketToBuffer(packet);
+        } else {
+            delete packet;
+        }
 
         timeLastPacketWasProcessed = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
     }
@@ -505,7 +509,7 @@ void Surge::RtspClient::ProcessRtpPacket(const RtpPacket* packet) {
         return;
     }
 
-    std::vector<unsigned char> *frame = new std::vector<unsigned char>();
+    auto frame = new std::vector<unsigned char>();
     frameBuffer->swap(*frame);
     dispatchQueue->Dispatch([this, frame]() {
         NotifyDelegateOfAvailableFrame(*frame);

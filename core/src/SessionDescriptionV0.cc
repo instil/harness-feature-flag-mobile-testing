@@ -27,6 +27,7 @@ Surge::SessionDescriptionV0::SessionDescriptionV0(const std::string& rawSessionD
         if (isVideo) {
             if (isRtpmap) {
                 rtpMap = currentLine;
+                ExtractPayloadTypeFrom(rtpMap);
             }
 
             if (isFmtp) {

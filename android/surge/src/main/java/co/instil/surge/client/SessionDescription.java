@@ -18,6 +18,7 @@ public class SessionDescription {
     private final String controlUrl;
     private final String formatParameters;
     private final String rtpMap;
+    private final int payloadType;
 
     private final boolean isNative;
     private final int framerate;
@@ -26,12 +27,13 @@ public class SessionDescription {
     private final int height;
     private final int bitrate;
 
-    public SessionDescription(SessionType type, String controlUrl, String formatParameters, String rtpMap,
+    public SessionDescription(SessionType type, String controlUrl, String formatParameters, String rtpMap, int payloadType,
                               boolean isNative, int framerate, int fpsFraction, int width, int height, int bitrate) {
         this.type = type;
         this.controlUrl = controlUrl;
         this.formatParameters = formatParameters;
         this.rtpMap = rtpMap;
+        this.payloadType = payloadType;
 
         this.isNative = isNative;
         this.framerate = framerate;
@@ -83,6 +85,10 @@ public class SessionDescription {
 
     public int getBitrate() {
         return bitrate;
+    }
+
+    public int getPayloadType() {
+        return payloadType;
     }
 
     public boolean equals(Object object) {

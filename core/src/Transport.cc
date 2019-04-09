@@ -236,6 +236,7 @@ void Surge::Transport::CloseAndCleanUpLibuv() {
 
 
 void Surge::Transport::StartRtspTimer() {
+    m_loop->update();
     DEBUG("Started RTSP transaction timeout timer.");
     m_timer->start(m_rtspTimeoutTime, uvw::TimerHandle::Time(0));
 }

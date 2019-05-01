@@ -1,5 +1,11 @@
 ## Changelog
 
+### v1.2.3
+
+###### Fixes
+
+* Await completion of TEARDOWN request before deallocating RtspClient.
+
 ### v1.2.2
 
 ###### Fixes

@@ -32,6 +32,7 @@
 
 #include <string>
 #include <vector>
+#include <future>
 
 #include "RtspService.h"
 
@@ -268,6 +269,9 @@ namespace Surge {
         bool processedFirstPayload;
         long long lastPacketSequenceNum;
         bool dropFrame;
+
+        std::function<void(Surge::RtspResponse*)>  teardownCallback;
+        std::promise<void> teardownPromise;
 
     private:
         bool shouldSendFrameToDelegate = true;

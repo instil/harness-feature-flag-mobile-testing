@@ -42,6 +42,7 @@ namespace Surge {
     public:
         void SetStreamTransport(ITransportInterface *transport, std::string streamUrl) {
             this->streamUrl = streamUrl;
+            this->streamContentBaseUrl = streamUrl;
             this->transport = transport;
 
             sequenceNumber = 1;
@@ -57,6 +58,13 @@ namespace Surge {
         }
 
     private:
+        void setContentBaseUrlIfRequired(RtspResponse* rtspResponse) {
+            std::string baseUrl = rtspResponse->HeaderValueForKey("Content-Base");
+            if (!baseUrl.empty()) {
+                streamContentBaseUrl = baseUrl;
+            }
+        }
+
         std::string GenerateControlUrl(const SessionDescription& sessionDescription);
 
         unsigned int NextSequenceNumber() {
@@ -69,6 +77,7 @@ namespace Surge {
 
     private:
         std::string streamUrl;
+        std::string streamContentBaseUrl;
 
         ITransportInterface *transport;
         AuthenticationService *authService;

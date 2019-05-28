@@ -8,6 +8,8 @@
 
 #include "RtspService.h"
 
+#include "StringUtils.h"
+
 #define NO_SESSION_AVAILABLE_ERROR "Session is not set, you must first execute a successful SETUP command before running this method."
 
 Surge::RtspService::RtspService() : transport(nullptr), authService(nullptr), sequenceNumber(1), sessionDescriptionFactory(new SessionDescriptionFactory()), session() { }
@@ -55,9 +57,7 @@ void Surge::RtspService::Describe(const SurgeUtil::DateTime *startTime, std::fun
 }
 
 void Surge::RtspService::Setup(const SessionDescription& sessionDescription, std::function<void(Surge::SetupResponse*)> callback) {
-    std::string setupUrl = (sessionDescription.IsControlUrlComplete()) ?
-        sessionDescription.GetControl():
-        streamUrl + "/" + sessionDescription.GetControl();
+    std::string setupUrl = GenerateControlUrl(sessionDescription);
 
     RtspCommand* setup = RtspCommandFactory::SetupRequest(setupUrl, NextSequenceNumber(), transport, authService);
 
@@ -88,6 +88,18 @@ void Surge::RtspService::Setup(const SessionDescription& sessionDescription, std
     });
 
     delete setup;
+}
+
+std::string Surge::RtspService::GenerateControlUrl(const SessionDescription& sessionDescription) {
+    if (sessionDescription.IsControlUrlComplete()) {
+        return sessionDescription.GetControl();
+    }
+
+    std::string controlUrl = streamUrl;
+    if (!SurgeUtil::String::EndsWith(controlUrl, "/")) controlUrl += "/";
+    controlUrl += sessionDescription.GetControl();
+    
+    return controlUrl;
 }
 
 void Surge::RtspService::Play(const SurgeUtil::DateTime *startTime, const SurgeUtil::DateTime *endTime, std::function<void(Surge::RtspResponse*)> callback) {

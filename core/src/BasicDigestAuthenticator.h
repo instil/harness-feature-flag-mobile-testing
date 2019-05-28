@@ -15,6 +15,7 @@
 #include "Helpers.h"
 #include "Md5.h"
 #include "DateTime.h"
+#include "StringUtils.h"
 
 #define DEFAULT_DIGEST_ALGORITHM MD5
 #define DEFAULT_DIGEST_QOP DEFAULT
@@ -64,7 +65,7 @@ namespace Surge {
 
     private:
         DigestAlgorithm DigestAlgorithmFromString(std::string value) {
-            if (SurgeUtil::CaseInsensitiveStringEquals(value, "MD5-Sess")) {
+            if (SurgeUtil::String::Equals(value, "MD5-Sess")) {
                 return MD5SESS;
             }
 
@@ -73,9 +74,9 @@ namespace Surge {
         }
 
         DigestQop DigestQopFromString(std::string value) {
-            if (SurgeUtil::CaseInsensitiveStringEquals(value, "auth")) {
+            if (SurgeUtil::String::Equals(value, "auth")) {
                 return AUTH;
-            } else if (SurgeUtil::CaseInsensitiveStringEquals(value, "auth-int")) {
+            } else if (SurgeUtil::String::Equals(value, "auth-int")) {
                 return AUTH_INT;
             }
 

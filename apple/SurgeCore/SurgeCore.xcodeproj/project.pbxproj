@@ -91,6 +91,8 @@
 		F4388E4C1F333AD80064A24F /* UdpTransport.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4388E4A1F333AD80064A24F /* UdpTransport.cc */; };
 		F4388E4D1F333AD80064A24F /* UdpTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = F4388E4B1F333AD80064A24F /* UdpTransport.h */; };
 		F43E1C1220DA7DF900143083 /* Queue.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E1C1020DA7DF900143083 /* Queue.h */; };
+		F447DBB9229D7A95008BCA03 /* StringUtils.cc in Sources */ = {isa = PBXBuildFile; fileRef = F447DBB7229D7A95008BCA03 /* StringUtils.cc */; };
+		F447DBBA229D7A95008BCA03 /* StringUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F447DBB8229D7A95008BCA03 /* StringUtils.h */; };
 		F4589E041ED85627004F023D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A51ED8427A001B56E0 /* async.c */; };
 		F4589E051ED85627004F023D /* core.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A71ED8427A001B56E0 /* core.c */; };
 		F4589E061ED85627004F023D /* darwin-proctitle.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FA24A81ED8427A001B56E0 /* darwin-proctitle.c */; };
@@ -248,6 +250,8 @@
 		F4388E4A1F333AD80064A24F /* UdpTransport.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpTransport.cc; path = ../../core/src/UdpTransport.cc; sourceTree = "<group>"; };
 		F4388E4B1F333AD80064A24F /* UdpTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpTransport.h; path = ../../core/src/UdpTransport.h; sourceTree = "<group>"; };
 		F43E1C1020DA7DF900143083 /* Queue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = ../../core/src/Queue.h; sourceTree = "<group>"; };
+		F447DBB7229D7A95008BCA03 /* StringUtils.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = StringUtils.cc; path = ../../core/src/StringUtils.cc; sourceTree = "<group>"; };
+		F447DBB8229D7A95008BCA03 /* StringUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StringUtils.h; path = ../../core/src/StringUtils.h; sourceTree = "<group>"; };
 		F45BDA6C1E1FB88F00496E62 /* fs-poll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "fs-poll.c"; path = "../../core/lib/libuv-cmake/libuv/src/fs-poll.c"; sourceTree = "<group>"; };
 		F45BDA6D1E1FB88F00496E62 /* heap-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "heap-inl.h"; path = "../../core/lib/libuv-cmake/libuv/src/heap-inl.h"; sourceTree = "<group>"; };
 		F45BDA6E1E1FB88F00496E62 /* inet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inet.c; path = "../../core/lib/libuv-cmake/libuv/src/inet.c"; sourceTree = "<group>"; };
@@ -667,6 +671,8 @@
 				42D6720B1D3069BB00D42C35 /* WaitableEvent.h */,
 				42D6720C1D3069BB00D42C35 /* WaitableEvents.cc */,
 				F402FBBE2146A4E6001496EA /* Md5.h */,
+				F447DBB7229D7A95008BCA03 /* StringUtils.cc */,
+				F447DBB8229D7A95008BCA03 /* StringUtils.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -718,6 +724,7 @@
 				42D6722D1D3069BB00D42C35 /* MJPEGDepacketizer.h in Headers */,
 				42D6723E1D3069BB00D42C35 /* RtspCommandFactory.h in Headers */,
 				42D6720F1D3069BB00D42C35 /* BaseWaitableEvent.h in Headers */,
+				F447DBBA229D7A95008BCA03 /* StringUtils.h in Headers */,
 				42D672471D3069BB00D42C35 /* StoppableThread.h in Headers */,
 				42D672421D3069BB00D42C35 /* SessionDescriptionFactory.h in Headers */,
 				F4FA24D71ED8427A001B56E0 /* spinlock.h in Headers */,
@@ -831,6 +838,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 42D671B01D30684A00D42C35;
@@ -881,6 +889,7 @@
 				F4589E191ED85627004F023D /* thread.c in Sources */,
 				42D6723A1D3069BB00D42C35 /* RtspClient.cc in Sources */,
 				F4589E061ED85627004F023D /* darwin-proctitle.c in Sources */,
+				F447DBB9229D7A95008BCA03 /* StringUtils.cc in Sources */,
 				42D672131D3069BB00D42C35 /* BitstreamWriter.cc in Sources */,
 				F4589E121ED85627004F023D /* process.c in Sources */,
 				F49699732109FA2B00B7EE4E /* BasicDigestAuthenticator.cc in Sources */,

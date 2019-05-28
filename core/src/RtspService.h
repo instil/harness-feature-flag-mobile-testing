@@ -57,6 +57,8 @@ namespace Surge {
         }
 
     private:
+        std::string GenerateControlUrl(const SessionDescription& sessionDescription);
+
         unsigned int NextSequenceNumber() {
             return sequenceNumber++;
         }

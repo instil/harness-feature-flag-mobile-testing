@@ -49,10 +49,6 @@ std::vector<std::string> SurgeUtil::StringSplit(const std::string& input, std::s
     return output;
 }
 
-bool SurgeUtil::StringContains(const std::string& haystack, const std::string &needle) {
-    return haystack.find(needle) != std::string::npos;
-}
-
 std::string SurgeUtil::FindKeyAndValuePair(const std::vector<std::string>* values, const std::string& key)
 {
     for (auto it = values->begin(); it != values->end(); ++it) {
@@ -69,10 +65,6 @@ int SurgeUtil::RandomEvenNumberBetween(int min, int max) {
     max /= 2;
 
     return 2 * (rand() % (max - min)) + min;
-}
-
-bool SurgeUtil::CaseInsensitiveStringEquals(const std::string &firstString, const std::string &secondString) {
-    return std::equal(firstString.begin(), firstString.end(), secondString.begin(), secondString.end(), CaseInsensitiveStringEqualsPredicate());
 }
 
 std::string SurgeUtil::IntToFixedLengthString(const unsigned int input, const unsigned int length) {

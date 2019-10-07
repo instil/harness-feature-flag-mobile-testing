@@ -8,6 +8,8 @@
 
 #include "RtspService.h"
 
+#include "StringUtils.h"
+
 #define NO_SESSION_AVAILABLE_ERROR "Session is not set, you must first execute a successful SETUP command before running this method."
 
 Surge::RtspService::RtspService() : transport(nullptr), authService(nullptr), sequenceNumber(1), sessionDescriptionFactory(new SessionDescriptionFactory()), session() { }
@@ -40,6 +42,8 @@ void Surge::RtspService::Describe(const SurgeUtil::DateTime *startTime, std::fun
         DescribeResponse *resp = nullptr;
         try {
             resp = new DescribeResponse(raw_resp, sessionDescriptionFactory);
+            
+            setContentBaseUrlIfRequired(resp);
         }
         catch (const std::exception& e) {
             ERROR("Invalid DescribeResponse: " << e.what());
@@ -55,9 +59,7 @@ void Surge::RtspService::Describe(const SurgeUtil::DateTime *startTime, std::fun
 }
 
 void Surge::RtspService::Setup(const SessionDescription& sessionDescription, std::function<void(Surge::SetupResponse*)> callback) {
-    std::string setupUrl = (sessionDescription.IsControlUrlComplete()) ?
-        sessionDescription.GetControl():
-        streamUrl + "/" + sessionDescription.GetControl();
+    std::string setupUrl = GenerateControlUrl(sessionDescription);
 
     RtspCommand* setup = RtspCommandFactory::SetupRequest(setupUrl, NextSequenceNumber(), transport, authService);
 
@@ -90,6 +92,18 @@ void Surge::RtspService::Setup(const SessionDescription& sessionDescription, std
     delete setup;
 }
 
+std::string Surge::RtspService::GenerateControlUrl(const SessionDescription& sessionDescription) {
+    if (sessionDescription.IsControlUrlComplete()) {
+        return sessionDescription.GetControl();
+    }
+
+    std::string controlUrl = streamContentBaseUrl;
+    if (!SurgeUtil::String::EndsWith(controlUrl, "/")) controlUrl += "/";
+    controlUrl += sessionDescription.GetControl();
+
+    return controlUrl;
+}
+
 void Surge::RtspService::Play(const SurgeUtil::DateTime *startTime, const SurgeUtil::DateTime *endTime, std::function<void(Surge::RtspResponse*)> callback) {
     if (session.empty()) {
         ERROR(NO_SESSION_AVAILABLE_ERROR);
@@ -100,13 +114,13 @@ void Surge::RtspService::Play(const SurgeUtil::DateTime *startTime, const SurgeU
     RtspCommand* play;
 
     if (endTime != nullptr) {
-        play = RtspCommandFactory::PlayRequest(streamUrl, session, NextSequenceNumber(), *startTime, *endTime, authService);
+        play = RtspCommandFactory::PlayRequest(streamContentBaseUrl, session, NextSequenceNumber(), *startTime, *endTime, authService);
     }
     else if (startTime != nullptr) {
-        play = RtspCommandFactory::PlayRequest(streamUrl, session, NextSequenceNumber(), *startTime, authService);
+        play = RtspCommandFactory::PlayRequest(streamContentBaseUrl, session, NextSequenceNumber(), *startTime, authService);
     }
     else {
-        play = RtspCommandFactory::PlayRequest(streamUrl, session, NextSequenceNumber(), authService);
+        play = RtspCommandFactory::PlayRequest(streamContentBaseUrl, session, NextSequenceNumber(), authService);
     }
 
     transport->RtspTransaction(play, [=](Response *raw_resp) {
@@ -140,7 +154,7 @@ void Surge::RtspService::Pause(std::function<void(Surge::RtspResponse*)> callbac
         return;
     }
 
-    RtspCommand* pause = RtspCommandFactory::PauseRequest(streamUrl, session, NextSequenceNumber(), authService);
+    RtspCommand* pause = RtspCommandFactory::PauseRequest(streamContentBaseUrl, session, NextSequenceNumber(), authService);
     transport->RtspTransaction(pause, [=](Response *raw_resp) {
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to PAUSE!");
@@ -173,7 +187,7 @@ void Surge::RtspService::Options(std::function<void(Surge::RtspResponse*)> callb
         return;
     }
 
-    RtspCommand* options = RtspCommandFactory::OptionsRequest(streamUrl, session, NextSequenceNumber(), authService);
+    RtspCommand* options = RtspCommandFactory::OptionsRequest(streamContentBaseUrl, session, NextSequenceNumber(), authService);
     transport->RtspTransaction(options, [callback](Response *raw_resp) {
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to OPTIONS!");
@@ -204,7 +218,7 @@ void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> call
         return;
     }
 
-    RtspCommand* teardown = RtspCommandFactory::TeardownRequest(streamUrl, session, NextSequenceNumber(), authService);
+    RtspCommand* teardown = RtspCommandFactory::TeardownRequest(streamContentBaseUrl, session, NextSequenceNumber(), authService);
     transport->RtspTransaction(teardown, [this, callback](Response *raw_resp) {
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to TEARDOWN!");
@@ -238,7 +252,7 @@ void Surge::RtspService::KeepAlive(std::function<void(Surge::RtspResponse*)> cal
         return;
     }
 
-    RtspCommand* keep_alive = RtspCommandFactory::KeepAliveRequest(streamUrl, session, NextSequenceNumber(), authService);
+    RtspCommand* keep_alive = RtspCommandFactory::KeepAliveRequest(streamContentBaseUrl, session, NextSequenceNumber(), authService);
     transport->RtspTransaction(keep_alive, [callback](Response *raw_resp) {
         if (raw_resp == nullptr) {
             ERROR("Failed to get response to Keep-Alive!");

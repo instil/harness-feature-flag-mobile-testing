@@ -11,7 +11,7 @@
 SurgeUtil::Url::Url(const std::string &url) {
     std::vector<std::string> result = SurgeUtil::Regex::Split(url, URL_MATCH_REGEX);
 
-    if (!SurgeUtil::StringContains(result[1], RTSP_PROTOCOL)) {
+    if (!SurgeUtil::String::Contains(result[1], RTSP_PROTOCOL)) {
         return;
     }
 
@@ -21,7 +21,7 @@ SurgeUtil::Url::Url(const std::string &url) {
     path = result[4];
     queryParameters = result[5];
 
-    if (SurgeUtil::StringContains(ip, "[")) {
+    if (SurgeUtil::String::Contains(ip, "[")) {
         ip = ip.substr(1, ip.length() - 2);
     }
 

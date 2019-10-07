@@ -16,6 +16,7 @@
 #include "Logging.h"
 
 #include "Helpers.h"
+#include "StringUtils.h"
 
 #define URL_MATCH_REGEX "(rtsps?)://([A-Za-z0-9.]+|[[A-Za-z0-9:]+]):?([0-9]+)?/?([A-Za-z0-9-_/]+)?(\\?[A-Za-z0-9-_/=&]+)?"
 #define RTSP_PROTOCOL "rtsp"
@@ -40,7 +41,7 @@ namespace SurgeUtil {
 
     public:
         bool IsSecure() {
-            return SurgeUtil::StringContains(protocol, SECURE_RTSP_PROTOCOL);
+            return SurgeUtil::String::Contains(protocol, SECURE_RTSP_PROTOCOL);
         }
 
         bool IsIPv6() {
@@ -49,7 +50,7 @@ namespace SurgeUtil {
 
     public:
         static bool IpIsIPv6(const std::string &ip) {
-            return SurgeUtil::StringContains(ip, ":");
+            return SurgeUtil::String::Contains(ip, ":");
         }
 
     private:

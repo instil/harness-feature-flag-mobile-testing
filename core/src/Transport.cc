@@ -6,6 +6,7 @@
 #include "Transport.h"
 
 #include "MutexLocker.h"
+#include "StringUtils.h"
 
 using SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
 
@@ -299,7 +300,7 @@ bool Surge::Transport::HandleRtspPacket() {
     
     size_t body_pos;
     if ((body_pos = string_response.find("\r\n\r\n")) != std::string::npos) {
-        size_t pos = string_response.find("Content-Length:");
+        size_t pos = SurgeUtil::String::Find(string_response, "Content-Length:");
         size_t content_length = (pos != std::string::npos) ?
         static_cast<size_t>(atoi(&string_response[pos + 16])) :
         0;

@@ -231,7 +231,14 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     public void stop() {
         logger.debug("Stopping playback of {}", url);
         stopFpsCounter();
-        decoder = null;
+        if (decoder != null) {
+            try {
+                decoder.close();
+                decoder = null;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         rtspClient.tearDown(response ->
                 rtspClient.disconnect());

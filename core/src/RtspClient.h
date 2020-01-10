@@ -67,6 +67,7 @@ namespace Surge {
 
     private:
         void GenerateTransportFromUrl(std::string& url);
+        void ResetClientTransport();
         void CreateDepacketizer();
 
         void StartHousekeepingThread();

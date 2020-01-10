@@ -18,7 +18,8 @@ DerivedData/
 
 # Android/IntelliJ
 Test-AndroidStudio.iml
-.externalNativeBuild
+.externalNativeBuild/
+.cxx/
 
 src/wrappers/java/*.java
 src/wrappers/java/interface_wrap.*

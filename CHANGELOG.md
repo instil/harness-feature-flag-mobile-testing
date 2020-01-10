@@ -1,5 +1,11 @@
 ## Changelog
 
+### v1.2.4
+
+###### Fixes
+
+* Fix for an issue that caused Surge to crash if you tried to stop and restart a stream twice on the same player.
+
 ### v1.2.3
 
 ###### Fixes

@@ -1,5 +1,4 @@
 apply plugin: "com.android.library"
-apply plugin: 'me.tatarka.retrolambda'
 apply from: "${project.rootDir}/gradle/static-analysis.gradle"
 
 android {
@@ -39,4 +38,3 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation "org.easymock:easymock:3.4"
 }
-

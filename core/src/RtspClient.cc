@@ -103,12 +103,7 @@ void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)
 }
 
 void Surge::RtspClient::GenerateTransportFromUrl(std::string& url) {
-    if (transport != nullptr) {
-        delete transport;
-    }
-    if (tlsClient != nullptr) {
-        delete tlsClient;
-    }
+    ResetClientTransport();
 
     SurgeUtil::Url parsedUrl = SurgeUtil::Url(url);
 
@@ -140,6 +135,18 @@ void Surge::RtspClient::GenerateTransportFromUrl(std::string& url) {
     transport->SetDelegate(this);
     rtspService->SetStreamTransport(transport, url);
     authService->SetTransport(transport);
+}
+
+void Surge::RtspClient::ResetClientTransport() {
+    if (transport != nullptr) {
+        delete transport;
+    }
+
+    if (tlsClient != nullptr) {
+        delete tlsClient;
+    }
+
+    teardownPromise = std::promise<void>();
 }
 
 void Surge::RtspClient::Disconnect() {

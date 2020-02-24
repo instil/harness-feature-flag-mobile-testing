@@ -1,29 +1,27 @@
 properties([
-    gitLabConnection("Instil GitLab"),
-    buildDiscarder(logRotator(numToKeepStr: "25", artifactNumToKeepStr: "10"))
+    buildDiscarder(logRotator(numToKeepStr: "25", artifactNumToKeepStr: "10")),
+    pipelineTriggers([[$class: "SCMTrigger", scmpoll_spec: "H/15 * * * *"]])
 ])
 
-node("ios && android") {
+node("xamarin") {
     stage("Checkout") {
         checkout scm
     }
 
-    gitlabCommitStatus {
-        stage("Acquiring Dependencies") {
-            acquireDependencies()
-        }
-        
-        stage("Build Apple Frameworks") {
-            buildAppleFrameworks()
-        }
+    stage("Acquiring Dependencies") {
+        acquireDependencies()
+    }
 
-        stage("Build Android Libraries") {
-            buildAndroidLibraries()
-        }
+    stage("Build Apple Frameworks") {
+        buildAppleFrameworks()
+    }
 
-        stage("Build Xamarin DLLs") {
-            buildXamarinDlls()
-        }
+    stage("Build Android Libraries") {
+        buildAndroidLibraries()
+    }
+
+    stage("Build Xamarin DLLs") {
+        buildXamarinDlls()
     }
 }
 

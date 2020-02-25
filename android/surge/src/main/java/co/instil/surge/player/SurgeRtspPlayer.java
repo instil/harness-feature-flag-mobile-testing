@@ -131,7 +131,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         rtspClient.setTimeRange(startTime, endTime);
 
         rtspClient.connect(url, result -> {
-            rtspClient.setCredentials(username, password);
+            setCredentials(username, password);
 
             rtspClient.describe(rawResponse -> {
                 DescribeResponse response = (DescribeResponse) rawResponse;
@@ -163,7 +163,16 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                 startFpsCounter();
             });
         });
+    }
 
+    private void setCredentials(String username, String password) {
+        if (username == null) {
+            username = "";
+        }
+        if (password == null) {
+            password = "";
+        }
+        rtspClient.setCredentials(username, password);
     }
 
     private void setupStream(SessionDescription sessionDescription, final PlayerCallback callback) {

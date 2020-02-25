@@ -5,6 +5,7 @@
 ###### Fixes
 
 * Fix for an issue that caused Surge to crash if you tried to stop and restart a stream twice on the same player.
+* Fixed a null pointer exception when trying to set a stream's credentials to null on Android.
 
 ### v1.2.3
 

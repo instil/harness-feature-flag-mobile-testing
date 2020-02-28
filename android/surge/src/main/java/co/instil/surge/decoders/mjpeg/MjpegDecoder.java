@@ -27,11 +27,11 @@ import co.instil.surge.logging.LoggerFactory;
  */
 @TargetApi(19)
 public class MjpegDecoder implements Decoder {
-
-    private static Logger logger = LoggerFactory.getLogger(MjpegDecoder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MjpegDecoder.class);
 
     private final Surface surface;
-    private HandlerThread decoderThread;
+    @SuppressWarnings("PMD.SingularField")
+    private final HandlerThread decoderThread;
 
     public MjpegDecoder(Surface surface) {
         this.surface = surface;
@@ -61,7 +61,7 @@ public class MjpegDecoder implements Decoder {
                 surface.unlockCanvasAndPost(canvas);
             }
         } catch (Exception e) {
-            logger.error("Failed to decode frame", e);
+            LOGGER.error("Failed to decode frame", e);
         }
     }
 
@@ -73,7 +73,6 @@ public class MjpegDecoder implements Decoder {
     }
 
     private ByteBuffer deepCopy(ByteBuffer source, ByteBuffer target) {
-
         int sourceP = source.position();
         int sourceL = source.limit();
 
@@ -87,5 +86,4 @@ public class MjpegDecoder implements Decoder {
         source.limit(sourceL);
         return target;
     }
-
 }

@@ -31,7 +31,7 @@ import java.util.List;
 @TargetApi(21)
 public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
 
-    private static Logger logger = LoggerFactory.getLogger(AsyncMp4vDecoder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AsyncMp4vDecoder.class);
 
     private MediaCodec mediaCodec;
     private MediaFormat mediaFormat;
@@ -52,7 +52,7 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
                                   int duration) {
 
         try {
-            logger.debug("Received MP4V frame for decoding");
+            LOGGER.debug("Received MP4V frame for decoding");
 
             if (mediaCodec == null) {
                 mediaCodec = createMediaCodec(sessionDescription, width, height);
@@ -60,20 +60,20 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
                 mediaCodec.start();
             }
 
-            if (availableInputBuffers.size() > 0) {
+            if (!availableInputBuffers.isEmpty()) {
                 submitFrameToBuffer(frameBuffer, presentationTime, availableInputBuffers.remove(0), mediaCodec);
             } else {
-                logger.debug("No input buffer available, queueing frame until one becomes free");
+                LOGGER.debug("No input buffer available, queueing frame until one becomes free");
                 decodeQueue.add(frameBuffer);
             }
 
         } catch (IllegalStateException e) {
-            logger.error("Failed to get an input buffer from the media codec", e);
+            LOGGER.error("Failed to get an input buffer from the media codec", e);
         } catch (IOException e) {
-            logger.error("Device does not support MP4V decoding", e);
-            throw new RuntimeException("Device doesn't support MP4V decoding");
+            LOGGER.error("Device does not support MP4V decoding", e);
+            throw new UnsupportedOperationException("Device doesn't support MP4V decoding", e);
         } catch (Exception e) {
-            logger.error("Failed to decode MP4V", e);
+            LOGGER.error("Failed to decode MP4V", e);
         }
     }
 
@@ -103,7 +103,7 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
     }
 
     private void submitFrameToBuffer(ByteBuffer frameBuffer, int presentationTime, int bufferIndex, MediaCodec codec) {
-        logger.debug("Submitting frame to input buffer {}", bufferIndex);
+        LOGGER.debug("Submitting frame to input buffer {}", bufferIndex);
         ByteBuffer inputBuffer = codec.getInputBuffer(bufferIndex);
 
         byte[] frame = new byte[frameBuffer.capacity()];
@@ -116,8 +116,8 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
 
     @Override
     public void onInputBufferAvailable(MediaCodec codec, int index) {
-        logger.debug("Input buffer {} available", index);
-        if (decodeQueue.size() == 0) {
+        LOGGER.debug("Input buffer {} available", index);
+        if (decodeQueue.isEmpty()) {
             availableInputBuffers.add(index);
             return;
         }
@@ -126,20 +126,20 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
         try {
             submitFrameToBuffer(frame, 1, index, codec);
         } catch (Exception e) {
-            System.out.println("Failed to decode MP4V frame: " + e.toString());
-            e.printStackTrace();
+            LOGGER.error("Failed to decode MP4V frame: " + e.toString());
+            LOGGER.printStackTrace(e);
         }
     }
 
     @Override
     public void onOutputBufferAvailable(MediaCodec codec, int index, BufferInfo info) {
-        logger.debug("Rendering and releasing output buffer");
+        LOGGER.debug("Rendering and releasing output buffer");
         codec.releaseOutputBuffer(index, true);
     }
 
     @Override
     public void onError(MediaCodec codec, CodecException error) {
-        logger.debug("MP4V decoding failed", error);
+        LOGGER.debug("MP4V decoding failed", error);
         if (!error.isRecoverable()) {
             resetCodec();
         }
@@ -147,6 +147,6 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
 
     @Override
     public void onOutputFormatChanged(MediaCodec codec, MediaFormat format) {
-        logger.debug("Output format changed");
+        LOGGER.debug("Output format changed");
     }
 }

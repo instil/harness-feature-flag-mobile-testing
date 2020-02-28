@@ -11,7 +11,9 @@ package co.instil.surge.logging;
  * Created by niallkelly on 14/09/2017.
  */
 
-public class LoggerFactory {
+public final class LoggerFactory {
+
+    private LoggerFactory() { }
 
     public static Logger getLogger(Class className) {
         return getLogger(className.getName());

@@ -2,82 +2,27 @@ apply plugin: "checkstyle"
 apply plugin: "findbugs"
 apply plugin: "pmd"
 
-check.dependsOn "checkstyle", "findbugs", "pmd"
-
-task checkstyle(type: Checkstyle) {
-    showViolations = true
-    configFile file("${project.rootDir}/config/checkstyle/checkstyle.xml")
-    configProperties.checkstyleSuppressionsPath = file("${project.rootDir}/config/checkstyle/suppressions.xml").absolutePath
-
-    source "src"
-    include "**/*.java"
-    exclude "**/gen/**"
-    classpath = files()
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
-        xml {
-            destination new File("$project.buildDir/reports/checkstyle/main.xml")
-        }
-        html {
-            destination new File("$project.buildDir/reports/checkstyle/main.html")
-        }
+staticAnalysis {
+    penalty {
+        maxErrors = 0
+        maxWarnings = 50
     }
-}
-
-task findbugs(type: FindBugs) {
-    mustRunAfter assemble
-    ignoreFailures = false
-    effort = "max"
-    reportLevel = "high"
-    classes = files("${project.buildDir}/intermediates/javac")
-    includeFilter = new File("${project.rootDir}/config/findbugs/includeFilter.xml")
-    excludeFilter = new File("${project.rootDir}/config/findbugs/excludeFilter.xml")
-
-    source "src/main/java"
-    include "**/*.java"
-    exclude "**/gen/**"
-    classpath = files()
-
-    reports {
-        xml.enabled = true
-        html.enabled = false
-        xml {
-            destination new File("$project.buildDir/reports/findbugs/main.xml")
-        }
-        html {
-            destination new File("$project.buildDir/reports/findbugs/main.html")
-        }
+    checkstyle {
+        configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
     }
-}
-
-task pmd(type: Pmd) {
-    ignoreFailures = false
-    ruleSets = []
-    ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
-
-    source "src/main/java"
-    include "**/*.java"
-    exclude "**/gen/**"
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
-        xml {
-            destination new File("$project.buildDir/reports/pmd/main.xml")
-        }
-        html {
-            destination new File("$project.buildDir/reports/pmd/main.html")
-        }
+    pmd {
+        toolVersion = "6.21.0"
+        incrementalAnalysis = true
+        ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
+        ruleSets = []
     }
-}
-
-android.lintOptions {
-    abortOnError true
-    xmlReport true
-    htmlReport true
-    lintConfig file("${project.rootDir}/config/lint/lint.xml")
-    htmlOutput file("$project.buildDir/reports/lint/lint-results.html")
-    xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
+    spotbugs { }
+    lintOptions {
+        abortOnError true
+        xmlReport true
+        htmlReport true
+        lintConfig file("${project.rootDir}/config/lint/lint.xml")
+        htmlOutput file("$project.buildDir/reports/lint/lint-results.html")
+        xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
+    }
 }

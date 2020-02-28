@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * Abstract superclass for all H264 decoders which implements common operations e.g. parsing
- * of byte buffers from the {@link co.instil.surge.player.RtspPlayer} into NAL units and
+ * of byte buffers from the {@link co.instil.surge.player.SurgeRtspPlayer} into NAL units and
  * codec intialization.
  *
  * @see AsyncH264Decoder
@@ -38,9 +38,7 @@ import java.util.List;
  */
 @TargetApi(21)
 public abstract class H264Decoder implements Decoder {
-
-
-    private static Logger logger = LoggerFactory.getLogger(H264Decoder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(H264Decoder.class);
 
     private MediaCodec mediaCodec;
     private MediaFormat mediaFormat;
@@ -49,11 +47,9 @@ public abstract class H264Decoder implements Decoder {
     private NaluParser naluParser;
     private NaluSegment pictureParameterSet;
     private NaluSegment sequenceParameterSet;
-    private ByteBuffer[] inputBuffers = null;
     private DeviceExaminer deviceExaminer;
     private H264Packet lastSPSPacket = null;
     private H264Packet lastPPSPacket = null;
-
 
     /**
      * Constructor for a {@link H264Decoder} instance.
@@ -88,7 +84,7 @@ public abstract class H264Decoder implements Decoder {
                                   int presentationTime,
                                   int duration) {
 
-        logger.debug("Received frame buffer for decoding");
+        LOGGER.debug("Received frame buffer for decoding");
 
         try {
             List<NaluSegment> segments = naluParser.parseNaluSegments(frameBuffer);
@@ -98,16 +94,13 @@ public abstract class H264Decoder implements Decoder {
                 if (!containsParameterSets(segments)) {
                     return;
                 }
-                logger.debug("Decoder received parameter sets");
+                LOGGER.debug("Decoder received parameter sets");
                 cacheParameterSets(segments);
 
                 codec = createMediaCodec();
                 setMediaCodec(codec);
                 onCreatedMediaCodec(codec);
                 codec.start();
-                if (deviceExaminer.isPreLollipopDevice()) {
-                    inputBuffers = codec.getInputBuffers();
-                }
                 onStartedCodec(codec);
             }
 
@@ -131,7 +124,7 @@ public abstract class H264Decoder implements Decoder {
             }
 
         } catch (Exception ex) {
-            logger.error("Failed to decode frame", ex);
+            LOGGER.error("Failed to decode frame", ex);
         }
     }
 
@@ -146,7 +139,7 @@ public abstract class H264Decoder implements Decoder {
                         mediaCodec.stop();
                         mediaCodec.release();
                     } catch (Exception e) {
-                        logger.error("Failed to close MediaCodec", e);
+                        LOGGER.error("Failed to close MediaCodec", e);
                     }
                 }
             }
@@ -183,7 +176,8 @@ public abstract class H264Decoder implements Decoder {
      * @return true if the list contains SPS and PPS NAL units; false otherwise.
      */
     protected boolean containsParameterSets(List<NaluSegment> segments) {
-        boolean containsSps = false, containsPps = false;
+        boolean containsSps = false;
+        boolean containsPps = false;
         for (NaluSegment segment : segments) {
             if (segment.getType() == NaluType.SPS) {
                 containsSps = true;
@@ -214,10 +208,11 @@ public abstract class H264Decoder implements Decoder {
     }
 
     protected void writePacketToInputBuffer(H264Packet packet, int inputBufferId) {
-        ByteBuffer buffer;
         if (inputBufferId == -1 || packet == null) {
             return;
         }
+
+        ByteBuffer buffer;
         if (deviceExaminer.isPreLollipopDevice()) {
             buffer = mediaCodec.getInputBuffers()[inputBufferId]; //inputBuffers[inputBufferId];
         } else {

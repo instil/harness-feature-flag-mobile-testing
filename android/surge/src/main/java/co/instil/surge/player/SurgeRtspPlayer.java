@@ -39,8 +39,7 @@ import static co.instil.surge.client.SessionType.MP4V;
  *
  */
 public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
-
-    private static Logger logger = LoggerFactory.getLogger(SurgeRtspPlayer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SurgeRtspPlayer.class);
 
     protected RtspClient rtspClient;
 
@@ -58,6 +57,10 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     private Decoder decoder;
 
     private SurgeAuthenticator customAuthenticator;
+
+    private int framesPerSecond = 0;
+    private int framesPerSecondCounter = 0;
+    private boolean fpsThreadIsRunning = false;
 
     public SurgeRtspPlayer() {
         rtspClient = generateRtspClient(false);
@@ -126,7 +129,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             this.surface = surface;
         }
 
-        logger.debug("Initating playback of {}", url);
+        LOGGER.debug("Initating playback of {}", url);
 
         rtspClient.setTimeRange(startTime, endTime);
 
@@ -149,7 +152,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                 }
 
                 for (SessionDescription sessionDescription : response.getSessionDescriptions()) {
-                    logger.debug(sessionDescription.toString());
+                    LOGGER.debug(sessionDescription.toString());
                 }
 
                 setSessionDescriptions(response.getSessionDescriptions());
@@ -157,7 +160,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                     setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
                             errorCode -> callback.response(errorCode));
                 } else {
-                    throw new RuntimeException("No session description available, is the stream active?");
+                    throw new UnsupportedOperationException("No session description available, is the stream active?");
                 }
 
                 startFpsCounter();
@@ -190,8 +193,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     }
 
     protected void initialiseDecoder(SessionDescription sessionDescription) {
-
-        System.out.println("Initializing new decoders");
+        LOGGER.info("Initializing new decoders");
 
         if (surface != null) {
             Decoder currentDecoder = decoder;
@@ -209,7 +211,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                 try {
                     currentDecoder.close();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    LOGGER.printStackTrace(e);
                 }
             }
         }
@@ -219,7 +221,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      * Resumes playback of a paused stream.
      */
     public void play() {
-        logger.debug("Starting/resuming playback of {}", url);
+        LOGGER.debug("Starting/resuming playback of {}", url);
         rtspClient.play();
     }
 
@@ -227,7 +229,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      * Pause playback of the stream.
      */
     public void pause() {
-        logger.debug("Pausing playback of {}", url);
+        LOGGER.debug("Pausing playback of {}", url);
         rtspClient.pause();
     }
 
@@ -238,14 +240,14 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      * To restart a stream, please re-execute the InitiatePlaybackOf() command.
      */
     public void stop() {
-        logger.debug("Stopping playback of {}", url);
+        LOGGER.debug("Stopping playback of {}", url);
         stopFpsCounter();
         if (decoder != null) {
             try {
                 decoder.close();
                 decoder = null;
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.printStackTrace(e);
             }
         }
 
@@ -283,7 +285,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         if (sessionDescription != null) {
             initialiseDecoder(sessionDescription);
         } else {
-            logger.error("No decoder generated as there are no available SessionDescriptions");
+            LOGGER.error("No decoder generated as there are no available SessionDescriptions");
         }
 
     }
@@ -294,7 +296,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             rtspClient.close();
             stopFpsCounter();
         } catch (Exception e) {
-            System.out.println("Failed to close and clean up the native RTSP Client");
+            LOGGER.error("Failed to close and clean up the native RTSP Client");
         }
 
         if (decoder != null) {
@@ -304,7 +306,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     @Override
     public void clientDidTimeout() {
-        logger.error("RTSP client timed out - calling delegate");
+        LOGGER.error("RTSP client timed out - calling delegate");
 
         if (delegate != null) {
             delegate.rtspPlayerDidTimeout();
@@ -332,15 +334,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     @Override
     public void clientReceivedExtendedHeader(ByteBuffer buffer, int length) {
-        System.out.println("Received extended header");
+        LOGGER.debug("Received extended header");
     }
-
-
-
-    private int framesPerSecond = 0;
-    private int framesPerSecondCounter = 0;
-    private boolean fpsThreadIsRunning = false;
-
 
     private void startFpsCounter() {
         if (!fpsThreadIsRunning) {
@@ -356,7 +351,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        LOGGER.printStackTrace(e);
                     }
                 }
             }).start();
@@ -516,29 +511,24 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     private File extractResourceIntoCacheFile(int rawResourceId, Context context) {
         File file = null;
 
-        try {
-            InputStream rootCertificate = context.getResources().openRawResource(rawResourceId);
-
+        try (InputStream rootCertificate = context.getResources().openRawResource(rawResourceId)) {
             File tmpDir = context.getCacheDir();
             file = File.createTempFile(String.valueOf(rawResourceId), ".tmp", tmpDir);
             file.deleteOnExit();
 
-            OutputStream outStream = new FileOutputStream(file);
-
-            byte[] buffer = new byte[8 * 1024];
-            int bytesRead;
-            while ((bytesRead = rootCertificate.read(buffer)) != -1) {
-                outStream.write(buffer, 0, bytesRead);
+            try (OutputStream outStream = new FileOutputStream(file)) {
+                byte[] buffer = new byte[8 * 1024];
+                int bytesRead;
+                while ((bytesRead = rootCertificate.read(buffer)) != -1) {
+                    outStream.write(buffer, 0, bytesRead);
+                }
             }
 
-            rootCertificate.close();
-            outStream.close();
-
         } catch (Resources.NotFoundException e) {
-            logger.error("Could not find file in the app resources with ID " + rawResourceId);
+            LOGGER.error("Could not find file in the app resources with ID " + rawResourceId);
             e.printStackTrace();
         } catch (IOException e) {
-            logger.error("Could not write to the cache directory.");
+            LOGGER.error("Could not write to the cache directory.");
             e.printStackTrace();
         }
 

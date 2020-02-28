@@ -9,6 +9,9 @@ package co.instil.surge.logging;
 
 import android.util.Log;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import co.instil.surge.BuildConfig;
 
 /**
@@ -39,8 +42,8 @@ public class Logger {
         }
     }
 
-    public void error(String message, Exception ex) {
-        error(String.format(message, ex));
+    public void error(String message, Exception exception) {
+        error(String.format(message, exception));
     }
 
     public void warn(String message) {
@@ -61,6 +64,12 @@ public class Logger {
 
     public void info(String message, Object... arguments) {
         info(String.format(message, arguments));
+    }
+
+    public void printStackTrace(Exception exception) {
+        StringWriter stacktrace = new StringWriter();
+        exception.printStackTrace(new PrintWriter(stacktrace));
+        error(stacktrace.toString());
     }
 
     protected boolean canPrint() {

@@ -31,8 +31,8 @@ import java.util.List;
  */
 @TargetApi(21)
 public class AsyncH264Decoder extends H264Decoder {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AsyncH264Decoder.class);
 
-    private static final Logger logger = LoggerFactory.getLogger(AsyncH264Decoder.class);
 
     private List<Integer> availableInputBuffers = new ArrayList<>();
     private List<H264Packet> decodeQueue = new ArrayList<>();
@@ -51,12 +51,12 @@ public class AsyncH264Decoder extends H264Decoder {
     }
 
     @Override
-    protected void onStartedCodec(MediaCodec mediaCodec) {}
+    protected void onStartedCodec(MediaCodec mediaCodec) { }
 
     @Override
     protected void onReceiveH264Packet(H264Packet packet) {
-        if (availableInputBuffers.size() > 0) {
-            logger.debug("Submitting to available buffer: {}", availableInputBuffers.get(0));
+        if (!availableInputBuffers.isEmpty()) {
+            LOGGER.debug("Submitting to available buffer: {}", availableInputBuffers.get(0));
             submitToDecoder(packet, availableInputBuffers.remove(0), getMediaCodec());
         } else {
             decodeQueue.add(packet);
@@ -67,9 +67,9 @@ public class AsyncH264Decoder extends H264Decoder {
         if (packet.segment == null) {
             return;
         }
-        logger.debug("Decode Queue Size: {}", decodeQueue.size());
+        LOGGER.debug("Decode Queue Size: {}", decodeQueue.size());
         writePacketToInputBuffer(packet, bufferIndex);
-        logger.debug("Submitting to decoder: {}", packet.toString());
+        LOGGER.debug("Submitting to decoder: {}", packet.toString());
         int flags = decoderFlagsForPacket(packet);
         codec.queueInputBuffer(bufferIndex, 0, packet.segment.getPayloadLength(), packet.presentationTime, flags);
     }
@@ -78,7 +78,7 @@ public class AsyncH264Decoder extends H264Decoder {
 
         @Override
         public void onInputBufferAvailable(MediaCodec codec, int index) {
-            if (decodeQueue.size() == 0) {
+            if (decodeQueue.isEmpty()) {
                 availableInputBuffers.add(index);
                 return;
             }
@@ -87,8 +87,8 @@ public class AsyncH264Decoder extends H264Decoder {
             try {
                 submitToDecoder(packet, index, codec);
             } catch (Exception e) {
-                System.out.println("Failed to decode H264 frame: " + e.toString());
-                e.printStackTrace();
+                LOGGER.error("Failed to decode H264 frame: " + e.toString());
+                LOGGER.printStackTrace(e);
             }
         }
 
@@ -97,14 +97,13 @@ public class AsyncH264Decoder extends H264Decoder {
             try {
                 codec.releaseOutputBuffer(index, info.size > 0);
             } catch (Exception e) {
-                System.out.println("Failed to release output buffer: " + e.toString());
-                e.printStackTrace();
+                LOGGER.error("Failed to release output buffer: " + e.toString());
+                LOGGER.printStackTrace(e);
             }
         }
 
         @Override
-        public void onError(MediaCodec codec, MediaCodec.CodecException e) {
-        }
+        public void onError(MediaCodec codec, MediaCodec.CodecException exception) { }
 
         @Override
         public void onOutputFormatChanged(MediaCodec codec, MediaFormat format) {

@@ -16,6 +16,7 @@ import java.util.Date;
 /**
  *
  */
+@SuppressWarnings("PMD")
 public class RtspClient implements AutoCloseable {
 
     static {

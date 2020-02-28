@@ -28,12 +28,12 @@ import java.util.concurrent.TimeUnit;
  */
 @TargetApi(19)
 public class SyncH264Decoder extends H264Decoder {
-
-    private static Logger logger = LoggerFactory.getLogger(SyncH264Decoder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SyncH264Decoder.class);
 
     private Thread decodedPacketConsumer;
     private Thread packetQueueConsumer;
     private PacketQueueConsumer consumer;
+    private boolean isRunning = true;
 
     /**
      * Constructor for {@link SyncH264Decoder} instances.
@@ -47,7 +47,7 @@ public class SyncH264Decoder extends H264Decoder {
     }
 
     @Override
-    protected void onCreatedMediaCodec(MediaCodec mediaCodec) {}
+    protected void onCreatedMediaCodec(MediaCodec mediaCodec) { }
 
     @Override
     protected void onStartedCodec(MediaCodec mediaCodec) {
@@ -62,7 +62,6 @@ public class SyncH264Decoder extends H264Decoder {
         }
     }
 
-    private volatile boolean isRunning = true;
     @Override
     public void close() throws InterruptedException {
         isRunning = false;
@@ -91,7 +90,7 @@ public class SyncH264Decoder extends H264Decoder {
 
         protected void queueEncodedPacket(H264Packet packet) {
             packetQueue.add(packet);
-            logger.debug("Queued packet, new queue length: {}", packetQueue.size());
+            LOGGER.debug("Queued packet, new queue length: {}", packetQueue.size());
         }
 
         @Override
@@ -107,18 +106,18 @@ public class SyncH264Decoder extends H264Decoder {
                     int bufferId = getMediaCodec().dequeueInputBuffer(0);
 
                     if (bufferId == -1) {
-                        logger.error("Dropped frame: H264 codec not ready");
+                        LOGGER.error("Dropped frame: H264 codec not ready");
                         continue;
                     }
 
                     if (packet.segment == null) {
-                        logger.info("!");
+                        LOGGER.info("!");
                         return;
                     }
 
                     writePacketToInputBuffer(packet, bufferId);
 
-                    logger.debug("Submitting to decoder: {}", packet.toString());
+                    LOGGER.debug("Submitting to decoder: {}", packet.toString());
                     int flags = decoderFlagsForPacket(packet);
 
                     try {
@@ -126,7 +125,7 @@ public class SyncH264Decoder extends H264Decoder {
                                 bufferId, 0, packet.segment.getPayloadLength(), packet.presentationTime, flags);
 
                     } catch (IllegalStateException e) {
-                        logger.error("H264 Codec has stopped processing, exiting and closing decoder.");
+                        LOGGER.error("H264 Codec has stopped processing, exiting and closing decoder.");
                     }
                 }
             }
@@ -149,17 +148,17 @@ public class SyncH264Decoder extends H264Decoder {
                 while (getMediaCodec() != null && isRunning) {
                     int bufferId = getMediaCodec().dequeueOutputBuffer(bufferInfo, millisecondsTimeout);
                     if (bufferId >= 0) {
-                        logger.warn("DecodedFrameConsumer got buffer ID: {}", bufferId);
+                        LOGGER.warn("DecodedFrameConsumer got buffer ID: {}", bufferId);
                         getMediaCodec().releaseOutputBuffer(bufferId, bufferInfo.size > 0);
                     } else if (bufferId == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                        logger.debug("DecodedFrameConsumer got buffer ID: {}", bufferId);
+                        LOGGER.debug("DecodedFrameConsumer got buffer ID: {}", bufferId);
                         setMediaFormat(getMediaCodec().getOutputFormat());
                     }
                 }
 
             } catch (Exception e) {
-                System.out.println("Failed to release output buffer: " + e.toString());
-                e.printStackTrace();
+                LOGGER.error("Failed to release output buffer: " + e.toString());
+                LOGGER.printStackTrace(e);
             }
         }
     }

@@ -1,14 +1,18 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Android Application Rules"
-    xmlns="http://pmd.sf.net/ruleset/1.0.0"
-    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
-    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
 
-    <rule ref="rulesets/java/android.xml" />
-    <rule ref="rulesets/java/basic.xml" />
-    <rule ref="rulesets/java/braces.xml" />
-    <rule ref="rulesets/java/imports.xml" />
-    <!--<rule ref="rulesets/java/naming.xml" />-->
-    <rule ref="rulesets/java/strings.xml" />
+<ruleset name="Custom Rules"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
+    <rule ref="rulesets/java/quickstart.xml">
+        <exclude name="UncommentedEmptyMethodBody" />
+        <exclude name="GuardLogStatement" />
+    </rule>
+    <rule ref="rulesets/java/quickstart.xml/ClassNamingConventions">
+        <properties>
+            <!-- Over opinionated tool - utility class should follow the same naming convention as everything else.-->
+            <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]*" />
+        </properties>
+    </rule>
 </ruleset>

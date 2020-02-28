@@ -1,5 +1,33 @@
+plugins {
+    id 'com.novoda.static-analysis' version '1.2'
+    id "com.github.spotbugs" version "3.0.0"
+}
+
 apply plugin: "com.android.library"
-apply from: "${project.rootDir}/gradle/static-analysis.gradle"
+//apply from: "${project.rootDir}/gradle/static-analysis.gradle"
+
+staticAnalysis {
+    penalty {
+        maxErrors = 0
+        maxWarnings = 999999
+    }
+    checkstyle { }
+    pmd {
+        toolVersion = "6.21.0"
+        incrementalAnalysis = true
+        ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
+        ruleSets = []
+    }
+    spotbugs { }
+    lintOptions {
+        abortOnError true
+        xmlReport true
+        htmlReport true
+        lintConfig file("${project.rootDir}/config/lint/lint.xml")
+        htmlOutput file("$project.buildDir/reports/lint/lint-results.html")
+        xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
+    }
+}
 
 android {
     compileSdkVersion 28

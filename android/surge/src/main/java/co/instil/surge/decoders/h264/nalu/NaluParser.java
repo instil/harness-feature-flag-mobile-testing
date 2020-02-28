@@ -41,7 +41,7 @@ public class NaluParser {
       * @returns a list of parsed NAL units or an empty list if the supplied buffer did not
       * contain any valid units.
      */
-    public List<NaluSegment> parseNaluSegments(ByteBuffer byteBuffer) throws Exception {
+    public List<NaluSegment> parseNaluSegments(ByteBuffer byteBuffer) {
         byte[] buffer = new byte[byteBuffer.capacity()];
         byteBuffer.get(buffer);
         if (buffer.length <= MINIMUM_NAL_UNIT_LENGTH) {

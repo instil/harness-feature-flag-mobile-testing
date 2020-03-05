@@ -10,13 +10,13 @@ package co.instil.surge.decoders.h264;
 import android.annotation.TargetApi;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
-import android.view.Surface;
-
-import co.instil.surge.logging.Logger;
-import co.instil.surge.logging.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import co.instil.surge.client.SurgeVideoView;
+import co.instil.surge.logging.Logger;
+import co.instil.surge.logging.LoggerFactory;
 
 /**
  * An H264 stream decoder which utilises native hardware decoders (if available) and the
@@ -33,16 +33,15 @@ import java.util.List;
 public class AsyncH264Decoder extends H264Decoder {
     private static final Logger LOGGER = LoggerFactory.getLogger(AsyncH264Decoder.class);
 
-
     private List<Integer> availableInputBuffers = new ArrayList<>();
     private List<H264Packet> decodeQueue = new ArrayList<>();
 
     /**
      * Constrcuts a new {@link AsyncH264Decoder}.
-     * @param surface the surface onto which the decoded stream will be rendered.
+     * @param videoView the view onto which the decoded stream will be rendered.
      */
-    public AsyncH264Decoder(Surface surface) {
-        super(surface);
+    public AsyncH264Decoder(SurgeVideoView videoView) {
+        super(videoView);
     }
 
     @Override

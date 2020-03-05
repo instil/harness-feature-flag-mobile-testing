@@ -20,14 +20,13 @@ import java.nio.ByteBuffer;
  * enables dependency injection of MediaCodec instances.
  */
 public class MediaCodecFactory {
+    private static final String H264_DECODER_IDENTIFIER = "video/avc";
+    private static final int DUMMY_WIDTH = 720;
+    private static final int DUMMY_HEIGHT = 480;
 
-    public static final String H264_DECODER_IDENTIFIER = "video/avc";
-
-    public MediaCodec createH264DecoderWithParameters(NaluSegment sps, NaluSegment pps, Surface surface, int width, int height) throws IOException {
+    public MediaCodec createH264DecoderWithParameters(NaluSegment sps, NaluSegment pps, Surface surface) throws IOException {
         MediaCodec codec = MediaCodec.createDecoderByType(H264_DECODER_IDENTIFIER);
-        MediaFormat format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, 720, 480);
-        format.setInteger(MediaFormat.KEY_WIDTH, width);
-        format.setInteger(MediaFormat.KEY_HEIGHT, height);
+        MediaFormat format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, DUMMY_WIDTH, DUMMY_HEIGHT);
         format.setByteBuffer("csd-0", ByteBuffer.wrap(sps.getPayload()));
         format.setByteBuffer("csd-1", ByteBuffer.wrap(pps.getPayload()));
         format.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 0);

@@ -21,12 +21,10 @@ import android.widget.EditText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import co.instil.surge.client.SurgeSurface;
 import co.instil.surge.player.SurgeRtspPlayer;
 import co.instil.surge.player.SurgeRtspPlayerDelegate;
 
@@ -40,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     private TextureView textureView;
 
     private final SurgeRtspPlayer player = new SurgeRtspPlayer();
-    private SurgeSurface surface;
     private boolean isPlaying = false;
     private boolean isPaused = false;
 
@@ -69,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
         drawSolidColorOnSurfaceTexture(Color.BLACK, surfaceTexture);
 
-        surface = new SurgeSurface(surfaceTexture, width, height);
+        player.setPlayerView(textureView);
     }
 
     public void startStream(View view) {
@@ -83,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
         String url = urlTextField.getText().toString();
 
         player.initiatePlaybackOf(url,
-                surface,
                 errorCode -> System.out.println("Finished starting stream"));
     }
 

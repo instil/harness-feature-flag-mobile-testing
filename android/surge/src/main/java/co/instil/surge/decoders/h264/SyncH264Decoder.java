@@ -9,14 +9,13 @@ package co.instil.surge.decoders.h264;
 
 import android.annotation.TargetApi;
 import android.media.MediaCodec;
-import android.view.Surface;
-
-import co.instil.surge.logging.Logger;
-import co.instil.surge.logging.LoggerFactory;
 
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
+import co.instil.surge.client.SurgeVideoView;
+import co.instil.surge.logging.Logger;
+import co.instil.surge.logging.LoggerFactory;
 
 /**
  * An H264 stream decoder which utilises native hardware decoders (if available) and the
@@ -37,10 +36,10 @@ public class SyncH264Decoder extends H264Decoder {
 
     /**
      * Constructor for {@link SyncH264Decoder} instances.
-     * @param surface the surface onto which the decoded stream will be rendered.
+     * @param videoView the view onto which the decoded stream will be rendered.
      */
-    public SyncH264Decoder(Surface surface) {
-        super(surface);
+    public SyncH264Decoder(SurgeVideoView videoView) {
+        super(videoView);
         consumer = new PacketQueueConsumer(100);
         packetQueueConsumer = new Thread(consumer);
         decodedPacketConsumer = new Thread(new DecodedFrameConsumer(100));

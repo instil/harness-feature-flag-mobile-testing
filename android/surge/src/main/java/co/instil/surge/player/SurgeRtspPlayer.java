@@ -9,6 +9,7 @@ package co.instil.surge.player;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.TextureView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,7 +26,8 @@ import co.instil.surge.client.ExtendedHeader;
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
-import co.instil.surge.client.SurgeSurface;
+import co.instil.surge.client.SurgeVideoScale;
+import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.decoders.DecoderFactory;
 import co.instil.surge.logging.Logger;
@@ -53,7 +55,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     public SurgeRtspPlayerDelegate delegate;
 
-    protected SurgeSurface surface = null;
+    protected SurgeVideoView surface = null;
+    private SurgeVideoScale videoScale = SurgeVideoScale.MATCH_ASPECT_RATIO;
     private Decoder decoder;
 
     private SurgeAuthenticator customAuthenticator;
@@ -79,11 +82,10 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      * 
      * \sa SurgeRtspPlayerDelegate
      * @param url The RTSP Stream URL
-     * @param surface The Surface that Surge will use to play the RTSP video stream on.
      * @param callback Callback method called once the stream has started playing, or has irrecoverably failed.
      */
-    public synchronized void initiatePlaybackOf(String url, SurgeSurface surface, final PlayerCallback callback) {
-        initiatePlaybackOf(url, surface, "", "", null, null, callback);
+    public synchronized void initiatePlaybackOf(String url, final PlayerCallback callback) {
+        initiatePlaybackOf(url, "", "", null, null, callback);
     }
 
     /**
@@ -95,13 +97,12 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      *
      * \sa SurgeRtspPlayerDelegate
      * @param url The RTSP Stream URL
-     * @param surface The Surface that Surge will use to play the RTSP video stream on.
      * @param username Username used to authenticate the stream.
      * @param password Password associated with the provided username.
      * @param callback Callback method called once the stream has started playing, or has irrecoverably failed.
      */
-    public synchronized void initiatePlaybackOf(String url, SurgeSurface surface, String username, String password, final PlayerCallback callback) {
-        initiatePlaybackOf(url, surface, username, password, null, null, callback);
+    public synchronized void initiatePlaybackOf(String url, String username, String password, final PlayerCallback callback) {
+        initiatePlaybackOf(url, username, password, null, null, callback);
     }
 
     /**
@@ -113,21 +114,16 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      *
      * \sa SurgeRtspPlayerDelegate
      * @param url The RTSP Stream URL
-     * @param surface The Surface that Surge will use to play the RTSP video stream on.
      * @param username Username used to authenticate the stream.
      * @param password Password associated with the provided username.
      * @param startTime If the RTSP stream supports recorded video, timestamp to start playing video from.
      * @param endTime If the RTSP stream supports recorded video, timestamp to finish playing video at.
      * @param callback Callback method called once the stream has started playing, or has irrecoverably failed.
      */
-    public synchronized void initiatePlaybackOf(final String url, SurgeSurface surface, final String username, final String password, Date startTime, Date endTime, final PlayerCallback callback) {
+    public synchronized void initiatePlaybackOf(final String url, final String username, final String password, Date startTime, Date endTime, final PlayerCallback callback) {
         this.url = url;
         this.username = username;
         this.password = password;
-
-        if (surface != null) {
-            this.surface = surface;
-        }
 
         LOGGER.debug("Initating playback of {}", url);
 
@@ -200,11 +196,11 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             decoder = null;
 
             if (sessionDescription.getType() == H264) {
-                decoder = DecoderFactory.generateH264Decoder(surface.getSurface());
+                decoder = DecoderFactory.generateH264Decoder(surface);
             } else if (sessionDescription.getType() == MP4V) {
-                decoder = DecoderFactory.generateMP4VDecoder(surface.getSurface());
+                decoder = DecoderFactory.generateMP4VDecoder(surface);
             } else if (sessionDescription.getType() == MJPEG) {
-                decoder = DecoderFactory.generateMJPEGDecoder(surface.getSurface());
+                decoder = DecoderFactory.generateMJPEGDecoder(surface);
             }
 
             if (currentDecoder != null) {
@@ -276,18 +272,26 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     }
 
     /**
-     * The surface that Surge will use to play the RTSP video stream on.
-     * @param surface Surface to play the RTSP video on.
+     * The view that Surge will use to play the RTSP video stream on.
+     * @param textureView TextureView to play the RTSP video on.
      */
-    public void setSurface(SurgeSurface surface) {
-        this.surface = surface;
+    public void setPlayerView(TextureView textureView) {
+        this.surface = new SurgeVideoView(textureView, videoScale);
 
         if (sessionDescription != null) {
             initialiseDecoder(sessionDescription);
         } else {
             LOGGER.error("No decoder generated as there are no available SessionDescriptions");
         }
+    }
 
+    /**
+     * The view that Surge will use to play the RTSP video stream on.
+     *
+     * @return The view that Surge will use to play the RTSP video stream on.
+     */
+    public TextureView getPlayerView() {
+        return surface.getTextureView();
     }
 
     @Override
@@ -323,8 +327,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         if (decoder != null) {
             decoder.decodeFrameBuffer(sessionDescription,
                     byteBuffer,
-                    surface.getWidth(),
-                    surface.getHeight(),
+                    surface.getViewWidth(),
+                    surface.getViewHeight(),
                     presentationTime,
                     duration);
         }
@@ -506,6 +510,29 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         customAuthenticator = authenticator;
 
         rtspClient.AddAuthenticator(customAuthenticator);
+    }
+
+    /**
+     * Sets the scaling mode on the video player view.
+     *
+     * Default: MATCH_ASPECT_RATIO
+     *
+     * @param videoScale Scaling mode to change the video player view to
+     */
+    public void setVideoScale(SurgeVideoScale videoScale) {
+        this.videoScale = videoScale;
+        if (surface != null) {
+            surface.setVideoScale(videoScale);
+        }
+    }
+
+    /**
+     * Gets the current scaling mode on the video player view.
+     *
+     * @return The current scaling mode on the video player view.
+     */
+    public SurgeVideoScale getVideoScale() {
+        return videoScale;
     }
 
     private File extractResourceIntoCacheFile(int rawResourceId, Context context) {

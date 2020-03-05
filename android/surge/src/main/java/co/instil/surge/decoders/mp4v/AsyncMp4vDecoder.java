@@ -15,6 +15,7 @@ import android.media.MediaFormat;
 import android.view.Surface;
 
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
@@ -32,15 +33,19 @@ import java.util.List;
 public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AsyncMp4vDecoder.class);
+    private static final String MEDIA_FORMAT_WIDTH_KEY = "width";
+    private static final String MEDIA_FORMAT_HEIGHT_KEY = "height";
 
     private MediaCodec mediaCodec;
     private MediaFormat mediaFormat;
+    private SurgeVideoView videoView;
     private Surface surface;
     private List<ByteBuffer> decodeQueue = new ArrayList<>();
     private List<Integer> availableInputBuffers = new ArrayList<>();
 
-    public AsyncMp4vDecoder(Surface surface) {
-        this.surface = surface;
+    public AsyncMp4vDecoder(SurgeVideoView videoView) {
+        this.videoView = videoView;
+        this.surface = videoView.generateUniqueSurface();
     }
 
     @Override
@@ -82,7 +87,7 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
         mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_MPEG4, width, height);
         mediaFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, width * height);
         mediaFormat.setByteBuffer("csd-0", ByteBuffer.wrap(sessionDescription.getDecoderConfig().getBytes(Charset.forName("UTF-8"))));
-        mediaCodec.configure(mediaFormat, surface, null, 0);
+        mediaCodec.configure(mediaFormat, videoView.generateUniqueSurface(), null, 0);
         return mediaCodec;
     }
 
@@ -147,6 +152,19 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
 
     @Override
     public void onOutputFormatChanged(MediaCodec codec, MediaFormat format) {
-        LOGGER.debug("Output format changed");
+        mediaFormat = format;
+        updateVideoPlayerForNewVideoDimensions();
+    }
+
+    private void updateVideoPlayerForNewVideoDimensions() {
+        if (mediaFormatHasStreamDimensions()) {
+            int streamWidth = mediaFormat.getInteger(MEDIA_FORMAT_WIDTH_KEY);
+            int streamHeight = mediaFormat.getInteger(MEDIA_FORMAT_HEIGHT_KEY);
+            videoView.setVideoDimensions(streamWidth, streamHeight);
+        }
+    }
+
+    private boolean mediaFormatHasStreamDimensions() {
+        return mediaFormat.containsKey(MEDIA_FORMAT_WIDTH_KEY) && mediaFormat.containsKey(MEDIA_FORMAT_HEIGHT_KEY);
     }
 }

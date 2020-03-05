@@ -12,9 +12,13 @@ import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.Surface;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.List;
 
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.decoders.MediaCodecFactory;
 import co.instil.surge.decoders.h264.nalu.NaluParser;
@@ -23,10 +27,6 @@ import co.instil.surge.decoders.h264.nalu.NaluType;
 import co.instil.surge.device.DeviceExaminer;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.List;
 
 /**
  * Abstract superclass for all H264 decoders which implements common operations e.g. parsing
@@ -39,10 +39,12 @@ import java.util.List;
 @TargetApi(21)
 public abstract class H264Decoder implements Decoder {
     private static final Logger LOGGER = LoggerFactory.getLogger(H264Decoder.class);
+    private static final String MEDIA_FORMAT_WIDTH_KEY = "width";
+    private static final String MEDIA_FORMAT_HEIGHT_KEY = "height";
 
     private MediaCodec mediaCodec;
     private MediaFormat mediaFormat;
-    private Surface surface;
+    private SurgeVideoView videoView;
     private MediaCodecFactory mediaCodecFactory;
     private NaluParser naluParser;
     private NaluSegment pictureParameterSet;
@@ -53,24 +55,24 @@ public abstract class H264Decoder implements Decoder {
 
     /**
      * Constructor for a {@link H264Decoder} instance.
-     * @param surface the surface into which the decoder will return the decoded video.
+     * @param videoView the surface into which the decoder will return the decoded video.
      */
-    protected H264Decoder(Surface surface) {
-        this(surface, new MediaCodecFactory(), new NaluParser(), new DeviceExaminer());
+    protected H264Decoder(SurgeVideoView videoView) {
+        this(videoView, new MediaCodecFactory(), new NaluParser(), new DeviceExaminer());
     }
 
     /**
      * Constructor for a {@link H264Decoder} instance.
-     * @param surface the surface into which the decoder will return the decoded video.
+     * @param videoView the surface into which the decoder will return the decoded video.
      * @param mediaCodecFactory factory used to instantiate {@link MediaCodec} decoder interfaces.
      * @param naluParser parser used to parse NAL units from raw packets of bytes handed to the decoder.
      */
     protected H264Decoder(
-            Surface surface,
+            SurgeVideoView videoView,
             MediaCodecFactory mediaCodecFactory,
             NaluParser naluParser,
             DeviceExaminer deviceExaminer) {
-        setSurface(surface);
+        setVideoView(videoView);
         this.mediaCodecFactory = mediaCodecFactory;
         this.naluParser = naluParser;
         this.deviceExaminer = deviceExaminer;
@@ -262,24 +264,33 @@ public abstract class H264Decoder implements Decoder {
 
     protected void setMediaFormat(MediaFormat mediaFormat) {
         this.mediaFormat = mediaFormat;
+        if (mediaFormatHasStreamDimensions(mediaFormat)) {
+            int streamWidth = mediaFormat.getInteger(MEDIA_FORMAT_WIDTH_KEY);
+            int streamHeight = mediaFormat.getInteger(MEDIA_FORMAT_HEIGHT_KEY);
+            videoView.setVideoDimensions(streamWidth, streamHeight);
+        }
+    }
+
+    private boolean mediaFormatHasStreamDimensions(MediaFormat mediaFormat) {
+        return mediaFormat.containsKey(MEDIA_FORMAT_WIDTH_KEY) && mediaFormat.containsKey(MEDIA_FORMAT_HEIGHT_KEY);
     }
 
     protected MediaFormat getMediaFormat() {
         return mediaFormat;
     }
 
-    protected void setSurface(Surface surface) {
-        this.surface = surface;
+    protected void setVideoView(SurgeVideoView videoView) {
+        this.videoView = videoView;
     }
 
-    protected Surface getSurface() {
-        return surface;
+    protected SurgeVideoView getVideoView() {
+        return videoView;
     }
 
     private MediaCodec createMediaCodec() throws IOException {
         return mediaCodecFactory.createH264DecoderWithParameters(
-                sequenceParameterSet, pictureParameterSet, surface, 720, 480);
+                sequenceParameterSet,
+                pictureParameterSet,
+                videoView.generateUniqueSurface());
     }
-
-
 }

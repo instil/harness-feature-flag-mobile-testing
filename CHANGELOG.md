@@ -2,6 +2,20 @@
 
 ### v1.2.4
 
+###### Features
+
+_Android_
+
+* Surge will now match the aspect ratio of the video it is playing by default.
+
+###### API Changes
+
+_Android_
+
+* `set/getPlayerView` has been added, which takes a `TextureView`. This is required to support the new aspect ratio functionality.
+* `setSurface` and the surface property on `SurgeVideoPlayer` constructor have been removed.
+* `set/getScaleType` has been added, allowing apps to change how Surge handles aspect ratio.
+
 ###### Fixes
 
 * Fix for an issue that caused Surge to crash if you tried to stop and restart a stream twice on the same player.

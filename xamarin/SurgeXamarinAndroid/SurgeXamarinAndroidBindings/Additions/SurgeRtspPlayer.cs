@@ -10,20 +10,20 @@ namespace CO.Instil.Surge.Player {
 
         public PlayerCallback playerCallback;
 
-        public void InitiatePlaybackOf(string url, SurgeSurface surface, Action<RtspErrorCode> callback)
+        public void InitiatePlaybackOf(string url, Action<RtspErrorCode> callback)
         {
-            InitiatePlaybackOf(url, surface, "", "", null, null, callback);
+            InitiatePlaybackOf(url, "", "", null, null, callback);
         }
 
-        public void InitiatePlaybackOf(string url, SurgeSurface surface, string username, string password, Action<RtspErrorCode> callback)
+        public void InitiatePlaybackOf(string url, string username, string password, Action<RtspErrorCode> callback)
         {
-            InitiatePlaybackOf(url, surface, username, password, null, null, callback);
+            InitiatePlaybackOf(url, username, password, null, null, callback);
         }
 
-        public void InitiatePlaybackOf(string url, SurgeSurface surface, string username, string password, Date startTime, Date endTime, Action<RtspErrorCode> callback)
+        public void InitiatePlaybackOf(string url, string username, string password, Date startTime, Date endTime, Action<RtspErrorCode> callback)
         {
             playerCallback = new PlayerCallback(callback);
-            InitiatePlaybackOf(url, surface, username, password, startTime, endTime, playerCallback);
+            InitiatePlaybackOf(url, username, password, startTime, endTime, playerCallback);
         }
     }
 }

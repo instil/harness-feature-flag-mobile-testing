@@ -7,8 +7,7 @@
 
 package co.instil.surge.decoders;
 
-import android.view.Surface;
-
+import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.h264.AsyncH264Decoder;
 import co.instil.surge.decoders.h264.SyncH264Decoder;
 import co.instil.surge.decoders.mjpeg.MjpegDecoder;
@@ -26,24 +25,24 @@ public final class DecoderFactory {
 
     private DecoderFactory() {}
 
-    public static Decoder generateH264Decoder(Surface surface) {
+    public static Decoder generateH264Decoder(SurgeVideoView videoView) {
         if (DEVICE_EXAMINER.isPreLollipopDevice()) {
             LOGGER.info("Detecting Lollipop decoder");
-            return new SyncH264Decoder(surface);
+            return new SyncH264Decoder(videoView);
         }
 
-        return new AsyncH264Decoder(surface);
+        return new AsyncH264Decoder(videoView);
     }
 
-    public static Decoder generateMP4VDecoder(Surface surface) {
+    public static Decoder generateMP4VDecoder(SurgeVideoView videoView) {
         if (DEVICE_EXAMINER.isPreLollipopDevice()) {
             throw new UnsupportedOperationException("No Mp4V decoder available for API 19");
         }
 
-        return new AsyncMp4vDecoder(surface);
+        return new AsyncMp4vDecoder(videoView);
     }
 
-    public static Decoder generateMJPEGDecoder(Surface surface) {
-        return new MjpegDecoder(surface);
+    public static Decoder generateMJPEGDecoder(SurgeVideoView videoView) {
+        return new MjpegDecoder(videoView);
     }
 }

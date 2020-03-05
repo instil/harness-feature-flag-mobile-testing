@@ -18,23 +18,26 @@ import android.view.Surface;
 import java.nio.ByteBuffer;
 
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
 
 /**
- * Decoder which renders a MJPEG stream to a {@link android.view.Surface}.
+ * Decoder which renders a MJPEG stream to a {@link android.view.TextureView}.
  */
 @TargetApi(19)
 public class MjpegDecoder implements Decoder {
     private static final Logger LOGGER = LoggerFactory.getLogger(MjpegDecoder.class);
 
+    private final SurgeVideoView videoView;
     private final Surface surface;
     @SuppressWarnings("PMD.SingularField")
     private final HandlerThread decoderThread;
 
-    public MjpegDecoder(Surface surface) {
-        this.surface = surface;
+    public MjpegDecoder(SurgeVideoView videoView) {
+        this.videoView = videoView;
+        this.surface = videoView.generateUniqueSurface();
         decoderThread = new HandlerThread("decoderThread");
         decoderThread.start();
     }
@@ -53,6 +56,7 @@ public class MjpegDecoder implements Decoder {
             test.get(imageBytes);
             final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
             if (bitmap != null) {
+                configureSurfaceForNewVideoDimensions(bitmap.getWidth(), bitmap.getHeight());
                 Canvas canvas = surface.lockCanvas(null);
                 canvas.drawBitmap(bitmap,
                         new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
@@ -63,6 +67,10 @@ public class MjpegDecoder implements Decoder {
         } catch (Exception e) {
             LOGGER.error("Failed to decode frame", e);
         }
+    }
+
+    private void configureSurfaceForNewVideoDimensions(int width, int height) {
+        videoView.setVideoDimensions(width, height);
     }
 
     @Override

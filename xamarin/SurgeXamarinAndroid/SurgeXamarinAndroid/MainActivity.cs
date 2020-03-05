@@ -1,16 +1,13 @@
 using Android.App;
-using Android.Widget;
 using Android.OS;
 using Android.Views;
 using Android.Graphics;
 using System;
 using CO.Instil.Surge.Player;
-using CO.Instil.Surge.Callbacks;
-using CO.Instil.Surge.Client;
 
 namespace SurgeXamarinAndroid
 {
-	[Activity(Label = "SurgeXamarinAndroid", MainLauncher = true, Icon = "@mipmap/icon")]
+    [Activity(Label = "SurgeXamarinAndroid", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : Activity, TextureView.ISurfaceTextureListener
 	{
 		SurgeRtspPlayer player;
@@ -39,7 +36,8 @@ namespace SurgeXamarinAndroid
 
 		public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
 		{
-            player.InitiatePlaybackOf("rtsp://192.168.1.103:8554/test", new SurgeSurface(surface, width, height), (RtspErrorCode errorCode) => {
+			player.PlayerView = textureView;
+            player.InitiatePlaybackOf("rtsp://192.168.1.103:8554/test", (RtspErrorCode errorCode) => {
                 Console.WriteLine(errorCode);
             });
    		}

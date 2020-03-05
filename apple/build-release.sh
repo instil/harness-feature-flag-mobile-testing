@@ -35,4 +35,4 @@ lipo -create -output SurgeiOS.framework/SurgeiOS SurgeiOS.framework/SurgeiOS sim
 rm -rf simulator
 
 cd ..
-zip -r apple-frameworks.zip iOS/SurgeiOS.framework/ macOS/SurgeMacOS.framework/
+zip -r apple-frameworks.zip iOS/SurgeiOS.framework/ iOS/SurgeiOS.framework.dSYM macOS/SurgeMacOS.framework/ macOS/SurgeMacOS.framework.dSYM

@@ -23,7 +23,7 @@ namespace Surge {
     public:
         void RtspTcpOpen(SurgeUtil::Url&, std::function<void(int)>) override;
         void StartRunning() override;
-        void StopRunning() override;
+        void StopRunning(bool waitUntilStopped = true) override;
         void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;
         void ArbitraryDataTransaction(const char *data, const size_t length) override;
         void StartRtspTimer();

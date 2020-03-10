@@ -29,7 +29,7 @@ namespace Surge {
 
         virtual void StartRunning() = 0;
 
-        virtual void StopRunning() = 0;
+        virtual void StopRunning(bool waitUntilStopped = true) = 0;
 
         virtual bool IsRunning() = 0;
 

@@ -46,7 +46,7 @@ void Surge::Transport::StartRunning() {
     m_thread.Execute(*this);
 }
 
-void Surge::Transport::StopRunning() {
+void Surge::Transport::StopRunning(bool waitUntilStopped) {
     SurgeUtil::MutexLocker lock { threadManipulationMutex };
 
     if (!IsRunning()) {
@@ -59,7 +59,7 @@ void Surge::Transport::StopRunning() {
 
     m_libuvCloser->send();
 
-    if (m_thread.IsRunning()) {
+    if (waitUntilStopped && m_thread.IsRunning()) {
         m_thread.WaitUntilStopped();
     }
 }
@@ -202,8 +202,8 @@ void Surge::Transport::AttachRtspCallbacksToLibuv() {
 
     m_tcp->on<uvw::EndEvent>([this](const uvw::EndEvent &endEvent, uvw::TcpHandle &tcp) {
         ERROR("Loop ended prematurely, closing TCP port");
-        m_threadRunning = false;
 
+        StopRunning(false);
         NotifyDelegateOfReadFailure();
     });
 

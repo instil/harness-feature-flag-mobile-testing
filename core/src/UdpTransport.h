@@ -21,7 +21,7 @@ namespace Surge {
         UdpTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate);
         ~UdpTransport();
         
-        void StopRunning() override;
+        void StopRunning(bool waitUntilStopped = true) override;
         
         void RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)> callback) override;
         

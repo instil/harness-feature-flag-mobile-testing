@@ -38,6 +38,9 @@ namespace SurgeJni {
         }
 
         void TrackExistingJniEnvAcquired() {
+            if (jniEnvCount == 0) {
+                jniEnvCount = -1;
+            }
             ++jniEnvCount;
         }
 

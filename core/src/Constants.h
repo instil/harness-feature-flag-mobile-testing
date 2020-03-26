@@ -23,6 +23,10 @@ namespace SurgeUtil {
         
         static int DEFAULT_PACKET_BUFFER_DELAY_MS = 200;
 
+        static int DEFAULT_RTP_INTERLEAVED_CHANNEL = 0;
+
+        static int DEFAULT_RTCP_INTERLEAVED_CHANNEL = 1;
+
         static int MIN_RTP_PORT_NUMBER = 5000;
 
         static int MAX_RTP_PORT_NUMBER = 6000;

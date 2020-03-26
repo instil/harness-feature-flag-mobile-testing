@@ -5,14 +5,15 @@
 
 #include "InterleavedRtspTransport.h"
 
+using SurgeUtil::Constants::DEFAULT_RTP_INTERLEAVED_CHANNEL;
+using SurgeUtil::Constants::DEFAULT_RTCP_INTERLEAVED_CHANNEL;
 using SurgeUtil::Constants::DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE;
 
 Surge::InterleavedRtspTransport::InterleavedRtspTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate * const delegate):
 Transport(transportDelegate, delegate),
-m_readBufferSize(DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE) {
-    m_rtpInterleavedChannel = SurgeUtil::RandomEvenNumberBetween(0, 254);
-    m_rtcpInterleavedChannel = m_rtpInterleavedChannel + 1;
-}
+m_readBufferSize(DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE),
+m_rtpInterleavedChannel(DEFAULT_RTP_INTERLEAVED_CHANNEL),
+m_rtcpInterleavedChannel(DEFAULT_RTCP_INTERLEAVED_CHANNEL) { }
 
 bool Surge::InterleavedRtspTransport::HandlePacket(const char* buffer, size_t size) {
     if (!BufferContainsRtpPacket()) {

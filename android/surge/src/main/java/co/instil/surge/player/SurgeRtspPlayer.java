@@ -306,6 +306,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         if (decoder != null) {
             decoder.close();
         }
+
+        LOGGER.info("Surge player has been destroyed.");
     }
 
     @Override

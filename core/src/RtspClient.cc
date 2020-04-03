@@ -54,11 +54,6 @@ Surge::RtspClient::~RtspClient() {
 
     CloseErrorDispatcher();
 
-    if (teardownCallback) {
-        std::future<void> teardownCallbackComplete = teardownPromise.get_future();
-        teardownCallbackComplete.get();
-    }
-
     delete rtspService;
     delete frameBuffer;
     delete transport;
@@ -145,8 +140,6 @@ void Surge::RtspClient::ResetClientTransport() {
     if (tlsClient != nullptr) {
         delete tlsClient;
     }
-
-    teardownPromise = std::promise<void>();
 }
 
 void Surge::RtspClient::Disconnect() {
@@ -384,16 +377,13 @@ void Surge::RtspClient::Teardown(std::function<void(Surge::RtspResponse*)> callb
         dispatchQueue->Dispatch([callback, response]() { callback(response); });
     };
 
-    teardownCallback = [this, runCallback](Surge::RtspResponse *response) {
+    rtspService->Teardown([this, runCallback](Surge::RtspResponse *response) {
         if (response != nullptr && !response->Ok() && authService->UpdateAuthForUnauthorizedError(response)) {
             rtspService->Teardown(runCallback);
         }
 
         runCallback(response);
-        teardownPromise.set_value();
-    };
-
-    rtspService->Teardown(teardownCallback);
+    });
 }
 
 void Surge::RtspClient::KeepAlive(std::function<void(Surge::RtspResponse*)> callback) {

@@ -271,9 +271,6 @@ namespace Surge {
         long long lastPacketSequenceNum;
         bool dropFrame;
 
-        std::function<void(Surge::RtspResponse*)>  teardownCallback;
-        std::promise<void> teardownPromise;
-
     private:
         bool shouldSendFrameToDelegate = true;
 

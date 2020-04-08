@@ -12,7 +12,7 @@
 
 #include "Helpers.h"
 
-#include "Regex.h"
+#include "RegexUtils.h"
 #include "Logging.h"
 
 #include "Helpers.h"

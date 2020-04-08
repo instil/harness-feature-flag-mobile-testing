@@ -9,7 +9,7 @@
 #include "Url.h"
 
 SurgeUtil::Url::Url(const std::string &url) {
-    std::vector<std::string> result = SurgeUtil::Regex::Split(url, URL_MATCH_REGEX);
+    std::vector<std::string> result = SurgeUtil::RegexUtils::Split(url, URL_MATCH_REGEX);
 
     if (!SurgeUtil::String::Contains(result[1], RTSP_PROTOCOL)) {
         return;

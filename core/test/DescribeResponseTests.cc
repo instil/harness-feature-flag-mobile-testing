@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "DescribeResponse.h"
+#include "SessionDescriptionFactory.h"
+
+Surge::SessionDescriptionFactory sessionDescriptionFactory;
 
 TEST(DESCRIBE_RESPONSE, TestThatValidDescribeResponseWithPaletteIsOk) {
 
@@ -25,7 +28,7 @@ TEST(DESCRIBE_RESPONSE, TestThatValidDescribeResponseWithPaletteIsOk) {
         "\r\n";
 
     Surge::Response wrapped_response((unsigned char *)raw_response.c_str(), raw_response.length());
-    Surge::DescribeResponse response(&wrapped_response);
+    Surge::DescribeResponse response(&wrapped_response, &sessionDescriptionFactory);
 
     ASSERT_EQ(response.Ok(), true);
 }
@@ -42,7 +45,7 @@ TEST(DESCRIBE_RESPONSE, TestThat200DescribeResponseWithMissingBodyIsNotOk) {
         "\r\n";
 
     Surge::Response wrapped_response((unsigned char *)raw_response.c_str(), raw_response.length());
-    Surge::DescribeResponse response(&wrapped_response);
+    Surge::DescribeResponse response(&wrapped_response, &sessionDescriptionFactory);
 
     ASSERT_EQ(response.Ok(), false);
 }

@@ -132,7 +132,6 @@
 		F47D1E6E210B239000302481 /* AuthenticationService.h in Headers */ = {isa = PBXBuildFile; fileRef = F47D1E6C210B239000302481 /* AuthenticationService.h */; };
 		F490E03720DD5BC000D30214 /* TLSClient.cc in Sources */ = {isa = PBXBuildFile; fileRef = F490E03520DD5BC000D30214 /* TLSClient.cc */; };
 		F490E03820DD5BC000D30214 /* TLSClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F490E03620DD5BC000D30214 /* TLSClient.h */; };
-		F494F3FB21230FD20054091C /* Regex.h in Headers */ = {isa = PBXBuildFile; fileRef = F494F3F921230FD20054091C /* Regex.h */; };
 		F4965ABB212590D800DB30B5 /* RtspService.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4965AB9212590D800DB30B5 /* RtspService.cc */; };
 		F4965ABC212590D800DB30B5 /* RtspService.h in Headers */ = {isa = PBXBuildFile; fileRef = F4965ABA212590D800DB30B5 /* RtspService.h */; };
 		F49699702109D77600B7EE4E /* BaseAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F496996E2109D77600B7EE4E /* BaseAuthenticator.h */; };
@@ -143,6 +142,7 @@
 		F49CB1FE2136E8130038EA57 /* Md5Algorithm.cc in Sources */ = {isa = PBXBuildFile; fileRef = F49CB1FC2136E8130038EA57 /* Md5Algorithm.cc */; };
 		F49CB1FF2136E8130038EA57 /* Md5Algorithm.h in Headers */ = {isa = PBXBuildFile; fileRef = F49CB1FD2136E8130038EA57 /* Md5Algorithm.h */; };
 		F4A3272F2142AB4F00F293B8 /* TransportProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = F4A3272E2142AB4F00F293B8 /* TransportProtocol.h */; };
+		F4BAC533243CE53500833351 /* RegexUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F4BAC532243CE53500833351 /* RegexUtils.h */; };
 		F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4C4F60720AEE853009313CD /* DispatchQueue.cc */; };
 		F4C4F60A20AEE853009313CD /* DispatchQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C4F60820AEE853009313CD /* DispatchQueue.h */; };
 		F4FA24C31ED8427A001B56E0 /* atomic-ops.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24A61ED8427A001B56E0 /* atomic-ops.h */; };
@@ -273,7 +273,6 @@
 		F48DFB1920E27AE900BA39A8 /* TransportDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TransportDelegate.h; path = ../../core/src/TransportDelegate.h; sourceTree = "<group>"; };
 		F490E03520DD5BC000D30214 /* TLSClient.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TLSClient.cc; path = ../../core/src/TLSClient.cc; sourceTree = "<group>"; };
 		F490E03620DD5BC000D30214 /* TLSClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TLSClient.h; path = ../../core/src/TLSClient.h; sourceTree = "<group>"; };
-		F494F3F921230FD20054091C /* Regex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Regex.h; path = ../../core/src/Regex.h; sourceTree = "<group>"; };
 		F4965AB9212590D800DB30B5 /* RtspService.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = RtspService.cc; path = ../../core/src/RtspService.cc; sourceTree = "<group>"; };
 		F4965ABA212590D800DB30B5 /* RtspService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RtspService.h; path = ../../core/src/RtspService.h; sourceTree = "<group>"; };
 		F496996E2109D77600B7EE4E /* BaseAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseAuthenticator.h; path = ../../core/src/BaseAuthenticator.h; sourceTree = "<group>"; };
@@ -284,6 +283,7 @@
 		F49CB1FC2136E8130038EA57 /* Md5Algorithm.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Md5Algorithm.cc; path = ../../core/src/Md5Algorithm.cc; sourceTree = "<group>"; };
 		F49CB1FD2136E8130038EA57 /* Md5Algorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Md5Algorithm.h; path = ../../core/src/Md5Algorithm.h; sourceTree = "<group>"; };
 		F4A3272E2142AB4F00F293B8 /* TransportProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TransportProtocol.h; path = ../../core/src/TransportProtocol.h; sourceTree = "<group>"; };
+		F4BAC532243CE53500833351 /* RegexUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegexUtils.h; path = ../../core/src/RegexUtils.h; sourceTree = "<group>"; };
 		F4C4F60720AEE853009313CD /* DispatchQueue.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DispatchQueue.cc; path = ../../core/src/DispatchQueue.cc; sourceTree = "<group>"; };
 		F4C4F60820AEE853009313CD /* DispatchQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DispatchQueue.h; path = ../../core/src/DispatchQueue.h; sourceTree = "<group>"; };
 		F4FA24A51ED8427A001B56E0 /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
@@ -665,7 +665,7 @@
 				42D671EB1D3069BB00D42C35 /* Mutex.h */,
 				42D671EC1D3069BB00D42C35 /* MutexLocker.h */,
 				F43E1C1020DA7DF900143083 /* Queue.h */,
-				F494F3F921230FD20054091C /* Regex.h */,
+				F4BAC532243CE53500833351 /* RegexUtils.h */,
 				F412B947213EDA1400B4A7EA /* Url.cc */,
 				42D6720A1D3069BB00D42C35 /* Url.h */,
 				42D6720B1D3069BB00D42C35 /* WaitableEvent.h */,
@@ -752,6 +752,7 @@
 				42D672501D3069BB00D42C35 /* Url.h in Headers */,
 				42D6722A1D3069BB00D42C35 /* Logging.h in Headers */,
 				F46D0DE21F322D36000782DD /* InterleavedRtspTransport.h in Headers */,
+				F4BAC533243CE53500833351 /* RegexUtils.h in Headers */,
 				42D672511D3069BB00D42C35 /* WaitableEvent.h in Headers */,
 				F45BDAA01E1FB88F00496E62 /* queue.h in Headers */,
 				F43E1C1220DA7DF900143083 /* Queue.h in Headers */,
@@ -769,7 +770,6 @@
 				42D672441D3069BB00D42C35 /* SessionDescriptionV0.h in Headers */,
 				42D672321D3069BB00D42C35 /* MutexLocker.h in Headers */,
 				F4A3272F2142AB4F00F293B8 /* TransportProtocol.h in Headers */,
-				F494F3FB21230FD20054091C /* Regex.h in Headers */,
 				42D672161D3069BB00D42C35 /* DataEventQueue.h in Headers */,
 				42D6724C1D3069BB00D42C35 /* Thread.h in Headers */,
 				42D6723C1D3069BB00D42C35 /* RtspCommand.h in Headers */,

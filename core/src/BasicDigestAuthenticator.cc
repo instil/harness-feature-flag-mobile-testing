@@ -8,7 +8,7 @@
 
 #include "BasicDigestAuthenticator.h"
 #include "Base64.h"
-#include "Regex.h"
+#include "RegexUtils.h"
 
 Surge::BasicDigestAuthenticator::BasicDigestAuthenticator() : nonce(), realm(), algorithmString(), qopString() {
     Reset();
@@ -114,10 +114,10 @@ bool Surge::BasicDigestAuthenticator::UpdateAuthForUnauthorizedError(const RtspR
         usingDigestAuth = true;
 
         auto authentiateHeader = response->GetHeaders().at("WWW-Authenticate");
-        auto nonceHeader = SurgeUtil::Regex::Split(authentiateHeader, "nonce=\"?(.[^ ]+)\"{1,}");
-        auto realmHeader = SurgeUtil::Regex::Split(authentiateHeader, "realm=\"([^\"]*)\"?");
-        auto algorithmHeader = SurgeUtil::Regex::Split(authentiateHeader, "algorithm=\"?([A-Za-z0-9]+)\"?");
-        auto qopHeader = SurgeUtil::Regex::Split(authentiateHeader, "qop=\"?([A-Za-z0-9]+)\"?");
+        auto nonceHeader = SurgeUtil::RegexUtils::Split(authentiateHeader, "nonce=\"?(.[^ ]+)\"{1,}");
+        auto realmHeader = SurgeUtil::RegexUtils::Split(authentiateHeader, "realm=\"([^\"]*)\"?");
+        auto algorithmHeader = SurgeUtil::RegexUtils::Split(authentiateHeader, "algorithm=\"?([A-Za-z0-9]+)\"?");
+        auto qopHeader = SurgeUtil::RegexUtils::Split(authentiateHeader, "qop=\"?([A-Za-z0-9]+)\"?");
 
         nonce = nonceHeader[1];
         realm = realmHeader[1];

@@ -10,7 +10,7 @@
 #include "MimeTypes.h"
 #include "Helpers.h"
 #include "Logging.h"
-#include "Regex.h"
+#include "RegexUtils.h"
 
 #include <string>
 
@@ -24,7 +24,7 @@ namespace Surge {
 
     private:
         void ExtractPayloadTypeFrom(std::string &rtpMap) {
-            auto result = SurgeUtil::Regex::Split(rtpMap, EXTRACT_PAYLOAD_TYPE_REGEX);
+            auto result = SurgeUtil::RegexUtils::Split(rtpMap, EXTRACT_PAYLOAD_TYPE_REGEX);
             if (result.size() >= 2) {
                 payloadType = stoi(result[1]);
             }

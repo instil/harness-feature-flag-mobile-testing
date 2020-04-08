@@ -15,7 +15,7 @@
 #include <regex>
 
 namespace SurgeUtil {
-    namespace Regex {
+    namespace RegexUtils {
         static std::vector<std::string> Split(const std::string &inputString, const std::string &regexString) {
             std::vector<std::string> result;
             std::regex regex(regexString, std::regex::extended);

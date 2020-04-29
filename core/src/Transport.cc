@@ -47,11 +47,11 @@ void Surge::Transport::StartRunning() {
 }
 
 void Surge::Transport::StopRunning(bool waitUntilStopped) {
-    SurgeUtil::MutexLocker lock { threadManipulationMutex };
-
     if (!IsRunning()) {
         return;
     }
+
+    SurgeUtil::MutexLocker lock { threadManipulationMutex };
 
     DEBUG("Stopping transport thread");
     
@@ -317,6 +317,7 @@ bool Surge::Transport::HandleRtspPacket() {
         if (rtspCallback != nullptr) {
             StopRtspTimer();
             rtspCallback(new Response(rtsp_buffer, rtsp_buffer_length));
+            rtspCallback = nullptr;
         }
         
         RemoveDataFromStartOfBuffer(rtsp_buffer_length);

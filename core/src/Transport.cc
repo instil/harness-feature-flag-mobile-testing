@@ -316,8 +316,9 @@ bool Surge::Transport::HandleRtspPacket() {
         
         if (rtspCallback != nullptr) {
             StopRtspTimer();
-            rtspCallback(new Response(rtsp_buffer, rtsp_buffer_length));
+            auto callback = rtspCallback;
             rtspCallback = nullptr;
+            callback(new Response(rtsp_buffer, rtsp_buffer_length));
         }
         
         RemoveDataFromStartOfBuffer(rtsp_buffer_length);

@@ -28,6 +28,8 @@ namespace SurgeJni {
 
         jobject convertDescribeResponse(SurgeJni::ClassLoader *classLoader, Surge::DescribeResponse *response);
 
+        jobject convertRtpPacketBufferInfo(SurgeJni::ClassLoader *classLoader, Surge::RtpPacketBufferInfo &info);
+
     }
 
     namespace JavaTypeConverters {

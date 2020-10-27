@@ -124,6 +124,21 @@ jobject SurgeJni::NativeTypeConverters::convertDescribeResponse(SurgeJni::ClassL
     return result;
 }
 
+jobject SurgeJni::NativeTypeConverters::convertRtpPacketBufferInfo(SurgeJni::ClassLoader *classLoader, Surge::RtpPacketBufferInfo &info) {
+    JNIEnv *env = classLoader->AttachToJvm();
+
+    jclass cls = classLoader->findClass("co/instil/surge/diagnostics/RtpPacketBufferInfo");
+    jmethodID  constructor = env->GetMethodID(cls, "<init>", "(JJJ)V");
+    jlong successfulPacketsCount = info.successfulPacketsCount;
+    jlong missedPacketsCount = info.missedPacketsCount;
+    jlong oooPacketsCount = info.oooPacketsCount;
+
+    jobject result = env->NewObject(cls, constructor, successfulPacketsCount, missedPacketsCount, oooPacketsCount);
+    classLoader->DetachFromJvm();
+
+    return result;
+}
+
 std::string SurgeJni::JavaTypeConverters::convertString(JNIEnv *env, jstring jString) {
     const char * chars = env->GetStringUTFChars(jString, JNI_FALSE);
     std::string string(chars);

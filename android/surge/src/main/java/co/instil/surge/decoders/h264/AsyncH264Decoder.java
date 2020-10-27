@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.instil.surge.client.SurgeVideoView;
+import co.instil.surge.diagnostics.DiagnosticsTracker;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
 
@@ -40,8 +41,8 @@ public class AsyncH264Decoder extends H264Decoder {
      * Constrcuts a new {@link AsyncH264Decoder}.
      * @param videoView the view onto which the decoded stream will be rendered.
      */
-    public AsyncH264Decoder(SurgeVideoView videoView) {
-        super(videoView);
+    public AsyncH264Decoder(SurgeVideoView videoView, DiagnosticsTracker diagnosticsTracker) {
+        super(videoView, diagnosticsTracker);
     }
 
     @Override

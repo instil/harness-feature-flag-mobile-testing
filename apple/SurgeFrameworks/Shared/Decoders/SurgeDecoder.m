@@ -10,7 +10,6 @@
 @property (nonatomic, strong) dispatch_queue_t decoderQueue;
 @property (nonatomic, strong) dispatch_queue_t framerateQueue;
 @property (nonatomic, assign) VTDecompressionSessionRef decompressionSession;
-@property (nonatomic, assign) int framePerSecondCounter;
 @end
 
 
@@ -20,8 +19,6 @@
     if (self = [super init]) {
         self.delegate = delegate;
         self.decoderQueue = dispatch_queue_create("co.instil.decoder", DISPATCH_QUEUE_SERIAL);
-        self.framerateQueue = dispatch_queue_create("co.instil.decoder2", DISPATCH_QUEUE_SERIAL);
-        [self updateFramesPerSecond];
     }
     return self;
 }
@@ -140,7 +137,6 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
     
     SurgeDecoder *decoder = (__bridge SurgeDecoder *)decompressionOutputRefCon;
     if (status == noErr) {
-        decoder.framePerSecondCounter++;
         [decoder renderFrame:imageBuffer withPresentationTime:presentationTimeStamp];
     } else {
         SurgeLogError(@"Failed to decode frame with error code %i", status);
@@ -166,21 +162,10 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
                                                  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
     CGImageRef image = CGBitmapContextCreateImage(context);
     [self.delegate decoderFrameAvailable:image withTimeStamp:presentationTime.value];
+    [self.diagnostics trackNewFrameDimensionsWithWidth:width andHeight:height];
     CGImageRelease(image);
     CGContextRelease(context);
     CGColorSpaceRelease(colorSpace);
-}
-
-#pragma mark - Decoder statistics
-
-- (void)updateFramesPerSecond {
-   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), self.framerateQueue, ^{
-       self.framesPerSecond = self.framePerSecondCounter;
-       self.framePerSecondCounter = 0;
-
-       [self.delegate decoderFramerateUpdated:self.framesPerSecond];
-       [self updateFramesPerSecond];
-    });
 }
 
 - (void)setFormatDescription:(CMVideoFormatDescriptionRef)formatDescription {

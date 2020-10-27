@@ -36,7 +36,7 @@ void Surge::RtpPacketBuffer::AddToBuffer(RtpPacket *packet) {
         return;
     }
 
-    LogOutOfOrderPacket();
+    LogOutOfOrderPacket(packet);
 
     std::deque<RtpPacketBufferItem>::reverse_iterator it = ++buffer.rbegin();
 
@@ -53,7 +53,6 @@ void Surge::RtpPacketBuffer::AddToBuffer(RtpPacket *packet) {
         ++it;
     }
 
-    // Packet is too late, frame already sent to decoder. Delete packet.
     DEBUG("Packet " << packet->GetSequenceNumber() << " arrived too late, frame already sent to decoder, deleting.");
     delete packet;
 }

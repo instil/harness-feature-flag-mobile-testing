@@ -12,75 +12,11 @@
 #endif
 
 #import "SurgeAuthenticator.h"
+#import "SurgeRtspPlayerDelegate.h"
+#import "SurgeDiagnosticsDelegate.h"
+#import "SurgeDiagnostics.h"
 
 @class SurgeRtspPlayer;
-
-typedef NS_ENUM(NSInteger, RtspErrorCode) {
-    RtspErrorCodeUnknownFailure = -1,
-    RtspErrorCodeSuccess = 200,
-    RtspErrorCodeRedirect = 302,
-    RtspErrorCodeMethodNotAllowed = 405,
-    RtspErrorCodeParameterNotUnderstood = 451,
-    RtspErrorCodeConferenceNotFound = 452,
-    RtspErrorCodeNotEnoughBandwidth = 453,
-    RtspErrorCodeSessionNotFound = 454,
-    RtspErrorCodeMethodNotValidInThisState = 455,
-    RtspErrorCodeHeaderFieldNotValidInThisState = 456,
-    RtspErrorCodeInvalidRange = 457,
-    RtspErrorCodeParameterIsReadOnly = 458,
-    RtspErrorCodeAggregateOperationNotAllowed = 459,
-    RtspErrorCodeOnlyAggregationOperationAllowed = 460,
-    RtspErrorCodeUnsupportedTransport = 461,
-    RtspErrorCodeDestinationUnreachable = 462,
-    RtspErrorCodeOptionNotSupported = 551
-};
-
-@protocol SurgeRtspPlayerDelegate <NSObject>
-
-@optional
-
-/**
- * Called when the player successfully starts playback of a stream via an initiatePlaybackOf request.
- */
-- (void)rtspPlayerInitiatedPlayback:(nonnull SurgeRtspPlayer *)player;
-
-/**
- * Called when the player fails to start playback of a stream via an initiatePlaybackOf request.
- */
-- (void)rtspPlayerFailedToInitiatePlayback:(nonnull SurgeRtspPlayer *)player withErrorCode: (RtspErrorCode)errorCode;
-
-/**
- * Called when the player begins or resumes playback of a stream.
- */
-- (void)rtspPlayerDidBeginPlayback:(nonnull SurgeRtspPlayer *)player;
-
-/**
- * Called when the player stops or pauses playback of a stream.
- */
-- (void)rtspPlayerDidStopPlayback:(nonnull SurgeRtspPlayer *)player;
-
-/**
- * Called when the player enters the buffering state.
- */
-- (void)rtspPlayerDidBeginBuffering:(nonnull SurgeRtspPlayer *)player;
-
-/**
- * Called when the player exits the buffering state.
- */
-- (void)rtspPlayerDidStopBuffering:(nonnull SurgeRtspPlayer *)player;
-
-/**
- * Called when the player times out.
- */
-- (void)rtspPlayerDidTimeout:(nonnull SurgeRtspPlayer *)player;
-
-/**
- * Guaranteed to be call at most once per second with the current player frame rate.
- */
-- (void)rtspPlayer:(nonnull SurgeRtspPlayer *)player didObservePlaybackFrameRate:(NSUInteger)frameRate;
-
-@end
-
 
 @interface SurgeRtspPlayer : NSObject
 
@@ -143,14 +79,19 @@ typedef NS_ENUM(NSInteger, RtspErrorCode) {
 @property (nonatomic, weak, nullable) id<SurgeRtspPlayerDelegate> delegate;
 
 /**
- * Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal
+ * Optional delegate used to receive any diagnostics updates as they are calculated by the Diagnostics object.
+ */
+@property (nonatomic, weak, nullable) id<SurgeDiagnosticsDelegate> diagnosticsDelegate;
+
+/**
+ * Maximum length of time, in milliseconds, between frames before Surge will issue a timeout signal.
  */
 @property (nonatomic, assign) int timeout;
 
 /*
  * Recorded FPS of the current stream.
  */
-@property (nonatomic, readonly) int framesPerSecond;
+@property (nonatomic, readonly) int framesPerSecond DEPRECATED_ATTRIBUTE;
 
 /*
  * If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
@@ -181,5 +122,10 @@ typedef NS_ENUM(NSInteger, RtspErrorCode) {
  * Optional: Custom RTSP authentication logic, can be used if a provided RTSP stream is protected by a bespoke non-standard authentication method.
  */
 @property (nonatomic, weak, nullable) id<SurgeAuthenticator> authenticator;
+
+/*
+ * Item containing the latest diagnostics information for the currently playing stream.
+ */
+@property (nonatomic, readonly, nonnull) id<SurgeDiagnostics> diagnostics;
 
 @end

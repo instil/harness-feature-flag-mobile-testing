@@ -58,6 +58,8 @@
     for (SurgeNalUnit *nalUnit in nalUnits) {
         [nalUnit cleanup];
     }
+
+    [self.diagnostics trackNewFrameOfSize:size * 8];
 }
 
 - (void)setFormatDescriptionFromParameterSetsIfAvailable:(NSArray*)nalUnits {

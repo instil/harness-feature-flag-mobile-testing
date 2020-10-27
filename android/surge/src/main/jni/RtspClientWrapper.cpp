@@ -298,6 +298,13 @@ void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticator__I(JNIEn
 }
 
 JNIEXPORT
+jobject JNICALL Java_co_instil_surge_client_RtspClient_GetDiagnosticsOnPacketLoss(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    Surge::RtpPacketBufferInfo packetBufferInfo = client->GetDiagnosticsOnPacketLoss();
+    return convertRtpPacketBufferInfo(classLoader, packetBufferInfo);
+}
+
+JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_close(JNIEnv *env, jobject callingObject) {
     Surge::RtspClient *client = getClient(env, callingObject);
     SurgeJni::RtspClientDelegateWrapper *delegate = (SurgeJni::RtspClientDelegateWrapper *)client->GetDelegate();

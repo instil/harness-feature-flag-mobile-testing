@@ -208,6 +208,10 @@ namespace Surge {
             authService->Remove(index);
         }
 
+        RtpPacketBufferInfo GetDiagnosticsOnPacketLoss() {
+            return packetBuffer->GetDiagnosticsInfo();
+        }
+        
         bool RtpPacketTypeIsValid(const RtpPacket *packet) {
             // Although RTSP has its own methods for sending separate streams of data
             // to the client, it's possible (as per the RTP spec) for the RTSP stream to

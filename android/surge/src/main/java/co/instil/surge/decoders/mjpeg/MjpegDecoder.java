@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
+import co.instil.surge.diagnostics.DiagnosticsTracker;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
 
@@ -34,10 +35,12 @@ public class MjpegDecoder implements Decoder {
     private final Surface surface;
     @SuppressWarnings("PMD.SingularField")
     private final HandlerThread decoderThread;
+    private final DiagnosticsTracker diagnostics;
 
-    public MjpegDecoder(SurgeVideoView videoView) {
+    public MjpegDecoder(SurgeVideoView videoView, DiagnosticsTracker diagnosticsTracker) {
         this.videoView = videoView;
         this.surface = videoView.generateUniqueSurface();
+        this.diagnostics = diagnosticsTracker;
         decoderThread = new HandlerThread("decoderThread");
         decoderThread.start();
     }
@@ -50,6 +53,8 @@ public class MjpegDecoder implements Decoder {
                                   int presentationTime,
                                   int duration) {
 
+        diagnostics.trackNewFrameOfSize(frameBuffer.remaining());
+
         try {
             final ByteBuffer test = deepCopy(frameBuffer, null);
             byte[] imageBytes = new byte[test.limit()];
@@ -57,6 +62,8 @@ public class MjpegDecoder implements Decoder {
             final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
             if (bitmap != null) {
                 configureSurfaceForNewVideoDimensions(bitmap.getWidth(), bitmap.getHeight());
+                trackChangeInStreamDimensionsIfRequired(bitmap);
+
                 Canvas canvas = surface.lockCanvas(null);
                 canvas.drawBitmap(bitmap,
                         new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
@@ -71,6 +78,10 @@ public class MjpegDecoder implements Decoder {
 
     private void configureSurfaceForNewVideoDimensions(int width, int height) {
         videoView.setVideoDimensions(width, height);
+    }
+
+    private void trackChangeInStreamDimensionsIfRequired(Bitmap bitmap) {
+        diagnostics.trackNewFrameDimensions(bitmap.getWidth(), bitmap.getHeight());
     }
 
     @Override

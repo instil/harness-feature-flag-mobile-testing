@@ -14,6 +14,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
 import co.instil.surge.client.SurgeVideoView;
+import co.instil.surge.diagnostics.DiagnosticsTracker;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
 
@@ -38,8 +39,8 @@ public class SyncH264Decoder extends H264Decoder {
      * Constructor for {@link SyncH264Decoder} instances.
      * @param videoView the view onto which the decoded stream will be rendered.
      */
-    public SyncH264Decoder(SurgeVideoView videoView) {
-        super(videoView);
+    public SyncH264Decoder(SurgeVideoView videoView, DiagnosticsTracker diagnosticsTracker) {
+        super(videoView, diagnosticsTracker);
         consumer = new PacketQueueConsumer(100);
         packetQueueConsumer = new Thread(consumer);
         decodedPacketConsumer = new Thread(new DecodedFrameConsumer(100));

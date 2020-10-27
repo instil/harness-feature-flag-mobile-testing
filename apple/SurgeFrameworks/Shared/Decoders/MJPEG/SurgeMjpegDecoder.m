@@ -6,10 +6,6 @@
 #import "SurgeMjpegDecoder.h"
 #import "SurgeLogging.h"
 
-@interface SurgeDecoder()
-@property (nonatomic, assign) int framePerSecondCounter;
-@end
-
 @implementation SurgeMjpegDecoder
 
 - (void)decodeFrameBuffer:(const uint8_t *)frameBuffer
@@ -24,12 +20,14 @@
     
     [self.delegate decoderFrameAvailable:image withTimeStamp:presentationTime];
 
+    [self.diagnostics trackNewFrameOfSize:size * 8];
+    [self.diagnostics trackNewFrameDimensionsWithWidth:CGImageGetWidth(image)
+                                             andHeight:CGImageGetHeight(image)];
+
     CFRelease(cfdata);
 
     CGImageRelease(image);
     CGDataProviderRelease(imageDataProvider);
-    
-    self.framePerSecondCounter++;
 }
 
 @end

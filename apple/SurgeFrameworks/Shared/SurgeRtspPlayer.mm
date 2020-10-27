@@ -10,6 +10,7 @@
 #import "SurgeMjpegDecoder.h"
 
 #import "AuthenticatorMapper.h"
+#import "DiagnosticsTracker.h"
 
 #import "Surge.h"
 
@@ -97,6 +98,8 @@ private:
 
 @property (nonatomic, assign) Surge::IRtspClientDelegate *clientDelegate;
 @property (nonatomic, strong) SurgeDecoder *decoder;
+@property (nonatomic, strong) DiagnosticsTracker *diagnosticsTracker;
+@property (nonatomic, strong, readwrite, nonnull) id<SurgeDiagnostics> diagnostics;
 
 @end
 
@@ -113,6 +116,8 @@ private:
     if (self) {
         self.clientDelegate = new RtspClientDelegateWrapper(self);
         self.client = new Surge::RtspClient(self.clientDelegate, self.interleavedTcpTransport);
+        self.diagnosticsTracker = [[DiagnosticsTracker alloc] initWithPlayer:self];
+        self.diagnostics = self.diagnosticsTracker;
         [self configurePlayerView];
         SurgeLogInfo("Initiating RTSP stream via Surge");
     }
@@ -177,12 +182,14 @@ private:
 
     __weak typeof(self) weakSelf = self;
     void(^onPlay)(RtspErrorCode) = ^(RtspErrorCode errorCode) {
-        if (errorCode == 200) {
+        if (errorCode == RtspErrorCodeSuccess) {
             if (weakSelf && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidBeginPlayback:)]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.delegate rtspPlayerDidBeginPlayback:weakSelf];
                 });
             }
+
+            [self.diagnosticsTracker startTracking];
         } else {
             if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:withErrorCode:)]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -321,6 +328,7 @@ private:
     } else if (sessionDescription.GetType() == Surge::RtspSessionType::MJPEG) {
         self.decoder = [[SurgeMjpegDecoder alloc] initWithDelegate:self];
     }
+    self.decoder.diagnostics = self.diagnosticsTracker;
 }
 
 - (void)play:(void (^)(RtspErrorCode)) callback {
@@ -342,6 +350,8 @@ private:
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.delegate rtspPlayerDidBeginPlayback:weakSelf];
             });
+
+            [weakSelf.diagnosticsTracker startTracking];
         }
     };
     [self play:callback];
@@ -351,6 +361,8 @@ private:
     SurgeLogInfo(@"Pausing playback of %@", self.url);
     __weak typeof(self) weakSelf = self;
     self.client->Pause([weakSelf](Surge::RtspResponse *pauseResponse) {
+        [weakSelf.diagnosticsTracker stopTracking];
+
         if (pauseResponse->Ok() && [weakSelf.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.delegate rtspPlayerDidStopPlayback:weakSelf];
@@ -380,6 +392,8 @@ private:
     __weak id<SurgeRtspPlayerDelegate> delegate = self.delegate;
 
     self.client->Teardown([weakSelf, client, decoder, delegate] (bool teardownResult) {
+        [weakSelf.diagnosticsTracker stopTracking];
+        
         if (weakSelf == nil) {
             return;
         }
@@ -419,7 +433,12 @@ private:
 
 - (int) framesPerSecond {
 //    SurgeLogDebug(@"Current FPS: %@", @(self.decoder.framesPerSecond));
-    return (int)self.decoder.framesPerSecond;
+    return self.diagnosticsTracker.framesPerSecond;
+}
+
+- (void)setDiagnosticsDelegate:(id)diagnosticsDelegate {
+    _diagnosticsDelegate = diagnosticsDelegate;
+    self.diagnosticsTracker.diagnosticsDelegate = diagnosticsDelegate;
 }
 
 - (int)timeout {
@@ -428,6 +447,11 @@ private:
 
 - (void)setTimeout:(int)timeout {
     self.client->SetTimeout(timeout);
+}
+
+- (void)setDelegate:(id<SurgeRtspPlayerDelegate>)delegate {
+    _delegate = delegate;
+    self.diagnosticsTracker.depreciatedDiagnosticsDelegate = delegate;
 }
 
 - (bool)interleavedRtspTransport {
@@ -453,6 +477,7 @@ private:
 #pragma mark - RTSP client delegate
 
 - (void)rtspClientDidTimeout {
+    [self.diagnosticsTracker stopTracking];
     if ([self.delegate respondsToSelector:@selector(rtspPlayerDidTimeout:)]) {
         [self.delegate rtspPlayerDidTimeout:self];
     }
@@ -484,12 +509,6 @@ private:
             self.playerView.image = [[NSImage alloc] initWithCGImage:image size:NSZeroSize];
         #endif
     });
-}
-
-- (void)decoderFramerateUpdated:(NSInteger)framerate {
-    if ([self.delegate respondsToSelector:@selector(rtspPlayer:didObservePlaybackFrameRate:)]) {
-        [self.delegate rtspPlayer:self didObservePlaybackFrameRate:framerate];
-    }
 }
 
 - (void)decoderDidBeginBuffering {
@@ -530,7 +549,7 @@ private:
 }
 
 -(void)setAuthenticator:(id<SurgeAuthenticator>) authenticator {
-    INFO("Setting custom RTSP authenticator");
+    SurgeLogInfo(@"Setting custom RTSP authenticator");
 
     if (_authenticator) {
         self.client->RemoveAuthenticator(1);

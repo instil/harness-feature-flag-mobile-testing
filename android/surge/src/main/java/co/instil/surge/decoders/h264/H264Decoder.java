@@ -25,6 +25,7 @@ import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
 import co.instil.surge.device.DeviceExaminer;
+import co.instil.surge.diagnostics.DiagnosticsTracker;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
 
@@ -52,13 +53,14 @@ public abstract class H264Decoder implements Decoder {
     private DeviceExaminer deviceExaminer;
     private H264Packet lastSPSPacket = null;
     private H264Packet lastPPSPacket = null;
+    private DiagnosticsTracker diagnostics;
 
     /**
      * Constructor for a {@link H264Decoder} instance.
      * @param videoView the surface into which the decoder will return the decoded video.
      */
-    protected H264Decoder(SurgeVideoView videoView) {
-        this(videoView, new MediaCodecFactory(), new NaluParser(), new DeviceExaminer());
+    protected H264Decoder(SurgeVideoView videoView, DiagnosticsTracker diagnosticsTracker) {
+        this(videoView, new MediaCodecFactory(), new NaluParser(), new DeviceExaminer(), diagnosticsTracker);
     }
 
     /**
@@ -71,11 +73,13 @@ public abstract class H264Decoder implements Decoder {
             SurgeVideoView videoView,
             MediaCodecFactory mediaCodecFactory,
             NaluParser naluParser,
-            DeviceExaminer deviceExaminer) {
+            DeviceExaminer deviceExaminer,
+            DiagnosticsTracker diagnosticsTracker) {
         setVideoView(videoView);
         this.mediaCodecFactory = mediaCodecFactory;
         this.naluParser = naluParser;
         this.deviceExaminer = deviceExaminer;
+        this.diagnostics = diagnosticsTracker;
     }
 
     @Override
@@ -87,6 +91,8 @@ public abstract class H264Decoder implements Decoder {
                                   int duration) {
 
         LOGGER.debug("Received frame buffer for decoding");
+
+        diagnostics.trackNewFrameOfSize(frameBuffer.remaining());
 
         try {
             List<NaluSegment> segments = naluParser.parseNaluSegments(frameBuffer);
@@ -268,6 +274,7 @@ public abstract class H264Decoder implements Decoder {
             int streamWidth = mediaFormat.getInteger(MEDIA_FORMAT_WIDTH_KEY);
             int streamHeight = mediaFormat.getInteger(MEDIA_FORMAT_HEIGHT_KEY);
             videoView.setVideoDimensions(streamWidth, streamHeight);
+            diagnostics.trackNewFrameDimensions(streamWidth, streamHeight);
         }
     }
 

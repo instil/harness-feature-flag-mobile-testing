@@ -25,6 +25,7 @@ import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
 import co.instil.surge.device.DeviceExaminer;
+import co.instil.surge.diagnostics.DiagnosticsTracker;
 
 import static co.instil.surge.decoders.h264.H264TestUtils.generateNalUnits;
 import static org.easymock.EasyMock.anyInt;
@@ -54,6 +55,7 @@ public class H264DecoderTest {
     private MediaCodecFactory mockMediaCodecFactory;
     private DeviceExaminer mockDeviceExaminer;
     private StubH264Decoder mockedDecoder;
+    private DiagnosticsTracker diagnosticsTracker;
     private Capture<NaluSegment> capturedPPSSegment, capturedSPSSegment;
 
     @Before
@@ -62,14 +64,15 @@ public class H264DecoderTest {
         videoView = createMock(SurgeVideoView.class);
         expect(videoView.generateUniqueSurface()).andReturn(surface);
         replay(videoView);
-        stubbedDecoder = new StubH264Decoder(videoView);
+        diagnosticsTracker = new DiagnosticsTracker();
+        stubbedDecoder = new StubH264Decoder(videoView, diagnosticsTracker);
         capturedSPSSegment = Capture.newInstance();
         capturedPPSSegment = Capture.newInstance();
         mockBuffer = createMock(ByteBuffer.class);
         mockDeviceExaminer = createMock(DeviceExaminer.class);
         mockH264Codec = createMock(MediaCodec.class);
         mockMediaCodecFactory = createMock(MediaCodecFactory.class);
-        mockedDecoder = new StubH264Decoder(videoView, mockMediaCodecFactory, new NaluParser(), mockDeviceExaminer);
+        mockedDecoder = new StubH264Decoder(videoView, mockMediaCodecFactory, new NaluParser(), mockDeviceExaminer, diagnosticsTracker);
         expect(mockMediaCodecFactory.createH264DecoderWithParameters(
                 capture(capturedSPSSegment),
                 capture(capturedPPSSegment),

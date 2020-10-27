@@ -233,6 +233,14 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticato
 
 /*
  * Class:     co_instil_surge_client_RtspClient
+ * Method:    GetDiagnosticsOnPacketLoss
+ * Signature: ()Lco/instil/surge/diagnostics/RtpPacketBufferInfo;
+ */
+JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_GetDiagnosticsOnPacketLoss
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
  * Method:    close
  * Signature: ()V
  */

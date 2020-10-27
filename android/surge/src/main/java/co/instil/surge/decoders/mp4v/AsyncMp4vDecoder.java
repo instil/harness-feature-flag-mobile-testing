@@ -17,6 +17,7 @@ import android.view.Surface;
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
+import co.instil.surge.diagnostics.DiagnosticsTracker;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
 
@@ -42,10 +43,12 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
     private Surface surface;
     private List<ByteBuffer> decodeQueue = new ArrayList<>();
     private List<Integer> availableInputBuffers = new ArrayList<>();
+    private DiagnosticsTracker diagnostics;
 
-    public AsyncMp4vDecoder(SurgeVideoView videoView) {
+    public AsyncMp4vDecoder(SurgeVideoView videoView, DiagnosticsTracker diagnosticsTracker) {
         this.videoView = videoView;
         this.surface = videoView.generateUniqueSurface();
+        this.diagnostics = diagnosticsTracker;
     }
 
     @Override
@@ -55,6 +58,7 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
                                   int height,
                                   int presentationTime,
                                   int duration) {
+        diagnostics.trackNewFrameOfSize(frameBuffer.remaining());
 
         try {
             LOGGER.debug("Received MP4V frame for decoding");
@@ -161,6 +165,7 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
             int streamWidth = mediaFormat.getInteger(MEDIA_FORMAT_WIDTH_KEY);
             int streamHeight = mediaFormat.getInteger(MEDIA_FORMAT_HEIGHT_KEY);
             videoView.setVideoDimensions(streamWidth, streamHeight);
+            diagnostics.trackNewFrameDimensions(streamWidth, streamHeight);
         }
     }
 

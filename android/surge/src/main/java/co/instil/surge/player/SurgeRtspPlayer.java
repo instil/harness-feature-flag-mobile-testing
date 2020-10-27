@@ -30,6 +30,9 @@ import co.instil.surge.client.SurgeVideoScale;
 import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.decoders.DecoderFactory;
+import co.instil.surge.diagnostics.DiagnosticsTracker;
+import co.instil.surge.diagnostics.SurgeDiagnostics;
+import co.instil.surge.diagnostics.SurgeDiagnosticsDelegate;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
 
@@ -61,12 +64,12 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     private SurgeAuthenticator customAuthenticator;
 
-    private int framesPerSecond = 0;
-    private int framesPerSecondCounter = 0;
-    private boolean fpsThreadIsRunning = false;
+    private DiagnosticsTracker diagnosticsTracker;
 
     public SurgeRtspPlayer() {
         rtspClient = generateRtspClient(false);
+        diagnosticsTracker = new DiagnosticsTracker();
+        diagnosticsTracker.setRtspClient(rtspClient);
     }
 
     protected RtspClient generateRtspClient(boolean interleavedTcpTransport) {
@@ -159,7 +162,9 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                     throw new UnsupportedOperationException("No session description available, is the stream active?");
                 }
 
-                startFpsCounter();
+
+                diagnosticsTracker.setDepreciatedDelegate(delegate);
+                diagnosticsTracker.startTracking();
             });
         });
     }
@@ -196,11 +201,11 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             decoder = null;
 
             if (sessionDescription.getType() == H264) {
-                decoder = DecoderFactory.generateH264Decoder(surface);
+                decoder = DecoderFactory.generateH264Decoder(surface, diagnosticsTracker);
             } else if (sessionDescription.getType() == MP4V) {
-                decoder = DecoderFactory.generateMP4VDecoder(surface);
+                decoder = DecoderFactory.generateMP4VDecoder(surface, diagnosticsTracker);
             } else if (sessionDescription.getType() == MJPEG) {
-                decoder = DecoderFactory.generateMJPEGDecoder(surface);
+                decoder = DecoderFactory.generateMJPEGDecoder(surface, diagnosticsTracker);
             }
 
             if (currentDecoder != null) {
@@ -237,7 +242,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      */
     public void stop() {
         LOGGER.debug("Stopping playback of {}", url);
-        stopFpsCounter();
+        diagnosticsTracker.stopTracking();
         if (decoder != null) {
             try {
                 decoder.close();
@@ -246,9 +251,6 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                 LOGGER.printStackTrace(e);
             }
         }
-
-        rtspClient.tearDown(response ->
-                rtspClient.disconnect());
     }
 
     /**
@@ -298,7 +300,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     public void close() throws Exception {
         try {
             rtspClient.close();
-            stopFpsCounter();
+            diagnosticsTracker.stopTracking();
         } catch (Exception e) {
             LOGGER.error("Failed to close and clean up the native RTSP Client");
         }
@@ -334,41 +336,12 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                     presentationTime,
                     duration);
         }
-
-        framesPerSecondCounter++;
     }
 
     @Override
     public void clientReceivedExtendedHeader(ByteBuffer buffer, int length) {
         LOGGER.debug("Received extended header");
     }
-
-    private void startFpsCounter() {
-        if (!fpsThreadIsRunning) {
-            fpsThreadIsRunning = true;
-
-            new Thread(() -> {
-                while (fpsThreadIsRunning) {
-                    framesPerSecond = framesPerSecondCounter;
-                    framesPerSecondCounter = 0;
-                    if (delegate != null) {
-                        delegate.rtspPlayerDidUpdateFps(framesPerSecond);
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        LOGGER.printStackTrace(e);
-                    }
-                }
-            }).start();
-        }
-    }
-
-    private void stopFpsCounter() {
-        fpsThreadIsRunning = false;
-    }
-
-
 
     protected SessionDescription getCurrentSessionDescription() {
         return sessionDescription;
@@ -393,9 +366,11 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     /**
      * Frames per second measured from the currently playing stream.
      * @return Frames per second measured from the currently playing stream.
+     * @deprecated use {@diagnostics #getFramesPerSecond()} instead.
      */
+    @Deprecated
     public int getFramesPerSecond() {
-        return framesPerSecond;
+        return diagnosticsTracker.getFramesPerSecond();
     }
 
     /**
@@ -416,6 +391,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         }
 
         rtspClient = generateRtspClient(interleavedTcpTransport);
+        diagnosticsTracker.setRtspClient(rtspClient);
     }
 
     /**
@@ -536,6 +512,20 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     public SurgeVideoScale getVideoScale() {
         return videoScale;
     }
+
+    public void setDelegate(SurgeRtspPlayerDelegate delegate) {
+        this.delegate = delegate;
+        diagnosticsTracker.setDepreciatedDelegate(delegate);
+    }
+
+    public SurgeDiagnostics getDiagnostics() {
+        return diagnosticsTracker;
+    }
+
+    public void setDiagnosticsDelegate(SurgeDiagnosticsDelegate delegate) {
+        diagnosticsTracker.setDelegate(delegate);
+    }
+
 
     private File extractResourceIntoCacheFile(int rawResourceId, Context context) {
         File file = null;

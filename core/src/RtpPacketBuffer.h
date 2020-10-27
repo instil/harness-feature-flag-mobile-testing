@@ -8,6 +8,7 @@
 
 #include <functional>
 #include <deque>
+#include <vector>
 
 #include "RtpPacket.h"
 #include "Logging.h"
@@ -28,6 +29,22 @@ namespace Surge {
             this->packet = packet;
             this->timestamp = timestamp;
         }
+    };
+
+    struct RtpPacketBufferInfo {
+        const long successfulPacketsCount;
+        const long missedPacketsCount;
+        const long oooPacketsCount;
+        const std::vector<long> &sequenceNumbersOfLostPackets;
+
+        RtpPacketBufferInfo(const int successfulPackets,
+                            const int missedPackets,
+                            const int oooPackets,
+                            const std::vector<long> &sequenceNumbersOfLostPackets)
+        : successfulPacketsCount(successfulPackets),
+          missedPacketsCount(missedPackets),
+          oooPacketsCount(oooPackets),
+          sequenceNumbersOfLostPackets(sequenceNumbersOfLostPackets) { }
     };
     
     class RtpPacketBuffer {
@@ -51,6 +68,10 @@ namespace Surge {
             INFO("Updated the packet buffer delay value to " << bufferDelayMilliseconds << " ms.");
             this->bufferDelayMilliseconds = bufferDelayMilliseconds;
         }
+
+        RtpPacketBufferInfo GetDiagnosticsInfo() {
+            return RtpPacketBufferInfo(successfulPackets, missedPackets, oooPackets, sequenceNumbersOfLostPackets);
+        }
         
     private:
         void AddToBuffer(RtpPacket *packet);
@@ -65,14 +86,23 @@ namespace Surge {
         }
         
         void LogMissedPackets(const int numMissedPackets) {
-            missedPackets += numMissedPackets;
             DEBUG("Packet loss detected. Lost: " << missedPackets << "; Successful: " << successfulPackets << "; Out of order: " << oooPackets << ". Loss rate: " << ((float)(missedPackets * 100) / (successfulPackets + oooPackets + missedPackets)) << "%");
+
+            missedPackets += numMissedPackets;
+            for (int i = 1; i <= numMissedPackets; i++) {
+                sequenceNumbersOfLostPackets.push_back(buffer.back().packet->GetSequenceNumber() + i);
+            }
         }
         
-        void LogOutOfOrderPacket() {
+        void LogOutOfOrderPacket(const RtpPacket *packet) {
+            DEBUG("Out of order packet detected. Lost: " << missedPackets << "; Successful: " << successfulPackets << "; Out of order: " << oooPackets << ". Loss rate: " << ((float)(missedPackets * 100) / (successfulPackets + oooPackets + missedPackets)) << "%");
+
             ++oooPackets;
             missedPackets = std::max(--missedPackets, 0);
-            DEBUG("Out of order packet detected. Lost: " << missedPackets << "; Successful: " << successfulPackets << "; Out of order: " << oooPackets << ". Loss rate: " << ((float)(missedPackets * 100) / (successfulPackets + oooPackets + missedPackets)) << "%");
+            sequenceNumbersOfLostPackets.erase(std::remove(sequenceNumbersOfLostPackets.begin(),
+                                                           sequenceNumbersOfLostPackets.end(),
+                                                           packet->GetSequenceNumber()),
+                                               sequenceNumbersOfLostPackets.end());
         }
         
     private:
@@ -82,10 +112,11 @@ namespace Surge {
         
         std::function<void(RtpPacket *)> packetAvailableCallback;
         
-        long calculatedSequenceNumber = -1;
         int successfulPackets = 0;
         int missedPackets = 0;
         int oooPackets = 0;
+
+        std::vector<long> sequenceNumbersOfLostPackets;
     };
 }
 

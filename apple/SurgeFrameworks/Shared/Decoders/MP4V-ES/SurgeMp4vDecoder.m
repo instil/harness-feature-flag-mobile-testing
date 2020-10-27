@@ -79,6 +79,8 @@
                                   &sampleBuffer);
     
     [self enqueueSampleBuffer:sampleBuffer];
+
+    [self.diagnostics trackNewFrameOfSize:size * 8];
 }
 
 /**

@@ -10,6 +10,7 @@ package co.instil.surge.client;
 import co.instil.surge.authentication.SurgeAuthenticator;
 import co.instil.surge.callbacks.BooleanCallback;
 import co.instil.surge.callbacks.ResponseCallback;
+import co.instil.surge.diagnostics.RtpPacketBufferInfo;
 
 import java.util.Date;
 
@@ -91,6 +92,8 @@ public class RtspClient implements AutoCloseable {
     public native void RemoveAuthenticator(SurgeAuthenticator authenticator);
 
     public native void RemoveAuthenticator(int index);
+
+    public native RtpPacketBufferInfo GetDiagnosticsOnPacketLoss();
 
     public native void close();
 }

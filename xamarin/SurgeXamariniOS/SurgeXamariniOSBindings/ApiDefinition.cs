@@ -102,6 +102,18 @@ namespace SurgeXamariniOSBindings {
         SurgeRtspPlayerDelegate ClientDelegate { get; set; }
 
         /// <summary>
+        /// Optional delegate used to receive any diagnostics updates as they are calculated by the Diagnostics object.
+        /// </summary>
+        [Export("diagnosticsDelegate")]
+        SurgeDiagnosticsDelegate DiagnosticsDelegate { get; set; }
+
+        /// <summary>
+        /// Item containing the latest diagnostics information for the currently playing stream.
+        /// </summary>
+        [Export("diagnostics")]
+        ISurgeDiagnostics Diagnostics { get; }
+
+        /// <summary>
         /// Frames per second measured from the currently playing stream.
         /// </summary>
         [Export("framesPerSecond")]
@@ -262,4 +274,105 @@ namespace SurgeXamariniOSBindings {
         [Export("firstBytesOnTheWireAuthenticationWithUsername:andPassword:")]
         NSData FirstBytesOnTheWireAuthentication(String username, String password);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [BaseType(typeof(NSObject))]
+    [Model]
+    [Protocol]
+    public interface SurgeDiagnosticsDelegate {
+
+        /// <summary>
+        /// Called every time the player calculates a new value for the number of frames arrived in the last second.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method</param>
+        /// <param name="framerate">Current framerate of the playing video.</param>
+        [Abstract]
+        [Export("rtspPlayer:didObservePlaybackFrameRate:")]
+        void RtspPlayerDidObservePlaybackFrameRate(SurgeRtspPlayer player, int framerate);
+
+        /// <summary>
+        /// Called every time the player calculates the bitrate of the video arriving from in the last second.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method</param>
+        /// <param name="bitrate">Current bitrate of the playing video stream</param>
+        [Abstract]
+        [Export("rtspPlayer:didObservePlaybackBitrate:")]
+        void RtspPlayerDidObservePlaybackBitrate(SurgeRtspPlayer player, int bitrate);
+
+        /// <summary>
+        /// Called once a second by the player with the latest information on the number of packets that have arrived as expected, have been lost or have arrived late.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method</param>
+        /// <param name="packetLoss">Number of packets lost since the stream initially started playback.</param>
+        /// <param name="successfulPacketsCount">Number of packets successfully receive as expected since the stream initially started playback.</param>
+        /// <param name="reorderedPacketsCount">Number of packets recived out of order and since reordered since the stream initially started playback.</param>
+        [Abstract]
+        [Export("rtspPlayer:didObservePacketLossCount:withSuccessfulPacketsCount:andOutOfOrderPacketsReorderedCount:")]
+        void RtspPlayerDidObservePacketLoss(SurgeRtspPlayer player, long packetLoss, long successfulPacketsCount, long reorderedPacketsCount);
+
+        /// <summary>
+        /// Called by the player any time the frame dimensions of the currently playing stream are changed.
+        /// </summary>
+        /// <param name="player">The Surge RTSP Player that called the delegate method</param>
+        /// <param name="mediaSize">Dimensions of the video stream.</param>
+        [Abstract]
+        [Export("rtspPlayer:didChangeMediaSize:")]
+        void RtspPlayerDidChangeMediaSize(SurgeRtspPlayer player, CGSize mediaSize);
+    }
+
+    /// <summary>
+    /// Class containing the diagnostics details of the currently playing RTSP stream.
+    /// </summary>
+    [BaseType(typeof(NSObject))]
+    [Model]
+    [Protocol]
+    public interface SurgeDiagnostics {
+        /// <summary>
+        /// Recorded FPS of the current stream.
+        /// </summary>
+        [Abstract]
+        [Export("framesPerSecond")]
+        int FramesPerSecond { get; }
+
+        /// <summary>
+        /// Recorded bitrate of the current stream.
+        /// </summary>
+        [Abstract]
+        [Export("bitrate")]
+        int Bitrate { get; }
+
+        /// <summary>
+        /// Number of packets which have arrived out of order and have had to be reordered before a frame was decoded in the lifetime of the currently playing stream.
+        /// </summary>
+        [Abstract]
+        [Export("outOfOrderPacketsReceived")]
+        long OutOfOrderPacketsReceived { get; }
+
+
+        /// <summary>
+        /// Number of packets which have successfully arrived in order as expected in the lifetime of the currently playing stream.
+        /// </summary>
+        [Abstract]
+        [Export("successfulPacketsReceived")]
+        long SuccessfulPacketsReceived { get; }
+
+        /// <summary>
+        /// Number of packets which have been lost/never arrived in the lifetime of the currently playing stream.
+        /// </summary>
+        [Abstract]
+        [Export("lostPackets")]
+        long LostPackets { get; }
+
+        /// <summary>
+        /// Video frame dimensions of the current stream.
+        /// </summary>
+        [Abstract]
+        [Export("mediaDimensions")]
+        CGSize MediaDimensions { get; }
+    }
+
+    public interface ISurgeDiagnostics { }
+
 }

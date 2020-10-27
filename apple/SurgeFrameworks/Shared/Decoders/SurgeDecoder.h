@@ -7,6 +7,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMedia/CoreMedia.h>
 #import <VideoToolbox/VideoToolbox.h>
+#import "DiagnosticsTracker.h"
 
 @protocol SurgeDecoderDelegate <NSObject>
 
@@ -15,8 +16,6 @@
  * presentation at the application layer.
  */
 - (void)decoderFrameAvailable:(CGImageRef)image withTimeStamp:(NSTimeInterval)timestamp;
-
-- (void)decoderFramerateUpdated:(NSInteger) framerate;
 
 @end
 
@@ -44,6 +43,7 @@
 - (void)enqueueSampleBuffer:(CMSampleBufferRef)sampleBuffer;
 
 @property (nonatomic, weak) id<SurgeDecoderDelegate> delegate;
+@property (nonatomic, strong) DiagnosticsTracker *diagnostics;
 
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDescription;
 @property (nonatomic, assign) NSUInteger framesPerSecond;

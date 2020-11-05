@@ -53,7 +53,7 @@ public class MjpegDecoder implements Decoder {
                                   int presentationTime,
                                   int duration) {
 
-        diagnostics.trackNewFrameOfSize(frameBuffer.remaining());
+        diagnostics.trackNewFrameOfSize(frameBuffer.remaining() * 8);
 
         try {
             final ByteBuffer test = deepCopy(frameBuffer, null);

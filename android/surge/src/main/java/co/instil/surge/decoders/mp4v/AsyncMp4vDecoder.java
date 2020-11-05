@@ -58,7 +58,7 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
                                   int height,
                                   int presentationTime,
                                   int duration) {
-        diagnostics.trackNewFrameOfSize(frameBuffer.remaining());
+        diagnostics.trackNewFrameOfSize(frameBuffer.remaining() * 8);
 
         try {
             LOGGER.debug("Received MP4V frame for decoding");

@@ -92,7 +92,7 @@ public abstract class H264Decoder implements Decoder {
 
         LOGGER.debug("Received frame buffer for decoding");
 
-        diagnostics.trackNewFrameOfSize(frameBuffer.remaining());
+        diagnostics.trackNewFrameOfSize(frameBuffer.remaining() * 8);
 
         try {
             List<NaluSegment> segments = naluParser.parseNaluSegments(frameBuffer);

@@ -23,7 +23,8 @@
 @property (nonatomic, weak) SurgeRtspPlayer *player;
 
 @property (nonatomic, strong) dispatch_queue_t trackerQueue;
-@property (nonatomic, assign) BOOL queueHasStarted;
+@property (nonatomic, strong) dispatch_source_t timer;
+@property (nonatomic, readonly) BOOL timerIsRunning;
 
 @property (nonatomic) int framePerSecondCounter;
 @property (nonatomic) size_t bitrateCounter;
@@ -38,25 +39,36 @@
         dispatch_queue_attr_t queueAttributes = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_BACKGROUND, 0);
         self.trackerQueue = dispatch_queue_create("co.instil.diagnosticstracker", queueAttributes);
         self.framePerSecondCounter = 0;
-        self.queueHasStarted = false;
     }
     return self;
 }
 
+- (BOOL)timerIsRunning {
+    return self.timer != nil && dispatch_source_testcancel(self.timer) == 0;
+}
+
 - (void)startTracking {
-    if (!self.queueHasStarted) {
-        SurgeLogDebug(@"Starting diagnostics tracker");
-        self.queueHasStarted = true;
-        [self updateDelegate];
-    } else {
-        SurgeLogDebug(@"Restarting diagnostics tracker");
-        dispatch_resume(self.trackerQueue);
+    if (self.timerIsRunning) {
+        return;
     }
+
+    SurgeLogDebug(@"Starting diagnostics tracker");
+    [self createTimer];
+    dispatch_resume(self.timer);
+}
+
+- (void)createTimer {
+    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, self.trackerQueue);
+    dispatch_source_set_timer(self.timer, dispatch_time(DISPATCH_TIME_NOW, 0), (int64_t)(1 * NSEC_PER_SEC), 0);
+    __weak DiagnosticsTracker *weakSelf = self;
+    dispatch_source_set_event_handler(self.timer, ^{
+        [weakSelf updateDelegate];
+    });
 }
 
 - (void)stopTracking {
     SurgeLogDebug(@"Stopping diagnostics tracker");
-    dispatch_suspend(self.trackerQueue);
+    dispatch_source_cancel(self.timer);
 }
 
 - (void)trackNewFrameOfSize:(size_t)bitCountInFrame {
@@ -75,17 +87,13 @@
 }
 
 - (void)updateDelegate {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), self.trackerQueue, ^{
-        self.framesPerSecond = self.framePerSecondCounter;
-        self.framePerSecondCounter = 0;
+    self.framesPerSecond = self.framePerSecondCounter;
+    self.framePerSecondCounter = 0;
 
-        self.bitrate = self.bitrateCounter;
-        self.bitrateCounter = 0;
+    self.bitrate = self.bitrateCounter;
+    self.bitrateCounter = 0;
 
-        [self setPacketBufferInfo: self.player.client->GetDiagnosticsOnPacketLoss()];
-
-        [self updateDelegate];
-    });
+    [self setPacketBufferInfo: self.player.client->GetDiagnosticsOnPacketLoss()];
 }
 
 - (void)setFramesPerSecond:(int)framesPerSecond {

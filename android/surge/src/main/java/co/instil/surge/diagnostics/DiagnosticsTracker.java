@@ -8,6 +8,7 @@
 package co.instil.surge.diagnostics;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Size;
 
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class DiagnosticsTracker implements SurgeDiagnostics {
     private int fpsCounter = 0;
     private int bitrateCounter = 0;
 
-    private Handler handler = new Handler();
+    private Handler handler = new Handler(Looper.getMainLooper());
     private boolean threadIsRunning = false;
     private final int timeBetweenUpdates = 1000;
 

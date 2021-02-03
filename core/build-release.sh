@@ -7,7 +7,7 @@ cd $(dirname $0)
 echo "Building library"
 mkdir -p build
 cd build
-cmake -DUNIT_TESTS=ON -DCODE_COVERAGE=ON -DDEBUG_SYMBOLS=ON ../
+cmake -DUNIT_TESTS=ON -DCODE_COVERAGE=ON -DDEBUG_SYMBOLS=ON -D CMAKE_C_COMPILER="/usr/bin/clang" -D CMAKE_CXX_COMPILER="/usr/bin/clang++" ../
 make
 
 mkdir -p release/include

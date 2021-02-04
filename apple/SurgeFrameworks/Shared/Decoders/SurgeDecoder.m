@@ -93,15 +93,9 @@
     
     NSMutableDictionary *destinationImageBufferAttributes = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *decoderSpecification = [[NSMutableDictionary alloc] init];
-    
-#if TARGET_OS_IPHONE
-    [destinationImageBufferAttributes setValue:@YES forKey:(__bridge NSString *)kCVPixelBufferOpenGLESCompatibilityKey];
-    [destinationImageBufferAttributes setValue:@YES forKey:(__bridge NSString *)kCVPixelBufferCGImageCompatibilityKey];
-#else
-    [decoderSpecification setValue:@YES forKey:(__bridge NSString *)kVTVideoDecoderSpecification_EnableHardwareAcceleratedVideoDecoder];
+
     [destinationImageBufferAttributes setValue:@(kCVPixelFormatType_32BGRA) forKey:(__bridge NSString *)kCVPixelBufferPixelFormatTypeKey];
     [destinationImageBufferAttributes setValue:@YES forKey:(__bridge NSString *)kCVPixelBufferCGImageCompatibilityKey];
-#endif
 
     OSStatus status =  VTDecompressionSessionCreate(NULL,
                                                     formatDescription,

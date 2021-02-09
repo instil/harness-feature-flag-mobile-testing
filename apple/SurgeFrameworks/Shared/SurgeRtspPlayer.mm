@@ -203,17 +203,18 @@ private:
         if (errorCode != RtspErrorCodeSuccess) {
             if (!weakSelf.interleavedRtspTransport) {
                 SurgeLogInfo(@"Failed to connect to stream via UDP, trying Interleaved TCP");
-
-                weakSelf.interleavedTcpTransport = true;
-                [weakSelf describeSetupPlay];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.interleavedTcpTransport = true;
+                    [weakSelf describeSetupPlay];
+                });
             } else {
                 if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:withErrorCode:)]) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [weakSelf.delegate rtspPlayerFailedToInitiatePlayback:weakSelf withErrorCode: errorCode];
                     });
                 }
-                return;
             }
+            return;
         }
         [weakSelf play:onPlay];
     };

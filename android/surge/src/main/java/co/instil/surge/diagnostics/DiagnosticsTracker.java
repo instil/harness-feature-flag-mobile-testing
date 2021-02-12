@@ -31,9 +31,10 @@ public class DiagnosticsTracker implements SurgeDiagnostics {
     private int fpsCounter = 0;
     private int bitrateCounter = 0;
 
-    private Handler handler = new Handler(Looper.getMainLooper());
-    private boolean threadIsRunning = false;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private final Runnable runnable = this::run;
     private final int timeBetweenUpdates = 1000;
+    private boolean threadIsRunning = false;
 
     private SurgeDiagnosticsDelegate delegate;
     private SurgeRtspPlayerDelegate depreciatedDelegate;
@@ -49,6 +50,7 @@ public class DiagnosticsTracker implements SurgeDiagnostics {
 
     public void stopTracking() {
         threadIsRunning = false;
+        handler.removeCallbacks(runnable);
     }
 
     public void trackNewFrameOfSize(int bitrate) {
@@ -76,7 +78,7 @@ public class DiagnosticsTracker implements SurgeDiagnostics {
         trackRtpPacketBufferInfo();
 
         if (threadIsRunning) {
-            handler.postDelayed(this::run, timeBetweenUpdates);
+            handler.postDelayed(runnable, timeBetweenUpdates);
         }
     }
 

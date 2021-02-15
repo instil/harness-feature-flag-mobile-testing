@@ -23,6 +23,7 @@ import co.instil.surge.authentication.SurgeAuthenticator;
 import co.instil.surge.callbacks.PlayerCallback;
 import co.instil.surge.client.DescribeResponse;
 import co.instil.surge.client.ExtendedHeader;
+import co.instil.surge.client.Response;
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.client.RtspClientDelegate;
 import co.instil.surge.client.SessionDescription;
@@ -138,14 +139,12 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             rtspClient.describe(rawResponse -> {
                 DescribeResponse response = (DescribeResponse) rawResponse;
 
-                if (response == null) {
-                    callback.response(RtspErrorCode.UNKNOWN_FAILURE);
+                if (errorResponseHasBeenHandled(response, callback)) {
                     return;
                 }
 
-                if (response.getStatusCode() != RtspErrorCode.SUCCESS ||
-                        response.getSessionDescriptions() == null ||
-                        response.getSessionDescriptions().length == 0) {
+                if (response.getSessionDescriptions() == null
+                        || response.getSessionDescriptions().length == 0) {
                     callback.response(response.getStatusCode());
                     return;
                 }
@@ -156,8 +155,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
                 setSessionDescriptions(response.getSessionDescriptions());
                 if (sessionDescriptions.length > 0) {
-                    setupStream(selectPreferredSessionDescription(getSessionDescriptions()),
-                            errorCode -> callback.response(errorCode));
+                    setupStream(selectPreferredSessionDescription(getSessionDescriptions()), callback);
                 } else {
                     throw new UnsupportedOperationException("No session description available, is the stream active?");
                 }
@@ -184,24 +182,34 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         initialiseDecoder(sessionDescription);
 
         rtspClient.setup(sessionDescription, response -> {
-            if (response == null) {
-                callback.response(RtspErrorCode.UNKNOWN_FAILURE);
-            } else if (response.getStatusCode() !=  RtspErrorCode.SUCCESS) {
-                callback.response(response.getStatusCode());
-            } else {
-                playStream(callback);
+            if (errorResponseHasBeenHandled(response, callback)) {
+                return;
             }
+
+            playStream(callback);
         });
     }
 
     private void playStream(final PlayerCallback callback) {
         rtspClient.play(response -> {
-            if (response == null) {
-                callback.response(RtspErrorCode.UNKNOWN_FAILURE);
-            } else {
-                callback.response(response.getStatusCode());
+            if (errorResponseHasBeenHandled(response, callback)) {
+                return;
             }
+
+            callback.response(response.getStatusCode());
         });
+    }
+
+    private boolean errorResponseHasBeenHandled(Response response, PlayerCallback callback) {
+        if (response == null) {
+            callback.response(RtspErrorCode.UNKNOWN_FAILURE);
+            return true;
+        } else if (response.getStatusCode() !=  RtspErrorCode.SUCCESS) {
+            callback.response(response.getStatusCode());
+            return true;
+        }
+
+        return false;
     }
 
     protected void initialiseDecoder(SessionDescription sessionDescription) {
@@ -268,7 +276,28 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     }
 
     /**
-     * Sek playback to a specified point in time.
+     * Seek playback to a specified point in time.
+     *
+     * Seeking has to be supported by the RTSP stream for this transaction to succeed. If unsupported,
+     * calling this method will likely cause the stream to stop all playback and timeout.
+     * @param startTime Timestamp to start playing video from.
+     * @param endTime Timestamp to finish playing video at.
+     * @param callback Callback method called once the stream has started playing again, or has irrecoverably failed.
+     */
+    public void seek(Date startTime, Date endTime, PlayerCallback callback) {
+        rtspClient.pause(response -> {
+            if (errorResponseHasBeenHandled(response, callback)) {
+                return;
+            }
+
+            rtspClient.setTimeRange(startTime, endTime);
+
+            playStream(callback);
+        });
+    }
+
+    /**
+     * Seek playback to a specified point in time.
      *
      * Seeking has to be supported by the RTSP stream for this transaction to succeed. If unsupported,
      * calling this method will likely cause the stream to stop all playback and timeout.
@@ -276,11 +305,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      * @param endTime Timestamp to finish playing video at.
      */
     public void seek(Date startTime, Date endTime) {
-        rtspClient.pause();
-
-        rtspClient.setTimeRange(startTime, endTime);
-
-        rtspClient.play();
+        seek(startTime, endTime, statusCode -> {});
     }
 
     protected SessionDescription selectPreferredSessionDescription(SessionDescription[] sessionDescriptions) {

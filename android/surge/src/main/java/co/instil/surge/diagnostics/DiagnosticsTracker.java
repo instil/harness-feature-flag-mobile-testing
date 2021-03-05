@@ -43,7 +43,7 @@ public class DiagnosticsTracker implements SurgeDiagnostics {
 
     public void startTracking() {
         if (!threadIsRunning) {
-            handler.postDelayed(this::run, timeBetweenUpdates);
+            handler.postDelayed(runnable, timeBetweenUpdates);
             threadIsRunning = true;
         }
     }

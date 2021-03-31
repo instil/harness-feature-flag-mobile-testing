@@ -1,6 +1,5 @@
 plugins {
     id 'com.novoda.static-analysis' version '1.2'
-    id "com.github.spotbugs" version "3.0.0"
 }
 
 apply plugin: "com.android.library"
@@ -18,7 +17,6 @@ staticAnalysis {
         ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
         ruleSets = []
     }
-    spotbugs { }
     lintOptions {
         abortOnError true
         xmlReport true

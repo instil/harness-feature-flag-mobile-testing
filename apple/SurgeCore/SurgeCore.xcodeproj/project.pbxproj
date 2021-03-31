@@ -1076,7 +1076,7 @@
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
 					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1099,7 +1099,7 @@
 					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/libuv/include",
 					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/include",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";

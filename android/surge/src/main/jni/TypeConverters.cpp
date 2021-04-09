@@ -53,6 +53,7 @@ jobject SurgeJni::NativeTypeConverters::convertSessionType(SurgeJni::ClassLoader
     const char *typeName;
     switch (type) {
         case Surge::RtspSessionType::H264: typeName = "H264"; break;
+        case Surge::RtspSessionType::H265: typeName = "H265"; break;
         case Surge::RtspSessionType::MP4V: typeName = "MP4V"; break;
         case Surge::RtspSessionType::MJPEG: typeName = "MJPEG"; break;
         default: typeName = "UNKNOWN"; break;
@@ -158,6 +159,8 @@ Surge::RtspSessionType SurgeJni::JavaTypeConverters::convertSessionType(JNIEnv *
     const char * typeString = env->GetStringUTFChars(typeJString, JNI_FALSE);
     if (strcmp(typeString, "H264") == 0) {
         type = Surge::RtspSessionType::H264;
+    } else if (strcmp(typeString, "H265") == 0) {
+        type = Surge::RtspSessionType::H265;
     } else if (strcmp(typeString, "MP4V") == 0) {
         type = Surge::RtspSessionType::MP4V;
     } else if (strcmp(typeString, "MJPEG") == 0) {

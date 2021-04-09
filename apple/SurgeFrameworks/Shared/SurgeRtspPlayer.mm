@@ -8,6 +8,7 @@
 #import "SurgeH264Decoder.h"
 #import "SurgeMp4vDecoder.h"
 #import "SurgeMjpegDecoder.h"
+#import "SurgeH265Decoder.h"
 
 #import "AuthenticatorMapper.h"
 #import "DiagnosticsTracker.h"
@@ -328,6 +329,8 @@ private:
         self.decoder = [[SurgeMp4vDecoder alloc] initWithDelegate:self];
     } else if (sessionDescription.GetType() == Surge::RtspSessionType::MJPEG) {
         self.decoder = [[SurgeMjpegDecoder alloc] initWithDelegate:self];
+    } else if (sessionDescription.GetType() == Surge::RtspSessionType::H265) {
+        self.decoder = [[SurgeH265Decoder alloc] initWithDelegate:self];
     }
     self.decoder.diagnostics = self.diagnosticsTracker;
 }

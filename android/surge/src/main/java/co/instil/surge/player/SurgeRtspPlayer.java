@@ -38,6 +38,7 @@ import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
 
 import static co.instil.surge.client.SessionType.H264;
+import static co.instil.surge.client.SessionType.H265;
 import static co.instil.surge.client.SessionType.MJPEG;
 import static co.instil.surge.client.SessionType.MP4V;
 
@@ -225,6 +226,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                 decoder = DecoderFactory.generateMP4VDecoder(surface, diagnosticsTracker);
             } else if (sessionDescription.getType() == MJPEG) {
                 decoder = DecoderFactory.generateMJPEGDecoder(surface, diagnosticsTracker);
+            } else if (sessionDescription.getType() == H265) {
+                decoder = DecoderFactory.generateH265Decoder(surface, diagnosticsTracker);
             }
 
             if (currentDecoder != null) {

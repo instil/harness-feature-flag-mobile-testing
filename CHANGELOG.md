@@ -1,5 +1,47 @@
 ## Changelog
 
+## v1.4
+
+###### Features
+
+* H.265 video is now supported on all platforms.
+
+_Android_
+
+* The seek method now has an optional callback which is called when seeking succeeds or fails.
+
+###### Fixes
+
+* Surge iOS is now supported on the ARM64 iOS simulators.
+* A fix was applied to the diagnostics tracker to ensure it cleans itself up correctly when required.
+* Bug which caused the player to crash when a stream did not reply to the PLAy command has been fixed.
+
+### v1.3.2
+
+###### Features
+
+* OpenSSL upgraded to v1.1.1i
+
+###### Fixes
+
+* Fix for an issue on the M1 macs which caused a stream to play back with a blue tint.
+* Fixed a condition with the TCP fallback logic that could cause a thread deadlock to occur and crash the player.
+
+### v1.3.0
+
+###### Features
+
+Introduced the new Diagnostics API. This gives you access to the following data:
+
+* Frames per second
+* Bitrate
+* Stream dimensions
+* Number of data packets received out of order
+* Number of packets received successfully
+* Number of packets that have been lost
+
+This data is available through the `diagnostics` property on `SurgeRtspPlayer` or through a diagnostics delegate.
+
 ### v1.2.4
 
 ###### Features

@@ -13,6 +13,7 @@ package co.instil.surge.client;
 public enum SessionType {
 
     H264,
+    H265,
     MP4V,
     MJPEG,
     UNKNOWN

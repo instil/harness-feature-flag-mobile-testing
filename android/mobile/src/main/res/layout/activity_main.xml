@@ -49,7 +49,7 @@
         android:layout_marginBottom="48dp"
         android:ems="10"
         android:inputType="textUri"
-        android:text="rtsp://192.168.1.11:8554/test"
+        android:text="@string/streamUrl"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/textureView"
         app:layout_constraintEnd_toStartOf="@+id/streamButton"

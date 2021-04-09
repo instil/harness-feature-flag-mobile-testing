@@ -13,6 +13,7 @@
 #import "TLSFactory.h"
 #import "BasicDigestAuthenticator.h"
 #import "H264Depacketizer.h"
+#import "H265Depacketizer.h"
 #import "MJPEGDepacketizer.h"
 #import "MP4VDepacketizer.h"
 #import "ErrorDispatcher.h"
@@ -239,6 +240,10 @@ void Surge::RtspClient::CreateDepacketizer() {
         case H264:
             INFO("H264 detected");
             depacketizer = new H264Depacketizer(sessionDescription, frameBuffer);
+            break;
+        case H265:
+            INFO("H265 detected");
+            depacketizer = new H265Depacketizer(sessionDescription, frameBuffer);
             break;
         case MP4V:
             INFO("MP4V detected");

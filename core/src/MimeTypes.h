@@ -13,6 +13,8 @@ namespace Surge {
         
         H264,
 
+        H265,
+
         MP4V,
 
         MJPEG,

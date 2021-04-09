@@ -145,6 +145,8 @@
 		F4BAC533243CE53500833351 /* RegexUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F4BAC532243CE53500833351 /* RegexUtils.h */; };
 		F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4C4F60720AEE853009313CD /* DispatchQueue.cc */; };
 		F4C4F60A20AEE853009313CD /* DispatchQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C4F60820AEE853009313CD /* DispatchQueue.h */; };
+		F4CA89CC2559A45B00707195 /* H265Depacketizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = F4CA89CA2559A45B00707195 /* H265Depacketizer.cc */; };
+		F4CA89CD2559A45B00707195 /* H265Depacketizer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4CA89CB2559A45B00707195 /* H265Depacketizer.h */; };
 		F4FA24C31ED8427A001B56E0 /* atomic-ops.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24A61ED8427A001B56E0 /* atomic-ops.h */; };
 		F4FA24CC1ED8427A001B56E0 /* internal.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24AF1ED8427A001B56E0 /* internal.h */; };
 		F4FA24D71ED8427A001B56E0 /* spinlock.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FA24BA1ED8427A001B56E0 /* spinlock.h */; };
@@ -286,6 +288,8 @@
 		F4BAC532243CE53500833351 /* RegexUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegexUtils.h; path = ../../core/src/RegexUtils.h; sourceTree = "<group>"; };
 		F4C4F60720AEE853009313CD /* DispatchQueue.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DispatchQueue.cc; path = ../../core/src/DispatchQueue.cc; sourceTree = "<group>"; };
 		F4C4F60820AEE853009313CD /* DispatchQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DispatchQueue.h; path = ../../core/src/DispatchQueue.h; sourceTree = "<group>"; };
+		F4CA89CA2559A45B00707195 /* H265Depacketizer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = H265Depacketizer.cc; path = ../../core/src/H265Depacketizer.cc; sourceTree = "<group>"; };
+		F4CA89CB2559A45B00707195 /* H265Depacketizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = H265Depacketizer.h; path = ../../core/src/H265Depacketizer.h; sourceTree = "<group>"; };
 		F4FA24A51ED8427A001B56E0 /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
 		F4FA24A61ED8427A001B56E0 /* atomic-ops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "atomic-ops.h"; sourceTree = "<group>"; };
 		F4FA24A71ED8427A001B56E0 /* core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = core.c; sourceTree = "<group>"; };
@@ -596,6 +600,8 @@
 		F4C4F60120AEDE29009313CD /* Depacketizers */ = {
 			isa = PBXGroup;
 			children = (
+				F4CA89CA2559A45B00707195 /* H265Depacketizer.cc */,
+				F4CA89CB2559A45B00707195 /* H265Depacketizer.h */,
 				42D671D31D3069BB00D42C35 /* Depacketizer.h */,
 				42D671DA1D3069BB00D42C35 /* H264Depacketizer.cc */,
 				42D671DB1D3069BB00D42C35 /* H264Depacketizer.h */,
@@ -707,6 +713,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4CA89CD2559A45B00707195 /* H265Depacketizer.h in Headers */,
 				42D672491D3069BB00D42C35 /* Surge.h in Headers */,
 				F4FA24C31ED8427A001B56E0 /* atomic-ops.h in Headers */,
 				42D6722B1D3069BB00D42C35 /* MimeTypes.h in Headers */,
@@ -920,6 +927,7 @@
 				F4388E4C1F333AD80064A24F /* UdpTransport.cc in Sources */,
 				F4965ABB212590D800DB30B5 /* RtspService.cc in Sources */,
 				F4C4F60920AEE853009313CD /* DispatchQueue.cc in Sources */,
+				F4CA89CC2559A45B00707195 /* H265Depacketizer.cc in Sources */,
 				42D6720D1D3069BB00D42C35 /* Base64.cc in Sources */,
 				F4589E161ED85627004F023D /* signal.c in Sources */,
 				F4589E101ED85627004F023D /* pipe.c in Sources */,

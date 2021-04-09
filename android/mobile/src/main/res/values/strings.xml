@@ -20,4 +20,5 @@
 
 <resources>
     <string name="app_name">SurgeAndroidDemoApp</string>
+    <string name="streamUrl">rtsp://192.168.0.94:554/videoStreamId=1</string>
 </resources>

@@ -78,19 +78,47 @@ namespace Surge {
         const int GetBitrate() const { return bitrate; }
 
         const uint8_t GetPayloadType() const { return payloadType; }
-        
+
         const std::string GetFmtpH264ConfigParameters() const {
             if (type != RtspSessionType::H264) {
                 return std::string();
             }
-            
-            size_t pos = formatParameters.find("sprop-parameter-sets=");
+
+            return GetFormatParametersValueFromKey("sprop-parameter-sets");
+        }
+
+        const std::string GetFmtpH265Vps() const {
+            if (type != RtspSessionType::H265) {
+                return std::string();
+            }
+
+            return GetFormatParametersValueFromKey("sprop-vps");
+        }
+
+        const std::string GetFmtpH265Sps() const {
+            if (type != RtspSessionType::H265) {
+                return std::string();
+            }
+
+            return GetFormatParametersValueFromKey("sprop-sps");
+        }
+
+        const std::string GetFmtpH265Pps() const {
+            if (type != RtspSessionType::H265) {
+                return std::string();
+            }
+
+            return GetFormatParametersValueFromKey("sprop-pps");
+        }
+
+        const std::string GetFormatParametersValueFromKey(const std::string key) const {
+            size_t pos = formatParameters.find(key + "=");
             if (pos == std::string::npos) {
                 return std::string();
             }
 
             size_t end = formatParameters.find(";", pos);
-            return formatParameters.substr(pos + 21, end - pos - 21);
+            return formatParameters.substr(pos + key.length() + 1, end - pos - key.length() - 1);
         }
 
         const std::string GetFmtpConfigParameters() const {
@@ -110,6 +138,9 @@ namespace Surge {
         static RtspSessionType GetTypeFromMime(const std::string& raw_mime) {
             if (raw_mime.find("H264") != std::string::npos) {
                 return H264;
+            }
+            else if (raw_mime.find("H265") != std::string::npos) {
+                return H265;
             }
             else if (raw_mime.find("MP4V-ES") != std::string::npos) {
                 return MP4V;

@@ -15,7 +15,6 @@ import java.util.List;
 import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.MediaCodecFactory;
 import co.instil.surge.decoders.h264.nalu.NaluParser;
-import co.instil.surge.device.DeviceExaminer;
 import co.instil.surge.diagnostics.DiagnosticsTracker;
 
 /**
@@ -34,9 +33,8 @@ public class StubH264Decoder extends H264Decoder {
             SurgeVideoView videoView,
             MediaCodecFactory mediaCodecFactory,
             NaluParser naluParser,
-            DeviceExaminer deviceExaminer,
             DiagnosticsTracker diagnosticsTracker) {
-        super(videoView, mediaCodecFactory, naluParser, deviceExaminer, diagnosticsTracker);
+        super(videoView, mediaCodecFactory, naluParser, diagnosticsTracker);
         receivedPackets = new ArrayList<>();
     }
 

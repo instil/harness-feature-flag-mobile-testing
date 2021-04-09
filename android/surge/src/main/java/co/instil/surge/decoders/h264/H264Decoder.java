@@ -7,7 +7,6 @@
 
 package co.instil.surge.decoders.h264;
 
-import android.annotation.TargetApi;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.os.Handler;
@@ -24,7 +23,6 @@ import co.instil.surge.decoders.MediaCodecFactory;
 import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
-import co.instil.surge.device.DeviceExaminer;
 import co.instil.surge.diagnostics.DiagnosticsTracker;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
@@ -35,9 +33,7 @@ import co.instil.surge.logging.LoggerFactory;
  * codec intialization.
  *
  * @see AsyncH264Decoder
- * @see SyncH264Decoder
  */
-@TargetApi(21)
 public abstract class H264Decoder implements Decoder {
     private static final Logger LOGGER = LoggerFactory.getLogger(H264Decoder.class);
     private static final String MEDIA_FORMAT_WIDTH_KEY = "width";
@@ -50,7 +46,6 @@ public abstract class H264Decoder implements Decoder {
     private NaluParser naluParser;
     private NaluSegment pictureParameterSet;
     private NaluSegment sequenceParameterSet;
-    private DeviceExaminer deviceExaminer;
     private H264Packet lastSPSPacket = null;
     private H264Packet lastPPSPacket = null;
     private DiagnosticsTracker diagnostics;
@@ -60,7 +55,7 @@ public abstract class H264Decoder implements Decoder {
      * @param videoView the surface into which the decoder will return the decoded video.
      */
     protected H264Decoder(SurgeVideoView videoView, DiagnosticsTracker diagnosticsTracker) {
-        this(videoView, new MediaCodecFactory(), new NaluParser(), new DeviceExaminer(), diagnosticsTracker);
+        this(videoView, new MediaCodecFactory(), new NaluParser(), diagnosticsTracker);
     }
 
     /**
@@ -73,12 +68,10 @@ public abstract class H264Decoder implements Decoder {
             SurgeVideoView videoView,
             MediaCodecFactory mediaCodecFactory,
             NaluParser naluParser,
-            DeviceExaminer deviceExaminer,
             DiagnosticsTracker diagnosticsTracker) {
         setVideoView(videoView);
         this.mediaCodecFactory = mediaCodecFactory;
         this.naluParser = naluParser;
-        this.deviceExaminer = deviceExaminer;
         this.diagnostics = diagnosticsTracker;
     }
 
@@ -221,11 +214,7 @@ public abstract class H264Decoder implements Decoder {
         }
 
         ByteBuffer buffer;
-        if (deviceExaminer.isPreLollipopDevice()) {
-            buffer = mediaCodec.getInputBuffers()[inputBufferId]; //inputBuffers[inputBufferId];
-        } else {
-            buffer = mediaCodec.getInputBuffer(inputBufferId);
-        }
+        buffer = mediaCodec.getInputBuffer(inputBufferId);
         buffer.clear();
         byte[] payload = packet.segment.getPayload();
         if (payload != null && payload.length > 0) {

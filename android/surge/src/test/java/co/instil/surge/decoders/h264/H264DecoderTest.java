@@ -7,9 +7,7 @@
 
 package co.instil.surge.decoders.h264;
 
-import android.annotation.TargetApi;
 import android.media.MediaCodec;
-import android.os.Build;
 import android.view.Surface;
 
 import org.easymock.Capture;
@@ -24,7 +22,6 @@ import co.instil.surge.decoders.MediaCodecFactory;
 import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
-import co.instil.surge.device.DeviceExaminer;
 import co.instil.surge.diagnostics.DiagnosticsTracker;
 
 import static co.instil.surge.decoders.h264.H264TestUtils.generateNalUnits;
@@ -41,7 +38,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
-
 /**
  * Created by mattmccomb on 08/07/16.
  */
@@ -53,7 +49,6 @@ public class H264DecoderTest {
     private MediaCodec mockH264Codec;
     private ByteBuffer mockBuffer;
     private MediaCodecFactory mockMediaCodecFactory;
-    private DeviceExaminer mockDeviceExaminer;
     private StubH264Decoder mockedDecoder;
     private DiagnosticsTracker diagnosticsTracker;
     private Capture<NaluSegment> capturedPPSSegment, capturedSPSSegment;
@@ -69,10 +64,9 @@ public class H264DecoderTest {
         capturedSPSSegment = Capture.newInstance();
         capturedPPSSegment = Capture.newInstance();
         mockBuffer = createMock(ByteBuffer.class);
-        mockDeviceExaminer = createMock(DeviceExaminer.class);
         mockH264Codec = createMock(MediaCodec.class);
         mockMediaCodecFactory = createMock(MediaCodecFactory.class);
-        mockedDecoder = new StubH264Decoder(videoView, mockMediaCodecFactory, new NaluParser(), mockDeviceExaminer, diagnosticsTracker);
+        mockedDecoder = new StubH264Decoder(videoView, mockMediaCodecFactory, new NaluParser(), diagnosticsTracker);
         expect(mockMediaCodecFactory.createH264DecoderWithParameters(
                 capture(capturedSPSSegment),
                 capture(capturedPPSSegment),
@@ -113,19 +107,8 @@ public class H264DecoderTest {
     }
 
     @Test
-    public void testThatInputBuffersAreCachedFromTheMediaCodecOnPreLollipopDevices() throws IOException {
-        mockInitialisationOfH264MediaCodecOnPreLollipopDevice();
-        expect(mockBuffer.put((byte[])anyObject(), anyInt(), anyInt())).andReturn(mockBuffer).anyTimes();
-        replay(mockH264Codec, mockBuffer);
-        sendParamaterSetsToDecoder(mockedDecoder);
-        mockedDecoder.writePacketToInputBuffer(aKeyFrameH264Packet(), 0);
-        verify(mockBuffer);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Test
-    public void testThatInputBuffersAreNotCachedOnLollipopDevices() {
-        mockInitialisationOfH264MediaCodecOnPostLollipopDevice();
+    public void testThatInputBuffersAreNotCached() {
+        mockInitialisationOfH264MediaCodec();
         expect(mockBuffer.put((byte[])anyObject(), anyInt(), anyInt())).andReturn(mockBuffer).anyTimes();
         replay(mockH264Codec, mockBuffer);
         sendParamaterSetsToDecoder(mockedDecoder);
@@ -134,48 +117,18 @@ public class H264DecoderTest {
     }
 
     @Test
-    public void testThatDecoderInputBuffersAreClearedBeforeBeingWrittenTo() throws IOException {
-        mockInitialisationOfH264MediaCodecOnPreLollipopDevice();
-        expect(mockBuffer.put((byte[])anyObject(), anyInt(), anyInt())).andReturn(mockBuffer).anyTimes();
-        replay(mockH264Codec, mockBuffer);
-        sendParamaterSetsToDecoder(mockedDecoder);
-        mockedDecoder.writePacketToInputBuffer(aKeyFrameH264Packet(), 0);
-        verify(mockBuffer.clear());
-    }
-
-    @Test
     public void testThatTheMediaCodecIsFinalisedWhenTheDecoderIsClosed() throws IOException, InterruptedException {
-//        mockH264Codec.stop();
-//        expectLastCall();
-//        mockH264Codec.release();
-//        expectLastCall();
-//        stubbedDecoder.close();
-    }
-
-
-    private void mockInitialisationOfH264MediaCodecOnPreLollipopDevice() {
-        mockDeviceVersionToBePreLollipop();
-        expect(mockH264Codec.getInputBuffers()).andReturn(new ByteBuffer[] {mockBuffer}).times(2);
-        mockH264Codec.start();
+        mockH264Codec.stop();
         expectLastCall();
+        mockH264Codec.release();
+        expectLastCall();
+        stubbedDecoder.close();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void mockInitialisationOfH264MediaCodecOnPostLollipopDevice() {
-        mockDeviceVersionToBeLollipopOrNewer();
+    private void mockInitialisationOfH264MediaCodec() {
         expect(mockH264Codec.getInputBuffer(anyInt())).andReturn(mockBuffer);
         mockH264Codec.start();
         expectLastCall();
-    }
-
-    private void mockDeviceVersionToBePreLollipop() {
-        expect(mockDeviceExaminer.isPreLollipopDevice()).andReturn(true).anyTimes();
-        replay(mockDeviceExaminer);
-    }
-
-    private void mockDeviceVersionToBeLollipopOrNewer() {
-        expect(mockDeviceExaminer.isPreLollipopDevice()).andReturn(false).anyTimes();
-        replay(mockDeviceExaminer);
     }
 
     private H264Packet aKeyFrameH264Packet() {

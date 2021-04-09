@@ -7,7 +7,6 @@
 
 package co.instil.surge.decoders.h264;
 
-import android.annotation.TargetApi;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 
@@ -23,14 +22,9 @@ import co.instil.surge.logging.LoggerFactory;
  * An H264 stream decoder which utilises native hardware decoders (if available) and the
  * asynchronous {@link MediaCodec} Android platform APIs.
  * <p>
- * The {@link AsyncH264Decoder} is supported on Android Lollipop (5.0) and above only as it
- * relies on MediaCodec APIs available in API level 21 and above.  In order to support order
- * devices please refer to the {@link SyncH264Decoder}.
  *
  * @see MediaCodec
- * @see SyncH264Decoder
  */
-@TargetApi(21)
 public class AsyncH264Decoder extends H264Decoder {
     private static final Logger LOGGER = LoggerFactory.getLogger(AsyncH264Decoder.class);
 

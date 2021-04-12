@@ -1,32 +1,7 @@
-plugins {
-    id 'com.novoda.static-analysis' version '1.2'
-}
-
 apply plugin: "com.android.library"
-apply plugin: 'kotlin-android'
-//apply from: "${project.rootDir}/gradle/static-analysis.gradle"
+apply plugin: "kotlin-android"
 
-staticAnalysis {
-    penalty {
-        maxErrors = 0
-        maxWarnings = 999999
-    }
-    checkstyle { }
-    pmd {
-        toolVersion = "6.21.0"
-        incrementalAnalysis = true
-        ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
-        ruleSets = []
-    }
-    lintOptions {
-        abortOnError true
-        xmlReport true
-        htmlReport true
-        lintConfig file("${project.rootDir}/config/lint/lint.xml")
-        htmlOutput file("$project.buildDir/reports/lint/lint-results.html")
-        xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
-    }
-}
+apply from: "../gradle/static-analysis.gradle"
 
 android {
     compileSdkVersion 28
@@ -63,12 +38,14 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    testImplementation 'junit:junit:4.12'
-    testImplementation "org.easymock:easymock:3.4"
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:28.0.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    testImplementation "junit:junit:4.12"
+    testImplementation "org.easymock:easymock:3.4"
 }
+
 repositories {
     mavenCentral()
 }

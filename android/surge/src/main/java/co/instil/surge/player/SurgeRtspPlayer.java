@@ -11,14 +11,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.TextureView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.util.Date;
-
 import co.instil.surge.authentication.SurgeAuthenticator;
 import co.instil.surge.callbacks.PlayerCallback;
 import co.instil.surge.client.DescribeResponse;
@@ -36,6 +28,14 @@ import co.instil.surge.diagnostics.SurgeDiagnostics;
 import co.instil.surge.diagnostics.SurgeDiagnosticsDelegate;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.util.Date;
 
 import static co.instil.surge.client.SessionType.H264;
 import static co.instil.surge.client.SessionType.H265;
@@ -424,7 +424,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     }
 
     /**
-     * If true, Surge will stream video data via an interleaved TCP transport rather than via UDP
+     * If true, Surge will stream video data via an interleaved TCP transport rather than via UDP.
      * @param interleavedTcpTransport True if requiring a TCP transport, false if using a UDP transport.
      */
     public void setInterleavedTransport(boolean interleavedTcpTransport) {
@@ -524,12 +524,12 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      */
     public void setAuthenticator(SurgeAuthenticator authenticator) {
         if (customAuthenticator != null) {
-            rtspClient.RemoveAuthenticator(1);
+            rtspClient.removeAuthenticator(1);
         }
 
         customAuthenticator = authenticator;
 
-        rtspClient.AddAuthenticator(customAuthenticator);
+        rtspClient.addAuthenticator(customAuthenticator);
     }
 
     /**

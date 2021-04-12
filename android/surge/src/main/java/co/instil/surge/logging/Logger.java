@@ -9,10 +9,10 @@ package co.instil.surge.logging;
 
 import android.util.Log;
 
+import co.instil.surge.BuildConfig;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import co.instil.surge.BuildConfig;
 
 /**
  * Created by niallkelly on 14/09/2017.

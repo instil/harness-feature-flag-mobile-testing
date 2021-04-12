@@ -212,7 +212,7 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setTLSTrustedCerti
  * Method:    AddAuthenticator
  * Signature: (Lco/instil/surge/authentication/SurgeAuthenticator;)V
  */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_AddAuthenticator
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_addAuthenticator
   (JNIEnv *, jobject, jobject);
 
 /*
@@ -220,7 +220,7 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_AddAuthenticator
  * Method:    RemoveAuthenticator
  * Signature: (Lco/instil/surge/authentication/SurgeAuthenticator;)V
  */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticator__Lco_instil_surge_authentication_SurgeAuthenticator_2
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_removeAuthenticator__Lco_instil_surge_authentication_SurgeAuthenticator_2
   (JNIEnv *, jobject, jobject);
 
 /*
@@ -228,7 +228,7 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticato
  * Method:    RemoveAuthenticator
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticator__I
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_removeAuthenticator__I
   (JNIEnv *, jobject, jint);
 
 /*
@@ -236,7 +236,7 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_RemoveAuthenticato
  * Method:    GetDiagnosticsOnPacketLoss
  * Signature: ()Lco/instil/surge/diagnostics/RtpPacketBufferInfo;
  */
-JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_GetDiagnosticsOnPacketLoss
+JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_getDiagnosticsOnPacketLoss
   (JNIEnv *, jobject);
 
 /*

@@ -10,13 +10,13 @@ package co.instil.surge.decoders.h264;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.diagnostics.DiagnosticsTracker;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An H264 stream decoder which utilises native hardware decoders (if available) and the
@@ -34,6 +34,7 @@ public class AsyncH264Decoder extends H264Decoder {
     /**
      * Constrcuts a new {@link AsyncH264Decoder}.
      * @param videoView the view onto which the decoded stream will be rendered.
+     * @param diagnosticsTracker the diagnostics tracker
      */
     public AsyncH264Decoder(SurgeVideoView videoView, DiagnosticsTracker diagnosticsTracker) {
         super(videoView, diagnosticsTracker);

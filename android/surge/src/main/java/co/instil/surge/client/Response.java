@@ -7,9 +7,9 @@
 
 package co.instil.surge.client;
 
-import java.util.Map;
-
 import co.instil.surge.player.RtspErrorCode;
+
+import java.util.Map;
 
 /**
  *

@@ -11,10 +11,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Size;
 
-import java.util.Objects;
-
 import co.instil.surge.client.RtspClient;
 import co.instil.surge.player.SurgeRtspPlayerDelegate;
+
+import java.util.Objects;
 
 /**
  * This can track a number of different diagnostics from multple data sources throughout Surge and
@@ -105,7 +105,7 @@ public class DiagnosticsTracker implements SurgeDiagnostics {
     }
 
     private void trackRtpPacketBufferInfo() {
-        RtpPacketBufferInfo packetBufferInfo = client.GetDiagnosticsOnPacketLoss();
+        RtpPacketBufferInfo packetBufferInfo = client.getDiagnosticsOnPacketLoss();
         successfulPacketsReceived = packetBufferInfo.getSuccessfulPacketsCount();
         lostPackets = packetBufferInfo.getMissedPacketsCount();
         outOfOrderPacketsReceived = packetBufferInfo.getOooPacketsCount();

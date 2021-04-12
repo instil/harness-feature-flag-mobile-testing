@@ -24,7 +24,8 @@ class H265Decoder(
     private val videoView: SurgeVideoView,
     private val mediaCodecFactory: MediaCodecFactory,
     private val naluParser: H265NaluParser,
-    private val diagnosticsTracker: DiagnosticsTracker) : Decoder {
+    private val diagnosticsTracker: DiagnosticsTracker
+) : Decoder {
 
     private var mediaCodec: MediaCodec? = null
     private lateinit var mediaFormat: MediaFormat
@@ -36,10 +37,12 @@ class H265Decoder(
     private val decodeQueue: MutableList<H265Packet> = ArrayList()
 
     constructor(videoView: SurgeVideoView, diagnosticsTracker: DiagnosticsTracker) :
-        this(videoView,
+        this(
+            videoView,
             MediaCodecFactory(),
             H265NaluParser(),
-            diagnosticsTracker)
+            diagnosticsTracker
+        )
 
     override fun decodeFrameBuffer(
         sessionDescription: SessionDescription,
@@ -47,9 +50,9 @@ class H265Decoder(
         width: Int,
         height: Int,
         presentationTime: Int,
-        duration: Int) {
+        duration: Int
+    ) {
         LOGGER.debug("Received frame buffer for decoding")
-
         diagnosticsTracker.trackNewFrameOfSize(frameBuffer.remaining() * 8)
 
         try {
@@ -59,18 +62,24 @@ class H265Decoder(
                 return
             }
             startMediaCodec(segments)
-
-            segments.firstOrNull { it.type == VPS }?.let { onReceiveH265Packet(H265Packet(it, presentationTime.toLong())) }
-            segments.firstOrNull { it.type == SPS }?.let { onReceiveH265Packet(H265Packet(it, presentationTime.toLong())) }
-            segments.firstOrNull { it.type == PPS }?.let { onReceiveH265Packet(H265Packet(it, presentationTime.toLong())) }
-
-            cachedSegments = segments.filter { it.type != VPS && it.type != SPS && it.type != PPS }.toMutableList()
-            val packet = buildH265FrameFromNaluSegments(presentationTime)
-            onReceiveH265Packet(packet)
-            cachedSegments.clear()
+            decodeParameterSetNaluSegments(segments, presentationTime)
+            decodeNonParameterSetNaluSegments(segments, presentationTime)
         } catch (e: Exception) {
             LOGGER.error("Failed to decode frame", e)
         }
+    }
+
+    private fun decodeParameterSetNaluSegments(segments: List<H265NaluSegment>, presentationTime: Int) {
+        segments.firstOrNull { it.type == VPS }?.let { onReceiveH265Packet(H265Packet(it, presentationTime.toLong())) }
+        segments.firstOrNull { it.type == SPS }?.let { onReceiveH265Packet(H265Packet(it, presentationTime.toLong())) }
+        segments.firstOrNull { it.type == PPS }?.let { onReceiveH265Packet(H265Packet(it, presentationTime.toLong())) }
+    }
+
+    private fun decodeNonParameterSetNaluSegments(segments: List<H265NaluSegment>, presentationTime: Int) {
+        cachedSegments = segments.filter { it.type != VPS && it.type != SPS && it.type != PPS }.toMutableList()
+        val packet = buildH265FrameFromNaluSegments(presentationTime)
+        onReceiveH265Packet(packet)
+        cachedSegments.clear()
     }
 
     private fun startMediaCodec(segments: List<H265NaluSegment>) {
@@ -80,7 +89,6 @@ class H265Decoder(
             mediaCodec = createMediaCodec()
             onCreatedMediaCodec(mediaCodec)
             mediaCodec?.start()
-            onStartedCodec(mediaCodec)
         }
     }
 
@@ -118,8 +126,6 @@ class H265Decoder(
         mediaCodec?.setCallback(H265DecoderCallbackHandler())
     }
 
-    private fun onStartedCodec(mediaCodec: MediaCodec?) {}
-
     private fun onReceiveH265Packet(packet: H265Packet) {
         if (availableInputBuffers.isNotEmpty()) {
             LOGGER.debug("Submitting to available buffer: {}", availableInputBuffers[0])
@@ -131,13 +137,13 @@ class H265Decoder(
 
     private fun containsParameterSets(segments: List<H265NaluSegment>) =
         segments.any { it.type == VPS } &&
-        segments.any { it.type == SPS } &&
-        segments.any { it.type == PPS }
+            segments.any { it.type == SPS } &&
+            segments.any { it.type == PPS }
 
     private fun hasCachedParameterSets() =
         videoParameterSet != null &&
-        sequenceParameterSet != null &&
-        pictureParameterSet != null
+            sequenceParameterSet != null &&
+            pictureParameterSet != null
 
     private fun cacheParameterSets(segments: List<H265NaluSegment>) {
         segments.firstOrNull { it.type == VPS }
@@ -195,7 +201,12 @@ class H265Decoder(
     }
 
     private fun createMediaCodec() =
-        mediaCodecFactory.createH265DecoderWithParameters(videoParameterSet, sequenceParameterSet, pictureParameterSet, videoView.generateUniqueSurface())
+        mediaCodecFactory.createH265DecoderWithParameters(
+            videoParameterSet,
+            sequenceParameterSet,
+            pictureParameterSet,
+            videoView.generateUniqueSurface()
+        )
 
     private inner class H265DecoderCallbackHandler : MediaCodec.Callback() {
         override fun onInputBufferAvailable(codec: MediaCodec, index: Int) {

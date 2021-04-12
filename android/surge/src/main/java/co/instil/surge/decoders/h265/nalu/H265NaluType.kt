@@ -18,7 +18,7 @@ enum class H265NaluType(private val description: String) {
     RESERVED_14("14: Reserved non-IRAP SLNR VCL NAL unit types"),
     RESERVED_15("15: Reserved non-IRAP sub-layer reference VCL NAL unit types"),
     CODED_SLICE_BLA("16: Coded slice segment of a Broken Link Access (BLA) picture (VCL)"), // Current name in the spec: BLA_W_LP
-    CODED_SLICE_BLANT("17: Coded slice segment of a Broken Link Access (BLA) picture (VCL)"),  // Current name in the spec: BLA_W_DLP
+    CODED_SLICE_BLANT("17: Coded slice segment of a Broken Link Access (BLA) picture (VCL)"), // Current name in the spec: BLA_W_DLP
     CODED_SLICE_BLA_N_LP("18: Coded slice segment of a Broken Link Access (BLA) picture (VCL)"),
     CODED_SLICE_IDR("19: Coded slice segment of an Instantaneous Decoding Refresh (IDR) picture (VCL)"), // Current name in the spec: IDR_W_DLP
     CODED_SLICE_IDR_N_LP("20: Coded slice segment of an Instantaneous Decoding Refresh (IDR) picture (VCL)"),
@@ -66,8 +66,6 @@ enum class H265NaluType(private val description: String) {
     UNSPECIFIED_62("62: Unspecified (non-VCL)"),
     UNSPECIFIED_63("63: Unspecified (non-VCL)"),
     INVALID("Invalid");
-
-    private val TAG = "H265NaluType"
 
     override fun toString(): String = description
 }

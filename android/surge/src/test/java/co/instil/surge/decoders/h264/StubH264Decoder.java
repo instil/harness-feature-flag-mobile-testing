@@ -9,13 +9,13 @@ package co.instil.surge.decoders.h264;
 
 import android.media.MediaCodec;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.MediaCodecFactory;
 import co.instil.surge.decoders.h264.nalu.NaluParser;
 import co.instil.surge.diagnostics.DiagnosticsTracker;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mattmccomb on 08/07/16.

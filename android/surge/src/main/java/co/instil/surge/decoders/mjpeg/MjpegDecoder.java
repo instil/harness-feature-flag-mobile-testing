@@ -15,14 +15,14 @@ import android.graphics.Rect;
 import android.os.HandlerThread;
 import android.view.Surface;
 
-import java.nio.ByteBuffer;
-
 import co.instil.surge.client.SessionDescription;
 import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.diagnostics.DiagnosticsTracker;
 import co.instil.surge.logging.Logger;
 import co.instil.surge.logging.LoggerFactory;
+
+import java.nio.ByteBuffer;
 
 /**
  * Decoder which renders a MJPEG stream to a {@link android.view.TextureView}.

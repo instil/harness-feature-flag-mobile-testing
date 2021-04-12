@@ -87,13 +87,13 @@ public class RtspClient implements AutoCloseable {
 
     public native void setTLSTrustedCertificate(String fileUrl);
 
-    public native void AddAuthenticator(SurgeAuthenticator authenticator);
+    public native void addAuthenticator(SurgeAuthenticator authenticator);
 
-    public native void RemoveAuthenticator(SurgeAuthenticator authenticator);
+    public native void removeAuthenticator(SurgeAuthenticator authenticator);
 
-    public native void RemoveAuthenticator(int index);
+    public native void removeAuthenticator(int index);
 
-    public native RtpPacketBufferInfo GetDiagnosticsOnPacketLoss();
+    public native RtpPacketBufferInfo getDiagnosticsOnPacketLoss();
 
     public native void close();
 }

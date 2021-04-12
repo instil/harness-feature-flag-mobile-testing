@@ -11,7 +11,7 @@ import co.instil.surge.decoders.h264.nalu.NaluSegment;
 import co.instil.surge.decoders.h264.nalu.NaluType;
 
 import java.util.Date;
-
+import java.util.Locale;
 
 /**
  * A wrapper around a single H264 payload which provides additional meta-data and
@@ -59,7 +59,8 @@ public class H264Packet {
     }
 
     public String toString() {
-        return String.format("H264 packet: %s frame of size %d bytes received at %s",
+        return String.format(Locale.ENGLISH,
+                "H264 packet: %s frame of size %d bytes received at %s",
                 isKeyFrame() ? "key" : "non-key",
                 segment.getPayloadLength(),
                 timestamp);

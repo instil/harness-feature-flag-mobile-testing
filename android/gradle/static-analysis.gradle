@@ -1,22 +1,23 @@
+apply plugin: "io.gitlab.arturbosch.detekt"
+apply plugin: "com.github.spotbugs-base"
 apply plugin: "checkstyle"
-apply plugin: "findbugs"
 apply plugin: "pmd"
 
-staticAnalysis {
-    penalty {
-        maxErrors = 0
-        maxWarnings = 50
-    }
-    checkstyle {
-        configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
-    }
-    pmd {
-        toolVersion = "6.21.0"
-        incrementalAnalysis = true
-        ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
-        ruleSets = []
-    }
-    spotbugs { }
+configurations {
+    ktlint
+}
+
+checkstyle {
+    configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+}
+
+pmd {
+    toolVersion = "6.21.0"
+    ruleSetFiles = files("${project.rootDir}/config/pmd/pmd-ruleset.xml")
+    ruleSets = []
+}
+
+android {
     lintOptions {
         abortOnError true
         xmlReport true
@@ -25,4 +26,40 @@ staticAnalysis {
         htmlOutput file("$project.buildDir/reports/lint/lint-results.html")
         xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
     }
+}
+
+sourceSets {
+    main {
+        java.srcDirs = []
+    }
+}
+
+spotbugs {
+    toolVersion = "4.2.2"
+    excludeFilter = file("${project.rootDir}/config/spotbugs/spotbugs-exclude.xml")
+
+    effort = "max"
+    reportLevel = "high"
+}
+
+task spotbugsMain(type: SpotBugsTask) {
+    dependsOn 'assemble'
+    classDirs = sourceSets.main.output
+    sourceDirs = sourceSets.main.allSource.sourceDirectories
+    auxClassPaths = sourceSets.main.compileClasspath
+    reports {
+        html.enabled = true
+    }
+}
+check.dependsOn(spotbugsMain)
+
+task ktlint(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "src/**/*.kt"
+}
+
+detekt {
+    version = "1.16.0"
+    config = files("$project.projectDir/../config/detekt/detekt-config.yml")
 }

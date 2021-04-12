@@ -5,4 +5,5 @@
         <ignore regexp=".*retrofit.*" />
         <ignore regexp="com.fasterxml.jackson.*" />
     </issue>
+    <issue id="OldTargetApi" severity="warning" />
 </lint>

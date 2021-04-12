@@ -1,16 +1,9 @@
 package co.instil.surge.decoders.h265.nalu
 
 import java.nio.ByteBuffer
-import java.util.*
 import kotlin.experimental.and
 
 class H265NaluParser {
-    private val MINIMUM_MAGIC_HEADER_LENGTH = 3
-    private val MAXIMUM_MAGIC_HEADER_LENGTH = 4
-    private val MINIMUM_NAL_UNIT_LENGTH = 6
-    private val ZERO_BYTE: Byte = 0x00
-    private val MAGIC_BYTE: Byte = 0x01
-
     fun parseH265NaluSegments(byteBuffer: ByteBuffer): List<H265NaluSegment> {
         val buffer = byteBuffer.copyToByteArray()
         if (buffer.size <= MINIMUM_NAL_UNIT_LENGTH) {
@@ -74,4 +67,11 @@ class H265NaluParser {
     }
 
     private class H265NaluMagicByteHeader(val position: Int, val length: Int)
+    companion object {
+        private const val MINIMUM_MAGIC_HEADER_LENGTH = 3
+        private const val MAXIMUM_MAGIC_HEADER_LENGTH = 4
+        private const val MINIMUM_NAL_UNIT_LENGTH = 6
+        private const val ZERO_BYTE: Byte = 0x00
+        private const val MAGIC_BYTE: Byte = 0x01
+    }
 }

@@ -70,7 +70,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <module name="ImportOrder">
             <!-- Checks for out of order import statements. -->
 
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
             <property name="groups" value="*,javax,java"/>
             <property name="option" value="bottom"/>
             <property name="tokens" value="STATIC_IMPORT, IMPORT"/>
@@ -131,14 +131,14 @@ page at http://checkstyle.sourceforge.net/config.html -->
               seven characters, this is not in line with common practice at Google.
             -->
             <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,})*$"/>
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <module name="TypeNameCheck">
             <!-- Validates static, final fields against the
             expression "^[A-Z][a-zA-Z0-9]*$". -->
             <metadata name="altname" value="TypeName"/>
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <module name="ConstantNameCheck">
@@ -152,7 +152,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="format" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*|FLAG_.*)$"/>
             <message key="name.invalidPattern"
                      value="Variable ''{0}'' should be in ALL_CAPS (if it is a constant) or be private (otherwise)."/>
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <module name="StaticVariableNameCheck">
@@ -164,7 +164,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="applyToPackage" value="true"/>
             <property name="applyToPrivate" value="true"/>
             <property name="format" value="^[a-z][a-zA-Z0-9]*_?$"/>
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <module name="MemberNameCheck">
@@ -175,32 +175,32 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="applyToPackage" value="true"/>
             <property name="applyToPrivate" value="true"/>
             <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <module name="MethodNameCheck">
             <!-- Validates identifiers for method names. -->
             <metadata name="altname" value="MethodName"/>
             <property name="format" value="^[a-z][a-zA-Z0-9]*(_[a-zA-Z0-9]+)*$"/>
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <module name="ParameterName">
             <!-- Validates identifiers for method parameters against the
               expression "^[a-z][a-zA-Z0-9]*$". -->
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <module name="LocalFinalVariableName">
             <!-- Validates identifiers for local final variables against the
               expression "^[a-z][a-zA-Z0-9]*$". -->
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <module name="LocalVariableName">
             <!-- Validates identifiers for local variables against the
               expression "^[a-z][a-zA-Z0-9]*$". -->
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
 
@@ -228,7 +228,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
         <module name="LeftCurly">
             <!-- Checks for placement of the left curly brace ('{'). -->
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <module name="RightCurly">
@@ -249,12 +249,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
             </pre>
             -->
             <property name="option" value="same"/>
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
         <!-- Checks for braces around if and else blocks -->
         <module name="NeedBraces">
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
             <property name="tokens" value="LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO"/>
         </module>
 
@@ -337,11 +337,15 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="severity" value="error"/>
         </module>
 
+        <module name="EmptyLineSeparator">
+            <property name="allowMultipleEmptyLines" value="false"/>
+        </module>
+
         <module name="ParenPad">
             <!-- Checks that there is no whitespace before close parens or after
                  open parens.
             -->
-            <property name="severity" value="warning"/>
+            <property name="severity" value="error"/>
         </module>
 
     </module>

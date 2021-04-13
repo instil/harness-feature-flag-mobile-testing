@@ -5,7 +5,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
@@ -28,7 +28,16 @@ ext {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        jcenter {
+            content {
+                // Only download the 'kotlinx-html-jvm' module from JCenter, but nothing else.
+                // detekt needs 'kotlinx-html-jvm' for the HTML report.
+                // this is an open issue on detekt but has not yet been addressed
+                // https://github.com/Kotlin/kotlinx.html/issues/173
+                includeModule("org.jetbrains.kotlinx", "kotlinx-html-jvm")
+            }
+        }
     }
 }
 

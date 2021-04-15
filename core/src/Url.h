@@ -18,7 +18,7 @@
 #include "Helpers.h"
 #include "StringUtils.h"
 
-#define URL_MATCH_REGEX "(rtsps?)://([A-Za-z0-9.]+|[[A-Za-z0-9:]+]):?([0-9]+)?/?([A-Za-z0-9-_/.]+)?(\\?[A-Za-z0-9-_/=&]+)?"
+#define URL_MATCH_REGEX "(rtsps?)://(([A-Za-z0-9.]*):(.*)@)?([A-Za-z0-9.]+|[[A-Za-z0-9:]+]):?([0-9]+)?/?([A-Za-z0-9-_/.]+)?(\\?[A-Za-z0-9-_/=&]+)?"
 #define RTSP_PROTOCOL "rtsp"
 #define SECURE_RTSP_PROTOCOL "rtsps"
 #define DEFAULT_RTSP_PORT "554"
@@ -31,6 +31,8 @@ namespace SurgeUtil {
         Url(const std::string &url);
 
         std::string GetProtocol();
+        std::string GetUsername();
+        std::string GetPassword();
         std::string GetHost();
         int GetPort();
         std::string GetFullPath();
@@ -48,6 +50,9 @@ namespace SurgeUtil {
             return IpIsIPv6(ip);
         }
 
+        bool ContainsCredentials() {
+            return !username.empty() && !password.empty();
+        }
     public:
         static bool IpIsIPv6(const std::string &ip) {
             return SurgeUtil::String::Contains(ip, ":");
@@ -55,6 +60,8 @@ namespace SurgeUtil {
 
     private:
         std::string protocol;
+        std::string username;
+        std::string password;
         std::string ip;
         std::string port;
         std::string path;

@@ -76,6 +76,8 @@ namespace Surge {
         void ProcessRtpPacket(const RtpPacket* packet);
         void CheckIfFrameShouldBeDropped(const Surge::RtpPacket* packet);
 
+        void ClearCredentials();
+
     private:
         void NotifyDelegateOfExtendedRtpHeader(const unsigned char *extendedHeaderBuffer, size_t length) {
             if (delegate != nullptr) {

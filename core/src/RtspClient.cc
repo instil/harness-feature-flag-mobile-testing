@@ -77,6 +77,7 @@ Surge::RtspClient::~RtspClient() {
 }
 
 void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)> callback) {
+    ClearCredentials();
     if (transport != nullptr && transport->IsRunning()) {
         INFO("Trying to open a connection while another connection is already running. Forcing disconnection.");
         Disconnect();
@@ -88,6 +89,10 @@ void Surge::RtspClient::Connect(const std::string& url, std::function<void(bool)
     GenerateTransportFromUrl(this->url);
 
     SurgeUtil::Url url_model(url);
+
+    if (url_model.ContainsCredentials()) {
+        SetCredentials(url_model.GetUsername(), url_model.GetPassword());
+    }
 
     transport->RtspTcpOpen(url_model, [this, callback](int result) {
         if (result != 0) {
@@ -149,6 +154,10 @@ void Surge::RtspClient::Disconnect() {
     if (transport != nullptr && transport->IsRunning()) {
         transport->StopRunning();
     }
+}
+
+void Surge::RtspClient::ClearCredentials() {
+    authService->SetStreamCredentials("", "", "");
 }
 
 void Surge::RtspClient::SetCredentials(const std::string& user, const std::string& password) {

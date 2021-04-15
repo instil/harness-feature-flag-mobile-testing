@@ -16,10 +16,12 @@ SurgeUtil::Url::Url(const std::string &url) {
     }
 
     protocol = result[1];
-    ip = result[2];
-    port = result[3];
-    path = result[4];
-    queryParameters = result[5];
+    username = result[3];
+    password = result[4];
+    ip = result[5];
+    port = result[6];
+    path = result[7];
+    queryParameters = result[8];
 
     if (SurgeUtil::String::Contains(ip, "[")) {
         ip = ip.substr(1, ip.length() - 2);
@@ -32,6 +34,14 @@ SurgeUtil::Url::Url(const std::string &url) {
 
 std::string SurgeUtil::Url::GetProtocol() {
     return protocol;
+}
+
+std::string SurgeUtil::Url::GetUsername() {
+    return username;
+}
+
+std::string SurgeUtil::Url::GetPassword() {
+    return password;
 }
 
 std::string SurgeUtil::Url::GetHost() {

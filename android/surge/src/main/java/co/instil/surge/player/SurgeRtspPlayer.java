@@ -135,7 +135,9 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         rtspClient.setTimeRange(startTime, endTime);
 
         rtspClient.connect(url, result -> {
-            setCredentials(username, password);
+            if(!username.isEmpty() || !password.isEmpty()) {
+                setCredentials(username, password);
+            }
 
             rtspClient.describe(rawResponse -> {
                 DescribeResponse response = (DescribeResponse) rawResponse;

@@ -41,7 +41,7 @@ namespace Surge {
     class RtspClient : public ISocketHandlerDelegate, public TransportDelegate, private SurgeUtil::Runnable {
 
     public:
-        RtspClient(IRtspClientDelegate * const delegate, bool forceInterleavedTcp = false);
+        RtspClient(IRtspClientDelegate * const delegate);
 
         ~RtspClient();
 
@@ -164,6 +164,10 @@ namespace Surge {
 
         bool IsInterleavedTransport() {
             return useInterleavedTcpTransport;
+        }
+
+        void SetInterleavedTransport(bool useInterleavedTcpTransport) {
+            this->useInterleavedTcpTransport = useInterleavedTcpTransport;
         }
 
         int GetPacketBufferDelay() {

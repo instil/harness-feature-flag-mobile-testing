@@ -116,7 +116,7 @@ private:
     self = [super init];
     if (self) {
         self.clientDelegate = new RtspClientDelegateWrapper(self);
-        self.client = new Surge::RtspClient(self.clientDelegate, self.interleavedTcpTransport);
+        self.client = new Surge::RtspClient(self.clientDelegate);
         self.diagnosticsTracker = [[DiagnosticsTracker alloc] initWithPlayer:self];
         self.diagnostics = self.diagnosticsTracker;
         [self configurePlayerView];
@@ -463,10 +463,7 @@ private:
 }
 
 - (void)setInterleavedTcpTransport: (bool)usingInterleavedTcpTransport {
-    if (usingInterleavedTcpTransport != self.client->IsInterleavedTransport()) {
-        delete self.client;
-        self.client = new Surge::RtspClient(self.clientDelegate, usingInterleavedTcpTransport);
-    }
+    self.client->SetInterleavedTransport(usingInterleavedTcpTransport);
 }
 
 - (int)packetBufferDelay {

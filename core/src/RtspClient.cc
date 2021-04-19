@@ -22,7 +22,7 @@ using SurgeUtil::Constants::DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS;
 using SurgeUtil::Constants::DEFAULT_PACKET_BUFFER_DELAY_MS;
 using SurgeUtil::Constants::DEFAULT_NO_PACKET_TIMEOUT_MS;
 
-Surge::RtspClient::RtspClient(IRtspClientDelegate * delegate, bool forceInterleavedTcp) : delegate(delegate), url(""), isPlaying(false), startTime(nullptr), endTime(nullptr), timeout(DEFAULT_NO_PACKET_TIMEOUT_MS), tlsRootCertificateUrl(), transport(nullptr), tlsClient(nullptr), useInterleavedTcpTransport(forceInterleavedTcp), tlsCertificateValidationEnabled(true), tlsSelfSignedCertsAllowed(true), depacketizer(nullptr), timeLastPacketWasProcessed(0), lastKeepAliveMs(0), keepAliveIntervalInSeconds(0), processedFirstPayload(false), lastPacketSequenceNum(MAX_SEQ_NUM), dropFrame(false) {
+Surge::RtspClient::RtspClient(IRtspClientDelegate * delegate) : delegate(delegate), url(""), isPlaying(false), startTime(nullptr), endTime(nullptr), timeout(DEFAULT_NO_PACKET_TIMEOUT_MS), tlsRootCertificateUrl(), transport(nullptr), tlsClient(nullptr), useInterleavedTcpTransport(false), tlsCertificateValidationEnabled(true), tlsSelfSignedCertsAllowed(true), depacketizer(nullptr), timeLastPacketWasProcessed(0), lastKeepAliveMs(0), keepAliveIntervalInSeconds(0), processedFirstPayload(false), lastPacketSequenceNum(MAX_SEQ_NUM), dropFrame(false) {
 
     StartErrorDispatcher();
 

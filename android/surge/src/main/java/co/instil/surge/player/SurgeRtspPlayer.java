@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.TextureView;
 
+import org.jetbrains.annotations.NotNull;
+
 import co.instil.surge.authentication.SurgeAuthenticator;
 import co.instil.surge.callbacks.PlayerCallback;
 import co.instil.surge.client.DescribeResponse;
@@ -69,13 +71,14 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
     private DiagnosticsTracker diagnosticsTracker;
 
     public SurgeRtspPlayer() {
-        rtspClient = generateRtspClient(false);
+        rtspClient = generateRtspClient();
         diagnosticsTracker = new DiagnosticsTracker();
         diagnosticsTracker.setRtspClient(rtspClient);
     }
 
-    protected RtspClient generateRtspClient(boolean interleavedTcpTransport) {
-        return new RtspClient(this, interleavedTcpTransport);
+    @NotNull
+    protected RtspClient generateRtspClient() {
+        return new RtspClient(this);
     }
 
     /**
@@ -430,12 +433,7 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
      * @param interleavedTcpTransport True if requiring a TCP transport, false if using a UDP transport.
      */
     public void setInterleavedTransport(boolean interleavedTcpTransport) {
-        if (rtspClient.isInterleavedTransport() == interleavedTcpTransport) {
-            return;
-        }
-
-        rtspClient = generateRtspClient(interleavedTcpTransport);
-        diagnosticsTracker.setRtspClient(rtspClient);
+        rtspClient.setInterleavedTransport(interleavedTcpTransport);
     }
 
     /**

@@ -147,8 +147,8 @@ namespace SurgeXamariniOSBindings {
         /// Enables/disables TLS certificate validation when streaming from a TLS protected RTSP stream. Default: true
         /// </summary>
         /// <value><c>true</c> if TLS certificate verification is enabled; otherwise, <c>false</c>.</value>
-        [Export("tlsCertificateVerificationEnabled")]
-        bool TlsCertificateVerificationEnabled { get; set; }
+        [Export("tlsCertificateValidationEnabled")]
+        bool TlsCertificateValidationEnabled { get; set; }
 
         /// <summary>
         /// Allows/disallows self signed TLS certificates from being used when streaming from a TLS protected RTSP stream. Default: true

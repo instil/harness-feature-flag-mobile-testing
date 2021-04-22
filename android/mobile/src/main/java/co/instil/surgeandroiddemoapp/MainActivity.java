@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
         player.delegate = this;
         player.setInterleavedTransport(true);
 
-        player.setTLSCertificateValidationEnabled(false);
-        player.setTLSSelfSignedCertsAllowed(true);
+        player.setTlsCertificateValidationEnabled(false);
+        player.setTlsSelfSignedCertificatesAllowed(true);
 
         calendar.setTimeZone(TimeZone.getTimeZone("Europe/London"));
     }

@@ -106,7 +106,7 @@
 /*
  * Enables/disables TLS certificate validation when streaming from a TLS protected RTSP stream. Default: true
  */
-@property (nonatomic, assign) BOOL tlsCertificateVerificationEnabled;
+@property (nonatomic, assign) BOOL tlsCertificateValidationEnabled;
 
 /*
  * Allows/disallows self signed TLS certificates from being used when streaming from a TLS protected RTSP stream. Default: true

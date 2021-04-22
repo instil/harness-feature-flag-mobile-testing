@@ -1,5 +1,11 @@
 ## Changelog
 
+## v1.4.1
+
+###### Fixes
+
+* Standardised the naming of the TLS related properties on all platforms.
+
 ## v1.4
 
 ###### Features

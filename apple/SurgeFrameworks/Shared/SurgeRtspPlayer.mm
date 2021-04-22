@@ -524,11 +524,11 @@ private:
     }
 }
 
-- (BOOL)tlsCertificateVerificationEnabled {
+- (BOOL)tlsCertificateValidationEnabled {
     return self.client->IsTLSCertificateValidationEnabled();
 }
 
-- (void)setTlsCertificateVerificationEnabled:(bool)tlsCertificateVerificationEnabled {
+- (void)setTlsCertificateValidationEnabled:(bool)tlsCertificateVerificationEnabled {
     self.client->SetTLSCertificateValidationEnabled(tlsCertificateVerificationEnabled);
 }
 

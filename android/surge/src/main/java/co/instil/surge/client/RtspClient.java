@@ -59,6 +59,8 @@ public class RtspClient implements AutoCloseable {
 
     public native void options(ResponseCallback callback);
 
+    public native void tearDown();
+
     public native void tearDown(ResponseCallback callback);
 
     public native void keepAlive(ResponseCallback callback);

@@ -106,9 +106,18 @@ JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_options
 /*
  * Class:     co_instil_surge_client_RtspClient
  * Method:    tearDown
- * Signature: (Lco/instil/surge/callbacks/ResponseCallback;)V
+ * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_tearDown
+        (JNIEnv *, jobject);
+
+
+/*
+ * Class:     co_instil_surge_client_RtspClient
+ * Method:    tearDown
+ * Signature: (Lco/instil/surge/callbacks/ResponseCallback;)V
+ */
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_tearDown__Lco_instil_surge_callbacks_ResponseCallback
   (JNIEnv *, jobject, jobject);
 
 /*

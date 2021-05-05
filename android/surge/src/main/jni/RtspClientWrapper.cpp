@@ -180,6 +180,15 @@ void JNICALL Java_co_instil_surge_client_RtspClient_options__Lco_instil_surge_ca
 }
 
 JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobject callingObject) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+
+    client->Teardown([](Surge::RtspResponse *response) {
+        delete response;
+    });
+}
+
+JNIEXPORT
 void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobject callingObject, jobject callback) {
     Surge::RtspClient *client = getClient(env, callingObject);
 

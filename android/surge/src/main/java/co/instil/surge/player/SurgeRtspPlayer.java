@@ -279,8 +279,8 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
             }
         }
 
-        rtspClient.tearDown(response ->
-                rtspClient.disconnect());
+        rtspClient.tearDown();
+        rtspClient.disconnect();
     }
 
     /**

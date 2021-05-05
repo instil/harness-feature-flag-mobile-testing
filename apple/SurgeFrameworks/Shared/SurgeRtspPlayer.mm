@@ -390,26 +390,18 @@ private:
 
 - (void)stop {
     SurgeLogInfo(@"Stopping playback of %@", self.url);
-    __weak typeof(self) weakSelf = self;
-    Surge::RtspClient *client = self.client;
-    __weak SurgeDecoder *decoder = self.decoder;
-    __weak id<SurgeRtspPlayerDelegate> delegate = self.delegate;
 
-    self.client->Teardown([weakSelf, client, decoder, delegate] (bool teardownResult) {
-        [weakSelf.diagnosticsTracker stopTracking];
-        
-        if (weakSelf == nil) {
-            return;
-        }
+    self.client->Teardown();
 
-        client->Disconnect();
+    [self.diagnosticsTracker stopTracking];
 
-        if ([delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
-            [delegate rtspPlayerDidStopPlayback:weakSelf];
-        }
+    self.client->Disconnect();
 
-        [decoder deinit];
-    });
+    if ([self.delegate respondsToSelector:@selector(rtspPlayerDidStopPlayback:)]) {
+        [self.delegate rtspPlayerDidStopPlayback:self];
+    }
+
+    [self.decoder deinit];
 }
 
 #pragma mark - Package API

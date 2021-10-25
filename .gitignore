@@ -3,10 +3,13 @@
 
 CMakeCache.txt
 CMakeFiles
+*.user
 Makefile
 cmake_install.cmake
 install_manifest.txt
 build/
+build-*/
+cmake-build-debug/
 
 # iOS/XCode
 .DS_Store
@@ -36,3 +39,8 @@ packages/
 
 # Visual Studio Code
 .vs
+
+# Qt
+.qmake.stash
+moc_*
+qrc_*.cpp

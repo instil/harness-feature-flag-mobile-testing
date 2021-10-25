@@ -6,6 +6,7 @@
 #ifndef DispatchQueue_h
 #define DispatchQueue_h
 
+#include <functional>
 #include <stdio.h>
 #include <queue>
 

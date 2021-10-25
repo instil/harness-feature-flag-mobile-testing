@@ -6,7 +6,7 @@
 #ifndef BITSTREAMWRITER_H
 #define BITSTREAMWRITER_H
 
-
+#include <stdint.h>
 #include <stdlib.h>
 #include <vector>
 

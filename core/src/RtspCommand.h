@@ -10,6 +10,7 @@
 #include <cstdlib>
 
 #include <string>
+#include <cstring>
 
 namespace Surge {
 

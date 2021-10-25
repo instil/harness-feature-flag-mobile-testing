@@ -71,8 +71,9 @@ namespace Surge {
             return sequenceNumber++;
         }
 
-        void ResetSequenceNumber() {
+        void ResetRtspSession() {
             sequenceNumber = 1;
+            session = "";
         }
 
     private:

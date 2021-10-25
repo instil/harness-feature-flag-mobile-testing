@@ -430,6 +430,16 @@ void Surge::RtspClient::KeepAlive(std::function<void(Surge::RtspResponse*)> call
     });
 }
 
+void Surge::RtspClient::RtcpKeepAlive() {
+    if (transport == nullptr || !transport->IsRunning()) {
+        ERROR("Could not execute RTCP request - transport is not running, no connection is available.");
+        return;
+    }
+
+    DEBUG("Sending RTCP Keep-Alive request");
+    transport->RtcpTransaction("SurgeKeepAlive", 14);
+}
+
 void Surge::RtspClient::StartHousekeepingThread() {
     if (housekeepingThread.IsRunning()) {
         return;
@@ -502,6 +512,16 @@ void Surge::RtspClient::Run() {
                     delete resp;
                 }
             });
+        }
+
+        // RTCP KEEP ALIVE
+        int64_t epsilon = SurgeUtil::DateTime::CurrentTimeInMilliseconds() - lastRtcpKeepAliveMs;
+        int64_t epsilonSeconds = delta / 1000;
+        bool needRtcpKeepAlive = !useInterleavedTcpTransport && epsilonSeconds >= static_cast<int64_t>(rtcpKeepAliveIntervalInSeconds * 0.9);
+        if (needRtcpKeepAlive) {
+            DEBUG("Sending RTCP Keep-Alive for session: " << url);
+            RtcpKeepAlive();
+            lastRtcpKeepAliveMs = SurgeUtil::DateTime::CurrentTimeInMilliseconds();
         }
     }
 

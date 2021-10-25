@@ -10,6 +10,8 @@
 #include "BaseWaitableEvent.h"
 #include "Mutex.h"
 
+#include <cstring>
+
 namespace SurgeUtil {
    /**
     * WaitableEvent that may be fired (and reset) on request.

@@ -238,7 +238,7 @@ void Surge::RtspService::Teardown(std::function<void(Surge::RtspResponse*)> call
         }
         delete raw_resp;
 
-        ResetSequenceNumber();
+        ResetRtspSession();
         callback(resp);
     });
 

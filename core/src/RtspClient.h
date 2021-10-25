@@ -30,6 +30,8 @@
 #include "AuthenticationService.h"
 #include "DateTime.h"
 
+#include "Constants.h"
+
 #include <string>
 #include <vector>
 #include <future>
@@ -64,6 +66,8 @@ namespace Surge {
         void Teardown(std::function<void(Surge::RtspResponse*)> callback = NULL);
 
         void KeepAlive(std::function<void(Surge::RtspResponse*)> callback);
+
+        void RtcpKeepAlive();
 
     private:
         void GenerateTransportFromUrl(std::string& url);
@@ -277,6 +281,8 @@ namespace Surge {
         long long timeLastPacketWasProcessed;
         long long lastKeepAliveMs;
         long long keepAliveIntervalInSeconds;
+        long long lastRtcpKeepAliveMs;
+        long long rtcpKeepAliveIntervalInSeconds = SurgeUtil::Constants::DEFAULT_UDP_KEEP_ALIVE_INTERVAL_SECONDS;
         bool processedFirstPayload;
         long long lastPacketSequenceNum;
         bool dropFrame;

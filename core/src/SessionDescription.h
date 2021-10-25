@@ -57,6 +57,8 @@ namespace Surge {
 
         RtspSessionType GetType() const { return type; }
 
+        const std::string GetTypeAsString() const { return RtspSessionTypeString::FromEnum(type); }
+
         bool IsControlUrlComplete() const { return control.find("://") != std::string::npos; }
 
         const std::string GetControl() const { return control; }

@@ -93,14 +93,13 @@
 		F43A191E21E50E6200BA5975 /* SurgeRtspPlayerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = F4E19F64215A84C000D5059E /* SurgeRtspPlayerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F43A191F21E50E6200BA5975 /* DiagnosticsTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = F4E19F74215A8C8C00D5059E /* DiagnosticsTracker.h */; };
 		F43A192021E50E6200BA5975 /* SurgeDiagnostics.h in Headers */ = {isa = PBXBuildFile; fileRef = F431811E216CD97500CDEFE4 /* SurgeDiagnostics.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F45A89D220F50833003C4D81 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D020F50833003C4D81 /* libcrypto.a */; };
-		F45A89D320F50833003C4D81 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A89D120F50833003C4D81 /* libssl.a */; };
+		F4546D7426554D2D007134D0 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4546D7226554D18007134D0 /* libcrypto.a */; };
+		F4546D7526554D3F007134D0 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4546D7326554D18007134D0 /* libssl.a */; };
+		F4546D7626554D50007134D0 /* libuv_a.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F43212AE26542E5E00CB61A2 /* libuv_a.a */; };
 		F469948E26138C9800133ECC /* libssl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F469948C26138C9800133ECC /* libssl.xcframework */; };
 		F469948F26138C9800133ECC /* libssl.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F469948C26138C9800133ECC /* libssl.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F469949026138C9800133ECC /* libcrypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F469948D26138C9800133ECC /* libcrypto.xcframework */; };
 		F469949126138C9800133ECC /* libcrypto.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F469948D26138C9800133ECC /* libcrypto.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F48C83D4210F44B200A632BF /* SurgeAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F48C83D5210F44B300A632BF /* SurgeAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F48C83D6210F44B800A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
 		F48C83D7210F44B900A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
 		F4905BE7210F17B000903D27 /* AuthenticatorMapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */; };
@@ -122,6 +121,8 @@
 		F4C41E94255C276200BD7914 /* SurgeH265NalUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = F4E6BB162554694C00226AA7 /* SurgeH265NalUnit.h */; };
 		F4C41E95255C276200BD7914 /* SurgeH265NalUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E6BB172554694C00226AA7 /* SurgeH265NalUnit.m */; };
 		F4C41E96255C276200BD7914 /* SurgeH265NalUnitParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F40FCE1225547024007B88F9 /* SurgeH265NalUnitParser.h */; };
+		F4C6CD79265418B9001F81EF /* libuv.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4C6CD78265418B9001F81EF /* libuv.xcframework */; };
+		F4C6CD7A265418B9001F81EF /* libuv.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F4C6CD78265418B9001F81EF /* libuv.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4D1A93C25559642003652C2 /* SurgeH265Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D1A93A25559642003652C2 /* SurgeH265Decoder.h */; };
 		F4D1A93D25559642003652C2 /* SurgeH265Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D1A93B25559642003652C2 /* SurgeH265Decoder.m */; };
 		F4E19F67215A84C000D5059E /* SurgeRtspPlayerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = F4E19F64215A84C000D5059E /* SurgeRtspPlayerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -147,6 +148,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				F469949126138C9800133ECC /* libcrypto.xcframework in Embed Frameworks */,
+				F4C6CD7A265418B9001F81EF /* libuv.xcframework in Embed Frameworks */,
 				F469948F26138C9800133ECC /* libssl.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -204,20 +206,25 @@
 		F40FCE1225547024007B88F9 /* SurgeH265NalUnitParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeH265NalUnitParser.h; sourceTree = "<group>"; };
 		F40FCE1325547024007B88F9 /* SurgeH265NalUnitParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeH265NalUnitParser.m; sourceTree = "<group>"; };
 		F431811E216CD97500CDEFE4 /* SurgeDiagnostics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeDiagnostics.h; sourceTree = "<group>"; };
+		F43212AE26542E5E00CB61A2 /* libuv_a.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libuv_a.a; path = "../../core/lib/libuv-cmake/lib/macos/x86/libuv_a.a"; sourceTree = "<group>"; };
+		F4546D7226554D18007134D0 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../core/lib/openssl-mobile/lib/macos/x86/libcrypto.a"; sourceTree = "<group>"; };
+		F4546D7326554D18007134D0 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/macos/x86/libssl.a"; sourceTree = "<group>"; };
 		F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayer_Private.h; sourceTree = "<group>"; };
 		F45A89D020F50833003C4D81 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../core/lib/openssl-mobile/lib/mac/libcrypto.a"; sourceTree = "<group>"; };
 		F45A89D120F50833003C4D81 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/mac/libssl.a"; sourceTree = "<group>"; };
 		F469948C26138C9800133ECC /* libssl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libssl.xcframework; path = "../../core/lib/openssl-mobile/lib/ios/libssl.xcframework"; sourceTree = "<group>"; };
 		F469948D26138C9800133ECC /* libcrypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libcrypto.xcframework; path = "../../core/lib/openssl-mobile/lib/ios/libcrypto.xcframework"; sourceTree = "<group>"; };
-		F4905BE3210F15C300903D27 /* SurgeAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeAuthenticator.h; sourceTree = "<group>"; };
 		F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthenticatorMapper.h; sourceTree = "<group>"; };
 		F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AuthenticatorMapper.mm; sourceTree = "<group>"; };
 		F497B42D20E120A10067D92A /* libssl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/ios/libssl.a"; sourceTree = "<group>"; };
 		F497B42E20E120A20067D92A /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libcrypto.a; path = "../../core/lib/openssl-mobile/lib/ios/libcrypto.a"; sourceTree = "<group>"; };
 		F4B2A00E1D4B87C100979ABB /* NSDate+SurgeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+SurgeExtensions.h"; sourceTree = "<group>"; };
 		F4B2A00F1D4B87C100979ABB /* NSDate+SurgeExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDate+SurgeExtensions.mm"; sourceTree = "<group>"; };
+		F4C6CD78265418B9001F81EF /* libuv.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libuv.xcframework; path = "../../core/lib/libuv-cmake/lib/ios/libuv.xcframework"; sourceTree = "<group>"; };
 		F4D1A93A25559642003652C2 /* SurgeH265Decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeH265Decoder.h; sourceTree = "<group>"; };
 		F4D1A93B25559642003652C2 /* SurgeH265Decoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeH265Decoder.m; sourceTree = "<group>"; };
+		F4D6759725F006310033DE05 /* libcrypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libcrypto.xcframework; path = "../../../openssl-mobile/libcrypto.xcframework"; sourceTree = "<group>"; };
+		F4D6759D25F0063B0033DE05 /* libssl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libssl.xcframework; path = "../../../openssl-mobile/libssl.xcframework"; sourceTree = "<group>"; };
 		F4E19F64215A84C000D5059E /* SurgeRtspPlayerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayerDelegate.h; sourceTree = "<group>"; };
 		F4E19F74215A8C8C00D5059E /* DiagnosticsTracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiagnosticsTracker.h; sourceTree = "<group>"; };
 		F4E19F75215A8C8C00D5059E /* DiagnosticsTracker.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DiagnosticsTracker.mm; sourceTree = "<group>"; };
@@ -225,8 +232,6 @@
 		F4E6BB172554694C00226AA7 /* SurgeH265NalUnit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurgeH265NalUnit.m; sourceTree = "<group>"; };
 		F4EDD5B2215D0ECC00E7827F /* SurgeAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurgeAuthenticator.h; sourceTree = "<group>"; };
 		F4FEC4B1215A7AC60098366F /* SurgeDiagnosticsDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeDiagnosticsDelegate.h; sourceTree = "<group>"; };
-		F4D6759725F006310033DE05 /* libcrypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libcrypto.xcframework; path = "../../../openssl-mobile/libcrypto.xcframework"; sourceTree = "<group>"; };
-		F4D6759D25F0063B0033DE05 /* libssl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libssl.xcframework; path = "../../../openssl-mobile/libssl.xcframework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,9 +239,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F45A89D220F50833003C4D81 /* libcrypto.a in Frameworks */,
-				F45A89D320F50833003C4D81 /* libssl.a in Frameworks */,
 				42D672581D306A2E00D42C35 /* libSurgeCore.a in Frameworks */,
+				F4546D7626554D50007134D0 /* libuv_a.a in Frameworks */,
+				F4546D7426554D2D007134D0 /* libcrypto.a in Frameworks */,
+				F4546D7526554D3F007134D0 /* libssl.a in Frameworks */,
 				4241D51E1CBB07F80087BAAF /* AppKit.framework in Frameworks */,
 				422E8E4C1CBB1FA00092FFB3 /* CoreVideo.framework in Frameworks */,
 				422E8E4E1CBB1FA50092FFB3 /* VideoToolbox.framework in Frameworks */,
@@ -251,6 +257,7 @@
 				422E8E481CBB1F840092FFB3 /* CoreVideo.framework in Frameworks */,
 				F469949026138C9800133ECC /* libcrypto.xcframework in Frameworks */,
 				F469948E26138C9800133ECC /* libssl.xcframework in Frameworks */,
+				F4C6CD79265418B9001F81EF /* libuv.xcframework in Frameworks */,
 				426A40E41CB1A3F200A4712B /* UIKit.framework in Frameworks */,
 				422E8E461CBB1F500092FFB3 /* VideoToolbox.framework in Frameworks */,
 			);
@@ -392,6 +399,10 @@
 		42F577B01CA3575800112E27 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4546D7226554D18007134D0 /* libcrypto.a */,
+				F4546D7326554D18007134D0 /* libssl.a */,
+				F43212AE26542E5E00CB61A2 /* libuv_a.a */,
+				F4C6CD78265418B9001F81EF /* libuv.xcframework */,
 				F469948D26138C9800133ECC /* libcrypto.xcframework */,
 				F4D6759D25F0063B0033DE05 /* libssl.xcframework */,
 				F4D6759725F006310033DE05 /* libcrypto.xcframework */,
@@ -806,7 +817,8 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/lib/mac",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/lib/macos/x86",
+					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/lib/macos/x86",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -874,7 +886,8 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/lib/mac",
+					"$(PROJECT_DIR)/../../core/lib/openssl-mobile/lib/macos/x86",
+					"$(PROJECT_DIR)/../../core/lib/libuv-cmake/lib/macos/x86",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -892,6 +905,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -935,7 +949,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -947,7 +961,7 @@
 				);
 				MODULE_NAME = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -963,6 +977,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1001,7 +1016,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SurgeiOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1013,7 +1028,7 @@
 				);
 				MODULE_NAME = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.instil.SurgeiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

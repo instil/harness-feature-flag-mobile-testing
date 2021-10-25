@@ -126,6 +126,10 @@ void Surge::Transport::RtspTransaction(const RtspCommand* command, std::function
     RtspTransaction((char *)command->BytesPointer(), command->PointerLength(), callback);
 }
 
+void Surge::Transport::RtcpTransaction(const char *data, const size_t length) {
+    WARNING("Rtcp transactions not implemented for this socket.");
+}
+
 void Surge::Transport::RtspTransaction(const char *data, const size_t length, std::function<void(Response*)> callback) {
     DEBUG("Sending command to server");
 
@@ -212,11 +216,14 @@ void Surge::Transport::AttachRtspCallbacksToLibuv() {
 
     m_timer->on<uvw::TimerEvent>([this](const uvw::TimerEvent &timerEvent, uvw::TimerHandle &timer) {
         INFO("RTSP timeout triggered, cancelling RTSP request.");
-        rtspCallback(nullptr);
+        if (rtspCallback != nullptr) {
+            rtspCallback(nullptr);
+        }
     });
 
     m_libuvCloser->on<uvw::AsyncEvent>([this](const uvw::AsyncEvent &asyncEvent, uvw::AsyncHandle &asyncHandle) {
         DEBUG("Processing request to stop transport thread.");
+        rtspCallback = nullptr;
         m_loop->stop();
     });
 }

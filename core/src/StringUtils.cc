@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 #include "StringUtils.h"
+#include <algorithm>
 
 std::string SurgeUtil::String::ToLowerCase(const std::string& input) {
     std::string result = input;

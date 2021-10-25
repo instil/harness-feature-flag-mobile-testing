@@ -9,6 +9,7 @@
     #include <endian.h>
 #endif
 
+#include <netinet/in.h>
 #include "RtpPacket.h"
 #include "Logging.h"
 

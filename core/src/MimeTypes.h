@@ -7,22 +7,35 @@
 #ifndef __MIME_TYPES_H__
 #define __MIME_TYPES_H__
 
+#include <string>
+
 namespace Surge {
 
-    typedef enum {
-        
+    enum RtspSessionType : int {
         H264,
-
         H265,
-
         MP4V,
-
         MJPEG,
-
         UNKNOWN
-        
-    } RtspSessionType;
-    
+    };
+
+    namespace RtspSessionTypeString {
+        static std::string FromEnum(RtspSessionType type) {
+            switch (type) {
+            case H264:
+                return "H.264";
+            case H265:
+                return "H.265";
+            case MP4V:
+                return "MP4V";
+            case MJPEG:
+                return "MJPEG";
+            default:
+                return "Unknown";
+            }
+        }
+    };
+
 };
 
 #endif //__MIME_TYPES_H__

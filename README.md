@@ -2,7 +2,8 @@
 
 Surge is a high performance Real-Time Streaming Protocol ([RTSP](https://en.wikipedia.org/wiki/Real_Time_Streaming_Protocol)) and Real-Time Transport Protocol ([RTP](https://en.wikipedia.org/wiki/Real-time_Transport_Protocol)) implementation with support for multiple languages and platforms. RTP can handle many AV formats and Surge currently supports the most popular formats below.
 
-- H264
+- H.264
+- H.265
 - MP4V-ES
 - MJPEG
 
@@ -16,8 +17,8 @@ Surge seeks to address these issues by being designed from the ground up to exec
 ## Contacts
 
 - [Matt McComb](mailto:matt.mccomb@instil.co) (Project Lead)
-- [Paul Shields](mailto:paul.shields@instil.co) (Developer)
-- [Niall Kelly](mailto:niall.kelly@instil.co) (Developer)
+- [Paul Shields](mailto:paul.shields@instil.co) (Technical Lead)
+- [Niall Robson](mailto:niall.robson@instil.co) (Developer)
 
 ## Changelog
 
@@ -33,8 +34,14 @@ A workspace is located at `apple/Surge.xcworkspace` for developing any Apple Sur
 
 A Gradle project is located under `android/build.gradle`, which contains the Android Surge project containing the decoder code and JNI bindings to the SurgeCore project. 
 
+### Qt Library
+
+A QMake based Qt project is located under the `qt/SurgeForQt` ddirectory, which contains the Qt library project, the unit tests and a demo app in a Qt subdirs project.
+
 
 ## Building
+
+### Prerequisites
 
 Prior to building the library ensure that you have cloned the project and acquired all its required dependencies by running the first-run Install Dependencies script.
 
@@ -42,11 +49,23 @@ Prior to building the library ensure that you have cloned the project and acquir
 $ ./INSTALL-DEPENDENCIES.sh
 ```
 
-Note that this script takes a while to complete due to the OpenSSL dependency - on average it takes around 20 minutes to build. If you need the dependencies quickly, you can use the following to download pre-built binaries of all dependencies that require compilation.
+If you want to build the dependencies from source, run the following command.
 
 ```bash
-$ ./INSTALL-DEPENDENCIES.sh --no-build
+$ ./INSTALL-DEPENDENCIES.sh --build
 ```
+
+Note that this script takes a while to complete due to the OpenSSL dependency - on average it takes around 20 minutes to build.
+
+#### Qt
+
+Note that the Qt project is slightly different from the mobile projects. While the mobile projects use statically built versions fo the dependencies, due to the nature fo the project the Qt library uses the shared libraries that are available on the build and runtime machines.
+
+To build the Qt project, you must also ensure the following are installed
+
+_macOS_: `brew install openssl libuv`
+
+_Ubuntu_: `sudo apt install libuv1-dev libssl-dev`
 
 ### iOS
 
@@ -80,8 +99,27 @@ $ cd xamarin
 $ ./build-android.sh
 ```
 
+### Qt
+
+The Qt project is designed to be built from Qt Creator, rather than the CLI, but it can be built headlessly if required:
+
+```bash
+$ cd qt/SurgeForQt
+$ qmake
+$ make
+```
+
+Once built, you can run the unit tests by running the test runner:
+
+```bash
+$ ./unittest/unittest
+```
 
 ### Core
+
+The SurgeCore library is built by each of the three platform projects themselves to ensure they are compatible with the architecture and system the library is required to run on. As such, you **do not** need to build SurgeCore manually. 
+
+The only situation where you need to build SurgeCore manually is if you need to tun the SurgeCore unit tests.
 
 To build the core Surge C/C++ library.
 

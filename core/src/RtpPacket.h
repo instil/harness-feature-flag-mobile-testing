@@ -8,6 +8,7 @@
 #define __RTP_PACKET_H__
 
 #include <cstdlib>
+#include <stdint.h>
 
 namespace Surge {
 

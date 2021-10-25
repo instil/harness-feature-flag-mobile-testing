@@ -19,7 +19,7 @@
 
 #include "AuthenticationService.h"
 
-#define Method(e) ({__unused Surge::RtspCommandType _e = e;std::string(#e);})
+#define Method(e) ({Surge::RtspCommandType _e = e;std::string(#e);})
 
 namespace Surge {
 

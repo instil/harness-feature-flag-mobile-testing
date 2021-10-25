@@ -6,6 +6,7 @@
 #ifndef BITSTREAMREADER_H
 #define BITSTREAMREADER_H
 
+#include <stdint.h>
 #include <stdlib.h>
 
 namespace SurgeUtil {

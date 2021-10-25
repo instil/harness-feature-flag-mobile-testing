@@ -9,6 +9,7 @@
 #include <functional>
 #include <deque>
 #include <vector>
+#include <algorithm>
 
 #include "RtpPacket.h"
 #include "Logging.h"

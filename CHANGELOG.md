@@ -1,5 +1,18 @@
 ## Changelog
 
+## v1.5
+
+###### Features
+
+* Qt has been added as a supported platform on macOS and Linux.
+* A keep-alive request has been added to RTCP channel when using the UDP transport
+
+## v1.4.2
+
+###### Fixes
+
+* Fixing a specific issue that caused the player to crash when try to call stop on a broken stream when reusing a Surge player.
+
 ## v1.4.1
 
 ###### Fixes

@@ -9,6 +9,7 @@
 
 #include <initializer_list>
 #include <vector>
+#include <cstring>
 
 namespace SurgeUtil {
     

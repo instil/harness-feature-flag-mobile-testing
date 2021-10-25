@@ -25,6 +25,7 @@ namespace Surge {
         void StartRunning() override;
         void StopRunning(bool waitUntilStopped = true) override;
         void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;
+        void RtcpTransaction(const char *data, const size_t length) override;
         void ArbitraryDataTransaction(const char *data, const size_t length) override;
         void StartRtspTimer();
         void StopRtspTimer();

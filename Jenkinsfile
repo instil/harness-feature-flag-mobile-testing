@@ -25,9 +25,27 @@ node("xamarin") {
     }
 }
 
+node("surge-qt") {
+    stage("Checkout") {
+        checkout scm
+    }
+
+    stage("Acquiring Dependencies") {
+       acquireDependencies()
+    }
+
+    stage("Build Qt") {
+        buildQtProject()
+    }
+
+    stage("Run Qt Unit Tests") {
+        testQtProject()
+    }
+}
+
 def acquireDependencies() {
     try {
-        sh "./INSTALL-DEPENDENCIES.sh --no-build"
+        sh "./INSTALL-DEPENDENCIES.sh"
     } catch(e) {
         slackNotifyError("Failed to acquire Surge dependencies, see ${env.BUILD_URL}console")
         error "Build failed"
@@ -82,6 +100,30 @@ def buildXamarinDlls() {
         }
     } catch(e) {
         slackNotifyError("Failed to build Xamarin DLLs, see ${env.BUILD_URL}console")
+        error "Build failed"
+    }
+}
+
+def buildQtProject() {
+    try {
+        dir("qt/SurgeForQt") {
+            sh "qmake"
+            sh "make"
+        }
+    } catch(e) {
+        slackNotifyError("Failed to build Surge for Qt, see ${env.BUILD_URL}console")
+        error "Build failed"
+    }
+}
+
+
+def testQtProject() {
+    try {
+        dir("qt/SurgeForQt/unittest") {
+            sh "./unittest -platform minimal"
+        }
+    } catch(e) {
+        slackNotifyError("Failed to run Surge for Qt tests, see ${env.BUILD_URL}console")
         error "Build failed"
     }
 }

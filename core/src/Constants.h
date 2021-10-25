@@ -15,6 +15,8 @@ namespace SurgeUtil {
 
         static int DEFAULT_KEEP_ALIVE_INTERVAL_SECONDS = 60;
 
+        static int DEFAULT_UDP_KEEP_ALIVE_INTERVAL_SECONDS = 5;
+
         static int DEFAULT_NO_PACKET_TIMEOUT_MS = 10000;
 
         static int DEFAULT_CONNECT_TIMEOUT_MS = 5000;

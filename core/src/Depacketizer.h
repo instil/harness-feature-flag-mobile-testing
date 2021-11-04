@@ -17,6 +17,8 @@ namespace Surge {
     public:
         Depacketizer(std::vector<unsigned char> *frameBuffer) : frameBuffer(frameBuffer) {};
 
+        virtual ~Depacketizer() {};
+
         virtual void ProcessPacket(const RtpPacket *packet, const bool isFirstPayload) = 0;
 
         uint32_t GetWidth() {

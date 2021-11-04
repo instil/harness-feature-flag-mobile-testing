@@ -60,6 +60,6 @@ task ktlint(type: JavaExec) {
 }
 
 detekt {
-    version = "1.16.0"
+    version = "1.18.1"
     config = files("$project.projectDir/../config/detekt/detekt-config.yml")
 }

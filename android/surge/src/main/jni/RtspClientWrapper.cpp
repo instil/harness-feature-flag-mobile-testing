@@ -180,7 +180,7 @@ void JNICALL Java_co_instil_surge_client_RtspClient_options__Lco_instil_surge_ca
 }
 
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobject callingObject) {
+void JNICALL Java_co_instil_surge_client_RtspClient_tearDown__(JNIEnv *env, jobject callingObject) {
     Surge::RtspClient *client = getClient(env, callingObject);
 
     client->Teardown([](Surge::RtspResponse *response) {
@@ -189,7 +189,7 @@ void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobjec
 }
 
 JNIEXPORT
-void JNICALL Java_co_instil_surge_client_RtspClient_tearDown(JNIEnv *env, jobject callingObject, jobject callback) {
+void JNICALL Java_co_instil_surge_client_RtspClient_tearDown__Lco_instil_surge_callbacks_ResponseCallback_2(JNIEnv *env, jobject callingObject, jobject callback) {
     Surge::RtspClient *client = getClient(env, callingObject);
 
     jobject globalCallback = env->NewGlobalRef(callback);

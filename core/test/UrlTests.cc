@@ -59,6 +59,15 @@ TEST(URL, TestThatCredentialsCanBeParsedFromUrlsWithAuthCredentials) {
     ASSERT_STREQ("pass", url.GetPassword().c_str());
 }
 
+TEST(URL, TestThatVeryLongUrlCanBeCorrectlyParsed) {
+    const char *test_url = "rtsps://stream-ue1-bravo.dropcam.com:443/sdm_live_stream/CiQA2vuxrwSdq8xV8wb7ypchRnBgj9eLFJ5VKzFYGHQCfxEtb8cScQBBuHgoDVDWfN6XOLzR5p2hx7TK78qMLJ2ThtfRrfvSBhokGnY7GrFlfsH_rh8TPghOeW1VdtfsauFk2n_kHsjsndE4uyymMtCLcydS9mgWdF_WXt_Sknkab-ZoB-3UK11qEQknXIQuWlE1US0Rs3YS?auth=g.0.eyJraWQiOiIyMzhiNTUxZ";
+
+    SurgeUtil::Url url(test_url);
+    ASSERT_STREQ("stream-ue1-bravo.dropcam.com", url.GetHost().c_str());
+    ASSERT_EQ(443, url.GetPort());
+    ASSERT_STREQ("sdm_live_stream/CiQA2vuxrwSdq8xV8wb7ypchRnBgj9eLFJ5VKzFYGHQCfxEtb8cScQBBuHgoDVDWfN6XOLzR5p2hx7TK78qMLJ2ThtfRrfvSBhokGnY7GrFlfsH_rh8TPghOeW1VdtfsauFk2n_kHsjsndE4uyymMtCLcydS9mgWdF_WXt_Sknkab-ZoB-3UK11qEQknXIQuWlE1US0Rs3YS", url.GetPath().c_str());
+}
+
 // Known issue, to be fixed in next PR.
 TEST(URL, DISABLED_TestThatParsingAnInvalidSchemeResultsInAnException) {
     const char *test_url = "rtsp:/myurl:1234";

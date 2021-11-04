@@ -18,7 +18,7 @@
 #include "Helpers.h"
 #include "StringUtils.h"
 
-#define URL_MATCH_REGEX "(rtsps?)://(([A-Za-z0-9.]*):(.*)@)?([A-Za-z0-9.]+|[[A-Za-z0-9:]+]):?([0-9]+)?/?([A-Za-z0-9_/.-]+)?(\\?[A-Za-z0-9_/=&-]+)?"
+#define URL_MATCH_REGEX "(rtsps?)://(([A-Za-z0-9.]*):(.*)@)?([A-Za-z0-9_.-]+|[[A-Za-z0-9:]+]):?([0-9]+)?/?([A-Za-z0-9_/.-]+)?(\\?[A-Za-z0-9_/=&-]+)?"
 #define RTSP_PROTOCOL "rtsp"
 #define SECURE_RTSP_PROTOCOL "rtsps"
 #define DEFAULT_RTSP_PORT "554"

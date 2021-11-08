@@ -10,7 +10,7 @@ package co.instil.surge.decoders;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.view.Surface;
-import co.instil.surge.decoders.h264.nalu.NaluSegment;
+import co.instil.surge.decoders.h264.nalu.H264NaluSegment;
 import co.instil.surge.decoders.h265.nalu.H265NaluSegment;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class MediaCodecFactory {
     private static final int DUMMY_WIDTH = 720;
     private static final int DUMMY_HEIGHT = 480;
 
-    public MediaCodec createH264DecoderWithParameters(NaluSegment sps, NaluSegment pps, Surface surface) throws IOException {
+    public MediaCodec createH264DecoderWithParameters(H264NaluSegment sps, H264NaluSegment pps, Surface surface) throws IOException {
         MediaCodec codec = MediaCodec.createDecoderByType(H264_DECODER_IDENTIFIER);
         MediaFormat format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, DUMMY_WIDTH, DUMMY_HEIGHT);
         format.setByteBuffer("csd-0", ByteBuffer.wrap(sps.getPayload()));

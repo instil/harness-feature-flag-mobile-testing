@@ -11,9 +11,6 @@ import co.instil.surge.client.SessionDescription;
 
 import java.nio.ByteBuffer;
 
-/**
- *
- */
 public interface Decoder {
 
     void decodeFrameBuffer(SessionDescription sessionDescription,

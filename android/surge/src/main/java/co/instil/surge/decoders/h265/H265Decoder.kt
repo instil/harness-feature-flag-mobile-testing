@@ -69,6 +69,16 @@ class H265Decoder(
         }
     }
 
+    private fun startMediaCodec(segments: List<H265NaluSegment>) {
+        if (!hasCachedParameterSets() && mediaCodec == null) {
+            LOGGER.debug("Decoder received parameter sets")
+            cacheParameterSets(segments)
+            mediaCodec = createMediaCodec()
+            onCreatedMediaCodec(mediaCodec)
+            mediaCodec?.start()
+        }
+    }
+
     private fun decodeParameterSetNaluSegments(segments: List<H265NaluSegment>, presentationTime: Int) {
         segments.firstOrNull { it.type == VPS }?.let { onReceiveH265Packet(H265Packet(it, presentationTime.toLong())) }
         segments.firstOrNull { it.type == SPS }?.let { onReceiveH265Packet(H265Packet(it, presentationTime.toLong())) }
@@ -80,16 +90,6 @@ class H265Decoder(
         val packet = buildH265FrameFromNaluSegments(presentationTime)
         onReceiveH265Packet(packet)
         cachedSegments.clear()
-    }
-
-    private fun startMediaCodec(segments: List<H265NaluSegment>) {
-        if (!hasCachedParameterSets() && mediaCodec == null) {
-            LOGGER.debug("Decoder received parameter sets")
-            cacheParameterSets(segments)
-            mediaCodec = createMediaCodec()
-            onCreatedMediaCodec(mediaCodec)
-            mediaCodec?.start()
-        }
     }
 
     private fun buildH265FrameFromNaluSegments(presentationTime: Int): H265Packet {

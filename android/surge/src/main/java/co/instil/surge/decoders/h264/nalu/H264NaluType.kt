@@ -4,13 +4,9 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
+package co.instil.surge.decoders.h264.nalu
 
-package co.instil.surge.decoders.h264.nalu;
-
-/**
- *
- */
-public enum NaluType {
+enum class H264NaluType(val description: String) {
     UNSPECIFIED("0: Unspecified (non-VCL)"),
     CODED_SILCE_NON_IDR("1: Coded slice of a non-IDR picture (VCL)"),
     CODED_SLICE_DATA_PART_A("2: Coded slice data partition A (VCL)"),
@@ -44,43 +40,16 @@ public enum NaluType {
     UNSPECIFIED_30("30: Unspecified (non-VCL)"),
     UNSPECIFIED_31("31: Unspecified (non-VCL)");
 
-    private String description;
-    private static final String TAG = "NaluType";
+    override fun toString(): String = description
 
-    NaluType(String description) {
-        this.description = description;
-    }
-
-    public String toString() {
-        return description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public static NaluType getTypeFromCode(int rawType) {
-        NaluType type = NaluType.UNSPECIFIED;
-        switch(rawType) {
-            case 1:
-                type = NaluType.CODED_SILCE_NON_IDR;
-                break;
-
-            case 5:
-                type = NaluType.CODED_SLICE_IDR;
-                break;
-
-            case 7:
-                type = NaluType.SPS;
-                break;
-
-            case 8:
-                type = NaluType.PPS;
-                break;
-
-            default:
-                break;
+    companion object {
+        @JvmStatic
+        fun getTypeFromCode(rawType: Int) = when (rawType) {
+            1 -> CODED_SILCE_NON_IDR
+            5 -> CODED_SLICE_IDR
+            7 -> SPS
+            8 -> PPS
+            else -> UNSPECIFIED
         }
-        return type;
     }
 }

@@ -8,7 +8,7 @@
 package co.instil.surge.decoders;
 
 import co.instil.surge.client.SurgeVideoView;
-import co.instil.surge.decoders.h264.AsyncH264Decoder;
+import co.instil.surge.decoders.h264.H264Decoder;
 import co.instil.surge.decoders.h265.H265Decoder;
 import co.instil.surge.decoders.mjpeg.MjpegDecoder;
 import co.instil.surge.decoders.mp4v.AsyncMp4vDecoder;
@@ -25,7 +25,7 @@ public final class DecoderFactory {
     private DecoderFactory() {}
 
     public static Decoder generateH264Decoder(SurgeVideoView videoView, DiagnosticsTracker diagnostics) {
-        return new AsyncH264Decoder(videoView, diagnostics);
+        return new H264Decoder(videoView, diagnostics);
     }
 
     public static Decoder generateH265Decoder(SurgeVideoView videoView, DiagnosticsTracker diagnostics) {

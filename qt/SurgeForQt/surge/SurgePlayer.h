@@ -44,6 +44,8 @@ public:
 
     void SetVideoSurface(QAbstractVideoSurface *videoSurface);
 
+    void SetPacketBufferDelay(int bufferDelayMs);
+
 signals:
     void StreamInitiated();
     void StreamInitiationFailed();

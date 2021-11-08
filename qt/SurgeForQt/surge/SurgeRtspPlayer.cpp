@@ -301,6 +301,10 @@ void SurgeRtspPlayer::SetVideoSurface(QAbstractVideoSurface *videoSurface) {
     }
 }
 
+void SurgeRtspPlayer::SetPacketBufferDelay(int bufferDelayMs) {
+    this->rtspClient->SetPacketBufferDelay(bufferDelayMs);
+}
+
 void SurgeRtspPlayer::ClientReceivedFrame(const unsigned char * frameBuffer,
                          size_t length,
                          int32_t width,

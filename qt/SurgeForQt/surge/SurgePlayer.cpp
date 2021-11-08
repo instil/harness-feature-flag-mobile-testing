@@ -212,3 +212,11 @@ void SurgePlayer::AttachVideoSurface() {
         connect(videoSurface, &SurgeVideoSurface::FrameBitrate, &diagnosticsTracker, &DiagnosticsTracker::TrackNewFrameOfSize);
     }
 }
+
+void SurgePlayer::SetPacketBufferDelay(int bufferDelayMs) {
+    if (urlProtocol == HTTP) {
+        qWarning() << "Packet buffer delay is ignored when streaming using MJPEG over HTTP.";
+    }
+
+    surgeRtspPlayer->SetPacketBufferDelay(bufferDelayMs);
+}

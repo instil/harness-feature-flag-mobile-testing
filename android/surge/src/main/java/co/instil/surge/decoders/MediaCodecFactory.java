@@ -10,8 +10,9 @@ package co.instil.surge.decoders;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.view.Surface;
-import co.instil.surge.decoders.h264.nalu.H264NaluSegment;
-import co.instil.surge.decoders.h265.nalu.H265NaluSegment;
+
+import co.instil.surge.decoders.mpeg.h264.nalu.H264NaluSegment;
+import co.instil.surge.decoders.mpeg.h265.nalu.H265NaluSegment;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

@@ -1,15 +1,16 @@
 /*
- * Copyright (c) 2017 Instil Software.
+ * Copyright (c) 2021 Instil Software.
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-package co.instil.surge.decoders.h264
+package co.instil.surge.decoders.mpeg.h264
 
 import android.media.MediaCodec
 import co.instil.surge.client.SurgeVideoView
 import co.instil.surge.decoders.MediaCodecFactory
-import co.instil.surge.decoders.h264.nalu.H264NaluParser
+import co.instil.surge.decoders.mpeg.MpegPacket
+import co.instil.surge.decoders.mpeg.h264.nalu.H264NaluParser
 import co.instil.surge.diagnostics.DiagnosticsTracker
 import java.util.ArrayList
 
@@ -39,13 +40,9 @@ class StubH264Decoder : H264Decoder {
         // do nothing
     }
 
-    override fun onReceiveH264Packet(packet: H264Packet) {
-        receivedPackets.add(packet)
+    override fun onReceiveMpegPacket(packet: MpegPacket) {
+        receivedPackets.add(packet as H264Packet)
     }
 
     fun numberOfReceivedPackets(): Int = receivedPackets.size
-
-    protected fun lastReceivedPacket(): H264Packet? =
-        if (numberOfReceivedPackets() == 0) null
-        else receivedPackets[receivedPackets.size - 1]
 }

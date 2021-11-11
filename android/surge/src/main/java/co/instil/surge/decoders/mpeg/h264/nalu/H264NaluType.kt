@@ -1,12 +1,14 @@
 /*
- * Copyright (c) 2017 Instil Software.
+ * Copyright (c) 2021 Instil Software.
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-package co.instil.surge.decoders.h264.nalu
+package co.instil.surge.decoders.mpeg.h264.nalu
 
-enum class H264NaluType(val description: String) {
+import co.instil.surge.decoders.mpeg.NaluType
+
+enum class H264NaluType(val description: String) : NaluType {
     UNSPECIFIED("0: Unspecified (non-VCL)"),
     CODED_SILCE_NON_IDR("1: Coded slice of a non-IDR picture (VCL)"),
     CODED_SLICE_DATA_PART_A("2: Coded slice data partition A (VCL)"),

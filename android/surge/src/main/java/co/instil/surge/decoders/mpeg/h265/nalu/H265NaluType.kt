@@ -1,6 +1,15 @@
-package co.instil.surge.decoders.h265.nalu
+/*
+ * Copyright (c) 2021 Instil Software.
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 
-enum class H265NaluType(private val description: String) {
+package co.instil.surge.decoders.mpeg.h265.nalu
+
+import co.instil.surge.decoders.mpeg.NaluType
+
+enum class H265NaluType(private val description: String) : NaluType {
     CODED_SLICE_TRAIL_N("0: Coded slice segment of a non-TSA, non-STSA trailing picture (VCL)"),
     CODED_SLICE_TRAIL_R("1: Coded slice segment of a non-TSA, non-STSA trailing picture (VCL)"),
     CODED_SLICE_TSA_N("2: Coded slice segment of a Temporal Sub-layer Access (TSA) picture (VCL)"),

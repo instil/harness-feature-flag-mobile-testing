@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2017 Instil Software.
+ * Copyright (c) 2021 Instil Software.
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-package co.instil.surge.decoders.h264
+package co.instil.surge.decoders.mpeg.h264
 
 import android.media.MediaCodec
 import android.view.Surface
@@ -12,11 +12,11 @@ import co.instil.surge.client.SessionDescription
 import co.instil.surge.client.SessionType
 import co.instil.surge.client.SurgeVideoView
 import co.instil.surge.decoders.MediaCodecFactory
-import co.instil.surge.decoders.h264.H264TestUtils.NaluSpec
-import co.instil.surge.decoders.h264.H264TestUtils.generateNalUnits
-import co.instil.surge.decoders.h264.nalu.H264NaluParser
-import co.instil.surge.decoders.h264.nalu.H264NaluSegment
-import co.instil.surge.decoders.h264.nalu.H264NaluType
+import co.instil.surge.decoders.mpeg.h264.H264TestUtils.NaluSpec
+import co.instil.surge.decoders.mpeg.h264.H264TestUtils.generateNalUnits
+import co.instil.surge.decoders.mpeg.h264.nalu.H264NaluParser
+import co.instil.surge.decoders.mpeg.h264.nalu.H264NaluSegment
+import co.instil.surge.decoders.mpeg.h264.nalu.H264NaluType
 import co.instil.surge.diagnostics.DiagnosticsTracker
 import org.easymock.Capture
 import org.easymock.EasyMock

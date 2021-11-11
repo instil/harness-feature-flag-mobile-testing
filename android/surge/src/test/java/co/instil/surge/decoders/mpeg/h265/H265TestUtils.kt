@@ -1,6 +1,13 @@
-package co.instil.surge.decoders.h265
+/*
+ * Copyright (c) 2021 Instil Software.
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 
-import co.instil.surge.decoders.h265.nalu.H265NaluType
+package co.instil.surge.decoders.mpeg.h265
+
+import co.instil.surge.decoders.mpeg.h265.nalu.H265NaluType
 import java.lang.Math.random
 import kotlin.math.abs
 

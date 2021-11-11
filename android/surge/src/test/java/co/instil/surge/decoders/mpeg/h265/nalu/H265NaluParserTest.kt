@@ -1,6 +1,13 @@
-package co.instil.surge.decoders.h265.nalu
+/*
+ * Copyright (c) 2021 Instil Software.
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 
-import co.instil.surge.decoders.h265.H265TestUtils
+package co.instil.surge.decoders.mpeg.h265.nalu
+
+import co.instil.surge.decoders.mpeg.h265.H265TestUtils
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.hamcrest.core.IsEqual
@@ -20,21 +27,21 @@ class H265NaluParserTest {
     fun shouldReturnNothingWhenParsingAnEmptyBuffer() {
         val buffer = ByteBuffer.wrap(byteArrayOf())
 
-        MatcherAssert.assertThat(target.parseH265NaluSegments(buffer).size, CoreMatchers.`is`(IsEqual.equalTo(0)))
+        MatcherAssert.assertThat(target.parseNaluSegments(buffer).size, CoreMatchers.`is`(IsEqual.equalTo(0)))
     }
 
     @Test
     fun shouldReturnNothingWhenParsingABufferContainingNoNalUnits() {
         val buffer = ByteBuffer.wrap(byteArrayOf(0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x18, 0x29, 0x10, 0x11))
 
-        MatcherAssert.assertThat(target.parseH265NaluSegments(buffer).size, CoreMatchers.`is`(IsEqual.equalTo(0)))
+        MatcherAssert.assertThat(target.parseNaluSegments(buffer).size, CoreMatchers.`is`(IsEqual.equalTo(0)))
     }
 
     @Test
     fun shouldParseABufferContainingASingleNalUnit() {
         val buffer = ByteBuffer.wrap(H265TestUtils.generateH265NalUnit(4, H265NaluType.SPS, 10))
 
-        val segments: List<H265NaluSegment> = target.parseH265NaluSegments(buffer)
+        val segments = target.parseNaluSegments(buffer)
 
         MatcherAssert.assertThat(segments.size, CoreMatchers.`is`(IsEqual.equalTo(1)))
     }
@@ -43,7 +50,7 @@ class H265NaluParserTest {
     fun shouldReturnCorrectNalUnitTypeWhenParsingABufferWithASingleNalUnit() {
         val buffer = ByteBuffer.wrap(H265TestUtils.generateH265NalUnit(4, H265NaluType.SPS, 10))
 
-        val segments: List<H265NaluSegment> = target.parseH265NaluSegments(buffer)
+        val segments = target.parseNaluSegments(buffer)
 
         MatcherAssert.assertThat(segments[0].type, CoreMatchers.`is`(IsEqual.equalTo(H265NaluType.SPS)))
     }
@@ -53,7 +60,7 @@ class H265NaluParserTest {
         val naluBytes = H265TestUtils.generateH265NalUnit(4, H265NaluType.SPS, 10)
         val buffer = ByteBuffer.wrap(naluBytes)
 
-        val segments: List<H265NaluSegment> = target.parseH265NaluSegments(buffer)
+        val segments = target.parseNaluSegments(buffer)
 
         MatcherAssert.assertThat(segments[0].payload, CoreMatchers.`is`(IsEqual.equalTo(naluBytes)))
     }
@@ -63,7 +70,7 @@ class H265NaluParserTest {
         val naluBytes = H265TestUtils.generateH265NalUnit(3, H265NaluType.SPS, 10)
         val buffer = ByteBuffer.wrap(naluBytes)
 
-        val segments: List<H265NaluSegment> = target.parseH265NaluSegments(buffer)
+        val segments = target.parseNaluSegments(buffer)
 
         MatcherAssert.assertThat(segments[0].payloadLength, CoreMatchers.`is`(naluBytes.size + 1))
     }
@@ -76,7 +83,7 @@ class H265NaluParserTest {
         val multiUnitBuffer = H265TestUtils.joinH265NalUnits(nalu1, nalu2, nalu3)
         val buffer = ByteBuffer.wrap(multiUnitBuffer)
 
-        MatcherAssert.assertThat(target.parseH265NaluSegments(buffer).size, CoreMatchers.`is`(IsEqual.equalTo(3)))
+        MatcherAssert.assertThat(target.parseNaluSegments(buffer).size, CoreMatchers.`is`(IsEqual.equalTo(3)))
     }
 
     @Test
@@ -87,7 +94,7 @@ class H265NaluParserTest {
         val multiUnitBuffer = H265TestUtils.joinH265NalUnits(nalu1, nalu2, nalu3)
         val buffer = ByteBuffer.wrap(multiUnitBuffer)
 
-        val segments: List<H265NaluSegment> = target.parseH265NaluSegments(buffer)
+        val segments = target.parseNaluSegments(buffer)
 
         MatcherAssert.assertThat(segments[0].type, CoreMatchers.`is`(IsEqual.equalTo(H265NaluType.PPS)))
         MatcherAssert.assertThat(segments[1].type, CoreMatchers.`is`(IsEqual.equalTo(H265NaluType.SPS)))
@@ -102,7 +109,7 @@ class H265NaluParserTest {
         val multiUnitBuffer = H265TestUtils.joinH265NalUnits(nalu1, nalu2, nalu3)
         val buffer = ByteBuffer.wrap(multiUnitBuffer)
 
-        val segments: List<H265NaluSegment> = target.parseH265NaluSegments(buffer)
+        val segments = target.parseNaluSegments(buffer)
 
         MatcherAssert.assertThat(segments[0].payload, CoreMatchers.`is`(IsEqual.equalTo(nalu1)))
         MatcherAssert.assertThat(segments[1].payload, CoreMatchers.`is`(IsEqual.equalTo(nalu2)))

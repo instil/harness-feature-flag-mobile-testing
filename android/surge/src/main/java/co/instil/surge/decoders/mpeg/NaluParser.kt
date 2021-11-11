@@ -1,17 +1,16 @@
 /*
- * Copyright (c) 2017 Instil Software.
+ * Copyright (c) 2021 Instil Software.
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-package co.instil.surge.decoders.h264.nalu
 
-import co.instil.surge.decoders.h264.nalu.H264NaluType.Companion.getTypeFromCode
+package co.instil.surge.decoders.mpeg
+
 import java.nio.ByteBuffer
-import kotlin.experimental.and
 
 /**
- * Parser which extracts [H264NaluSegment] from byte buffer arrays.
+ * Parser which extracts [NaluSegment] from byte buffer arrays.
  *
  * H264 is comprised of NALU segments.
  *
@@ -27,21 +26,39 @@ import kotlin.experimental.and
  * read until the next magic-byte-sequence AKA the next segment to figure
  * out the full nalu length
  */
-class H264NaluParser {
+abstract class NaluParser {
     /*
      * Parse all of the NAL units contained within the given buffer.
-      * @param byteBuffer the buffer containing the nal units to be parsed.
-      * @returns a list of parsed NAL units or an empty list if the supplied buffer did not
-      * contain any valid units.
+     * @param byteBuffer the buffer containing the nal units to be parsed.
+     * @returns a list of parsed NAL units or an empty list if the supplied buffer did not
+     * contain any valid units.
      */
-    fun parseNaluSegments(byteBuffer: ByteBuffer): List<H264NaluSegment> {
-        val buffer = ByteArray(byteBuffer.capacity())
-        byteBuffer[buffer]
+    fun parseNaluSegments(byteBuffer: ByteBuffer): List<NaluSegment> {
+        val buffer = byteBuffer.copyToByteArray()
         if (buffer.size <= MINIMUM_NAL_UNIT_LENGTH) {
             return ArrayList()
         }
         val headers = findMagicByteHeadersInStream(buffer)
         return extractNalUnitsInStream(headers, buffer)
+    }
+
+    /*
+     * Iterates over the supplied stream to find the starting positions of each NAL unit within
+     * said stream (as determined by the presence of a magic byte header 0x000001 or 0x00000001).
+     */
+    private fun findMagicByteHeadersInStream(stream: ByteArray): List<NaluMagicByteHeader> {
+        val headers: MutableList<NaluMagicByteHeader> = ArrayList()
+        var i = 0
+        while (i < stream.size - MINIMUM_MAGIC_HEADER_LENGTH) {
+            val magicByteLength: Int = lengthOfMagicByteSequenceAtPosition(stream, i)
+            val isStartOfNalUnit = magicByteLength != -1
+            if (isStartOfNalUnit) {
+                headers.add(NaluMagicByteHeader(i, magicByteLength))
+                i += magicByteLength
+            }
+            ++i
+        }
+        return headers
     }
 
     /*
@@ -65,35 +82,20 @@ class H264NaluParser {
     }
 
     /*
-     * Iterates over the supplied stream to find the starting positions of each NAL unit within
-     * said stream (as determined by the presence of a magic byte header 0x000001 or 0x00000001).
-     */
-    private fun findMagicByteHeadersInStream(stream: ByteArray): List<NaluMagicByteHeader> {
-        val headers: MutableList<NaluMagicByteHeader> = ArrayList()
-        var i = 0
-        while (i < stream.size - MINIMUM_MAGIC_HEADER_LENGTH) {
-            val magicByteLength = lengthOfMagicByteSequenceAtPosition(stream, i)
-            val isStartOfNalUnit = magicByteLength != -1
-            if (isStartOfNalUnit) {
-                headers.add(NaluMagicByteHeader(i, magicByteLength))
-                i += magicByteLength
-            }
-            ++i
-        }
-        return headers
-    }
-
-    /*
-     * Extrapolates the actual NAL units from a buffer given the positions of the headers within
+     * Extrapolate the actual NAL units from a buffer given the positions of the headers within
      * that buffer.
      */
-    private fun extractNalUnitsInStream(headers: List<NaluMagicByteHeader>, stream: ByteArray): List<H264NaluSegment> {
+    private fun extractNalUnitsInStream(headers: List<NaluMagicByteHeader>, stream: ByteArray): List<NaluSegment> {
         return headers.mapIndexed { index, header ->
-            val naluType = getTypeFromCode((stream[header.position + header.length] and 0x1F).toInt())
+            val naluType = getNaluType(stream, header)
             val payload = getPayload(index, headers, stream, header)
-            H264NaluSegment(naluType, payload)
+            naluSegment(naluType, payload)
         }.toList()
     }
+
+    protected abstract fun naluSegment(naluType: NaluType, payload: ByteArray): NaluSegment
+
+    protected abstract fun getNaluType(stream: ByteArray, header: NaluMagicByteHeader): NaluType
 
     private fun getPayload(index: Int, headers: List<NaluMagicByteHeader>, stream: ByteArray, header: NaluMagicByteHeader): ByteArray {
         val isLastHeader = index == headers.size - 1
@@ -105,12 +107,19 @@ class H264NaluParser {
         }
     }
 
-    private inner class NaluMagicByteHeader(val position: Int, val length: Int)
+    private fun ByteBuffer.copyToByteArray(): ByteArray {
+        val buffer = ByteArray(this.capacity())
+        this.get(buffer)
+        return buffer
+    }
+
+    protected inner class NaluMagicByteHeader(val position: Int, val length: Int)
+
     companion object {
-        private const val MINIMUM_MAGIC_HEADER_LENGTH = 3
-        private const val MAXIMUM_MAGIC_HEADER_LENGTH = 4
-        private const val MINIMUM_NAL_UNIT_LENGTH = 6
-        private const val ZERO_BYTE: Byte = 0x00
-        private const val MAGIC_BYTE: Byte = 0x01
+        internal const val MINIMUM_MAGIC_HEADER_LENGTH = 3
+        internal const val MAXIMUM_MAGIC_HEADER_LENGTH = 4
+        internal const val MINIMUM_NAL_UNIT_LENGTH = 6
+        internal const val ZERO_BYTE: Byte = 0x00
+        internal const val MAGIC_BYTE: Byte = 0x01
     }
 }

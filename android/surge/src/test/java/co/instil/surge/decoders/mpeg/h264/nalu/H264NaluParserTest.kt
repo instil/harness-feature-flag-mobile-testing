@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2017 Instil Software.
+ * Copyright (c) 2021 Instil Software.
  *
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE.txt', which is part of this source code package.
  */
-package co.instil.surge.decoders.h264.nalu
+package co.instil.surge.decoders.mpeg.h264.nalu
 
-import co.instil.surge.decoders.h264.H264TestUtils
+import co.instil.surge.decoders.mpeg.h264.H264TestUtils
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.hamcrest.core.IsEqual

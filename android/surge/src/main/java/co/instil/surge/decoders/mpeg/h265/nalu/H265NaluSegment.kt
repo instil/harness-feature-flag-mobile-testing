@@ -1,12 +1,15 @@
-package co.instil.surge.decoders.h265.nalu
+/*
+ * Copyright (c) 2021 Instil Software.
+ *
+ * This file is subject to the terms and conditions defined in
+ * file 'LICENSE.txt', which is part of this source code package.
+ */
 
-class H265NaluSegment(val type: H265NaluType, bytes: ByteArray) {
-    private val magicHeaderLength: Int
-    val payload: ByteArray
+package co.instil.surge.decoders.mpeg.h265.nalu
 
-    val payloadLength: Int
-        get() = payload.size
+import co.instil.surge.decoders.mpeg.NaluSegment
 
+class H265NaluSegment(override val type: H265NaluType, bytes: ByteArray) : NaluSegment(type, bytes) {
     init {
         magicHeaderLength = if (isParameterSet()) 4 else 3
         payload = ByteArray(bytes.size + magicHeaderLength)
@@ -18,9 +21,6 @@ class H265NaluSegment(val type: H265NaluType, bytes: ByteArray) {
         System.arraycopy(bytes, 0, payload, magicHeaderLength, bytes.size)
     }
 
-    private fun isParameterSet() =
+    override fun isParameterSet() =
         type == H265NaluType.VPS || type == H265NaluType.PPS || type == H265NaluType.SPS
-
-    override fun toString(): String =
-        String.format("\n{\n\ttype: \"%s\", \n\tpayload length: \"%s\"}", type, payload.size)
 }

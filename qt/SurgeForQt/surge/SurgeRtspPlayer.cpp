@@ -305,6 +305,14 @@ void SurgeRtspPlayer::SetPacketBufferDelay(int bufferDelayMs) {
     this->rtspClient->SetPacketBufferDelay(bufferDelayMs);
 }
 
+long long SurgeRtspPlayer::GetRtspTimeout() const {
+    return rtspClient->GetRtspTimout();
+}
+
+void SurgeRtspPlayer::SetRtspTimeout(long long rtspTimeoutMs) {
+    this->rtspClient->SetRtspTimeout(rtspTimeoutMs);
+}
+
 void SurgeRtspPlayer::ClientReceivedFrame(const unsigned char * frameBuffer,
                          size_t length,
                          int32_t width,

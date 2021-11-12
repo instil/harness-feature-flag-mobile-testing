@@ -10,7 +10,7 @@
 
 #include "Logging.h"
 
-Surge::SecureInterleavedTCPTransport::SecureInterleavedTCPTransport(ITLSClient *tlsClient, TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate) : tlsClient(tlsClient), Surge::InterleavedRtspTransport(transportDelegate, delegate) { }
+Surge::SecureInterleavedTCPTransport::SecureInterleavedTCPTransport(ITLSClient *tlsClient, TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate, long long rtspTimeoutMs) : tlsClient(tlsClient), Surge::InterleavedRtspTransport(transportDelegate, delegate, rtspTimeoutMs) { }
 
 void Surge::SecureInterleavedTCPTransport::RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)> callback) {
     INFO("Starting TLS Client");

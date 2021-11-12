@@ -194,6 +194,14 @@ void SurgePlayer::SetInterleavedTcpTransport(bool interleavedTcpTransport) {
     surgeRtspPlayer->SetInterleavedTcpTransport(interleavedTcpTransport);
 }
 
+long long SurgePlayer::GetRtspTimeout() const {
+    surgeRtspPlayer->GetRtspTimeout();
+}
+
+void SurgePlayer::SetRtspTimeout(long long rtspTimeoutMs) {
+    surgeRtspPlayer->SetRtspTimeout(rtspTimeoutMs);
+}
+
 void SurgePlayer::SetVideoSurface(QAbstractVideoSurface *videoSurface) {
     this->videoSurface = new SurgeVideoSurface(videoSurface);
     AttachVideoSurface();

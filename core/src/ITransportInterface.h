@@ -43,6 +43,8 @@ namespace Surge {
 
         virtual void SetRtpPortsAndChannels(const SetupResponse *setupResponse) = 0;
 
+        virtual void SetRtspTimeout(long long rtspTimeoutMs) = 0;
+
         virtual std::string GetTransportHeaderString() const = 0;
     };
 

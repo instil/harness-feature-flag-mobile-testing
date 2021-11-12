@@ -231,6 +231,18 @@ namespace Surge {
             return packet->GetType() == sessionDescription.GetPayloadType();
         }
 
+        long long GetRtspTimout() {
+            return rtspTimeoutMs;
+        }
+
+        void SetRtspTimeout(long long rtspTimeoutMs) {
+            this->rtspTimeoutMs = rtspTimeoutMs;
+
+            if (transport != nullptr) {
+                transport->SetRtspTimeout(this->rtspTimeoutMs);
+            }
+        }
+
     public: // Inherited from TransportDelegate
         void RtpPacketReceived(RtpPacket *packet) override;
 
@@ -283,6 +295,7 @@ namespace Surge {
         long long keepAliveIntervalInSeconds;
         long long lastRtcpKeepAliveMs;
         long long rtcpKeepAliveIntervalInSeconds = SurgeUtil::Constants::DEFAULT_UDP_KEEP_ALIVE_INTERVAL_SECONDS;
+        long long rtspTimeoutMs = SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
         bool processedFirstPayload;
         long long lastPacketSequenceNum;
         bool dropFrame;

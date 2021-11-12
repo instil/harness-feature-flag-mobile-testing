@@ -16,7 +16,7 @@
 namespace Surge {
     class SecureInterleavedTCPTransport : public InterleavedRtspTransport, public ISecureTransport {
     public:
-        SecureInterleavedTCPTransport(ITLSClient *tlsClient, TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate);
+        SecureInterleavedTCPTransport(ITLSClient *tlsClient, TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate, long long rtspTimeoutMs);
 
         void RtspTcpOpen(SurgeUtil::Url &url, std::function<void(int)> callback) override;
         void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;

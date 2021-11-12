@@ -9,8 +9,8 @@ using SurgeUtil::Constants::DEFAULT_RTP_INTERLEAVED_CHANNEL;
 using SurgeUtil::Constants::DEFAULT_RTCP_INTERLEAVED_CHANNEL;
 using SurgeUtil::Constants::DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE;
 
-Surge::InterleavedRtspTransport::InterleavedRtspTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate * const delegate):
-Transport(transportDelegate, delegate),
+Surge::InterleavedRtspTransport::InterleavedRtspTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate * const delegate, long long rtspTimeoutMs):
+Transport(transportDelegate, delegate, rtspTimeoutMs),
 m_readBufferSize(DEFAULT_SOCKET_HANDLER_READ_BUFFER_SIZE),
 m_rtpInterleavedChannel(DEFAULT_RTP_INTERLEAVED_CHANNEL),
 m_rtcpInterleavedChannel(DEFAULT_RTCP_INTERLEAVED_CHANNEL) { }

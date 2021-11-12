@@ -17,7 +17,7 @@ namespace Surge {
     class Transport : public ITransportInterface, private SurgeUtil::Runnable {
     
     public:
-        Transport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate);
+        Transport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate, long long rtspTimeoutMs);
         ~Transport();
         
     public:
@@ -27,6 +27,7 @@ namespace Surge {
         void RtspTransaction(const RtspCommand* command, std::function<void(Response*)> callback) override;
         void RtcpTransaction(const char *data, const size_t length) override;
         void ArbitraryDataTransaction(const char *data, const size_t length) override;
+        void SetRtspTimeout(long long rtspTimeoutMs) override;
         void StartRtspTimer();
         void StopRtspTimer();
         

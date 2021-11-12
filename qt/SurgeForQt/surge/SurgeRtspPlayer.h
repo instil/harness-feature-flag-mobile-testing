@@ -61,6 +61,10 @@ public:
 
     void SetPacketBufferDelay(int packetBufferDelayMs);
 
+    long long GetRtspTimeout() const;
+
+    void SetRtspTimeout(long long rtspTimeoutMs);
+
 signals:
     void StreamInitiated();
     void StreamInitiationFailed();

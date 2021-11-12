@@ -111,13 +111,13 @@ void Surge::RtspClient::GenerateTransportFromUrl(std::string& url) {
     if (parsedUrl.GetProtocol() == "rtsp") {
         if (useInterleavedTcpTransport) {
             INFO("Using Interleaved TCP Transport");
-            transport = new InterleavedRtspTransport(this, nullptr);
+            transport = new InterleavedRtspTransport(this, nullptr, rtspTimeoutMs);
 
             INFO("Disabling packet buffer");
             packetBuffer->SetBufferDelay(0);
         } else {
             INFO("Using UDP Transport");
-            transport = new UdpTransport(this, nullptr);
+            transport = new UdpTransport(this, nullptr, rtspTimeoutMs);
         }
     } else {
         INFO("Using TLS TCP Transport");
@@ -127,7 +127,8 @@ void Surge::RtspClient::GenerateTransportFromUrl(std::string& url) {
 
         transport = new SecureInterleavedTCPTransport(tlsClient,
                                                       this,
-                                                      nullptr);
+                                                      nullptr,
+                                                      rtspTimeoutMs);
         packetBuffer->SetBufferDelay(0);
 
         url = parsedUrl.WithRtspProtocol();

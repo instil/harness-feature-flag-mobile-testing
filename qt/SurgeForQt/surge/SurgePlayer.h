@@ -42,6 +42,10 @@ public:
 
     void SetInterleavedTcpTransport(bool interleavedTcpTransport);
 
+    long long GetRtspTimeout() const;
+
+    void SetRtspTimeout(long long rtspTimeoutMs);
+
     void SetVideoSurface(QAbstractVideoSurface *videoSurface);
 
     void SetPacketBufferDelay(int bufferDelayMs);

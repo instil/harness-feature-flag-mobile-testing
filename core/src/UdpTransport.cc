@@ -6,7 +6,7 @@
 #include "UdpTransport.h"
 #include "Logging.h"
 
-Surge::UdpTransport::UdpTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate) : Surge::Transport(transportDelegate, delegate) {
+Surge::UdpTransport::UdpTransport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate, long long rtspTimeoutMs) : Surge::Transport(transportDelegate, delegate, rtspTimeoutMs) {
     AssignClientPorts();
 }
 

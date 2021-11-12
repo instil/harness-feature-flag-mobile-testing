@@ -8,10 +8,7 @@
 #include "MutexLocker.h"
 #include "StringUtils.h"
 
-using SurgeUtil::Constants::DEFAULT_TRANSACTION_TIMEOUT_MS;
-
-
-Surge::Transport::Transport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate) : m_rtspTimeoutTime(uvw::TimerHandle::Time(DEFAULT_TRANSACTION_TIMEOUT_MS)), m_threadRunning(false), executingLibuvCommand(false), m_delegate(delegate), transportDelegate(transportDelegate)
+Surge::Transport::Transport(TransportDelegate * const transportDelegate, ISocketHandlerDelegate *delegate, long long rtspTimeoutMs) : m_rtspTimeoutTime(uvw::TimerHandle::Time(rtspTimeoutMs)), m_threadRunning(false), executingLibuvCommand(false), m_delegate(delegate), transportDelegate(transportDelegate)
 { }
 
 Surge::Transport::~Transport() {
@@ -150,6 +147,10 @@ void Surge::Transport::ArbitraryDataTransaction(const char *data, const size_t l
         m_tcp->write(GenerateRtspDataPtr((char *) data, length), length);
         m_tcp->read();
     });
+}
+
+void Surge::Transport::SetRtspTimeout(long long rtspTimeoutMs) {
+    m_rtspTimeoutTime = uvw::TimerHandle::Time(rtspTimeoutMs);
 }
 
 /*  Libuv Management  */

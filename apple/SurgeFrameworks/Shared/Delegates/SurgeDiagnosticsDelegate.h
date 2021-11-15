@@ -39,5 +39,10 @@
  */
 - (void)rtspPlayer:(nonnull SurgeRtspPlayer *)player didChangeMediaSize:(CGSize)mediaSize;
 
+/**
+ * Called by the player any time the video format of the currently playing stream are changed.
+ */
+- (void)rtspPlayer:(nonnull SurgeRtspPlayer *)player didChangeMediaFormat:(int)mediaSize;
+
 @end
 

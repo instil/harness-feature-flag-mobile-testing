@@ -7,6 +7,7 @@
 package co.instil.surge.decoders.mpeg.h264
 
 import android.media.MediaCodec
+import co.instil.surge.client.SessionType
 import co.instil.surge.client.SurgeVideoView
 import co.instil.surge.decoders.MediaCodecFactory
 import co.instil.surge.decoders.mpeg.MpegDecoder
@@ -73,10 +74,14 @@ open class H264Decoder(
         }
     }
 
+    override fun trackDiagnostics() {
+        diagnosticsTracker.trackNewMediaFormat(SessionType.H264)
+    }
+
     override fun createMediaCodec(): MediaCodec =
-        mediaCodecFactory.createH264DecoderWithParameters(
-            sequenceParameterSet as H264NaluSegment,
-            pictureParameterSet as H264NaluSegment,
-            videoView.generateUniqueSurface()
-        )
+            mediaCodecFactory.createH264DecoderWithParameters(
+                sequenceParameterSet as H264NaluSegment,
+                pictureParameterSet as H264NaluSegment,
+                videoView.generateUniqueSurface()
+            )
 }

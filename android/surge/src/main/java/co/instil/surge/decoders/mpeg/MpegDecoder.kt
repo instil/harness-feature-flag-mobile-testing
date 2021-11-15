@@ -22,11 +22,11 @@ import java.nio.ByteBuffer
 import java.util.ArrayList
 
 abstract class MpegDecoder(
-    private val videoView: SurgeVideoView,
-    private val mediaCodecFactory: MediaCodecFactory,
-    private val naluParser: NaluParser,
-    private val diagnosticsTracker: DiagnosticsTracker
-) : Decoder {
+        private val videoView: SurgeVideoView,
+        private val mediaCodecFactory: MediaCodecFactory,
+        private val naluParser: NaluParser,
+        internal val diagnosticsTracker: DiagnosticsTracker
+        ) : Decoder {
     abstract val logger: Logger
 
     private var mediaCodec: MediaCodec? = null
@@ -151,10 +151,16 @@ abstract class MpegDecoder(
         if (mediaFormatHasStreamDimensions(mediaFormat)) {
             val streamWidth = mediaFormat.getInteger(MEDIA_FORMAT_WIDTH_KEY)
             val streamHeight = mediaFormat.getInteger(MEDIA_FORMAT_HEIGHT_KEY)
-            videoView.setVideoDimensions(streamWidth, streamHeight)
-            diagnosticsTracker.trackNewFrameDimensions(streamWidth, streamHeight)
+            trackDiagnostics(streamWidth, streamHeight)
         }
     }
+
+    private fun trackDiagnostics(streamWidth: Int, streamHeight: Int) {
+        diagnosticsTracker.trackNewFrameDimensions(streamWidth, streamHeight)
+        trackDiagnostics()
+    }
+
+    protected abstract fun trackDiagnostics()
 
     private fun mediaFormatHasStreamDimensions(mediaFormat: MediaFormat): Boolean {
         return mediaFormat.containsKey(MEDIA_FORMAT_WIDTH_KEY) && mediaFormat.containsKey(MEDIA_FORMAT_HEIGHT_KEY)

@@ -7,6 +7,7 @@
 package co.instil.surge.diagnostics
 
 import android.util.Size
+import co.instil.surge.client.SessionType
 
 interface SurgeDiagnostics {
     val framesPerSecond: Int
@@ -15,4 +16,5 @@ interface SurgeDiagnostics {
     val successfulPacketsReceived: Long
     val lostPackets: Long
     val mediaDimensions: Size
+    val mediaFormat: SessionType
 }

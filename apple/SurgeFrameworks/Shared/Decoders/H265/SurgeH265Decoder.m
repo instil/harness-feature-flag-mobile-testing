@@ -172,4 +172,8 @@
                                 sampleBuffer);
 }
 
+- (SurgeMediaFormat)mediaFormat {
+    return SurgeH265;
+}
+
 @end

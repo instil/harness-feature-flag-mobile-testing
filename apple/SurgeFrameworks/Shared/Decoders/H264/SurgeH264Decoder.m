@@ -149,5 +149,8 @@
                                 sampleBuffer);
 }
 
+- (SurgeMediaFormat)mediaFormat {
+    return SurgeH264;
+}
 
 @end

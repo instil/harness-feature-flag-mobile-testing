@@ -15,10 +15,13 @@
 
 @implementation SurgeDecoder
 
-- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate {
+- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate andDiagnosticsTracker:(DiagnosticsTracker *)diagnosticsTracker {
     if (self = [super init]) {
         self.delegate = delegate;
+        self.diagnostics = diagnosticsTracker;
         self.decoderQueue = dispatch_queue_create("co.instil.decoder", DISPATCH_QUEUE_SERIAL);
+
+        [self.diagnostics trackNewMediaFormat:self.mediaFormat];
     }
     return self;
 }
@@ -168,6 +171,10 @@ void decompressionSessionDecodeFrameCallback(void *decompressionOutputRefCon,
         _formatDescription = formatDescription;
         [self createDecompressionSessionIfRequired:formatDescription];
     }
+}
+
+- (SurgeMediaFormat)mediaFormat {
+    @throw [NSException exceptionWithName:@"Not implemented" reason:@"Abstract method must implemented in sub-class" userInfo:nil];
 }
 
 @end

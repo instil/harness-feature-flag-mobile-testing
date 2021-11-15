@@ -5,7 +5,12 @@
 ###### Features
 
 * Qt has been added as a supported platform on macOS and Linux.
-* A keep-alive request has been added to RTCP channel when using the UDP transport
+* A keep-alive request has been added to RTCP channel when using the UDP transport.
+* Media Format has been added to each platform's available diagnostics.
+
+###### Fixes
+
+* Fixed URL parsing within the player to support all valid characters in a domain name.
 
 ## v1.4.2
 

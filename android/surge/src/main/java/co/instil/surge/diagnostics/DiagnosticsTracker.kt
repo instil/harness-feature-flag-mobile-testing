@@ -13,6 +13,7 @@ import android.util.Size
 import co.instil.surge.diagnostics.SurgeDiagnosticsDelegate
 import co.instil.surge.player.SurgeRtspPlayerDelegate
 import co.instil.surge.client.RtspClient
+import co.instil.surge.client.SessionType
 import co.instil.surge.diagnostics.RtpPacketBufferInfo
 
 /**
@@ -31,6 +32,8 @@ class DiagnosticsTracker : SurgeDiagnostics {
     override var lostPackets: Long = 0
         private set
     override var mediaDimensions = Size(0, 0)
+        private set
+    override var mediaFormat = SessionType.UNKNOWN
         private set
     private var fpsCounter = 0
     private var bitrateCounter = 0
@@ -70,6 +73,13 @@ class DiagnosticsTracker : SurgeDiagnostics {
 
     fun trackNewFrameDimensions(width: Int, height: Int) {
         trackNewFrameDimensions(Size(width, height))
+    }
+
+    fun trackNewMediaFormat(mediaFormat: SessionType) {
+        if (this.mediaFormat != mediaFormat) {
+            this.mediaFormat = mediaFormat
+            delegate?.rtspPlayerDidChangeMediaFormat(mediaFormat)
+        }
     }
 
     private fun run() {

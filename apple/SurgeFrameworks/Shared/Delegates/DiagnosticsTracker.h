@@ -18,6 +18,7 @@
 
 - (void)trackNewFrameOfSize:(size_t)bitCountInFrame;
 - (void)trackNewFrameDimensionsWithWidth:(size_t)width andHeight:(size_t)height;
+- (void)trackNewMediaFormat:(int)mediaFormat;
 
 - (void)updateDelegate;
 

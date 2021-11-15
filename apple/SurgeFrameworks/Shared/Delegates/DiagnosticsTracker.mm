@@ -19,6 +19,7 @@
 @property (nonatomic, readwrite) long successfulPacketsReceived;
 @property (nonatomic, readwrite) long lostPackets;
 @property (nonatomic, readwrite) CGSize mediaDimensions;
+@property (nonatomic, readwrite) int mediaFormat;
 
 @property (nonatomic, weak) SurgeRtspPlayer *player;
 
@@ -83,6 +84,14 @@
         if ([self.diagnosticsDelegate respondsToSelector:@selector(rtspPlayer:didChangeMediaSize:)]) {
             [self.diagnosticsDelegate rtspPlayer:self.player didChangeMediaSize:self.mediaDimensions];
         }
+    }
+}
+
+- (void)trackNewMediaFormat:(int)mediaFormat {
+    self.mediaFormat = mediaFormat;
+
+    if ([self.diagnosticsDelegate respondsToSelector:@selector(rtspPlayer:didChangeMediaFormat:)]) {
+        [self.diagnosticsDelegate rtspPlayer:self.player didChangeMediaFormat:self.mediaFormat];
     }
 }
 

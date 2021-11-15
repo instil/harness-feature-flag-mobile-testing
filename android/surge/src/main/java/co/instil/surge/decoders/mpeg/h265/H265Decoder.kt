@@ -7,6 +7,8 @@
 
 package co.instil.surge.decoders.mpeg.h265
 
+import android.media.MediaCodec
+import co.instil.surge.client.SessionType
 import co.instil.surge.client.SurgeVideoView
 import co.instil.surge.decoders.MediaCodecFactory
 import co.instil.surge.decoders.mpeg.MpegDecoder
@@ -96,11 +98,15 @@ class H265Decoder(
             .let { pictureParameterSet = it as H265NaluSegment }
     }
 
-    override fun createMediaCodec() =
-        mediaCodecFactory.createH265DecoderWithParameters(
-            videoParameterSet as H265NaluSegment,
-            sequenceParameterSet as H265NaluSegment,
-            pictureParameterSet as H265NaluSegment,
-            videoView.generateUniqueSurface()
-        )
+    override fun trackDiagnostics() {
+        diagnosticsTracker.trackNewMediaFormat(SessionType.H265)
+    }
+
+    override fun createMediaCodec(): MediaCodec =
+            mediaCodecFactory.createH265DecoderWithParameters(
+                videoParameterSet as H265NaluSegment,
+                sequenceParameterSet as H265NaluSegment,
+                pictureParameterSet as H265NaluSegment,
+                videoView.generateUniqueSurface()
+            )
 }

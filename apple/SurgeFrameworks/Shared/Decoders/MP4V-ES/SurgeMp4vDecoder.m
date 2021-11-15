@@ -211,5 +211,8 @@
     [descriptor writeByte:length & 0x7f];
 }
 
+- (SurgeMediaFormat)mediaFormat {
+    return SurgeMp4v;
+}
 
 @end

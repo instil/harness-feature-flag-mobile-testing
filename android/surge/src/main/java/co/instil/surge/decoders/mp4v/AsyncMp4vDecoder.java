@@ -15,6 +15,7 @@ import android.media.MediaFormat;
 import android.view.Surface;
 
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.client.SessionType;
 import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.diagnostics.DiagnosticsTracker;
@@ -166,6 +167,7 @@ public class AsyncMp4vDecoder extends MediaCodec.Callback implements Decoder {
             int streamHeight = mediaFormat.getInteger(MEDIA_FORMAT_HEIGHT_KEY);
             videoView.setVideoDimensions(streamWidth, streamHeight);
             diagnostics.trackNewFrameDimensions(streamWidth, streamHeight);
+            diagnostics.trackNewMediaFormat(SessionType.MP4V);
         }
     }
 

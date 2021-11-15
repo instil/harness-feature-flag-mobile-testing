@@ -16,6 +16,7 @@ import android.os.HandlerThread;
 import android.view.Surface;
 
 import co.instil.surge.client.SessionDescription;
+import co.instil.surge.client.SessionType;
 import co.instil.surge.client.SurgeVideoView;
 import co.instil.surge.decoders.Decoder;
 import co.instil.surge.diagnostics.DiagnosticsTracker;
@@ -62,7 +63,7 @@ public class MjpegDecoder implements Decoder {
             final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
             if (bitmap != null) {
                 configureSurfaceForNewVideoDimensions(bitmap.getWidth(), bitmap.getHeight());
-                trackChangeInStreamDimensionsIfRequired(bitmap);
+                trackDiagnostics(bitmap);
 
                 Canvas canvas = surface.lockCanvas(null);
                 canvas.drawBitmap(bitmap,
@@ -80,7 +81,8 @@ public class MjpegDecoder implements Decoder {
         videoView.setVideoDimensions(width, height);
     }
 
-    private void trackChangeInStreamDimensionsIfRequired(Bitmap bitmap) {
+    private void trackDiagnostics(Bitmap bitmap) {
+        diagnostics.trackNewMediaFormat(SessionType.MJPEG);
         diagnostics.trackNewFrameDimensions(bitmap.getWidth(), bitmap.getHeight());
     }
 

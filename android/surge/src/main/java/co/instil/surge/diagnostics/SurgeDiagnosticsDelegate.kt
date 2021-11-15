@@ -7,10 +7,12 @@
 package co.instil.surge.diagnostics
 
 import android.util.Size
+import co.instil.surge.client.SessionType
 
 interface SurgeDiagnosticsDelegate {
     fun rtspPlayerDidObservePlaybackFrameRate(frameRate: Int)
     fun rtspPlayerDidObservePlaybackBitrate(bitrate: Int)
     fun rtspPlayerDidObservePacketLossDiagnostics(packetLossCount: Long, successfulPacketCount: Long, oooPacketsCount: Long)
     fun rtspPlayerDidChangeMediaSize(mediaSize: Size)
+    fun rtspPlayerDidChangeMediaFormat(mediaFormat: SessionType)
 }

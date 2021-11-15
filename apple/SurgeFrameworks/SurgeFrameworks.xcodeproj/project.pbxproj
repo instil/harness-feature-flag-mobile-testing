@@ -96,6 +96,9 @@
 		F4546D7426554D2D007134D0 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4546D7226554D18007134D0 /* libcrypto.a */; };
 		F4546D7526554D3F007134D0 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4546D7326554D18007134D0 /* libssl.a */; };
 		F4546D7626554D50007134D0 /* libuv_a.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F43212AE26542E5E00CB61A2 /* libuv_a.a */; };
+		F45FCE7D273C314400D8AC08 /* SurgeMediaFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = F45FCE7C273C314400D8AC08 /* SurgeMediaFormat.h */; };
+		F45FCE7E273C314400D8AC08 /* SurgeMediaFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = F45FCE7C273C314400D8AC08 /* SurgeMediaFormat.h */; };
+		F45FCE7F273C314400D8AC08 /* SurgeMediaFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = F45FCE7C273C314400D8AC08 /* SurgeMediaFormat.h */; };
 		F469948E26138C9800133ECC /* libssl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F469948C26138C9800133ECC /* libssl.xcframework */; };
 		F469948F26138C9800133ECC /* libssl.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F469948C26138C9800133ECC /* libssl.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F469949026138C9800133ECC /* libcrypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F469948D26138C9800133ECC /* libcrypto.xcframework */; };
@@ -212,6 +215,7 @@
 		F4588B381D93D8110071CE3D /* SurgeRtspPlayer_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeRtspPlayer_Private.h; sourceTree = "<group>"; };
 		F45A89D020F50833003C4D81 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../core/lib/openssl-mobile/lib/mac/libcrypto.a"; sourceTree = "<group>"; };
 		F45A89D120F50833003C4D81 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../core/lib/openssl-mobile/lib/mac/libssl.a"; sourceTree = "<group>"; };
+		F45FCE7C273C314400D8AC08 /* SurgeMediaFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurgeMediaFormat.h; sourceTree = "<group>"; };
 		F469948C26138C9800133ECC /* libssl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libssl.xcframework; path = "../../core/lib/openssl-mobile/lib/ios/libssl.xcframework"; sourceTree = "<group>"; };
 		F469948D26138C9800133ECC /* libcrypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libcrypto.xcframework; path = "../../core/lib/openssl-mobile/lib/ios/libcrypto.xcframework"; sourceTree = "<group>"; };
 		F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthenticatorMapper.h; sourceTree = "<group>"; };
@@ -306,6 +310,7 @@
 				42AD01651CE6225000EA072F /* Utilities */,
 				42DCC2ED1CC2D68A00497306 /* SurgeDecoder.h */,
 				42DCC2EE1CC2D68A00497306 /* SurgeDecoder.m */,
+				F45FCE7C273C314400D8AC08 /* SurgeMediaFormat.h */,
 			);
 			path = Decoders;
 			sourceTree = "<group>";
@@ -498,6 +503,7 @@
 				42DCC3001CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
 				42DCC3151CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
 				F4E19F78215A8C8C00D5059E /* DiagnosticsTracker.h in Headers */,
+				F45FCE7F273C314400D8AC08 /* SurgeMediaFormat.h in Headers */,
 				F48C83D7210F44B900A632BF /* AuthenticatorMapper.h in Headers */,
 				F4EDD5B5215D105000E7827F /* SurgeAuthenticator.h in Headers */,
 				42DCC2F71CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
@@ -527,6 +533,7 @@
 				42DCC2FF1CC2D68A00497306 /* SurgeH264Decoder.h in Headers */,
 				42DCC3141CC31B1100497306 /* SurgeMjpegDecoder.h in Headers */,
 				F4E19F77215A8C8C00D5059E /* DiagnosticsTracker.h in Headers */,
+				F45FCE7E273C314400D8AC08 /* SurgeMediaFormat.h in Headers */,
 				F48C83D6210F44B800A632BF /* AuthenticatorMapper.h in Headers */,
 				F4EDD5B4215D104F00E7827F /* SurgeAuthenticator.h in Headers */,
 				42DCC2F61CC2D68A00497306 /* SurgeNalUnit.h in Headers */,
@@ -554,6 +561,7 @@
 				F40FCE1425547024007B88F9 /* SurgeH265NalUnitParser.h in Headers */,
 				7C11392E2199D10100E0360C /* SurgeMjpegDecoder.h in Headers */,
 				F43A192021E50E6200BA5975 /* SurgeDiagnostics.h in Headers */,
+				F45FCE7D273C314400D8AC08 /* SurgeMediaFormat.h in Headers */,
 				7C11392F2199D10100E0360C /* SurgeMp4vDecoder.h in Headers */,
 				7C1139302199D10100E0360C /* BitstreamReader.h in Headers */,
 				F43A191C21E50E2500BA5975 /* SurgeAuthenticator.h in Headers */,

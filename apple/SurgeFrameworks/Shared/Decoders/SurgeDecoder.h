@@ -8,6 +8,7 @@
 #import <CoreMedia/CoreMedia.h>
 #import <VideoToolbox/VideoToolbox.h>
 #import "DiagnosticsTracker.h"
+#import "SurgeMediaFormat.h"
 
 @protocol SurgeDecoderDelegate <NSObject>
 
@@ -22,7 +23,7 @@
 
 @interface SurgeDecoder : NSObject
 
-- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate;
+- (id)initWithDelegate:(id<SurgeDecoderDelegate>)delegate andDiagnosticsTracker:(DiagnosticsTracker *)diagnosticsTracker;
 
 - (void)deinit;
 
@@ -47,5 +48,7 @@
 
 @property (nonatomic, assign) CMVideoFormatDescriptionRef formatDescription;
 @property (nonatomic, assign) NSUInteger framesPerSecond;
+
+@property (nonatomic, readonly) SurgeMediaFormat mediaFormat;
 
 @end

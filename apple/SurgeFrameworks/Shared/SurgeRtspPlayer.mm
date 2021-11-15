@@ -324,15 +324,14 @@ private:
 
 - (void)initialiseDecoderForStream:(Surge::SessionDescription)sessionDescription {
     if (sessionDescription.GetType() == Surge::RtspSessionType::H264) {
-        self.decoder = [[SurgeH264Decoder alloc] initWithDelegate:self];
+        self.decoder = [[SurgeH264Decoder alloc] initWithDelegate:self andDiagnosticsTracker:self.diagnosticsTracker];
     } else if (sessionDescription.GetType() == Surge::RtspSessionType::MP4V) {
-        self.decoder = [[SurgeMp4vDecoder alloc] initWithDelegate:self];
+        self.decoder = [[SurgeMp4vDecoder alloc] initWithDelegate:self andDiagnosticsTracker:self.diagnosticsTracker];
     } else if (sessionDescription.GetType() == Surge::RtspSessionType::MJPEG) {
-        self.decoder = [[SurgeMjpegDecoder alloc] initWithDelegate:self];
+        self.decoder = [[SurgeMjpegDecoder alloc] initWithDelegate:self andDiagnosticsTracker:self.diagnosticsTracker];
     } else if (sessionDescription.GetType() == Surge::RtspSessionType::H265) {
-        self.decoder = [[SurgeH265Decoder alloc] initWithDelegate:self];
+        self.decoder = [[SurgeH265Decoder alloc] initWithDelegate:self andDiagnosticsTracker:self.diagnosticsTracker];
     }
-    self.decoder.diagnostics = self.diagnosticsTracker;
 }
 
 - (void)play:(void (^)(RtspErrorCode)) callback {

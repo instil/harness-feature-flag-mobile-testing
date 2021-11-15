@@ -30,4 +30,8 @@
     CGDataProviderRelease(imageDataProvider);
 }
 
+- (SurgeMediaFormat)mediaFormat {
+    return SurgeMjpeg;
+}
+
 @end

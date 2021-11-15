@@ -331,3 +331,9 @@ void JNICALL Java_co_instil_surge_client_RtspClient_close(JNIEnv *env, jobject c
     delete delegate;
     delete client;
 }
+
+JNIEXPORT
+void JNICALL Java_co_instil_surge_client_RtspClient_setRtspTimeout(JNIEnv *env, jobject callingObject, jlong rtsp_timeout_ms) {
+    Surge::RtspClient *client = getClient(env, callingObject);
+    client->SetRtspTimeout(rtsp_timeout_ms);
+}

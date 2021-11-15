@@ -93,6 +93,8 @@ public class RtspClient implements AutoCloseable {
 
     public native void removeAuthenticator(int index);
 
+    public native void setRtspTimeout(long rtspTimeoutMs);
+
     public native RtpPacketBufferInfo getDiagnosticsOnPacketLoss();
 
     public native void close();

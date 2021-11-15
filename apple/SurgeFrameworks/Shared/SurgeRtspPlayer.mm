@@ -465,6 +465,13 @@ private:
     self.client->SetPacketBufferDelay(packetBufferDelay);
 }
 
+- (long long int)rtspTimeout {
+    return self.client->GetRtspTimout();
+}
+
+- (void)setRtspTimeout:(long long int)rtspTimeout {
+    self.client->SetRtspTimeout(rtspTimeout);
+}
 
 #pragma mark - RTSP client delegate
 

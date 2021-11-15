@@ -263,6 +263,9 @@ JNIEXPORT jobject JNICALL Java_co_instil_surge_client_RtspClient_getDiagnosticsO
 JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_close
   (JNIEnv *, jobject);
 
+JNIEXPORT void JNICALL Java_co_instil_surge_client_RtspClient_setRtspTimeout
+  (JNIEnv *, jobject, jlong);
+
 #ifdef __cplusplus
 }
 #endif

@@ -128,4 +128,9 @@
  */
 @property (nonatomic, readonly, nonnull) id<SurgeDiagnostics> diagnostics;
 
+/*
+ * Timeout for RTSP requests.
+ */
+@property (nonatomic, assign) long long int rtspTimeout;
+
 @end

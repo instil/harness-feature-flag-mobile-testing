@@ -568,6 +568,9 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
         diagnosticsTracker.setDelegate(delegate);
     }
 
+    public void setRtspClient(long rtspTimeoutMs) {
+        rtspClient.setRtspTimeout(rtspTimeoutMs);
+    }
 
     private File extractResourceIntoCacheFile(int rawResourceId, Context context) {
         File file = null;

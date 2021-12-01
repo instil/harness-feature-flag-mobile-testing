@@ -167,7 +167,6 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
                 }
 
 
-                diagnosticsTracker.setDepreciatedDelegate(delegate);
                 diagnosticsTracker.startTracking();
             });
         });
@@ -557,7 +556,6 @@ public class SurgeRtspPlayer implements AutoCloseable, RtspClientDelegate {
 
     public void setDelegate(SurgeRtspPlayerDelegate delegate) {
         this.delegate = delegate;
-        diagnosticsTracker.setDepreciatedDelegate(delegate);
     }
 
     public SurgeDiagnostics getDiagnostics() {

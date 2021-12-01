@@ -66,9 +66,4 @@ typedef NS_ENUM(NSInteger, RtspErrorCode) {
  */
 - (void)rtspPlayerDidTimeout:(nonnull SurgeRtspPlayer *)player;
 
-/**
- * Guaranteed to be call at most once per second with the current player frame rate.
- */
-- (void)rtspPlayer:(nonnull SurgeRtspPlayer *)player didObservePlaybackFrameRate:(NSUInteger)frameRate DEPRECATED_ATTRIBUTE;
-
 @end

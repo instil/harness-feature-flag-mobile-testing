@@ -235,14 +235,6 @@ namespace SurgeXamariniOSBindings {
         [Abstract]
         [Export("rtspPlayerDidStopBuffering:")]
         void RtspPlayerDidStopBuffering(SurgeRtspPlayer player);
-
-        /// <summary>
-        /// Guaranteed to be called at most once per second with the current player frame rate.
-        /// </summary>
-        /// <param name="player">The Surge RTSP Player that called the delegate method.</param>
-        [Abstract]
-        [Export("rtspPlayer:didObservePlaybackFrameRate:")]
-        void RtspPlayerDidObservePlaybackFramerate(SurgeRtspPlayer player, int framerate);
     }
 
     /// <summary>

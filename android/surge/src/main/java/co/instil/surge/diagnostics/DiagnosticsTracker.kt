@@ -7,14 +7,10 @@
 package co.instil.surge.diagnostics
 
 import android.os.Handler
-import co.instil.surge.diagnostics.SurgeDiagnostics
 import android.os.Looper
 import android.util.Size
-import co.instil.surge.diagnostics.SurgeDiagnosticsDelegate
-import co.instil.surge.player.SurgeRtspPlayerDelegate
 import co.instil.surge.client.RtspClient
 import co.instil.surge.client.SessionType
-import co.instil.surge.diagnostics.RtpPacketBufferInfo
 
 /**
  * This can track a number of different diagnostics from multiple data sources throughout Surge and
@@ -45,7 +41,6 @@ class DiagnosticsTracker : SurgeDiagnostics {
 
     private var client: RtspClient? = null
     private var delegate: SurgeDiagnosticsDelegate? = null
-    private var depreciatedDelegate: SurgeRtspPlayerDelegate? = null
 
     fun startTracking() {
         if (!threadIsRunning) {
@@ -96,9 +91,6 @@ class DiagnosticsTracker : SurgeDiagnostics {
         fpsCounter = 0
 
         delegate?.rtspPlayerDidObservePlaybackFrameRate(framesPerSecond)
-        if (depreciatedDelegate != delegate) {
-            depreciatedDelegate?.rtspPlayerDidUpdateFps(framesPerSecond)
-        }
     }
 
     private fun calculateBitrate() {
@@ -122,9 +114,5 @@ class DiagnosticsTracker : SurgeDiagnostics {
 
     fun setDelegate(delegate: SurgeDiagnosticsDelegate) {
         this.delegate = delegate
-    }
-
-    fun setDepreciatedDelegate(depreciatedDelegate: SurgeRtspPlayerDelegate) {
-        this.depreciatedDelegate = depreciatedDelegate
     }
 }

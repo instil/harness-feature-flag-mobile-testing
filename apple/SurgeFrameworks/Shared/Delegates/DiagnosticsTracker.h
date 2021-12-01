@@ -6,7 +6,6 @@
 #import <Foundation/Foundation.h>
 
 #import "SurgeDiagnosticsDelegate.h"
-#import "SurgeRtspPlayerDelegate.h"
 #import "SurgeDiagnostics.h"
 
 @interface DiagnosticsTracker : NSObject<SurgeDiagnostics>
@@ -23,6 +22,5 @@
 - (void)updateDelegate;
 
 @property (nonatomic, weak, nullable) id<SurgeDiagnosticsDelegate> diagnosticsDelegate;
-@property (nonatomic, strong, nullable) id<SurgeRtspPlayerDelegate> depreciatedDiagnosticsDelegate;
 
 @end

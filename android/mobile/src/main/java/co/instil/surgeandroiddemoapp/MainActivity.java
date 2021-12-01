@@ -117,11 +117,6 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
     }
 
-    @Override
-    public void rtspPlayerDidUpdateFps(int fps) {
-        logger.debug("Updated fps: " + fps);
-    }
-
     private void seekBackAnHour(View view) {
         logger.debug("Seeking back an hour");
 

@@ -111,11 +111,6 @@
     if ([self.diagnosticsDelegate respondsToSelector:@selector(rtspPlayer:didObservePlaybackFrameRate:)]) {
         [self.diagnosticsDelegate rtspPlayer:self.player didObservePlaybackFrameRate:self.framesPerSecond];
     }
-
-    if ([self.depreciatedDiagnosticsDelegate respondsToSelector:@selector(rtspPlayer:didObservePlaybackFrameRate:)] &&
-        ![self.diagnosticsDelegate isKindOfClass:[self.depreciatedDiagnosticsDelegate class]]) {
-        [self.depreciatedDiagnosticsDelegate rtspPlayer:self.player didObservePlaybackFrameRate:self.framesPerSecond];
-    }
 }
 
 - (void)setBitrate:(size_t)bitrate {

@@ -95,8 +95,4 @@
   
 }
 
-- (void)rtspPlayer:(SurgeRtspPlayer *)player didObservePlaybackFrameRate:(NSUInteger)frameRate {
-  //  NSLog(@"Frame rate: %@", @(frameRate));
-}
-
 @end

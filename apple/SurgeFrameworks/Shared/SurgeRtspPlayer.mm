@@ -446,7 +446,6 @@ private:
 
 - (void)setDelegate:(id<SurgeRtspPlayerDelegate>)delegate {
     _delegate = delegate;
-    self.diagnosticsTracker.depreciatedDiagnosticsDelegate = delegate;
 }
 
 - (bool)interleavedRtspTransport {

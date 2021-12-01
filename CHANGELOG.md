@@ -7,6 +7,7 @@
 * Qt has been added as a supported platform on macOS and Linux.
 * A keep-alive request has been added to RTCP channel when using the UDP transport.
 * Media Format has been added to each platform's available diagnostics.
+* Removed deprecated FPS diagnostics from SurgeRtspPlayerDelegate
 
 ###### Fixes
 

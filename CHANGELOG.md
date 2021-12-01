@@ -13,6 +13,10 @@
 
 * Fixed URL parsing within the player to support all valid characters in a domain name.
 
+_iOS_
+
+* Fixed a memory leak which caused the SurgeRtspPlayer to never be deallocated.
+
 ## v1.4.2
 
 ###### Fixes

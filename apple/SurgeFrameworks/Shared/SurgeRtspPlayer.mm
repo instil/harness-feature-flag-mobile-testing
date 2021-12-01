@@ -190,7 +190,7 @@ private:
                 });
             }
 
-            [self.diagnosticsTracker startTracking];
+            [weakSelf.diagnosticsTracker startTracking];
         } else {
             if ([weakSelf.delegate respondsToSelector:@selector(rtspPlayerFailedToInitiatePlayback:withErrorCode:)]) {
                 dispatch_async(dispatch_get_main_queue(), ^{

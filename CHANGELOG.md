@@ -16,6 +16,7 @@
 _iOS_
 
 * Fixed a memory leak which caused the SurgeRtspPlayer to never be deallocated.
+* Fixed a race condition that could cause deadlock when calling Stop on iOS
 
 ## v1.4.2
 

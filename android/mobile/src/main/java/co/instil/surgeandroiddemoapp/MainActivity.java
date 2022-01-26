@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import org.slf4j.Logger;
@@ -58,6 +59,19 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
         player.setTlsSelfSignedCertificatesAllowed(true);
 
         calendar.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+
+        setUpButtonOnClickListeners();
+    }
+
+    private void setUpButtonOnClickListeners() {
+        Button startButton = findViewById(R.id.streamButton);
+        startButton.setOnClickListener(this::startStream);
+
+        Button pauseButton = findViewById(R.id.pauseButton);
+        pauseButton.setOnClickListener(this::pauseStream);
+
+        Button playButton = findViewById(R.id.playButton);
+        playButton.setOnClickListener(this::playStream);
     }
 
     @Override

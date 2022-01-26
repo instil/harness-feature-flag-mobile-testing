@@ -1,5 +1,12 @@
 ## Changelog
 
+
+## v1.5.1
+
+###### Fixes
+
+* Fixed an issue a dependency issue with iOS leading to an Invalid Bundle Structure when submitted to App Store.
+
 ## v1.5
 
 ###### Features

@@ -36,8 +36,7 @@
         android:id="@+id/streamButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="startStream"
-        android:text="Stream"
+        android:text="@string/stream"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/url"
         app:layout_constraintTop_toTopOf="@+id/url" />
@@ -56,7 +55,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:importantForAutofill="no"
+        tools:ignore="LabelFor" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group"
@@ -87,21 +88,20 @@
         android:layout_width="40dp"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
-        android:onClick="pauseStream"
         android:text=""
         android:background="@drawable/baseline_pause_24"
         android:backgroundTint="@android:color/white"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@id/playerBar"
         app:layout_constraintStart_toEndOf="@+id/playButton"
-        app:layout_constraintTop_toTopOf="@+id/playerBar" />
+        app:layout_constraintTop_toTopOf="@+id/playerBar"
+         />
 
     <Button
         android:id="@+id/playButton"
         style="@android:style/MediaButton.Play"
         android:layout_width="40dp"
         android:layout_height="0dp"
-        android:onClick="playStream"
         android:text=""
         android:background="@drawable/baseline_play_arrow_24"
         android:backgroundTint="@android:color/white"
@@ -111,6 +111,7 @@
         app:layout_constraintStart_toStartOf="@id/playerBar"
         app:layout_constraintEnd_toEndOf="@id/playerBar"
         app:layout_constraintHorizontal_bias="0.5"
-        tools:layout_editor_absoluteY="461dp" />
+        tools:layout_editor_absoluteY="461dp"
+         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

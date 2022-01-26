@@ -100,9 +100,7 @@
 		F45FCE7E273C314400D8AC08 /* SurgeMediaFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = F45FCE7C273C314400D8AC08 /* SurgeMediaFormat.h */; };
 		F45FCE7F273C314400D8AC08 /* SurgeMediaFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = F45FCE7C273C314400D8AC08 /* SurgeMediaFormat.h */; };
 		F469948E26138C9800133ECC /* libssl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F469948C26138C9800133ECC /* libssl.xcframework */; };
-		F469948F26138C9800133ECC /* libssl.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F469948C26138C9800133ECC /* libssl.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F469949026138C9800133ECC /* libcrypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F469948D26138C9800133ECC /* libcrypto.xcframework */; };
-		F469949126138C9800133ECC /* libcrypto.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F469948D26138C9800133ECC /* libcrypto.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F48C83D6210F44B800A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
 		F48C83D7210F44B900A632BF /* AuthenticatorMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = F4905BE4210F17B000903D27 /* AuthenticatorMapper.h */; };
 		F4905BE7210F17B000903D27 /* AuthenticatorMapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4905BE5210F17B000903D27 /* AuthenticatorMapper.mm */; };
@@ -125,7 +123,6 @@
 		F4C41E95255C276200BD7914 /* SurgeH265NalUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E6BB172554694C00226AA7 /* SurgeH265NalUnit.m */; };
 		F4C41E96255C276200BD7914 /* SurgeH265NalUnitParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F40FCE1225547024007B88F9 /* SurgeH265NalUnitParser.h */; };
 		F4C6CD79265418B9001F81EF /* libuv.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4C6CD78265418B9001F81EF /* libuv.xcframework */; };
-		F4C6CD7A265418B9001F81EF /* libuv.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F4C6CD78265418B9001F81EF /* libuv.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4D1A93C25559642003652C2 /* SurgeH265Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D1A93A25559642003652C2 /* SurgeH265Decoder.h */; };
 		F4D1A93D25559642003652C2 /* SurgeH265Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = F4D1A93B25559642003652C2 /* SurgeH265Decoder.m */; };
 		F4E19F67215A84C000D5059E /* SurgeRtspPlayerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = F4E19F64215A84C000D5059E /* SurgeRtspPlayerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -142,22 +139,6 @@
 		F4FEC4B4215A7AC60098366F /* SurgeDiagnosticsDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FEC4B1215A7AC60098366F /* SurgeDiagnosticsDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4FEC4B5215A7AC60098366F /* SurgeDiagnosticsDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FEC4B1215A7AC60098366F /* SurgeDiagnosticsDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		F469949226138C9800133ECC /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				F469949126138C9800133ECC /* libcrypto.xcframework in Embed Frameworks */,
-				F4C6CD7A265418B9001F81EF /* libuv.xcframework in Embed Frameworks */,
-				F469948F26138C9800133ECC /* libssl.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		422E8E451CBB1F500092FFB3 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/VideoToolbox.framework; sourceTree = DEVELOPER_DIR; };
@@ -605,7 +586,6 @@
 				7C1139272199D0EB00E0360C /* Headers */,
 				42EE5C0E1CA35C4D00204F31 /* Frameworks */,
 				42EE5C101CA35C4D00204F31 /* Resources */,
-				F469949226138C9800133ECC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

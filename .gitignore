@@ -36,6 +36,7 @@ obj/
 packages/
 *.aar
 *.framework/
+*.xcframework/
 
 # Visual Studio Code
 .vs

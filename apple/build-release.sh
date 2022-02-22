@@ -13,9 +13,9 @@ echo "Executing tests"
 #  -reporter pretty \
 #  -reporter junit:build/test-results/framework-tests.xml
 
-echo "Building macOS framework"
-xcodebuild -workspace Surge.xcworkspace -scheme SurgeMacOS -configuration Release clean build \
-  CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/macOS
+#echo "Building macOS framework"
+#xcodebuild -workspace Surge.xcworkspace -scheme SurgeMacOS -configuration Release clean build \
+#  CONFIGURATION_BUILD_DIR=$(pwd)/build/frameworks/macOS
 
 echo "Building iOS framework"
 xcodebuild -workspace Surge.xcworkspace -scheme SurgeiOS -configuration Release -sdk iphoneos clean build \
@@ -30,9 +30,12 @@ if [ -d "simulator/SurgeiOS.framework/Modules/SurgeiOS.swiftmodule" ]; then
   cp -r simulator/SurgeiOS.framework/Modules/SurgeiOS.swiftmodule/* SurgeiOS.framework/Modules/SurgeiOS.swiftmodule/
 fi
 
-lipo -create -output SurgeiOS.framework/SurgeiOS SurgeiOS.framework/SurgeiOS simulator/SurgeiOS.framework/SurgeiOS
+xcodebuild -create-xcframework \
+    -framework SurgeiOS.framework \
+    -framework simulator/SurgeiOS.framework \
+    -output SurgeiOS.xcframework
 
 rm -rf simulator
 
 cd ..
-zip -r apple-frameworks.zip iOS/SurgeiOS.framework/ iOS/SurgeiOS.framework.dSYM macOS/SurgeMacOS.framework/ macOS/SurgeMacOS.framework.dSYM
+zip -r apple-frameworks.zip iOS/SurgeiOS.xcframework/ iOS/SurgeiOS.framework.dSYM # macOS/SurgeMacOS.framework/ macOS/SurgeMacOS.framework.dSYM

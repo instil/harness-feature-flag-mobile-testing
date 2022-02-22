@@ -92,7 +92,7 @@ def buildXamarinDlls() {
             }
             dir("SurgeXamariniOS") {
                 sh "mkdir lib"
-                sh "cp -r ../../apple/build/frameworks/iOS/SurgeiOS.framework lib"
+                sh "cp -r ../../apple/build/frameworks/iOS/SurgeiOS.xcframework lib"
                 sh "cp ../../apple/build/frameworks/iOS/libSurgeCore.a lib"
                 sh "/Library/Frameworks/Mono.framework/Versions/Current/Commands/msbuild /t:Rebuild /p:Configuration=Release SurgeXamariniOS.sln"
                 archiveArtifacts "SurgeXamariniOSBindings/bin/Release/*.dll"

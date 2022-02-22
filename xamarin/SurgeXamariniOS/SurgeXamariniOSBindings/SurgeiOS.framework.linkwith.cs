@@ -1,3 +1,3 @@
 ﻿using ObjCRuntime;
 
-[assembly: LinkWith("SurgeiOS.framework")]
+[assembly: LinkWith("SurgeiOS.xcframework")]

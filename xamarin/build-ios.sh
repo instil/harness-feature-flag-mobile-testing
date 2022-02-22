@@ -10,7 +10,7 @@ mkdir $BUILD_DIR
 cd $SURGE_DIR
 
 $SURGE_DIR/build-release.sh
-cp -r $SURGE_DIR/build/frameworks/iOS/SurgeiOS.framework $BUILD_DIR/
+cp -r $SURGE_DIR/build/frameworks/iOS/SurgeiOS.xcframework $BUILD_DIR/
 cp -r $SURGE_DIR/build/frameworks/iOS/libSurgeCore.a $BUILD_DIR/
 
 msbuild /t:Rebuild /p:Configuration=Release $XAMARIN_DIR/SurgeXamariniOS/SurgeXamariniOS.sln

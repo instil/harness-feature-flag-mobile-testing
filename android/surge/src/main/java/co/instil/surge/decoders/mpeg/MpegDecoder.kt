@@ -151,6 +151,7 @@ abstract class MpegDecoder(
         if (mediaFormatHasStreamDimensions(mediaFormat)) {
             val streamWidth = mediaFormat.getInteger(MEDIA_FORMAT_WIDTH_KEY)
             val streamHeight = mediaFormat.getInteger(MEDIA_FORMAT_HEIGHT_KEY)
+            videoView.setVideoDimensions(streamWidth, streamHeight)
             trackDiagnostics(streamWidth, streamHeight)
         }
     }

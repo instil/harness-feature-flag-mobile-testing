@@ -68,8 +68,14 @@
 }
 
 - (void)stopTracking {
+    if (self.timer == nil) {
+        SurgeLogDebug(@"Diagnostics tracker has not started, no need to stop.");
+        return;
+    }
+    
     SurgeLogDebug(@"Stopping diagnostics tracker");
     dispatch_source_cancel(self.timer);
+    self.timer = nil;
 }
 
 - (void)trackNewFrameOfSize:(size_t)bitCountInFrame {

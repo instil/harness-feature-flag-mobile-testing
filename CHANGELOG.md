@@ -1,5 +1,16 @@
 ## Changelog
 
+## v1.5.2
+
+###### Fixes
+
+_iOS_
+
+* The diagnostics tracker no longer causes a crash when the RTSP handshake fails.
+
+_Android_
+
+* The aspect ratio toggle is now working correctly again when using the H.264 or H.265 decoders.
 
 ## v1.5.1
 

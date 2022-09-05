@@ -1,0 +1,12 @@
+name: Build App
+on: [push]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Build app
+        run: |
+			cd apple
+			xcodebuild -scheme Harness -workspace Harness.xcworkspace/ build

@@ -8,17 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		F4553B3328C0E562005958BB /* HarnessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4553B3228C0E562005958BB /* HarnessApp.swift */; };
-		F4553B3528C0E562005958BB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4553B3428C0E562005958BB /* ContentView.swift */; };
+		F4553B3528C0E562005958BB /* BooleanTesterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4553B3428C0E562005958BB /* BooleanTesterView.swift */; };
 		F4553B3728C0E563005958BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4553B3628C0E563005958BB /* Assets.xcassets */; };
 		F4553B3A28C0E563005958BB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4553B3928C0E563005958BB /* Preview Assets.xcassets */; };
+		F45E84EB28C611C500A4F41E /* RealWorldBooleanUseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45E84EA28C611C500A4F41E /* RealWorldBooleanUseView.swift */; };
+		F45E84ED28C612F700A4F41E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45E84EC28C612F700A4F41E /* MainView.swift */; };
+		F47609FC28C62A500026DD9E /* BooleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FB28C62A500026DD9E /* BooleanView.swift */; };
+		F47609FE28C6576B0026DD9E /* FlaggedBooleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */; };
+		F4760A0028C65B040026DD9E /* MultiVariateStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FF28C65B040026DD9E /* MultiVariateStringView.swift */; };
+		F4760A0228C65B300026DD9E /* MultiVariateNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */; };
+		F4760A0428C65B3D0026DD9E /* MultiVariateJsonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F4553B2F28C0E562005958BB /* Harness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4553B3228C0E562005958BB /* HarnessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessApp.swift; sourceTree = "<group>"; };
-		F4553B3428C0E562005958BB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F4553B3428C0E562005958BB /* BooleanTesterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanTesterView.swift; sourceTree = "<group>"; };
 		F4553B3628C0E563005958BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F4553B3928C0E563005958BB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F45E84EA28C611C500A4F41E /* RealWorldBooleanUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWorldBooleanUseView.swift; sourceTree = "<group>"; };
+		F45E84EC28C612F700A4F41E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		F47609FB28C62A500026DD9E /* BooleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanView.swift; sourceTree = "<group>"; };
+		F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaggedBooleanView.swift; sourceTree = "<group>"; };
+		F47609FF28C65B040026DD9E /* MultiVariateStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringView.swift; sourceTree = "<group>"; };
+		F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateNumberView.swift; sourceTree = "<group>"; };
+		F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateJsonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +65,8 @@
 		F4553B3128C0E562005958BB /* Harness */ = {
 			isa = PBXGroup;
 			children = (
+				F4760A0528C65B780026DD9E /* Views */,
 				F4553B3228C0E562005958BB /* HarnessApp.swift */,
-				F4553B3428C0E562005958BB /* ContentView.swift */,
 				F4553B3628C0E563005958BB /* Assets.xcassets */,
 				F4553B3828C0E563005958BB /* Preview Content */,
 			);
@@ -65,6 +79,29 @@
 				F4553B3928C0E563005958BB /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F4760A0528C65B780026DD9E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F4760A0628C65B8A0026DD9E /* Boolean */,
+				F45E84EC28C612F700A4F41E /* MainView.swift */,
+				F47609FF28C65B040026DD9E /* MultiVariateStringView.swift */,
+				F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */,
+				F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F4760A0628C65B8A0026DD9E /* Boolean */ = {
+			isa = PBXGroup;
+			children = (
+				F45E84EA28C611C500A4F41E /* RealWorldBooleanUseView.swift */,
+				F4553B3428C0E562005958BB /* BooleanTesterView.swift */,
+				F47609FB28C62A500026DD9E /* BooleanView.swift */,
+				F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */,
+			);
+			path = Boolean;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +174,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4553B3528C0E562005958BB /* ContentView.swift in Sources */,
+				F4553B3528C0E562005958BB /* BooleanTesterView.swift in Sources */,
+				F45E84ED28C612F700A4F41E /* MainView.swift in Sources */,
+				F4760A0228C65B300026DD9E /* MultiVariateNumberView.swift in Sources */,
 				F4553B3328C0E562005958BB /* HarnessApp.swift in Sources */,
+				F47609FC28C62A500026DD9E /* BooleanView.swift in Sources */,
+				F47609FE28C6576B0026DD9E /* FlaggedBooleanView.swift in Sources */,
+				F4760A0028C65B040026DD9E /* MultiVariateStringView.swift in Sources */,
+				F4760A0428C65B3D0026DD9E /* MultiVariateJsonView.swift in Sources */,
+				F45E84EB28C611C500A4F41E /* RealWorldBooleanUseView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +311,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Harness/Preview Content\"";
+				DEVELOPMENT_TEAM = M6W9FG2WLN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -295,6 +340,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Harness/Preview Content\"";
+				DEVELOPMENT_TEAM = M6W9FG2WLN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

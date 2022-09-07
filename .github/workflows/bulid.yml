@@ -8,5 +8,5 @@ jobs:
         uses: actions/checkout@v3
       - name: Build app
         run: |
-			cd apple
-			xcodebuild -scheme Harness -workspace Harness.xcworkspace/ build
+					cd apple
+					xcodebuild -scheme Harness -workspace Harness.xcworkspace/ build

@@ -9,4 +9,4 @@ jobs:
       - name: Build app
         run: |
           cd apple
-          xcodebuild -scheme Harness -project Harness.xcodeproj/ build
+          xcodebuild -scheme Harness -project Harness.xcodeproj/ build CODE_SIGNING_ALLOWED=NO

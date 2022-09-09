@@ -11,19 +11,23 @@ struct MainView: View {
                 NavigationLink(destination: BooleanView()) {
                     Image(systemName: "switch.2")
                     Text("Booleans")
-                }.padding()
+                }.accessibilityIdentifier("BooleanButton")
+                    .padding()
                 NavigationLink(destination: MultiVariateStringView()) {
                     Image(systemName: "quote.opening")
                     Text("Multi-variate Strings")
-                }.padding()
+                }.accessibilityIdentifier("StringButton")
+                    .padding()
                 NavigationLink(destination: MultiVariateNumberView()) {
                     Image(systemName: "number")
                     Text("Multi-variate Integers")
-                }.padding()
+                }.accessibilityIdentifier("IntButton")
+                    .padding()
                 NavigationLink(destination: MultiVariateJsonView()) {
                     Image(systemName: "doc")
                     Text("Multi-variate JSON")
-                }.padding()
+                }.accessibilityIdentifier("JsonButton")
+                    .padding()
             }
         }
     }

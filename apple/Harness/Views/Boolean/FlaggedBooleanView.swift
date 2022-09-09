@@ -6,7 +6,9 @@ import SwiftUI
 
 struct FlaggedBooleanView: View {
     var body: some View {
-        Text("If you are seeing this, then the associated feature flag is true!").padding()
+        Text("If you are seeing this, then the associated feature flag is true!")
+            .accessibilityIdentifier("BooleanFeatureFlagText")
+            .padding()
     }
 }
 

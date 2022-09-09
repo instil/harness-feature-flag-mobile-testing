@@ -9,6 +9,7 @@ struct RealWorldBooleanUseView: View {
         Image("InstilOffice")
             .resizable()
             .scaledToFit()
+            .accessibilityIdentifier("BooleanImage")
     }
 }
 

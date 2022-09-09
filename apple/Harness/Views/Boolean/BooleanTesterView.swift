@@ -7,11 +7,21 @@ import SwiftUI
 struct BooleanTesterView: View {
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Boolean One").padding()
-            Text("Boolean Two").padding()
-            Text("Boolean Three").padding()
-            Text("Boolean Four").padding()
-            Text("Boolean Five").padding()
+            Text("Boolean One")
+                .accessibilityIdentifier("BooleanOne")
+                .padding()
+            Text("Boolean Two")
+                .accessibilityIdentifier("BooleanTwo")
+                .padding()
+            Text("Boolean Three")
+                .accessibilityIdentifier("BooleanThree")
+                .padding()
+            Text("Boolean Four")
+                .accessibilityIdentifier("BooleanFour")
+                .padding()
+            Text("Boolean Five")
+                .accessibilityIdentifier("BooleanFive")
+                .padding()
         }.padding()
     }
 }

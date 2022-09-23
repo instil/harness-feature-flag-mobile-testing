@@ -3,13 +3,17 @@
 //
 
 import SwiftUI
-
+import ff_ios_client_sdk
+  
 struct BooleanTesterView: View {
+    @StateObject private var viewModel = BooleanTesterViewModel()
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Boolean One")
                 .accessibilityIdentifier("BooleanOne")
                 .padding()
+                .opacity(viewModel.booleanOne ? 1 : 0)
             Text("Boolean Two")
                 .accessibilityIdentifier("BooleanTwo")
                 .padding()

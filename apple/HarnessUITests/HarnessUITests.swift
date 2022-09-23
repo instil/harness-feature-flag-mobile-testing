@@ -5,34 +5,113 @@
 import XCTest
 
 final class HarnessUITests: XCTestCase {
+    typealias MetricAlloc = @convention(c) (XCTMetric.Type, Selector) -> NSObject
+    typealias MetricInitWithProcessName = @convention(c) (NSObject, Selector, String) -> XCTMetric
+    
+    let app = XCUIApplication()
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
+    override func tearDownWithError() throws { }
+
+    func testBooleanNavigationLinkExists() throws {
+        let booleanButton = app.buttons["BooleanButton"]
+        
+        XCTAssert(booleanButton.exists)
+    }
+    
+    func testBooleanNavigationLinkNavigatesToBooleanTesterView() throws {
+        let booleanButton = app.buttons["BooleanButton"]
+        booleanButton.tap()
+        
+        let booleanOne = app.staticTexts["Boolean One"]
+        let booleanTwo = app.staticTexts["Boolean Two"]
+        let booleanThree = app.staticTexts["Boolean Three"]
+        let booleanFour = app.staticTexts["Boolean Four"]
+        let booleanFive = app.staticTexts["Boolean Five"]
+        
+        XCTAssert(booleanOne.exists)
+        XCTAssert(booleanTwo.exists)
+        XCTAssert(booleanThree.exists)
+        XCTAssert(booleanFour.exists)
+        XCTAssert(booleanFive.exists)
+    }
+    
+    func testBooleanTabsWork() throws {
+        let booleanButton = app.buttons["BooleanButton"]
+        booleanButton.tap()
+        
+        let booleanTesterTab = app.buttons["Test"]
+        let booleanRealWorldTab = app.buttons["Real World"]
+        let booleanFlagTab = app.buttons["Flagged View"]
+        
+        XCTAssert(booleanTesterTab.exists)
+        XCTAssert(booleanRealWorldTab.exists)
+        XCTAssert(booleanFlagTab.exists)
+        
+        let booleanOne = app.staticTexts["Boolean One"]
+        XCTAssert(booleanOne.exists)
+        
+        booleanRealWorldTab.tap()
+        
+        let realWorldImage = app.images["BooleanImage"]
+        XCTAssert(realWorldImage.exists)
+        
+        booleanFlagTab.tap()
+        
+        let flaggedText = app.staticTexts["BooleanFeatureFlagText"]
+        XCTAssert(flaggedText.exists)
+        
+        booleanTesterTab.tap()
+    }
+    
+    func testPerformanceMeasureMetrics() {
+        let measureOptions = XCTMeasureOptions()
+        measureOptions.iterationCount = 10
+        
+        let memoryMetric: XCTMetric
+        let cpuMetric: XCTMetric
+        if #available(iOS 14, *) {
+            memoryMetric = self.initWithProcessName(for: XCTMemoryMetric.self, processName: "XCMetrics")
+            cpuMetric = self.initWithProcessName(for: XCTCPUMetric.self, processName: "XCMetrics")
+        } else {
+            memoryMetric = XCTMemoryMetric(application: app)
+            cpuMetric = XCTCPUMetric(application: app)
         }
+        
+        let clockMetric = XCTClockMetric()
+        let storageMetric = XCTStorageMetric(application: app)
+
+        measure(metrics: [memoryMetric, cpuMetric, clockMetric, storageMetric], options: measureOptions) {
+            let booleanButton = app.buttons["BooleanButton"]
+            booleanButton.tap()
+            
+            let booleanOne = app.staticTexts["Boolean One"]
+            XCTAssert(booleanOne.exists)
+
+            let backButton = app.buttons["Back"]
+            backButton.tap()
+        }
+    }
+    
+    private func initWithProcessName(for type: XCTMetric.Type, processName: String) -> XCTMetric {
+        guard type is XCTMemoryMetric.Type ||
+              type is XCTCPUMetric.Type ||
+              type is XCTStorageMetric.Type else {
+            fatalError("CPU, Storage and Memory metric implements initWithProcessName:")
+        }
+        let allocSelector = NSSelectorFromString("alloc")
+        let allocIMP = method_getImplementation(class_getClassMethod(type.self, allocSelector)!)
+        let allocMethod = unsafeBitCast(allocIMP, to: MetricAlloc.self)
+        let result = allocMethod(type.self, allocSelector)
+        
+        let initSelector = NSSelectorFromString("initWithProcessName:")
+        let methodIMP = result.method(for: initSelector)
+        let initMethod = unsafeBitCast(methodIMP, to: MetricInitWithProcessName.self)
+        return initMethod(result, initSelector, processName)
     }
 }

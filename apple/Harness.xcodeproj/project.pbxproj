@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3946AF7728DD03800059B397 /* HarnessUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3946AF7628DD03800059B397 /* HarnessUITests.swift */; };
+		3946AF7928DD03800059B397 /* HarnessUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3946AF7828DD03800059B397 /* HarnessUITestsLaunchTests.swift */; };
 		398F46E928CB725D00496ED1 /* HarnessLaunchPerfomanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398F46E828CB725D00496ED1 /* HarnessLaunchPerfomanceTests.swift */; };
 		398F46EB28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398F46EA28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift */; };
 		F44C0F3128DDFE2500876028 /* ff-ios-client-sdk in Frameworks */ = {isa = PBXBuildFile; productRef = F44C0F3028DDFE2500876028 /* ff-ios-client-sdk */; };
@@ -26,6 +28,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3946AF7A28DD03800059B397 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4553B2728C0E562005958BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F4553B2E28C0E562005958BB;
+			remoteInfo = Harness;
+		};
 		398F46EC28CB725D00496ED1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F4553B2728C0E562005958BB /* Project object */;
@@ -36,6 +45,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3946AF7428DD03800059B397 /* HarnessUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarnessUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3946AF7628DD03800059B397 /* HarnessUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessUITests.swift; sourceTree = "<group>"; };
+		3946AF7828DD03800059B397 /* HarnessUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		398F46E628CB725D00496ED1 /* HarnessLaunchPerfomanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarnessLaunchPerfomanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		398F46E828CB725D00496ED1 /* HarnessLaunchPerfomanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessLaunchPerfomanceTests.swift; sourceTree = "<group>"; };
 		398F46EA28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessLaunchPerfomanceTestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -58,6 +70,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3946AF7128DD03800059B397 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		398F46E328CB725D00496ED1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -76,6 +95,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3946AF7528DD03800059B397 /* HarnessUITests */ = {
+			isa = PBXGroup;
+			children = (
+				3946AF7628DD03800059B397 /* HarnessUITests.swift */,
+				3946AF7828DD03800059B397 /* HarnessUITestsLaunchTests.swift */,
+			);
+			path = HarnessUITests;
+			sourceTree = "<group>";
+		};
 		398F46E728CB725D00496ED1 /* HarnessLaunchPerfomanceTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +135,7 @@
 			children = (
 				F4553B3128C0E562005958BB /* Harness */,
 				398F46E728CB725D00496ED1 /* HarnessLaunchPerfomanceTests */,
+				3946AF7528DD03800059B397 /* HarnessUITests */,
 				F4553B3028C0E562005958BB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -116,6 +145,7 @@
 			children = (
 				F4553B2F28C0E562005958BB /* Harness.app */,
 				398F46E628CB725D00496ED1 /* HarnessLaunchPerfomanceTests.xctest */,
+				3946AF7428DD03800059B397 /* HarnessUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -168,6 +198,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3946AF7328DD03800059B397 /* HarnessUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3946AF7E28DD03800059B397 /* Build configuration list for PBXNativeTarget "HarnessUITests" */;
+			buildPhases = (
+				3946AF7028DD03800059B397 /* Sources */,
+				3946AF7128DD03800059B397 /* Frameworks */,
+				3946AF7228DD03800059B397 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3946AF7B28DD03800059B397 /* PBXTargetDependency */,
+			);
+			name = HarnessUITests;
+			productName = HarnessUITests;
+			productReference = 3946AF7428DD03800059B397 /* HarnessUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		398F46E528CB725D00496ED1 /* HarnessLaunchPerfomanceTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 398F46F028CB725D00496ED1 /* Build configuration list for PBXNativeTarget "HarnessLaunchPerfomanceTests" */;
@@ -213,9 +261,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1340;
+				LastSwiftUpdateCheck = 1400;
 				LastUpgradeCheck = 1340;
 				TargetAttributes = {
+					3946AF7328DD03800059B397 = {
+						CreatedOnToolsVersion = 14.0;
+						TestTargetID = F4553B2E28C0E562005958BB;
+					};
 					398F46E528CB725D00496ED1 = {
 						CreatedOnToolsVersion = 13.4.1;
 						TestTargetID = F4553B2E28C0E562005958BB;
@@ -243,11 +295,19 @@
 			targets = (
 				F4553B2E28C0E562005958BB /* Harness */,
 				398F46E528CB725D00496ED1 /* HarnessLaunchPerfomanceTests */,
+				3946AF7328DD03800059B397 /* HarnessUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3946AF7228DD03800059B397 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		398F46E428CB725D00496ED1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -267,6 +327,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3946AF7028DD03800059B397 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3946AF7728DD03800059B397 /* HarnessUITests.swift in Sources */,
+				3946AF7928DD03800059B397 /* HarnessUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		398F46E228CB725D00496ED1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -297,6 +366,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3946AF7B28DD03800059B397 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F4553B2E28C0E562005958BB /* Harness */;
+			targetProxy = 3946AF7A28DD03800059B397 /* PBXContainerItemProxy */;
+		};
 		398F46ED28CB725D00496ED1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F4553B2E28C0E562005958BB /* Harness */;
@@ -305,6 +379,44 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		3946AF7C28DD03800059B397 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M6W9FG2WLN;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.HarnessUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Harness;
+			};
+			name = Debug;
+		};
+		3946AF7D28DD03800059B397 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M6W9FG2WLN;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.instil.HarnessUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Harness;
+			};
+			name = Release;
+		};
 		398F46EE28CB725D00496ED1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -522,6 +634,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3946AF7E28DD03800059B397 /* Build configuration list for PBXNativeTarget "HarnessUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3946AF7C28DD03800059B397 /* Debug */,
+				3946AF7D28DD03800059B397 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		398F46F028CB725D00496ED1 /* Build configuration list for PBXNativeTarget "HarnessLaunchPerfomanceTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

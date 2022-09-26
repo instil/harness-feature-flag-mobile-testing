@@ -9,4 +9,5 @@ jobs:
       - name: Build app
         run: |
           cd apple
+          cp Harness/Configuration/ApiKeys.xcconfig_sample Harness/Configuration/ApiKeys.xcconfig
           xcodebuild -scheme Harness -project Harness.xcodeproj/ build CODE_SIGNING_ALLOWED=NO

@@ -42,7 +42,7 @@
 		F44C0F3228DE05A300876028 /* BooleanTesterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanTesterViewModel.swift; sourceTree = "<group>"; };
 		F44C0F3528DE069900876028 /* FeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagService.swift; sourceTree = "<group>"; };
 		F44C0F3728DE0B3B00876028 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
-		F44C0F3928DE0F8800876028 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F44C0F3928DE0F8800876028 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4553B2F28C0E562005958BB /* Harness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4553B3228C0E562005958BB /* HarnessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessApp.swift; sourceTree = "<group>"; };
 		F4553B3428C0E562005958BB /* BooleanTesterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanTesterView.swift; sourceTree = "<group>"; };
@@ -96,6 +96,7 @@
 		F44C0F3828DE0B4600876028 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				F44C0F3928DE0F8800876028 /* Info.plist */,
 				F44C0F3728DE0B3B00876028 /* ApiKeys.xcconfig */,
 			);
 			path = Configuration;
@@ -122,7 +123,6 @@
 		F4553B3128C0E562005958BB /* Harness */ = {
 			isa = PBXGroup;
 			children = (
-				F44C0F3928DE0F8800876028 /* Info.plist */,
 				F44C0F3428DE068000876028 /* Services */,
 				F4760A0528C65B780026DD9E /* Views */,
 				F4553B3228C0E562005958BB /* HarnessApp.swift */,
@@ -467,7 +467,7 @@
 				DEVELOPMENT_TEAM = M6W9FG2WLN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Harness/Info.plist;
+				INFOPLIST_FILE = Harness/Configuration/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -499,7 +499,7 @@
 				DEVELOPMENT_TEAM = M6W9FG2WLN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Harness/Info.plist;
+				INFOPLIST_FILE = Harness/Configuration/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

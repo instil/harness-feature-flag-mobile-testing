@@ -38,13 +38,13 @@ class FeatureFlagService {
         }
     }
     
-    func boolVariation(evaluationId: String, _ callback: @escaping(_ result: Evaluation?)->()) {
+    func boolVariation(evaluationId: String, _ callback: @escaping(_ result: Bool)->()) {
         if (!self.inInitialized) {
             return
         }
         
         CfClient.sharedInstance.boolVariation(evaluationId: evaluationId, { (eval) in
-          callback(eval)
+          callback(eval?.identifier == "true")
         })
     }
     

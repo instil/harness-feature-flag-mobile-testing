@@ -1,0 +1,8 @@
+//
+//  Copyright 2022 Harness
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+HARNESS_SDK_KEY=PASTE_SDK_KEY_HERE

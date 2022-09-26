@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "ff-ios-client-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/harness/ff-ios-client-sdk.git",
+      "state" : {
+        "revision" : "1028877c48445a8988b1f6367967b1d4184e2bdd",
+        "version" : "1.0.3"
+      }
+    }
+  ],
+  "version" : 2
+}

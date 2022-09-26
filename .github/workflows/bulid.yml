@@ -6,10 +6,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Set Xcode Version to latest
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '14.0'
       - name: Build app
         run: |
           cd apple

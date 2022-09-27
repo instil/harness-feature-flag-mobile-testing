@@ -41,6 +41,18 @@ final class HarnessUITests: XCTestCase {
         XCTAssert(booleanFive.exists)
     }
     
+    func testBooleanOneNotExists() throws {
+        let booleanButton = app.buttons["BooleanButton"]
+        booleanButton.tap()
+        
+        let booleanOne = app.staticTexts["Boolean One"]
+        
+        let hidden = NSPredicate(format: "isHittable == 0")
+
+        expectation(for: hidden, evaluatedWith: booleanOne, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
     func testBooleanTabsWork() throws {
         let booleanButton = app.buttons["BooleanButton"]
         booleanButton.tap()
@@ -91,7 +103,10 @@ final class HarnessUITests: XCTestCase {
             booleanButton.tap()
             
             let booleanOne = app.staticTexts["Boolean One"]
-            XCTAssert(booleanOne.exists)
+            let hidden = NSPredicate(format: "isHittable == 0")
+
+            expectation(for: hidden, evaluatedWith: booleanOne, handler: nil)
+            waitForExpectations(timeout: 5, handler: nil)
 
             let backButton = app.buttons["Back"]
             backButton.tap()

@@ -58,7 +58,7 @@ final class HarnessUITests: XCTestCase {
         
         booleanRealWorldTab.tap()
         
-        let realWorldImage = app.images["BooleanImage"]
+        let realWorldImage = app.images["InstilOffice"]
         XCTAssert(realWorldImage.exists)
         
         booleanFlagTab.tap()
@@ -69,7 +69,7 @@ final class HarnessUITests: XCTestCase {
         booleanTesterTab.tap()
     }
     
-    func testPerformanceMeasureMetrics() {
+    func testPerformanceNavigatingToBooleanTab() {
         let measureOptions = XCTMeasureOptions()
         measureOptions.iterationCount = 10
         
@@ -92,6 +92,23 @@ final class HarnessUITests: XCTestCase {
             
             let booleanOne = app.staticTexts["Boolean One"]
             XCTAssert(booleanOne.exists)
+
+            let backButton = app.buttons["Back"]
+            backButton.tap()
+        }
+    }
+
+    func testGranularPerformanceNavigatingToBooleanTAb() {
+        measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
+            startMeasuring()
+
+            let booleanButton = app.buttons["BooleanButton"]
+            booleanButton.tap()
+
+            let booleanOne = app.staticTexts["Boolean One"]
+            XCTAssert(booleanOne.exists)
+
+            stopMeasuring()
 
             let backButton = app.buttons["Back"]
             backButton.tap()

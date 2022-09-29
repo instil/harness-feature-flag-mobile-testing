@@ -10,6 +10,11 @@ struct BooleanTesterView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
+            Text("Loading...")
+                .accessibilityLabel("Loading")
+                .padding()
+                .opacity(viewModel.isLoading ? 1 : 0)
+            Spacer()
             Text("Boolean One")
                 .accessibilityIdentifier("BooleanOne")
                 .padding()
@@ -30,6 +35,7 @@ struct BooleanTesterView: View {
                 .accessibilityIdentifier("BooleanFive")
                 .padding()
                 .opacity(viewModel.booleanFive ? 1 : 0)
+            Spacer()
         }.padding()
     }
 }

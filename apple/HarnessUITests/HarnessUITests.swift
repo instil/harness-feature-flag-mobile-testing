@@ -134,7 +134,7 @@ final class HarnessUITests: XCTestCase {
         guard type is XCTMemoryMetric.Type ||
               type is XCTCPUMetric.Type ||
               type is XCTStorageMetric.Type else {
-            fatalError("CPU, Storage and Memory metric implements initWithProcessName:")
+            fatalError("Tried to create a metric that is not CPU, Storage or Memory")
         }
         let allocSelector = NSSelectorFromString("alloc")
         let allocIMP = method_getImplementation(class_getClassMethod(type.self, allocSelector)!)

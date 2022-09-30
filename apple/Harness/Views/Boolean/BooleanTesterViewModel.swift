@@ -13,9 +13,9 @@ class BooleanTesterViewModel: ObservableObject {
     @Published var booleanFour: Bool = true
     @Published var booleanFive: Bool = true
 
-    let featureFlagService = FeatureFlagService()
-
-    var receivedResponses = 0 {
+    @Inject private var featureFlagService: FeatureFlagService
+    
+    private var receivedResponses = 0 {
         didSet { isLoading = receivedResponses < 5 }
     }
     

@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="feca0dfc-8b6e-47b4-a1c1-cfd64238681b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/HarnessUITests/HarnessUITests.swift" beforeDir="false" afterPath="$PROJECT_DIR$/HarnessUITests/HarnessUITests.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HarnessLaunchPerfomanceTests/HarnessLaunchPerfomanceTestsLaunchTests.swift" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HarnessUITests/HarnessUITestsLaunchTests.swift" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +49,7 @@
       <workItem from="1662382575485" duration="58000" />
       <workItem from="1662394235751" duration="275000" />
       <workItem from="1664212176353" duration="1331000" />
+      <workItem from="1664554172493" duration="140000" />
     </task>
     <servers />
   </component>

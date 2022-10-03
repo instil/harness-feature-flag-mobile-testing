@@ -48,6 +48,16 @@ class HarnessFeatureFlagService: FeatureFlagService {
         })
     }
     
+    func stringVariation(evaluationId: String, _ callback: @escaping(_ result: String)->()) {
+        if (!self.inInitialized) {
+            return
+        }
+        
+        CfClient.sharedInstance.stringVariation(evaluationId: evaluationId, { (eval) in
+            callback(eval?.value.stringValue ?? "")
+        })
+    }
+    
     private func registerEventsListener() {
         CfClient.sharedInstance.registerEventsListener() { (result) in
             switch result {

@@ -17,6 +17,7 @@
 		F446C65028EB100A00592833 /* MultiVariateStringTesterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C64F28EB100A00592833 /* MultiVariateStringTesterView.swift */; };
 		F446C65228EB101500592833 /* MultiVariateStringYouTubeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C65128EB101500592833 /* MultiVariateStringYouTubeView.swift */; };
 		F446C65428EB101E00592833 /* MultiVariateStringWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C65328EB101E00592833 /* MultiVariateStringWebView.swift */; };
+		F446C65628EB1DB000592833 /* MultiVariateStringTesterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C65528EB1DB000592833 /* MultiVariateStringTesterViewModel.swift */; };
 		F44B174F28E73F9C0074B195 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = F44B174E28E73F9C0074B195 /* Swinject */; };
 		F44B175128E73FC20074B195 /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B175028E73FC20074B195 /* Inject.swift */; };
 		F44B175528E742200074B195 /* FeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B175428E742200074B195 /* FeatureFlagService.swift */; };
@@ -36,6 +37,8 @@
 		F47609FE28C6576B0026DD9E /* FlaggedBooleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */; };
 		F4760A0228C65B300026DD9E /* MultiVariateNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */; };
 		F4760A0428C65B3D0026DD9E /* MultiVariateJsonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */; };
+		F4F3DA2728EB29BE00661C29 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = F4F3DA2628EB29BE00661C29 /* YouTubePlayerKit */; };
+		F4F3DA2928EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F3DA2828EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +71,7 @@
 		F446C64F28EB100A00592833 /* MultiVariateStringTesterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringTesterView.swift; sourceTree = "<group>"; };
 		F446C65128EB101500592833 /* MultiVariateStringYouTubeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringYouTubeView.swift; sourceTree = "<group>"; };
 		F446C65328EB101E00592833 /* MultiVariateStringWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringWebView.swift; sourceTree = "<group>"; };
+		F446C65528EB1DB000592833 /* MultiVariateStringTesterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringTesterViewModel.swift; sourceTree = "<group>"; };
 		F44B175028E73FC20074B195 /* Inject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inject.swift; sourceTree = "<group>"; };
 		F44B175428E742200074B195 /* FeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagService.swift; sourceTree = "<group>"; };
 		F44B175628E742A50074B195 /* MockFeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFeatureFlagService.swift; sourceTree = "<group>"; };
@@ -87,6 +91,7 @@
 		F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaggedBooleanView.swift; sourceTree = "<group>"; };
 		F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateNumberView.swift; sourceTree = "<group>"; };
 		F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateJsonView.swift; sourceTree = "<group>"; };
+		F4F3DA2828EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringYouTubeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +115,7 @@
 			files = (
 				F44C0F3128DDFE2500876028 /* ff-ios-client-sdk in Frameworks */,
 				F44B174F28E73F9C0074B195 /* Swinject in Frameworks */,
+				F4F3DA2728EB29BE00661C29 /* YouTubePlayerKit in Frameworks */,
 				F44B175A28E745540074B195 /* SwinjectAutoregistration in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,7 +146,9 @@
 			children = (
 				F446C64728EB0F9900592833 /* MultiVariateStringView.swift */,
 				F446C64F28EB100A00592833 /* MultiVariateStringTesterView.swift */,
+				F446C65528EB1DB000592833 /* MultiVariateStringTesterViewModel.swift */,
 				F446C65128EB101500592833 /* MultiVariateStringYouTubeView.swift */,
+				F4F3DA2828EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift */,
 				F446C65328EB101E00592833 /* MultiVariateStringWebView.swift */,
 			);
 			path = String;
@@ -233,11 +241,11 @@
 		F4760A0628C65B8A0026DD9E /* Boolean */ = {
 			isa = PBXGroup;
 			children = (
-				F45E84EA28C611C500A4F41E /* RealWorldBooleanUseView.swift */,
 				F4553B3428C0E562005958BB /* BooleanTesterView.swift */,
+				F44C0F3228DE05A300876028 /* BooleanTesterViewModel.swift */,
 				F47609FB28C62A500026DD9E /* BooleanView.swift */,
 				F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */,
-				F44C0F3228DE05A300876028 /* BooleanTesterViewModel.swift */,
+				F45E84EA28C611C500A4F41E /* RealWorldBooleanUseView.swift */,
 			);
 			path = Boolean;
 			sourceTree = "<group>";
@@ -298,6 +306,7 @@
 				F44C0F3028DDFE2500876028 /* ff-ios-client-sdk */,
 				F44B174E28E73F9C0074B195 /* Swinject */,
 				F44B175928E745540074B195 /* SwinjectAutoregistration */,
+				F4F3DA2628EB29BE00661C29 /* YouTubePlayerKit */,
 			);
 			productName = Harness;
 			productReference = F4553B2F28C0E562005958BB /* Harness.app */;
@@ -339,6 +348,7 @@
 				F44C0F2F28DDFE2500876028 /* XCRemoteSwiftPackageReference "ff-ios-client-sdk" */,
 				F44B174D28E73F9C0074B195 /* XCRemoteSwiftPackageReference "Swinject" */,
 				F44B175828E745540074B195 /* XCRemoteSwiftPackageReference "SwinjectAutoregistration" */,
+				F4F3DA2528EB29BE00661C29 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
 			);
 			productRefGroup = F4553B3028C0E562005958BB /* Products */;
 			projectDirPath = "";
@@ -401,8 +411,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4553B3528C0E562005958BB /* BooleanTesterView.swift in Sources */,
+				F4F3DA2928EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift in Sources */,
 				F45E84ED28C612F700A4F41E /* MainView.swift in Sources */,
 				F44B175728E742A50074B195 /* MockFeatureFlagService.swift in Sources */,
+				F446C65628EB1DB000592833 /* MultiVariateStringTesterViewModel.swift in Sources */,
 				F446C65428EB101E00592833 /* MultiVariateStringWebView.swift in Sources */,
 				F44B175528E742200074B195 /* FeatureFlagService.swift in Sources */,
 				F4760A0228C65B300026DD9E /* MultiVariateNumberView.swift in Sources */,
@@ -757,6 +769,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		F4F3DA2528EB29BE00661C29 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SvenTiigi/YouTubePlayerKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -774,6 +794,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F44C0F2F28DDFE2500876028 /* XCRemoteSwiftPackageReference "ff-ios-client-sdk" */;
 			productName = "ff-ios-client-sdk";
+		};
+		F4F3DA2628EB29BE00661C29 /* YouTubePlayerKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F4F3DA2528EB29BE00661C29 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
+			productName = YouTubePlayerKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

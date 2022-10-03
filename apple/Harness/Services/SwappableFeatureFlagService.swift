@@ -5,8 +5,8 @@
 import Foundation
 
 class SwappableFeatureFlagService: FeatureFlagService {
-    let harnessService = HarnessFeatureFlagService()
-    let mockService = MockFeatureFlagService()
+    @Inject private var harnessService: HarnessFeatureFlagService
+    @Inject private var mockService: MockFeatureFlagService
     
     var useRealService = true
     

@@ -11,13 +11,14 @@
 		3946AF7928DD03800059B397 /* HarnessUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3946AF7828DD03800059B397 /* HarnessUITestsLaunchTests.swift */; };
 		398F46E928CB725D00496ED1 /* HarnessLaunchPerfomanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398F46E828CB725D00496ED1 /* HarnessLaunchPerfomanceTests.swift */; };
 		398F46EB28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398F46EA28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift */; };
+		F446C64328EAE9EA00592833 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C64228EAE9EA00592833 /* MainViewModel.swift */; };
+		F446C64528EAF24600592833 /* DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C64428EAF24600592833 /* DependencyInjection.swift */; };
 		F446C64828EB0F9900592833 /* MultiVariateStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C64728EB0F9900592833 /* MultiVariateStringView.swift */; };
 		F446C65028EB100A00592833 /* MultiVariateStringTesterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C64F28EB100A00592833 /* MultiVariateStringTesterView.swift */; };
 		F446C65228EB101500592833 /* MultiVariateStringYouTubeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C65128EB101500592833 /* MultiVariateStringYouTubeView.swift */; };
 		F446C65428EB101E00592833 /* MultiVariateStringWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C65328EB101E00592833 /* MultiVariateStringWebView.swift */; };
 		F44B174F28E73F9C0074B195 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = F44B174E28E73F9C0074B195 /* Swinject */; };
 		F44B175128E73FC20074B195 /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B175028E73FC20074B195 /* Inject.swift */; };
-		F44B175328E73FD10074B195 /* DependencInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B175228E73FD10074B195 /* DependencInjection.swift */; };
 		F44B175528E742200074B195 /* FeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B175428E742200074B195 /* FeatureFlagService.swift */; };
 		F44B175728E742A50074B195 /* MockFeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B175628E742A50074B195 /* MockFeatureFlagService.swift */; };
 		F44B175A28E745540074B195 /* SwinjectAutoregistration in Frameworks */ = {isa = PBXBuildFile; productRef = F44B175928E745540074B195 /* SwinjectAutoregistration */; };
@@ -61,12 +62,13 @@
 		398F46E628CB725D00496ED1 /* HarnessLaunchPerfomanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarnessLaunchPerfomanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		398F46E828CB725D00496ED1 /* HarnessLaunchPerfomanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessLaunchPerfomanceTests.swift; sourceTree = "<group>"; };
 		398F46EA28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessLaunchPerfomanceTestsLaunchTests.swift; sourceTree = "<group>"; };
+		F446C64228EAE9EA00592833 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		F446C64428EAF24600592833 /* DependencyInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyInjection.swift; sourceTree = "<group>"; };
 		F446C64728EB0F9900592833 /* MultiVariateStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringView.swift; sourceTree = "<group>"; };
 		F446C64F28EB100A00592833 /* MultiVariateStringTesterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringTesterView.swift; sourceTree = "<group>"; };
 		F446C65128EB101500592833 /* MultiVariateStringYouTubeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringYouTubeView.swift; sourceTree = "<group>"; };
 		F446C65328EB101E00592833 /* MultiVariateStringWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringWebView.swift; sourceTree = "<group>"; };
 		F44B175028E73FC20074B195 /* Inject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inject.swift; sourceTree = "<group>"; };
-		F44B175228E73FD10074B195 /* DependencInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencInjection.swift; sourceTree = "<group>"; };
 		F44B175428E742200074B195 /* FeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagService.swift; sourceTree = "<group>"; };
 		F44B175628E742A50074B195 /* MockFeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFeatureFlagService.swift; sourceTree = "<group>"; };
 		F44B175B28E745690074B195 /* SwappableFeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwappableFeatureFlagService.swift; sourceTree = "<group>"; };
@@ -209,7 +211,7 @@
 		F466568C28E5F95D008DEAB9 /* DependencyInjection */ = {
 			isa = PBXGroup;
 			children = (
-				F44B175228E73FD10074B195 /* DependencInjection.swift */,
+				F446C64428EAF24600592833 /* DependencyInjection.swift */,
 				F44B175028E73FC20074B195 /* Inject.swift */,
 			);
 			path = DependencyInjection;
@@ -223,6 +225,7 @@
 				F45E84EC28C612F700A4F41E /* MainView.swift */,
 				F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */,
 				F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */,
+				F446C64228EAE9EA00592833 /* MainViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -408,11 +411,12 @@
 				F44B175C28E745690074B195 /* SwappableFeatureFlagService.swift in Sources */,
 				F446C65028EB100A00592833 /* MultiVariateStringTesterView.swift in Sources */,
 				F44C0F3328DE05A300876028 /* BooleanTesterViewModel.swift in Sources */,
+				F446C64328EAE9EA00592833 /* MainViewModel.swift in Sources */,
 				F47609FC28C62A500026DD9E /* BooleanView.swift in Sources */,
 				F47609FE28C6576B0026DD9E /* FlaggedBooleanView.swift in Sources */,
 				F446C64828EB0F9900592833 /* MultiVariateStringView.swift in Sources */,
 				F44B175128E73FC20074B195 /* Inject.swift in Sources */,
-				F44B175328E73FD10074B195 /* DependencInjection.swift in Sources */,
+				F446C64528EAF24600592833 /* DependencyInjection.swift in Sources */,
 				F4760A0428C65B3D0026DD9E /* MultiVariateJsonView.swift in Sources */,
 				F44C0F3628DE069900876028 /* HarnessFeatureFlagService.swift in Sources */,
 				F45E84EB28C611C500A4F41E /* RealWorldBooleanUseView.swift in Sources */,

@@ -5,9 +5,15 @@
 import SwiftUI
 
 struct MainView: View {
+    @StateObject private var viewModel = MainViewModel()
+
     var body: some View {
         NavigationView {
             VStack {
+                Toggle("Using Harness SDK", isOn: $viewModel.useRealService)
+                    .frame(width: 220)
+                    .padding(.top, 50)
+                Spacer()
                 NavigationLink(destination: BooleanView()) {
                     Image(systemName: "switch.2")
                     Text("Booleans")
@@ -28,6 +34,7 @@ struct MainView: View {
                     Text("Multi-variate JSON")
                 }.accessibilityIdentifier("JsonButton")
                     .padding()
+                Spacer()
             }
         }
     }

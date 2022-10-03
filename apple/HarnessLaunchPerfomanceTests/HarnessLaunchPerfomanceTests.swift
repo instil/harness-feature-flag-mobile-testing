@@ -21,8 +21,8 @@ class HarnessLaunchPerfomanceTests: XCTestCase {
         guard #available(iOS 14, *) else { return }
 
         measure(metrics: [XCTApplicationLaunchMetric(waitUntilResponsive: true)]) {
-          app.launch()
-          app.activate()
+            app.launch()
+            app.activate()
         }
     }
 }

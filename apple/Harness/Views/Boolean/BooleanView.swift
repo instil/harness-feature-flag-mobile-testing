@@ -11,17 +11,14 @@ struct BooleanView: View {
                 .tabItem {
                     Label("Test", systemImage: "testtube.2")
                 }
-                .accessibilityIdentifier("BooleanTesterTab")
             RealWorldBooleanUseView()
                 .tabItem {
                     Label("Real World", systemImage: "globe.europe.africa.fill")
                 }
-                .accessibilityIdentifier("BooleanRealWorldTab")
             FlaggedBooleanView()
                 .tabItem {
                     Label("Flagged View", systemImage: "flag.fill")
                 }
-                .accessibilityIdentifier("BooleanFeatureFlagTab")
         }
     }
 }

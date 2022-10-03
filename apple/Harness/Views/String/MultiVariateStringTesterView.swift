@@ -4,14 +4,14 @@
 
 import SwiftUI
 
-struct MultiVariateStringView: View {
+struct MultiVariateStringTesterView: View {
     var body: some View {
         Text("Hello, World!")
     }
 }
 
-struct MultiVariateStringView_Previews: PreviewProvider {
+struct MultiVariateStringTesterView_Previews: PreviewProvider {
     static var previews: some View {
-        MultiVariateStringView()
+        MultiVariateStringTesterView()
     }
 }

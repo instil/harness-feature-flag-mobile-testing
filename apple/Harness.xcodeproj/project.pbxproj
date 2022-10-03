@@ -11,6 +11,10 @@
 		3946AF7928DD03800059B397 /* HarnessUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3946AF7828DD03800059B397 /* HarnessUITestsLaunchTests.swift */; };
 		398F46E928CB725D00496ED1 /* HarnessLaunchPerfomanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398F46E828CB725D00496ED1 /* HarnessLaunchPerfomanceTests.swift */; };
 		398F46EB28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398F46EA28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift */; };
+		F446C64828EB0F9900592833 /* MultiVariateStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C64728EB0F9900592833 /* MultiVariateStringView.swift */; };
+		F446C65028EB100A00592833 /* MultiVariateStringTesterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C64F28EB100A00592833 /* MultiVariateStringTesterView.swift */; };
+		F446C65228EB101500592833 /* MultiVariateStringYouTubeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C65128EB101500592833 /* MultiVariateStringYouTubeView.swift */; };
+		F446C65428EB101E00592833 /* MultiVariateStringWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F446C65328EB101E00592833 /* MultiVariateStringWebView.swift */; };
 		F44B174F28E73F9C0074B195 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = F44B174E28E73F9C0074B195 /* Swinject */; };
 		F44B175128E73FC20074B195 /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B175028E73FC20074B195 /* Inject.swift */; };
 		F44B175328E73FD10074B195 /* DependencInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44B175228E73FD10074B195 /* DependencInjection.swift */; };
@@ -29,7 +33,6 @@
 		F45E84ED28C612F700A4F41E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45E84EC28C612F700A4F41E /* MainView.swift */; };
 		F47609FC28C62A500026DD9E /* BooleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FB28C62A500026DD9E /* BooleanView.swift */; };
 		F47609FE28C6576B0026DD9E /* FlaggedBooleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */; };
-		F4760A0028C65B040026DD9E /* MultiVariateStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FF28C65B040026DD9E /* MultiVariateStringView.swift */; };
 		F4760A0228C65B300026DD9E /* MultiVariateNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */; };
 		F4760A0428C65B3D0026DD9E /* MultiVariateJsonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */; };
 /* End PBXBuildFile section */
@@ -58,6 +61,10 @@
 		398F46E628CB725D00496ED1 /* HarnessLaunchPerfomanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarnessLaunchPerfomanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		398F46E828CB725D00496ED1 /* HarnessLaunchPerfomanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessLaunchPerfomanceTests.swift; sourceTree = "<group>"; };
 		398F46EA28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessLaunchPerfomanceTestsLaunchTests.swift; sourceTree = "<group>"; };
+		F446C64728EB0F9900592833 /* MultiVariateStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringView.swift; sourceTree = "<group>"; };
+		F446C64F28EB100A00592833 /* MultiVariateStringTesterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringTesterView.swift; sourceTree = "<group>"; };
+		F446C65128EB101500592833 /* MultiVariateStringYouTubeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringYouTubeView.swift; sourceTree = "<group>"; };
+		F446C65328EB101E00592833 /* MultiVariateStringWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringWebView.swift; sourceTree = "<group>"; };
 		F44B175028E73FC20074B195 /* Inject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inject.swift; sourceTree = "<group>"; };
 		F44B175228E73FD10074B195 /* DependencInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencInjection.swift; sourceTree = "<group>"; };
 		F44B175428E742200074B195 /* FeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagService.swift; sourceTree = "<group>"; };
@@ -76,7 +83,6 @@
 		F45E84EC28C612F700A4F41E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		F47609FB28C62A500026DD9E /* BooleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanView.swift; sourceTree = "<group>"; };
 		F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaggedBooleanView.swift; sourceTree = "<group>"; };
-		F47609FF28C65B040026DD9E /* MultiVariateStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringView.swift; sourceTree = "<group>"; };
 		F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateNumberView.swift; sourceTree = "<group>"; };
 		F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateJsonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -125,6 +131,17 @@
 				398F46EA28CB725D00496ED1 /* HarnessLaunchPerfomanceTestsLaunchTests.swift */,
 			);
 			path = HarnessLaunchPerfomanceTests;
+			sourceTree = "<group>";
+		};
+		F446C64628EB0F7C00592833 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				F446C64728EB0F9900592833 /* MultiVariateStringView.swift */,
+				F446C64F28EB100A00592833 /* MultiVariateStringTesterView.swift */,
+				F446C65128EB101500592833 /* MultiVariateStringYouTubeView.swift */,
+				F446C65328EB101E00592833 /* MultiVariateStringWebView.swift */,
+			);
+			path = String;
 			sourceTree = "<group>";
 		};
 		F44C0F3428DE068000876028 /* Services */ = {
@@ -201,9 +218,9 @@
 		F4760A0528C65B780026DD9E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F446C64628EB0F7C00592833 /* String */,
 				F4760A0628C65B8A0026DD9E /* Boolean */,
 				F45E84EC28C612F700A4F41E /* MainView.swift */,
-				F47609FF28C65B040026DD9E /* MultiVariateStringView.swift */,
 				F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */,
 				F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */,
 			);
@@ -383,14 +400,17 @@
 				F4553B3528C0E562005958BB /* BooleanTesterView.swift in Sources */,
 				F45E84ED28C612F700A4F41E /* MainView.swift in Sources */,
 				F44B175728E742A50074B195 /* MockFeatureFlagService.swift in Sources */,
+				F446C65428EB101E00592833 /* MultiVariateStringWebView.swift in Sources */,
 				F44B175528E742200074B195 /* FeatureFlagService.swift in Sources */,
 				F4760A0228C65B300026DD9E /* MultiVariateNumberView.swift in Sources */,
+				F446C65228EB101500592833 /* MultiVariateStringYouTubeView.swift in Sources */,
 				F4553B3328C0E562005958BB /* HarnessApp.swift in Sources */,
 				F44B175C28E745690074B195 /* SwappableFeatureFlagService.swift in Sources */,
+				F446C65028EB100A00592833 /* MultiVariateStringTesterView.swift in Sources */,
 				F44C0F3328DE05A300876028 /* BooleanTesterViewModel.swift in Sources */,
 				F47609FC28C62A500026DD9E /* BooleanView.swift in Sources */,
 				F47609FE28C6576B0026DD9E /* FlaggedBooleanView.swift in Sources */,
-				F4760A0028C65B040026DD9E /* MultiVariateStringView.swift in Sources */,
+				F446C64828EB0F9900592833 /* MultiVariateStringView.swift in Sources */,
 				F44B175128E73FC20074B195 /* Inject.swift in Sources */,
 				F44B175328E73FD10074B195 /* DependencInjection.swift in Sources */,
 				F4760A0428C65B3D0026DD9E /* MultiVariateJsonView.swift in Sources */,

@@ -5,8 +5,12 @@
 import SwiftUI
 
 struct MultiVariateStringTesterView: View {
+    @StateObject private var viewModel = MultiVariateStringTesterViewModel()
+
     var body: some View {
-        Text("Hello, World!")
+        Text(viewModel.stringFeatureFlag)
+            .padding()
+            .multilineTextAlignment(.center)
     }
 }
 

@@ -22,4 +22,12 @@ class SwappableFeatureFlagService: FeatureFlagService {
             mockService.boolVariation(evaluationId: evaluationId, callback)
         }
     }
+    
+    func stringVariation(evaluationId: String, _ callback: @escaping(_ result: String)->()) {
+        if (self.useRealService) {
+            harnessService.stringVariation(evaluationId: evaluationId, callback)
+        } else {
+            mockService.stringVariation(evaluationId: evaluationId, callback)
+        }
+    }
 }

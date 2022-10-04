@@ -7,4 +7,5 @@ import Foundation
 protocol FeatureFlagService {
     func load(_ callback: @escaping()->())
     func boolVariation(evaluationId: String, _ callback: @escaping(_ result: Bool)->())
+    func stringVariation(evaluationId: String, _ callback: @escaping(_ result: String)->())
 }

@@ -35,6 +35,10 @@ struct MainView: View {
                 }.accessibilityIdentifier("JsonButton")
                     .padding()
                 Spacer()
+                Button("\(Image(systemName: "powersleep")) Suspend App", action: viewModel.suspendApp)
+                Button("\(Image(systemName: "exclamationmark.triangle.fill")) Close App", action: viewModel.closeApp)
+                    .foregroundColor(.red)
+                    .padding()
             }
         }
     }

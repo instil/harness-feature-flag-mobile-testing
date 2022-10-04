@@ -31,6 +31,8 @@
 		F4553B3528C0E562005958BB /* BooleanTesterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4553B3428C0E562005958BB /* BooleanTesterView.swift */; };
 		F4553B3728C0E563005958BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4553B3628C0E563005958BB /* Assets.xcassets */; };
 		F4553B3A28C0E563005958BB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4553B3928C0E563005958BB /* Preview Assets.xcassets */; };
+		F45799F828EC57CE004B3629 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45799F728EC57CE004B3629 /* WebView.swift */; };
+		F45799FA28EC5942004B3629 /* MultiVariateStringWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45799F928EC5942004B3629 /* MultiVariateStringWebViewModel.swift */; };
 		F45E84EB28C611C500A4F41E /* RealWorldBooleanUseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45E84EA28C611C500A4F41E /* RealWorldBooleanUseView.swift */; };
 		F45E84ED28C612F700A4F41E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45E84EC28C612F700A4F41E /* MainView.swift */; };
 		F47609FC28C62A500026DD9E /* BooleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FB28C62A500026DD9E /* BooleanView.swift */; };
@@ -85,6 +87,8 @@
 		F4553B3428C0E562005958BB /* BooleanTesterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanTesterView.swift; sourceTree = "<group>"; };
 		F4553B3628C0E563005958BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F4553B3928C0E563005958BB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F45799F728EC57CE004B3629 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		F45799F928EC5942004B3629 /* MultiVariateStringWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringWebViewModel.swift; sourceTree = "<group>"; };
 		F45E84EA28C611C500A4F41E /* RealWorldBooleanUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWorldBooleanUseView.swift; sourceTree = "<group>"; };
 		F45E84EC28C612F700A4F41E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		F47609FB28C62A500026DD9E /* BooleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanView.swift; sourceTree = "<group>"; };
@@ -150,6 +154,7 @@
 				F446C65128EB101500592833 /* MultiVariateStringYouTubeView.swift */,
 				F4F3DA2828EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift */,
 				F446C65328EB101E00592833 /* MultiVariateStringWebView.swift */,
+				F45799F928EC5942004B3629 /* MultiVariateStringWebViewModel.swift */,
 			);
 			path = String;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 			children = (
 				F466568C28E5F95D008DEAB9 /* DependencyInjection */,
 				F44C0F3428DE068000876028 /* Services */,
+				F45799F428EC57A0004B3629 /* ViewElements */,
 				F4760A0528C65B780026DD9E /* Views */,
 				F4553B3228C0E562005958BB /* HarnessApp.swift */,
 				F4553B3628C0E563005958BB /* Assets.xcassets */,
@@ -214,6 +220,14 @@
 				F4553B3928C0E563005958BB /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F45799F428EC57A0004B3629 /* ViewElements */ = {
+			isa = PBXGroup;
+			children = (
+				F45799F728EC57CE004B3629 /* WebView.swift */,
+			);
+			path = ViewElements;
 			sourceTree = "<group>";
 		};
 		F466568C28E5F95D008DEAB9 /* DependencyInjection */ = {
@@ -411,6 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4553B3528C0E562005958BB /* BooleanTesterView.swift in Sources */,
+				F45799F828EC57CE004B3629 /* WebView.swift in Sources */,
 				F4F3DA2928EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift in Sources */,
 				F45E84ED28C612F700A4F41E /* MainView.swift in Sources */,
 				F44B175728E742A50074B195 /* MockFeatureFlagService.swift in Sources */,
@@ -432,6 +447,7 @@
 				F4760A0428C65B3D0026DD9E /* MultiVariateJsonView.swift in Sources */,
 				F44C0F3628DE069900876028 /* HarnessFeatureFlagService.swift in Sources */,
 				F45E84EB28C611C500A4F41E /* RealWorldBooleanUseView.swift in Sources */,
+				F45799FA28EC5942004B3629 /* MultiVariateStringWebViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

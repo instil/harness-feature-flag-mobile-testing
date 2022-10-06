@@ -15,6 +15,11 @@ class SwappableFeatureFlagService: FeatureFlagService {
         harnessService.load(callback)
     }
     
+    func destroy() {
+        mockService.destroy()
+        harnessService.destroy()
+    }
+    
     func boolVariation(evaluationId: String, _ callback: @escaping (Bool) -> ()) {
         if (self.useRealService) {
             harnessService.boolVariation(evaluationId: evaluationId, callback)

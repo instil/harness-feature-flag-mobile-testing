@@ -38,6 +38,15 @@ class HarnessFeatureFlagService: FeatureFlagService {
         }
     }
     
+    func destroy() {
+        if (!self.inInitialized) {
+            return
+        }
+        
+        CfClient.sharedInstance.destroy()
+        NSLog("Feature Flag SDK has been destroyed.")
+    }
+    
     func boolVariation(evaluationId: String, _ callback: @escaping(_ result: Bool)->()) {
         if (!self.inInitialized) {
             return

@@ -13,11 +13,9 @@ class MultiVariateStringWebViewModel: ObservableObject {
     @Inject private var featureFlagService: FeatureFlagService
     
     init() {
-        featureFlagService.load() { [weak self] in
-            self?.featureFlagService.stringVariation(evaluationId: "WebViewUrl") { (response) in
-                self?.url = URL(string: response)
-                self?.isLoading = false
-            }
+        self.featureFlagService.stringVariation(evaluationId: "WebViewUrl") { [weak self] (response) in
+            self?.url = URL(string: response)
+            self?.isLoading = false
         }
     }
 }

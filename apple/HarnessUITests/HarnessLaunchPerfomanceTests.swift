@@ -25,4 +25,15 @@ class HarnessLaunchPerfomanceTests: XCTestCase {
             app.activate()
         }
     }
+    
+    func testResumePerformance() throws {
+        app.launch()
+
+        let sleepButton = app.buttons["SleepButton"]
+        sleepButton.tap()
+
+        measure(metrics: [XCTApplicationLaunchMetric()]) {
+            app.activate()
+        }
+    }
 }

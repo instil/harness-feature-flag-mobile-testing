@@ -11,6 +11,7 @@ struct MainView: View {
         NavigationView {
             VStack {
                 Toggle("Using Harness SDK", isOn: $viewModel.useRealService)
+                    .accessibilityIdentifier("useSdkSwitch")
                     .frame(width: 220)
                     .padding(.top, 50)
                 Spacer()
@@ -36,8 +37,10 @@ struct MainView: View {
                     .padding()
                 Spacer()
                 Button("\(Image(systemName: "powersleep")) Suspend App", action: viewModel.suspendApp)
+                    .accessibilityIdentifier("SleepButton")
                 Button("\(Image(systemName: "exclamationmark.triangle.fill")) Close App", action: viewModel.closeApp)
                     .foregroundColor(.red)
+                    .accessibilityIdentifier("CloseButton")
                     .padding()
             }
         }

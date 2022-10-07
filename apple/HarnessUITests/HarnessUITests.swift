@@ -5,9 +5,6 @@
 import XCTest
 
 final class HarnessUITests: XCTestCase {
-    typealias MetricAlloc = @convention(c) (XCTMetric.Type, Selector) -> NSObject
-    typealias MetricInitWithProcessName = @convention(c) (NSObject, Selector, String) -> XCTMetric
-    
     let app = XCUIApplication()
 
     override func setUpWithError() throws {
@@ -18,13 +15,42 @@ final class HarnessUITests: XCTestCase {
 
     override func tearDownWithError() throws { }
 
-    func testBooleanNavigationLinkExists() throws {
+    func testMainViewNavigationLinksExists() throws {
+        let harnessSdkToggle = app.switches["useSdkSwitch"]
         let booleanButton = app.buttons["BooleanButton"]
+        let stringButton = app.buttons["StringButton"]
+        let intButton = app.buttons["IntButton"]
+        let jsonButton = app.buttons["JsonButton"]
+        let sleepButton = app.buttons["SleepButton"]
+        let closeButton = app.buttons["CloseButton"]
         
+        XCTAssert(harnessSdkToggle.exists)
+        XCTAssert(harnessSdkToggle.value as? String == "1")
         XCTAssert(booleanButton.exists)
+        XCTAssert(stringButton.exists)
+        XCTAssert(intButton.exists)
+        XCTAssert(jsonButton.exists)
+        XCTAssert(sleepButton.exists)
+        XCTAssert(closeButton.exists)
+    }
+    
+    func testRealHarnessSdkToggle() throws {
+        let harnessSdkToggle = app.switches["useSdkSwitch"]
+
+        harnessSdkToggle.tap()
+
+        XCTAssert(harnessSdkToggle.value as? String == "0")
+
+        harnessSdkToggle.tap()
+
+        XCTAssert(harnessSdkToggle.value as? String == "1")
     }
     
     func testBooleanNavigationLinkNavigatesToBooleanTesterView() throws {
+        let harnessSdkToggle = app.switches["useSdkSwitch"]
+        harnessSdkToggle.tap()
+        XCTAssert(harnessSdkToggle.value as? String == "0")
+        
         let booleanButton = app.buttons["BooleanButton"]
         booleanButton.tap()
         
@@ -41,7 +67,10 @@ final class HarnessUITests: XCTestCase {
         XCTAssert(booleanFive.exists)
     }
     
-    func testBooleanOneNotExists() throws {
+    func testBooleanOneNotExistsForRealSdk() throws {
+        let harnessSdkToggle = app.switches["useSdkSwitch"]
+        XCTAssert(harnessSdkToggle.value as? String == "1")
+        
         let booleanButton = app.buttons["BooleanButton"]
         booleanButton.tap()
         
@@ -81,69 +110,90 @@ final class HarnessUITests: XCTestCase {
         booleanTesterTab.tap()
     }
     
-    func testPerformanceNavigatingToBooleanTab() {
-        let measureOptions = XCTMeasureOptions()
-        measureOptions.iterationCount = 10
+    func testStringNavigationLinkNavigatesToStringTesterView() throws {
+        let stringButton = app.buttons["StringButton"]
+        stringButton.tap()
         
-        let memoryMetric: XCTMetric
-        let cpuMetric: XCTMetric
-        if #available(iOS 14, *) {
-            memoryMetric = self.initWithProcessName(for: XCTMemoryMetric.self, processName: "XCMetrics")
-            cpuMetric = self.initWithProcessName(for: XCTCPUMetric.self, processName: "XCMetrics")
-        } else {
-            memoryMetric = XCTMemoryMetric(application: app)
-            cpuMetric = XCTCPUMetric(application: app)
-        }
+        let featureFlagString = app.staticTexts["FeatureFlagString"]
         
-        let clockMetric = XCTClockMetric()
-        let storageMetric = XCTStorageMetric(application: app)
+        let exists = NSPredicate(format: "exists == 1")
 
-        measure(metrics: [memoryMetric, cpuMetric, clockMetric, storageMetric], options: measureOptions) {
-            let booleanButton = app.buttons["BooleanButton"]
-            booleanButton.tap()
-            
-            let booleanOne = app.staticTexts["Boolean One"]
-            let hidden = NSPredicate(format: "isHittable == 0")
-
-            expectation(for: hidden, evaluatedWith: booleanOne, handler: nil)
-            waitForExpectations(timeout: 5, handler: nil)
-
-            let backButton = app.buttons["Back"]
-            backButton.tap()
-        }
-    }
-
-    func testGranularPerformanceNavigatingToBooleanTAb() {
-        measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
-            startMeasuring()
-
-            let booleanButton = app.buttons["BooleanButton"]
-            booleanButton.tap()
-
-            let booleanOne = app.staticTexts["Boolean One"]
-            XCTAssert(booleanOne.exists)
-
-            stopMeasuring()
-
-            let backButton = app.buttons["Back"]
-            backButton.tap()
-        }
+        expectation(for: exists, evaluatedWith: featureFlagString, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
-    private func initWithProcessName(for type: XCTMetric.Type, processName: String) -> XCTMetric {
-        guard type is XCTMemoryMetric.Type ||
-              type is XCTCPUMetric.Type ||
-              type is XCTStorageMetric.Type else {
-            fatalError("Tried to create a metric that is not CPU, Storage or Memory")
-        }
-        let allocSelector = NSSelectorFromString("alloc")
-        let allocIMP = method_getImplementation(class_getClassMethod(type.self, allocSelector)!)
-        let allocMethod = unsafeBitCast(allocIMP, to: MetricAlloc.self)
-        let result = allocMethod(type.self, allocSelector)
+    func testStringTabsWork() throws {
+        let stringButton = app.buttons["StringButton"]
+        stringButton.tap()
         
-        let initSelector = NSSelectorFromString("initWithProcessName:")
-        let methodIMP = result.method(for: initSelector)
-        let initMethod = unsafeBitCast(methodIMP, to: MetricInitWithProcessName.self)
-        return initMethod(result, initSelector, processName)
+        let stringTesterTab = app.buttons["Test"]
+        let stringYouTubeTab = app.buttons["Video"]
+        let stringWebViewTab = app.buttons["Web"]
+        
+        XCTAssert(stringTesterTab.exists)
+        XCTAssert(stringYouTubeTab.exists)
+        XCTAssert(stringWebViewTab.exists)
+        
+        let exists = NSPredicate(format: "exists == 1")
+        
+        let featureFlagString = app.staticTexts["FeatureFlagString"]
+        expectation(for: exists, evaluatedWith: featureFlagString, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        stringYouTubeTab.tap()
+
+        let youTubePlayerQuery = app.descendants(matching: .webView)
+        let youTubePlayer = youTubePlayerQuery.element(boundBy: 0)
+        expectation(for: exists, evaluatedWith: youTubePlayer, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        stringWebViewTab.tap()
+    
+        let webViewQuery = app.descendants(matching: .webView)
+        let webView = webViewQuery.element(boundBy: 0)
+        expectation(for: exists, evaluatedWith: webView, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        stringTesterTab.tap()
+        expectation(for: exists, evaluatedWith: featureFlagString, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testIntNavigationLinkNavigatesToIntTesterView() throws {
+        let intButton = app.buttons["IntButton"]
+        intButton.tap()
+        
+        let helloWorld = app.staticTexts["Hello, World!"]
+        let exists = NSPredicate(format: "exists == 1")
+
+        expectation(for: exists, evaluatedWith: helloWorld, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testJsonNavigationLinkNavigatesToJsonTesterView() throws {
+        let jsonButton = app.buttons["JsonButton"]
+        jsonButton.tap()
+        
+        let helloWorld = app.staticTexts["Hello, World!"]
+        
+        let exists = NSPredicate(format: "exists == 1")
+
+        expectation(for: exists, evaluatedWith: helloWorld, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testSleepButtonSuspendsApp() throws {
+        let sleepButton = app.buttons["SleepButton"]
+        sleepButton.tap()
+
+        XCTAssert(app.exists)
+        XCTAssert(!sleepButton.isHittable)
+    }
+    
+    func testCloseButtonClosesApp() throws {
+        let closeButton = app.buttons["CloseButton"]
+        closeButton.tap()
+        
+        XCTAssert(!app.exists)
     }
 }

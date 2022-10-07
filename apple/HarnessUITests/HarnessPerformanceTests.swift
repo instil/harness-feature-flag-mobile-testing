@@ -76,10 +76,7 @@ final class HarnessPerformanceTests: XCTestCase {
             
             let featureFlagString = app.staticTexts["FeatureFlagString"]
             
-            let exists = NSPredicate(format: "exists == 1")
-
-            expectation(for: exists, evaluatedWith: featureFlagString, handler: nil)
-            waitForExpectations(timeout: 5, handler: nil)
+            waitForElementExists(element: featureFlagString)
 
             let backButton = app.buttons["Back"]
             backButton.tap()
@@ -95,10 +92,7 @@ final class HarnessPerformanceTests: XCTestCase {
             
             let featureFlagString = app.staticTexts["FeatureFlagString"]
             
-            let exists = NSPredicate(format: "exists == 1")
-
-            expectation(for: exists, evaluatedWith: featureFlagString, handler: nil)
-            waitForExpectations(timeout: 5, handler: nil)
+            waitForElementExists(element: featureFlagString)
 
             let backButton = app.buttons["Back"]
             backButton.tap()
@@ -113,11 +107,8 @@ final class HarnessPerformanceTests: XCTestCase {
             let youTubeTab = app.buttons["Video"]
             youTubeTab.tap()
             
-            let youTubePlayerQuery = app.descendants(matching: .webView)
-            let youTubePlayer = youTubePlayerQuery.element(boundBy: 0)
-            let exists = NSPredicate(format: "exists == 1")
-            expectation(for: exists, evaluatedWith: youTubePlayer, handler: nil)
-            waitForExpectations(timeout: 5, handler: nil)
+            let youTubePlayer = getWebViewElement()
+            waitForElementExists(element: youTubePlayer)
 
             let backButton = app.buttons["Back"]
             backButton.tap()
@@ -133,12 +124,10 @@ final class HarnessPerformanceTests: XCTestCase {
             
             let youTubeTab = app.buttons["Video"]
             youTubeTab.tap()
-            let exists = NSPredicate(format: "exists == 1")
-            let youTubePlayerQuery = app.descendants(matching: .webView)
-            let youTubePlayer = youTubePlayerQuery.element(boundBy: 0)
 
-            expectation(for: exists, evaluatedWith: youTubePlayer, handler: nil)
-            waitForExpectations(timeout: 5, handler: nil)
+            let youTubePlayer = getWebViewElement()
+
+            waitForElementExists(element: youTubePlayer)
 
             let backButton = app.buttons["Back"]
             backButton.tap()
@@ -153,11 +142,8 @@ final class HarnessPerformanceTests: XCTestCase {
             let webViewTab = app.buttons["Web"]
             webViewTab.tap()
             
-            let webViewQuery = app.descendants(matching: .webView)
-            let webView = webViewQuery.element(boundBy: 0)
-            let exists = NSPredicate(format: "exists == 1")
-            expectation(for: exists, evaluatedWith: webView, handler: nil)
-            waitForExpectations(timeout: 10, handler: nil)
+            let webView = getWebViewElement()
+            waitForElementExists(element: webView)
 
             let backButton = app.buttons["Back"]
             backButton.tap()
@@ -175,9 +161,7 @@ final class HarnessPerformanceTests: XCTestCase {
             webViewTab.tap()
 
             let invalidUrl = app.staticTexts["URL is not valid, cannot load web view!"]
-            let exists = NSPredicate(format: "exists == 1")
-            expectation(for: exists, evaluatedWith: invalidUrl, handler: nil)
-            waitForExpectations(timeout: 5, handler: nil)
+            waitForElementExists(element: invalidUrl)
 
             let backButton = app.buttons["Back"]
             backButton.tap()
@@ -224,5 +208,17 @@ final class HarnessPerformanceTests: XCTestCase {
         harnessSdkToggle.tap()
 
         XCTAssert(harnessSdkToggle.value as? String == "0")
+    }
+    
+    private func waitForElementExists(element: XCUIElement) {
+        let exists = NSPredicate(format: "exists == 1")
+
+        expectation(for: exists, evaluatedWith: element, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    private func getWebViewElement() -> XCUIElement {
+        let webViewQuery = app.descendants(matching: .webView)
+        return webViewQuery.element(boundBy: 0)
     }
 }

@@ -11,6 +11,7 @@ struct MultiVariateStringWebView: View {
     var body: some View {
         if let unwrappedUrl = viewModel.url {
             WebView(request: URLRequest(url: unwrappedUrl))
+                .accessibilityIdentifier("WebView")
         } else if viewModel.isLoading {
             Text("Loading...")
         } else {

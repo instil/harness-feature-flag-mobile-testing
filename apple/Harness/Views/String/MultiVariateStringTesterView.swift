@@ -9,6 +9,7 @@ struct MultiVariateStringTesterView: View {
 
     var body: some View {
         Text(viewModel.stringFeatureFlag)
+            .accessibilityIdentifier("FeatureFlagString")
             .padding()
             .multilineTextAlignment(.center)
     }

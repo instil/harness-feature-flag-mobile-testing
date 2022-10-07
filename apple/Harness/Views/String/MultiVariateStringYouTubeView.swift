@@ -13,6 +13,7 @@ struct MultiVariateStringYouTubeView: View {
             YouTubePlayerView(YouTubePlayer(stringLiteral: viewModel.youtubeUrl))
                 .frame(height: 220)
                 .opacity(viewModel.youtubeUrlIsValid ? 1 : 0)
+                .accessibilityIdentifier("YouTubePlayer")
             Text("Loading...")
                 .opacity(viewModel.isLoading ? 1 : 0)
             Text("Error! The URL received from Harness is not a valid YouTube URL!")

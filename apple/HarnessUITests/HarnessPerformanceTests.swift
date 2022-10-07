@@ -184,7 +184,7 @@ final class HarnessPerformanceTests: XCTestCase {
         }
     }
 
-    func testGranularPerformanceNavigatingToBooleanTAb() {
+    func testGranularPerformanceNavigatingToBooleanTab() {
         measureMetrics([XCTPerformanceMetric.wallClockTime], automaticallyStartMeasuring: false) {
             startMeasuring()
 

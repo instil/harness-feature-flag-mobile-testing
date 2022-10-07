@@ -7,6 +7,8 @@ import Foundation
 class MockFeatureFlagService: FeatureFlagService {
     func load(_ callback: @escaping()->()) { }
     
+    func destroy() { }
+    
     func boolVariation(evaluationId: String, _ callback: @escaping(_ result: Bool)->()) {
         callback(true)
     }

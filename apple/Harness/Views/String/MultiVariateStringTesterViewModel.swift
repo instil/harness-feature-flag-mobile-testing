@@ -11,10 +11,8 @@ class MultiVariateStringTesterViewModel: ObservableObject {
     @Inject private var featureFlagService: FeatureFlagService
     
     init() {
-        featureFlagService.load() { [weak self] in
-            self?.featureFlagService.stringVariation(evaluationId: "TestString") { (response) in
-                self?.stringFeatureFlag = response
-            }
+        self.featureFlagService.stringVariation(evaluationId: "TestString") { [weak self] (response) in
+            self?.stringFeatureFlag = response
         }
     }
 }

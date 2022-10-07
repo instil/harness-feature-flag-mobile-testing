@@ -20,31 +20,29 @@ class BooleanTesterViewModel: ObservableObject {
     }
     
     init() {
-        featureFlagService.load() { [weak self] in
-            self?.featureFlagService.boolVariation(evaluationId: "Boolean1") { (response) in
-                self?.booleanOne = response
-                self?.receivedResponses += 1
-            }
-            
-            self?.featureFlagService.boolVariation(evaluationId: "Boolean2") { (response) in
-                self?.booleanTwo = response
-                self?.receivedResponses += 1
-            }
-            
-            self?.featureFlagService.boolVariation(evaluationId: "Boolean3") { (response) in
-                self?.booleanThree = response
-                self?.receivedResponses += 1
-            }
-            
-            self?.featureFlagService.boolVariation(evaluationId: "Boolean4") { (response) in
-                self?.booleanFour = response
-                self?.receivedResponses += 1
-            }
-            
-            self?.featureFlagService.boolVariation(evaluationId: "Boolean5") { (response) in
-                self?.booleanFive = response
-                self?.receivedResponses += 1
-            }
+        self.featureFlagService.boolVariation(evaluationId: "Boolean1") { [weak self] (response) in
+            self?.booleanOne = response
+            self?.receivedResponses += 1
+        }
+        
+        self.featureFlagService.boolVariation(evaluationId: "Boolean2") { [weak self] (response) in
+            self?.booleanTwo = response
+            self?.receivedResponses += 1
+        }
+        
+        self.featureFlagService.boolVariation(evaluationId: "Boolean3") { [weak self] (response) in
+            self?.booleanThree = response
+            self?.receivedResponses += 1
+        }
+        
+        self.featureFlagService.boolVariation(evaluationId: "Boolean4") { [weak self] (response) in
+            self?.booleanFour = response
+            self?.receivedResponses += 1
+        }
+        
+        self.featureFlagService.boolVariation(evaluationId: "Boolean5") { [weak self] (response) in
+            self?.booleanFive = response
+            self?.receivedResponses += 1
         }
     }
 }

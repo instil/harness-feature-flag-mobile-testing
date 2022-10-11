@@ -26,6 +26,11 @@
 		F44C0F3128DDFE2500876028 /* ff-ios-client-sdk in Frameworks */ = {isa = PBXBuildFile; productRef = F44C0F3028DDFE2500876028 /* ff-ios-client-sdk */; };
 		F44C0F3328DE05A300876028 /* BooleanTesterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44C0F3228DE05A300876028 /* BooleanTesterViewModel.swift */; };
 		F44C0F3628DE069900876028 /* HarnessFeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44C0F3528DE069900876028 /* HarnessFeatureFlagService.swift */; };
+		F45059C128F59FF8009E6866 /* RealWorldBooleanUseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45059C028F59FF8009E6866 /* RealWorldBooleanUseViewModel.swift */; };
+		F45059C328F5A219009E6866 /* FlaggedBooleanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45059C228F5A219009E6866 /* FlaggedBooleanViewModel.swift */; };
+		F45059C528F5A90D009E6866 /* MultiVariateNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45059C428F5A90D009E6866 /* MultiVariateNumberViewModel.swift */; };
+		F45059C928F5AAC0009E6866 /* MultiVariateNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45059C828F5AAC0009E6866 /* MultiVariateNumberView.swift */; };
+		F45059CB28F5AAF3009E6866 /* MultiVariateJsonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45059CA28F5AAF3009E6866 /* MultiVariateJsonViewModel.swift */; };
 		F4553B3328C0E562005958BB /* HarnessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4553B3228C0E562005958BB /* HarnessApp.swift */; };
 		F4553B3528C0E562005958BB /* BooleanTesterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4553B3428C0E562005958BB /* BooleanTesterView.swift */; };
 		F4553B3728C0E563005958BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4553B3628C0E563005958BB /* Assets.xcassets */; };
@@ -36,7 +41,6 @@
 		F45E84ED28C612F700A4F41E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45E84EC28C612F700A4F41E /* MainView.swift */; };
 		F47609FC28C62A500026DD9E /* BooleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FB28C62A500026DD9E /* BooleanView.swift */; };
 		F47609FE28C6576B0026DD9E /* FlaggedBooleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */; };
-		F4760A0228C65B300026DD9E /* MultiVariateNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */; };
 		F4760A0428C65B3D0026DD9E /* MultiVariateJsonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */; };
 		F4F3DA2728EB29BE00661C29 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = F4F3DA2628EB29BE00661C29 /* YouTubePlayerKit */; };
 		F4F3DA2928EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F3DA2828EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift */; };
@@ -80,6 +84,11 @@
 		F44C0F3528DE069900876028 /* HarnessFeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessFeatureFlagService.swift; sourceTree = "<group>"; };
 		F44C0F3728DE0B3B00876028 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		F44C0F3928DE0F8800876028 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F45059C028F59FF8009E6866 /* RealWorldBooleanUseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWorldBooleanUseViewModel.swift; sourceTree = "<group>"; };
+		F45059C228F5A219009E6866 /* FlaggedBooleanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaggedBooleanViewModel.swift; sourceTree = "<group>"; };
+		F45059C428F5A90D009E6866 /* MultiVariateNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateNumberViewModel.swift; sourceTree = "<group>"; };
+		F45059C828F5AAC0009E6866 /* MultiVariateNumberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiVariateNumberView.swift; sourceTree = "<group>"; };
+		F45059CA28F5AAF3009E6866 /* MultiVariateJsonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateJsonViewModel.swift; sourceTree = "<group>"; };
 		F4553B2F28C0E562005958BB /* Harness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4553B3228C0E562005958BB /* HarnessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessApp.swift; sourceTree = "<group>"; };
 		F4553B3428C0E562005958BB /* BooleanTesterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanTesterView.swift; sourceTree = "<group>"; };
@@ -91,7 +100,6 @@
 		F45E84EC28C612F700A4F41E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		F47609FB28C62A500026DD9E /* BooleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanView.swift; sourceTree = "<group>"; };
 		F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaggedBooleanView.swift; sourceTree = "<group>"; };
-		F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateNumberView.swift; sourceTree = "<group>"; };
 		F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateJsonView.swift; sourceTree = "<group>"; };
 		F4F3DA2828EB29D700661C29 /* MultiVariateStringYouTubeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateStringYouTubeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,8 +242,10 @@
 				F446C64628EB0F7C00592833 /* String */,
 				F4760A0628C65B8A0026DD9E /* Boolean */,
 				F45E84EC28C612F700A4F41E /* MainView.swift */,
-				F4760A0128C65B300026DD9E /* MultiVariateNumberView.swift */,
+				F45059C828F5AAC0009E6866 /* MultiVariateNumberView.swift */,
+				F45059C428F5A90D009E6866 /* MultiVariateNumberViewModel.swift */,
 				F4760A0328C65B3D0026DD9E /* MultiVariateJsonView.swift */,
+				F45059CA28F5AAF3009E6866 /* MultiVariateJsonViewModel.swift */,
 				F446C64228EAE9EA00592833 /* MainViewModel.swift */,
 			);
 			path = Views;
@@ -244,11 +254,13 @@
 		F4760A0628C65B8A0026DD9E /* Boolean */ = {
 			isa = PBXGroup;
 			children = (
+				F47609FB28C62A500026DD9E /* BooleanView.swift */,
 				F4553B3428C0E562005958BB /* BooleanTesterView.swift */,
 				F44C0F3228DE05A300876028 /* BooleanTesterViewModel.swift */,
-				F47609FB28C62A500026DD9E /* BooleanView.swift */,
-				F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */,
 				F45E84EA28C611C500A4F41E /* RealWorldBooleanUseView.swift */,
+				F45059C028F59FF8009E6866 /* RealWorldBooleanUseViewModel.swift */,
+				F47609FD28C6576B0026DD9E /* FlaggedBooleanView.swift */,
+				F45059C228F5A219009E6866 /* FlaggedBooleanViewModel.swift */,
 			);
 			path = Boolean;
 			sourceTree = "<group>";
@@ -418,15 +430,20 @@
 				F45E84ED28C612F700A4F41E /* MainView.swift in Sources */,
 				F44B175728E742A50074B195 /* MockFeatureFlagService.swift in Sources */,
 				F446C65628EB1DB000592833 /* MultiVariateStringTesterViewModel.swift in Sources */,
+				F45059C128F59FF8009E6866 /* RealWorldBooleanUseViewModel.swift in Sources */,
 				F446C65428EB101E00592833 /* MultiVariateStringWebView.swift in Sources */,
+				F45059C528F5A90D009E6866 /* MultiVariateNumberViewModel.swift in Sources */,
 				F44B175528E742200074B195 /* FeatureFlagService.swift in Sources */,
-				F4760A0228C65B300026DD9E /* MultiVariateNumberView.swift in Sources */,
 				F446C65228EB101500592833 /* MultiVariateStringYouTubeView.swift in Sources */,
 				F4553B3328C0E562005958BB /* HarnessApp.swift in Sources */,
 				F44B175C28E745690074B195 /* SwappableFeatureFlagService.swift in Sources */,
 				F446C65028EB100A00592833 /* MultiVariateStringTesterView.swift in Sources */,
+				F45059CB28F5AAF3009E6866 /* MultiVariateJsonViewModel.swift in Sources */,
+				F45799FD28EC6F25004B3629 /* BooleanTesterConfigView.swift in Sources */,
+				F45059C328F5A219009E6866 /* FlaggedBooleanViewModel.swift in Sources */,
 				F44C0F3328DE05A300876028 /* BooleanTesterViewModel.swift in Sources */,
 				F446C64328EAE9EA00592833 /* MainViewModel.swift in Sources */,
+				F45059C928F5AAC0009E6866 /* MultiVariateNumberView.swift in Sources */,
 				F47609FC28C62A500026DD9E /* BooleanView.swift in Sources */,
 				F47609FE28C6576B0026DD9E /* FlaggedBooleanView.swift in Sources */,
 				F446C64828EB0F9900592833 /* MultiVariateStringView.swift in Sources */,

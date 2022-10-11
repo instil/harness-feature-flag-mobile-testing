@@ -67,6 +67,26 @@ class HarnessFeatureFlagService: FeatureFlagService {
         })
     }
     
+    func numberVariation(evaluationId: String, _ callback: @escaping(_ result: Int)->()) {
+        if (!self.inInitialized) {
+            return
+        }
+        
+        CfClient.sharedInstance.numberVariation(evaluationId: evaluationId, { (eval) in
+            callback(eval?.value.intValue ?? 0)
+        })
+    }
+    
+    func jsonVariation(evaluationId: String, _ callback: @escaping(_ result: String)->()) {
+        if (!self.inInitialized) {
+            return
+        }
+        
+        CfClient.sharedInstance.jsonVariation(evaluationId: evaluationId, { (eval) in
+            callback(eval?.value.stringValue ?? "")
+        })
+    }
+    
     private func registerEventsListener() {
         CfClient.sharedInstance.registerEventsListener() { (result) in
             switch result {

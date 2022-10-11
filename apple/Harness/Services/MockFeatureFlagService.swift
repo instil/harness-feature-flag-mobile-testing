@@ -16,4 +16,12 @@ class MockFeatureFlagService: FeatureFlagService {
     func stringVariation(evaluationId: String, _ callback: @escaping(_ result: String)->()) {
         callback("Mocked string response.")
     }
+    
+    func numberVariation(evaluationId: String, _ callback: @escaping (Int) -> ()) {
+        callback(1)
+    }
+    
+    func jsonVariation(evaluationId: String, _ callback: @escaping (String) -> ()) {
+        callback("{}")
+    }
 }

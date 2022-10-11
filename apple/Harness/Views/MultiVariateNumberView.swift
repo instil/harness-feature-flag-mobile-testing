@@ -5,8 +5,18 @@
 import SwiftUI
 
 struct MultiVariateNumberView: View {
+    @StateObject private var viewModel = MultiVariateNumberViewModel()
+
     var body: some View {
-        Text("Hello, World!")
+        VStack(alignment: .center) {
+            Text("Loading...")
+                .accessibilityLabel("Loading")
+                .padding()
+                .opacity(viewModel.isLoading ? 1 : 0)
+            Text("\(viewModel.number ?? 0)!")
+                .padding()
+                .opacity(viewModel.number == nil ? 0 : 1)
+        }
     }
 }
 

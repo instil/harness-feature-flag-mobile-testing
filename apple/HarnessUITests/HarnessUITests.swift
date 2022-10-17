@@ -174,6 +174,60 @@ final class HarnessUITests: XCTestCase {
         XCTAssert(!sleepButton.isHittable)
     }
     
+    func testAppRecoversFromSleepCorrectly() throws {
+        let booleanButton = app.buttons["BooleanButton"]
+        booleanButton.tap()
+        
+        let booleanOne = app.staticTexts["Boolean One"]
+        let hidden = NSPredicate(format: "isHittable == 0")
+        expectation(for: hidden, evaluatedWith: booleanOne, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        let backButton = app.buttons["Back"]
+        backButton.tap()
+        
+        let sleepButton = app.buttons["SleepButton"]
+        sleepButton.tap()
+
+        XCTAssert(app.exists)
+        XCTAssert(!sleepButton.isHittable)
+        
+        sleep(1)
+        
+        app.activate()
+        
+        booleanButton.tap()
+        expectation(for: hidden, evaluatedWith: booleanOne, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func skip_testAppRecoversFromLongSleepCorrectly() throws {
+        let booleanButton = app.buttons["BooleanButton"]
+        booleanButton.tap()
+        
+        let booleanOne = app.staticTexts["Boolean One"]
+        let hidden = NSPredicate(format: "isHittable == 0")
+        expectation(for: hidden, evaluatedWith: booleanOne, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        let backButton = app.buttons["Back"]
+        backButton.tap()
+        
+        let sleepButton = app.buttons["SleepButton"]
+        sleepButton.tap()
+
+        XCTAssert(app.exists)
+        XCTAssert(!sleepButton.isHittable)
+        
+        sleep(600)
+        
+        app.activate()
+        
+        booleanButton.tap()
+        expectation(for: hidden, evaluatedWith: booleanOne, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
     func testCloseButtonClosesApp() throws {
         let closeButton = app.buttons["CloseButton"]
         closeButton.tap()

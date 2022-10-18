@@ -9,4 +9,6 @@ protocol FeatureFlagService {
     func destroy()
     func boolVariation(evaluationId: String, _ callback: @escaping(_ result: Bool)->())
     func stringVariation(evaluationId: String, _ callback: @escaping(_ result: String)->())
+    func numberVariation(evaluationId: String, _ callback: @escaping(_ result: Int)->())
+    func jsonVariation(evaluationId: String, _ callback: @escaping(_ result: String)->())
 }

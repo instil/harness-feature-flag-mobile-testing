@@ -201,6 +201,7 @@ final class HarnessUITests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
+    // This test passes, but is skipped in normal running due to having a 10m runtime
     func skip_testAppRecoversFromLongSleepCorrectly() throws {
         let booleanButton = app.buttons["BooleanButton"]
         booleanButton.tap()

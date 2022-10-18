@@ -6,6 +6,8 @@ import Foundation
 import ff_ios_client_sdk
 
 class HarnessFeatureFlagService: FeatureFlagService {
+    @Inject private var configurationService: ConfigurationService
+    
     private var inInitialized: Bool {
         get {
             CfClient.sharedInstance.isInitialized
@@ -13,15 +15,17 @@ class HarnessFeatureFlagService: FeatureFlagService {
     }
     
     func load(_ callback: @escaping()->()) {
-        guard let apiKey = Bundle.main.infoDictionary?["HARNESS_SDK_KEY"] as? String else {
-            return
+         guard let apiKey = configurationService.get(key: "HARNESS_SDK_KEY"),
+                let targetKey = configurationService.get(key: "HARNESS_TARGET") else {
+             NSLog("Could not read the configuraiton from the local config file.")
+             return
         }
         
         let config = CfConfiguration.builder()
           .setStreamEnabled(true)
           .build()
         
-        let target = CfTarget.builder().setIdentifier("TargetInstil").build()
+        let target = CfTarget.builder().setIdentifier(targetKey).build()
         
         CfClient.sharedInstance.initialize(
           apiKey: apiKey,

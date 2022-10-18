@@ -14,9 +14,10 @@ class MultiVariateStringYouTubeViewModel: ObservableObject {
     }
 
     @Inject private var featureFlagService: FeatureFlagService
+    @Inject private var configurationService: ConfigurationService
     
     init() {
-        self.featureFlagService.stringVariation(evaluationId: "YouTubeUrl") { [weak self] (response) in
+        self.featureFlagService.stringVariation(evaluationId: configurationService.getOrEmpty(key: "STRING_YOUTUBE_KEY")) { [weak self] (response) in
             self?.youtubeUrl = response
             self?.isLoading = false
         }

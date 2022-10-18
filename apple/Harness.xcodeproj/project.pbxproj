@@ -26,6 +26,7 @@
 		F44C0F3128DDFE2500876028 /* ff-ios-client-sdk in Frameworks */ = {isa = PBXBuildFile; productRef = F44C0F3028DDFE2500876028 /* ff-ios-client-sdk */; };
 		F44C0F3328DE05A300876028 /* BooleanTesterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44C0F3228DE05A300876028 /* BooleanTesterViewModel.swift */; };
 		F44C0F3628DE069900876028 /* HarnessFeatureFlagService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44C0F3528DE069900876028 /* HarnessFeatureFlagService.swift */; };
+		F44EC9B428FEDDB4006E2775 /* ConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44EC9B328FEDDB4006E2775 /* ConfigurationService.swift */; };
 		F45059C128F59FF8009E6866 /* RealWorldBooleanUseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45059C028F59FF8009E6866 /* RealWorldBooleanUseViewModel.swift */; };
 		F45059C328F5A219009E6866 /* FlaggedBooleanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45059C228F5A219009E6866 /* FlaggedBooleanViewModel.swift */; };
 		F45059C528F5A90D009E6866 /* MultiVariateNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45059C428F5A90D009E6866 /* MultiVariateNumberViewModel.swift */; };
@@ -84,6 +85,7 @@
 		F44C0F3528DE069900876028 /* HarnessFeatureFlagService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessFeatureFlagService.swift; sourceTree = "<group>"; };
 		F44C0F3728DE0B3B00876028 /* ApiKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ApiKeys.xcconfig; sourceTree = "<group>"; };
 		F44C0F3928DE0F8800876028 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F44EC9B328FEDDB4006E2775 /* ConfigurationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationService.swift; sourceTree = "<group>"; };
 		F45059C028F59FF8009E6866 /* RealWorldBooleanUseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWorldBooleanUseViewModel.swift; sourceTree = "<group>"; };
 		F45059C228F5A219009E6866 /* FlaggedBooleanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaggedBooleanViewModel.swift; sourceTree = "<group>"; };
 		F45059C428F5A90D009E6866 /* MultiVariateNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariateNumberViewModel.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 		F44C0F3428DE068000876028 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				F44EC9B328FEDDB4006E2775 /* ConfigurationService.swift */,
 				F44C0F3528DE069900876028 /* HarnessFeatureFlagService.swift */,
 				F44B175628E742A50074B195 /* MockFeatureFlagService.swift */,
 				F44B175428E742200074B195 /* FeatureFlagService.swift */,
@@ -434,6 +437,7 @@
 				F446C65428EB101E00592833 /* MultiVariateStringWebView.swift in Sources */,
 				F45059C528F5A90D009E6866 /* MultiVariateNumberViewModel.swift in Sources */,
 				F44B175528E742200074B195 /* FeatureFlagService.swift in Sources */,
+				F44EC9B428FEDDB4006E2775 /* ConfigurationService.swift in Sources */,
 				F446C65228EB101500592833 /* MultiVariateStringYouTubeView.swift in Sources */,
 				F4553B3328C0E562005958BB /* HarnessApp.swift in Sources */,
 				F44B175C28E745690074B195 /* SwappableFeatureFlagService.swift in Sources */,

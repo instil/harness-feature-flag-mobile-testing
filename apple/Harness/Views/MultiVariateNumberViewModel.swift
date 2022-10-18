@@ -10,13 +10,14 @@ class MultiVariateNumberViewModel: ObservableObject {
     @Published var number: Int? = nil
     
     @Inject private var featureFlagService: FeatureFlagService
+    @Inject private var configurationService: ConfigurationService
     
     private var receivedResponses = 0 {
         didSet { isLoading = receivedResponses < 5 }
     }
     
     init() {
-        self.featureFlagService.numberVariation(evaluationId: "Number") { [weak self] (response) in
+        self.featureFlagService.numberVariation(evaluationId: configurationService.getOrEmpty(key: "NUMBER_KEY")) { [weak self] (response) in
             self?.number = response
             self?.isLoading = false
         }

@@ -10,13 +10,14 @@ class FlaggedBooleanViewModel: ObservableObject {
     @Published var boolean: Bool = true
     
     @Inject private var featureFlagService: FeatureFlagService
+    @Inject private var configurationService: ConfigurationService
     
     private var receivedResponses = 0 {
         didSet { isLoading = receivedResponses < 5 }
     }
     
     init() {
-        self.featureFlagService.boolVariation(evaluationId: "FlaggedBoolean") { [weak self] (response) in
+        self.featureFlagService.boolVariation(evaluationId: configurationService.getOrEmpty(key: "FLAGGED_BOOLEAN_KEY")) { [weak self] (response) in
             self?.boolean = response
             self?.isLoading = false
         }

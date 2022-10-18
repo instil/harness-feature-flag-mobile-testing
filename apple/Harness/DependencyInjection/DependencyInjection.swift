@@ -22,11 +22,13 @@ class DependencyInjection {
     private static func buildContainer() -> Container {
         let container = Container(defaultObjectScope: .container)
         
+        container.autoregister(ConfigurationService.self, initializer: ConfigurationService.init)
+        
         container.autoregister(HarnessFeatureFlagService.self, initializer: HarnessFeatureFlagService.init)
         container.autoregister(MockFeatureFlagService.self, initializer: MockFeatureFlagService.init)
         container.autoregister(SwappableFeatureFlagService.self, initializer: SwappableFeatureFlagService.init)
         container.register(FeatureFlagService.self) { r in r.resolve(SwappableFeatureFlagService.self)! }
-
+        
         return container
     }
 }

@@ -11,9 +11,10 @@ class MultiVariateStringWebViewModel: ObservableObject {
     var isLoading = true
     
     @Inject private var featureFlagService: FeatureFlagService
+    @Inject private var configurationService: ConfigurationService
     
     init() {
-        self.featureFlagService.stringVariation(evaluationId: "WebViewUrl") { [weak self] (response) in
+        self.featureFlagService.stringVariation(evaluationId: configurationService.getOrEmpty(key: "STRING_WEB_VIEW_KEY")) { [weak self] (response) in
             self?.url = URL(string: response)
             self?.isLoading = false
         }

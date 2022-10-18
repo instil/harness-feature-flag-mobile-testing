@@ -2,7 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BOOLEAN_TESTER_KEY_FIVE</key>
+	<string>$(BOOLEAN_TESTER_KEY_FIVE)</string>
+	<key>BOOLEAN_TESTER_KEY_FOUR</key>
+	<string>$(BOOLEAN_TESTER_KEY_FOUR)</string>
+	<key>BOOLEAN_TESTER_KEY_ONE</key>
+	<string>$(BOOLEAN_TESTER_KEY_ONE)</string>
+	<key>BOOLEAN_TESTER_KEY_THREE</key>
+	<string>$(BOOLEAN_TESTER_KEY_THREE)</string>
+	<key>BOOLEAN_TESTER_KEY_TWO</key>
+	<string>$(BOOLEAN_TESTER_KEY_TWO)</string>
+	<key>FLAGGED_BOOLEAN_KEY</key>
+	<string>$(FLAGGED_BOOLEAN_KEY)</string>
 	<key>HARNESS_SDK_KEY</key>
 	<string>$(HARNESS_SDK_KEY)</string>
+	<key>HARNESS_TARGET</key>
+	<string>$(HARNESS_TARGET)</string>
+	<key>JSON_KEY</key>
+	<string>$(JSON_KEY)</string>
+	<key>NUMBER_KEY</key>
+	<string>$(NUMBER_KEY)</string>
+	<key>REAL_WORLD_BOOLEAN_KEY</key>
+	<string>$(REAL_WORLD_BOOLEAN_KEY)</string>
+	<key>STRING_TESTER_KEY</key>
+	<string>$(STRING_TESTER_KEY)</string>
+	<key>STRING_WEB_VIEW_KEY</key>
+	<string>$(STRING_WEB_VIEW_KEY)</string>
+	<key>STRING_YOUTUBE_KEY</key>
+	<string>$(STRING_YOUTUBE_KEY)</string>
 </dict>
 </plist>

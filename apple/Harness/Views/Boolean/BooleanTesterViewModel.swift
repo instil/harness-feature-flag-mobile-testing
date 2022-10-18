@@ -14,33 +14,34 @@ class BooleanTesterViewModel: ObservableObject {
     @Published var booleanFive: Bool = true
 
     @Inject private var featureFlagService: FeatureFlagService
+    @Inject private var configurationService: ConfigurationService
     
     private var receivedResponses = 0 {
         didSet { isLoading = receivedResponses < 5 }
     }
     
     init() {
-        self.featureFlagService.boolVariation(evaluationId: "Boolean1") { [weak self] (response) in
+        self.featureFlagService.boolVariation(evaluationId: configurationService.getOrEmpty(key: "BOOLEAN_TESTER_KEY_ONE")) { [weak self] (response) in
             self?.booleanOne = response
             self?.receivedResponses += 1
         }
         
-        self.featureFlagService.boolVariation(evaluationId: "Boolean2") { [weak self] (response) in
+        self.featureFlagService.boolVariation(evaluationId: configurationService.getOrEmpty(key: "BOOLEAN_TESTER_KEY_TWO")) { [weak self] (response) in
             self?.booleanTwo = response
             self?.receivedResponses += 1
         }
         
-        self.featureFlagService.boolVariation(evaluationId: "Boolean3") { [weak self] (response) in
+        self.featureFlagService.boolVariation(evaluationId: configurationService.getOrEmpty(key: "BOOLEAN_TESTER_KEY_THREE")) { [weak self] (response) in
             self?.booleanThree = response
             self?.receivedResponses += 1
         }
         
-        self.featureFlagService.boolVariation(evaluationId: "Boolean4") { [weak self] (response) in
+        self.featureFlagService.boolVariation(evaluationId: configurationService.getOrEmpty(key: "BOOLEAN_TESTER_KEY_FOUR")) { [weak self] (response) in
             self?.booleanFour = response
             self?.receivedResponses += 1
         }
         
-        self.featureFlagService.boolVariation(evaluationId: "Boolean5") { [weak self] (response) in
+        self.featureFlagService.boolVariation(evaluationId: configurationService.getOrEmpty(key: "BOOLEAN_TESTER_KEY_FIVE")) { [weak self] (response) in
             self?.booleanFive = response
             self?.receivedResponses += 1
         }

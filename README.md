@@ -34,3 +34,22 @@ The automated test suite is designed to test the performance and resilency of th
 `xcodebuild test -project apple/Harness.xcodeproj -scheme HarnessUITests -destination 'platform=iOS Simulator,name=iPhone 14'`
 
 Each test can also be run individually from Xcode. Simply navigate to any of the tests in the HarnessUITests package and click the diamond icon in the left hand line count bar.
+
+## Producing a HTML report from Automated Test Suite
+
+xcpretty is a tool for formatting the output of xcodebuild.
+
+It can be installed using:
+
+`gem install xcpretty`
+
+The results of an xcode build can then be piped to xcpretty to create a HTML report
+
+`xcodebuild test -project apple/Harness.xcodeproj -scheme HarnessUITests -destination 'platform=iOS Simulator,name=iPhone 14' | xcpretty --report html`
+
+xcpretty can also be used to produce a JUnit-style XML report compatible with Jenkins and TeamCity CI.
+If running xcpretty on a CI like Travis or Jenkins, you may want to exit with same status code as xcodebuild. CI systems usually use status codes to determine if the build has failed.
+
+`xcodebuild test -project apple/Harness.xcodeproj -scheme HarnessUITests -destination 'platform=iOS Simulator,name=iPhone 14' | xcpretty --report junit && exit ${PIPESTATUS[0]}`
+
+The output of xcpretty can be found in `build/reports/tests.html` or `build/reports/junit.xml` depending on which report was chosen.

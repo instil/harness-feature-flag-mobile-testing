@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:name="io.harness.HarnessApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Harness">
+        <activity
+            android:name="io.harness.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Harness">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="io.harness.settings.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="io.harness.MainActivity"
+            android:theme="@style/Theme.Harness"/>
+        <activity
+            android:name="io.harness.booleanFlags.BooleanActivity"
+            android:exported="false"
+            android:label="@string/title_activity_boolean"
+            android:parentActivityName="io.harness.MainActivity"
+            android:theme="@style/Theme.Harness">
+        </activity>
+    </application>
+
+</manifest>

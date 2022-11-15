@@ -5,8 +5,11 @@ import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.harness.cfsdk.CfClient
 import io.harness.cfsdk.CfConfiguration
-import io.harness.settings.SettingsRepository
 import io.harness.cfsdk.cloud.model.Target
+import io.harness.settings.SettingsRepository
+import io.harness.settings.SettingsRepository.Companion.SDK_KEY_PREF
+import io.harness.settings.SettingsRepository.Companion.TARGET_ID_PREF
+import io.harness.settings.SettingsRepository.Companion.TARGET_NAME_PREF
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -15,9 +18,9 @@ class HarnessFeatureFlagService @Inject constructor(
     private val settingsRepository: SettingsRepository) : FeatureFlagService {
 
     override fun load(callback: () -> Unit) {
-        val sdkKey = settingsRepository.get("HARNESS_SDK_KEY", "")
-        val targetId = settingsRepository.get("HARNESS_TARGET_ID", "")
-        val targetName = settingsRepository.get("HARNESS_TARGET_NAME", "")
+        val sdkKey = settingsRepository.get(SDK_KEY_PREF, "")
+        val targetId = settingsRepository.get(TARGET_ID_PREF, "")
+        val targetName = settingsRepository.get(TARGET_NAME_PREF, "")
 
         Log.d("FLAG SERVICE", "targetId: $targetId, targetName: $targetName")
 

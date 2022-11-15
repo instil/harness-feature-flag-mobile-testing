@@ -1,25 +1,31 @@
 package io.harness.booleanFlags
 
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.harness.FeatureFlagService
+import io.harness.settings.SettingsRepository
+import io.harness.settings.SettingsRepository.Companion.BOOLEAN_FIVE_PREF
+import io.harness.settings.SettingsRepository.Companion.BOOLEAN_FOUR_PREF
+import io.harness.settings.SettingsRepository.Companion.BOOLEAN_ONE_PREF
+import io.harness.settings.SettingsRepository.Companion.BOOLEAN_THREE_PREF
+import io.harness.settings.SettingsRepository.Companion.BOOLEAN_TWO_PREF
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BooleanViewModel @Inject constructor(private val featureFlagService: FeatureFlagService) : ViewModel() {
+class BooleanViewModel @Inject constructor(
+    private val featureFlagService: FeatureFlagService,
+    private val settingsRepository: SettingsRepository) : ViewModel() {
 
     private var receivedResponses = 0
         set(value) {
             field = value
-            _isLoading.value = field < 5
+            _isLoading.postValue(field < EXPECTED_RESPONSES)
         }
 
     private val _isLoading = MutableLiveData(true)
@@ -42,36 +48,46 @@ class BooleanViewModel @Inject constructor(private val featureFlagService: Featu
 
     fun loadBooleanFeatureFlags() {
         viewModelScope.launch(Dispatchers.IO) {
-            featureFlagService.boolVariation("Boolean1") {
-                Log.d("BOOLEAN", "Boolean 1 evaluation: $it")
-                _booleanOne.value = it
+            val booleanOneKey = settingsRepository.get(BOOLEAN_ONE_PREF, "boolean_one")
+            featureFlagService.boolVariation(booleanOneKey) {
+                Log.d(TAG, "Boolean 1 ($booleanOneKey) evaluation: $it")
+                _booleanOne.postValue(it)
                 receivedResponses++
             }
 
-            featureFlagService.boolVariation("Boolean2") {
-                Log.d("BOOLEAN", "Boolean 2 evaluation: $it")
-                _booleanTwo.value = it
+            val booleanTwoKey = settingsRepository.get(BOOLEAN_TWO_PREF, "boolean_two")
+            featureFlagService.boolVariation(booleanTwoKey) {
+                Log.d(TAG, "Boolean 2 ($booleanTwoKey) evaluation: $it")
+                _booleanTwo.postValue(it)
                 receivedResponses++
             }
 
-            featureFlagService.boolVariation("Boolean3") {
-                Log.d("BOOLEAN", "Boolean 3 evaluation: $it")
-                _booleanThree.value = it
+            val booleanThreeKey = settingsRepository.get(BOOLEAN_THREE_PREF, "boolean_three")
+            featureFlagService.boolVariation(booleanThreeKey) {
+                Log.d(TAG, "Boolean 3 ($booleanThreeKey) evaluation: $it")
+                _booleanThree.postValue(it)
                 receivedResponses++
             }
 
-            featureFlagService.boolVariation("Boolean4") {
-                Log.d("BOOLEAN", "Boolean 4 evaluation: $it")
-                _booleanFour.value = it
+            val booleanFourKey = settingsRepository.get(BOOLEAN_FOUR_PREF, "boolean_four")
+            featureFlagService.boolVariation(booleanFourKey) {
+                Log.d(TAG, "Boolean 4 ($booleanFourKey) evaluation: $it")
+                _booleanFour.postValue(it)
                 receivedResponses++
             }
 
-            featureFlagService.boolVariation("Boolean5") {
-                Log.d("BOOLEAN", "Boolean 5 evaluation: $it")
-                _booleanFive.value = it
+            val booleanFiveKey = settingsRepository.get(BOOLEAN_FIVE_PREF, "boolean_five")
+            featureFlagService.boolVariation(booleanFiveKey) {
+                Log.d(TAG, "Boolean 5 ($booleanFiveKey) evaluation: $it")
+                _booleanFive.postValue(it)
                 receivedResponses++
             }
         }
+    }
+
+    companion object {
+        const val TAG = "BooleanViewModel"
+        const val EXPECTED_RESPONSES = 5
     }
 
 }

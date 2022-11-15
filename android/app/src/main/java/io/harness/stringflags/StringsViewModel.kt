@@ -31,26 +31,26 @@ class StringsViewModel @Inject constructor(
     private var receivedResponses = 0
         set(value) {
             field = value
-            _isLoading.value = field < EXPECTED_RESPONSES
+            _isLoading.postValue(field < EXPECTED_RESPONSES)
         }
 
     fun loadStringFeatureFlags() {
         viewModelScope.launch(Dispatchers.IO) {
             featureFlagService.stringVariation("TestString") {
                 Log.d(TAG, "TextString evaluation: $it")
-                _testString.value = it
+                _testString.postValue(it)
                 receivedResponses++
             }
 
             featureFlagService.stringVariation("YouTubeUrl") {
                 Log.d(TAG, "YouTubeUrl evaluation: $it")
-                _youtubeUrl.value = it
+                _youtubeUrl.postValue(it)
                 receivedResponses++
             }
 
             featureFlagService.stringVariation("WebViewUrl") {
                 Log.d(TAG, "WebViewUrl evaluation: $it")
-                _webViewUrl.value = it
+                _webViewUrl.postValue(it)
                 receivedResponses++
             }
         }

@@ -65,17 +65,9 @@ fun HarnessNavHost(
     ) {
         composable("mainScreen") {
             MainScreen(
-                navigateToBooleans = { navController.navigate("booleans") },
-                navigateToMultivariateStrings = { navController.navigate("multivariateStrings") },
                 navigateToMultivariateIntegers = { navController.navigate("multivariateIntegers") },
                 navigateToJSON = { navController.navigate("multivariateJSON") }
             )
-        }
-        composable("booleans") {
-            Booleans()
-        }
-        composable("multivariateStrings") {
-            MultivariateStrings()
         }
         composable("multivariateIntegers") {
             MultivariateIntegers()
@@ -88,8 +80,6 @@ fun HarnessNavHost(
 
 @Composable
 fun MainScreen(
-    navigateToBooleans: NavigationHandler,
-    navigateToMultivariateStrings: NavigationHandler,
     navigateToMultivariateIntegers: NavigationHandler,
     navigateToJSON: NavigationHandler) {
 
@@ -154,17 +144,6 @@ fun TopButtons(state: MutableState<Boolean>, modifier: Modifier) {
             Icon(Icons.Default.Settings, "Settings")
         }
     }
-}
-
-
-@Composable
-fun Booleans() {
-
-}
-
-@Composable
-fun MultivariateStrings() {
-    Text("Multivariate Strings")
 }
 
 @Composable

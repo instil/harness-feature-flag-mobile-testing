@@ -1,6 +1,7 @@
 package io.harness.stringflags
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -53,7 +54,7 @@ class StringsActivity : ComponentActivity() {
     fun SectionTabs() {
         var state by remember { mutableStateOf(0) }
         val testStringState = viewModel.testString.observeAsState("")
-        val youtubeUrlState = viewModel.youtubeUrl.observeAsState("")
+        val youtubeUrlState = rememberWebViewState(url = "https://youtube.com/watch?v=${viewModel.youtubeUrl.value}")
         val webviewUrlState = rememberWebViewState(url = viewModel.webViewUrl.value ?: "" )
 
         val tabs = listOf(
@@ -86,7 +87,13 @@ class StringsActivity : ComponentActivity() {
                             )
                     }
                     1 -> {
-
+                        WebView(state = youtubeUrlState,
+                        onCreated = { webview ->
+                            webview.settings.apply {
+                                javaScriptEnabled = true
+                                domStorageEnabled = true
+                            }
+                        })
                     }
                     2 -> {
                         WebView(state = webviewUrlState)

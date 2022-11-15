@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -35,7 +35,9 @@ class SettingsActivity : ComponentActivity() {
                 ) {
                     Column(
                         verticalArrangement = Arrangement.Top,
-                        modifier = Modifier.padding(36.dp)
+                        modifier = Modifier
+                            .padding(36.dp)
+                            .verticalScroll(rememberScrollState())
                     ) {
                         SdkSection()
                         BooleanSection()
@@ -121,6 +123,7 @@ class SettingsActivity : ComponentActivity() {
     @Composable
     fun StringSection() {
         val testStringState = viewModel.testString.observeAsState("")
+        val youtubeUrlState = viewModel.youtubeUrl.observeAsState("")
         val webviewUrlState = viewModel.webviewUrl.observeAsState("")
 
         Section("Strings") {
@@ -129,6 +132,12 @@ class SettingsActivity : ComponentActivity() {
                 placeholder = "Basic test string",
                 state = testStringState,
                 onValueChange = { viewModel.updateTestString(it) }
+            )
+            StringSetting (
+                label = "Youtube Video",
+                placeholder = "Id for Youtube video",
+                state = youtubeUrlState,
+                onValueChange = { viewModel. updateYoutubeUrl(it) }
             )
             StringSetting (
                 label = "Web URL",
@@ -161,6 +170,7 @@ class SettingsActivity : ComponentActivity() {
     ) {
         Column {
             TextField(
+                modifier = Modifier.fillMaxWidth(),
                 value = state.value,
                 label = { Text(text = label, fontWeight = FontWeight.Bold) },
                 placeholder = { Text(placeholder) },

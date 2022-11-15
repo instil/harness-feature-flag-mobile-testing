@@ -14,6 +14,7 @@ import io.harness.settings.SettingsRepository.Companion.TARGET_ID_PREF
 import io.harness.settings.SettingsRepository.Companion.TARGET_NAME_PREF
 import io.harness.settings.SettingsRepository.Companion.TEST_STRING_PREF
 import io.harness.settings.SettingsRepository.Companion.WEB_VIEW_URL_PREF
+import io.harness.settings.SettingsRepository.Companion.YOUTUBE_URL_PREF
 import javax.inject.Inject
 
 @HiltViewModel
@@ -90,6 +91,14 @@ class SettingsViewModel @Inject constructor(
     fun updateTestString(newValue: String) {
         repository.set(TEST_STRING_PREF, newValue)
         _testString.value = newValue
+    }
+
+    private val _youtubeUrl = MutableLiveData(repository.get(YOUTUBE_URL_PREF, ""))
+    val youtubeUrl: LiveData<String> = _youtubeUrl
+
+    fun updateYoutubeUrl(newValue: String) {
+        repository.set(YOUTUBE_URL_PREF, newValue)
+        _youtubeUrl.value = newValue
     }
 
     private val _webviewUrl = MutableLiveData(repository.get(WEB_VIEW_URL_PREF, ""))

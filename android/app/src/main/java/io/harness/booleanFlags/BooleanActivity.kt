@@ -11,6 +11,7 @@ import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,20 +34,29 @@ class BooleanActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val isLoadingState = viewModel.isLoading.observeAsState(false)
+
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .padding(24.dp), horizontalArrangement = Arrangement.Center) {
-                        Text(text = "Loading...", fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.alpha(if (viewModel.isLoading.value) 1f else 0f))
+                        Text(text = "Loading...", fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.alpha(if (isLoadingState.value) 1f else 0f))
                     }
+
+                    val booleanOneState = viewModel.booleanOne.observeAsState(false)
+                    val booleanTwoState = viewModel.booleanTwo.observeAsState(false)
+                    val booleanThreeState = viewModel.booleanThree.observeAsState(false)
+                    val booleanFourState = viewModel.booleanFour.observeAsState(false)
+                    val booleanFiveState = viewModel.booleanFive.observeAsState(false)
+
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly) {
-                        BooleanRow(label = "Boolean One", state = viewModel.booleanOne)
-                        BooleanRow(label = "Boolean Two", state = viewModel.booleanTwo)
-                        BooleanRow(label = "Boolean Three", state = viewModel.booleanThree)
-                        BooleanRow(label = "Boolean Four", state = viewModel.booleanFour)
-                        BooleanRow(label = "Boolean Five", state = viewModel.booleanFive)
+                        BooleanRow(label = "Boolean One", state = booleanOneState)
+                        BooleanRow(label = "Boolean Two", state = booleanTwoState)
+                        BooleanRow(label = "Boolean Three", state = booleanThreeState)
+                        BooleanRow(label = "Boolean Four", state = booleanFourState)
+                        BooleanRow(label = "Boolean Five", state = booleanFiveState)
                     }
                 }
             }

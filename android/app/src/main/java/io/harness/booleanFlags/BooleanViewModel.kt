@@ -3,6 +3,8 @@ package io.harness.booleanFlags
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,23 +22,23 @@ class BooleanViewModel @Inject constructor(private val featureFlagService: Featu
             _isLoading.value = field < 5
         }
 
-    private val _isLoading = mutableStateOf(true)
-    val isLoading: State<Boolean> = _isLoading
+    private val _isLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _booleanOne = mutableStateOf(false)
-    val booleanOne: State<Boolean> = _booleanOne
+    private val _booleanOne = MutableLiveData(false)
+    val booleanOne: LiveData<Boolean> = _booleanOne
 
-    private val _booleanTwo = mutableStateOf(false)
-    val booleanTwo: State<Boolean> = _booleanTwo
+    private val _booleanTwo = MutableLiveData(false)
+    val booleanTwo: LiveData<Boolean> = _booleanTwo
 
-    private val _booleanThree = mutableStateOf(false)
-    val booleanThree: State<Boolean> = _booleanThree
+    private val _booleanThree = MutableLiveData(false)
+    val booleanThree: LiveData<Boolean> = _booleanThree
 
-    private val _booleanFour = mutableStateOf(false)
-    val booleanFour: State<Boolean> = _booleanFour
+    private val _booleanFour = MutableLiveData(false)
+    val booleanFour: LiveData<Boolean> = _booleanFour
 
-    private val _booleanFive = mutableStateOf(false)
-    val booleanFive: State<Boolean> = _booleanFive
+    private val _booleanFive = MutableLiveData(false)
+    val booleanFive: LiveData<Boolean> = _booleanFive
 
     fun loadBooleanFeatureFlags() {
         viewModelScope.launch(Dispatchers.IO) {

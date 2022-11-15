@@ -91,9 +91,7 @@ class StringsActivity : ComponentActivity() {
                         Text(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                             text = testStringState.value,
-                            style = MaterialTheme.typography.body1,
-
-                            )
+                            style = MaterialTheme.typography.body1)
                     }
                     1 -> {
                         WebView(state = youtubeUrlState,

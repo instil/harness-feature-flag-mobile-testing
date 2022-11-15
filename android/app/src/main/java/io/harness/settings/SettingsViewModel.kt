@@ -9,6 +9,7 @@ import io.harness.settings.SettingsRepository.Companion.BOOLEAN_FOUR_PREF
 import io.harness.settings.SettingsRepository.Companion.BOOLEAN_ONE_PREF
 import io.harness.settings.SettingsRepository.Companion.BOOLEAN_THREE_PREF
 import io.harness.settings.SettingsRepository.Companion.BOOLEAN_TWO_PREF
+import io.harness.settings.SettingsRepository.Companion.NUMBER_PREF
 import io.harness.settings.SettingsRepository.Companion.SDK_KEY_PREF
 import io.harness.settings.SettingsRepository.Companion.TARGET_ID_PREF
 import io.harness.settings.SettingsRepository.Companion.TARGET_NAME_PREF
@@ -107,6 +108,14 @@ class SettingsViewModel @Inject constructor(
     fun updateWebViewUrl(newValue: String) {
         repository.set(WEB_VIEW_URL_PREF, newValue)
         _webviewUrl.value = newValue
+    }
+
+    private val _number = MutableLiveData(repository.get(NUMBER_PREF, ""))
+    val number: LiveData<String> = _number
+
+    fun updateNumber(newValue: String) {
+        repository.set(NUMBER_PREF, newValue)
+        _number.value = newValue
     }
 
 }

@@ -2,7 +2,7 @@ package io.harness.settings
 
 interface SettingsRepository {
 
-    fun get(key: String, default: String): String
+    fun get (key: String, default: String): String
     fun set(key: String, value: String)
 
     companion object {
@@ -17,6 +17,7 @@ interface SettingsRepository {
         const val TEST_STRING_PREF = "TEST_STRING"
         const val YOUTUBE_URL_PREF = "YOUTUBE_URL"
         const val WEB_VIEW_URL_PREF = "WEB_VIEW_URL"
+        const val NUMBER_PREF = "NUMBER"
     }
 
 }

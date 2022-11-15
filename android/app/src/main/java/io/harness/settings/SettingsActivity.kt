@@ -42,6 +42,7 @@ class SettingsActivity : ComponentActivity() {
                         SdkSection()
                         BooleanSection()
                         StringSection()
+                        NumberSection()
                     }
                 }
             }
@@ -49,7 +50,7 @@ class SettingsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun SdkSection() {
+    private fun SdkSection() {
         val sdkKeyState = viewModel.sdkKey.observeAsState("")
         val targetIdState = viewModel.targetId.observeAsState("")
         val targetNameState = viewModel.targetName.observeAsState("")
@@ -80,13 +81,13 @@ class SettingsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun BooleanSection() {
+    private fun BooleanSection() {
         val booleanOneState = viewModel.booleanOne.observeAsState("")
         val booleanTwoState = viewModel.booleanTwo.observeAsState("")
         val booleanThreeState = viewModel.booleanThree.observeAsState("")
         val booleanFourState = viewModel.booleanFour.observeAsState("")
         val booleanFiveState = viewModel.booleanFive.observeAsState("")
-        Section(title = "Booleans") {
+        Section(title = "Boolean flags") {
             StringSetting(
                 label = "Boolean One",
                 placeholder = "Boolean tester flag one",
@@ -121,12 +122,12 @@ class SettingsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun StringSection() {
+    private fun StringSection() {
         val testStringState = viewModel.testString.observeAsState("")
         val youtubeUrlState = viewModel.youtubeUrl.observeAsState("")
         val webviewUrlState = viewModel.webviewUrl.observeAsState("")
 
-        Section("Strings") {
+        Section("String flags") {
             StringSetting(
                 label = "Test String",
                 placeholder = "Basic test string",
@@ -149,7 +150,20 @@ class SettingsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun Section(title: String, content: @Composable (() -> Unit)) {
+    private fun NumberSection() {
+        val numberState = viewModel.number.observeAsState("")
+
+        Section("Number flags") {
+            StringSetting(
+                label = "Number",
+                placeholder = "Simple multivariate number flag",
+                state = numberState,
+                onValueChange = { viewModel.updateNumber(it) })
+        }
+    }
+
+    @Composable
+    private fun Section(title: String, content: @Composable (() -> Unit)) {
         Column {
             Text(text = title, fontSize = 24.sp)
             Divider(
@@ -162,7 +176,7 @@ class SettingsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun StringSetting(
+    private fun StringSetting(
         label: String,
         placeholder: String,
         state: State<String>,

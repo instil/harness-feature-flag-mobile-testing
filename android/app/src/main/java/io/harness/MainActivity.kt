@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.harness.booleanFlags.BooleanActivity
+import io.harness.numberflags.NumbersActivity
 import io.harness.settings.SettingsActivity
 import io.harness.stringflags.StringsActivity
 import io.harness.ui.components.LinkButton
@@ -64,13 +65,13 @@ fun HarnessNavHost(
         startDestination = startDestination
     ) {
         composable("mainScreen") {
+            val context = LocalContext.current
             MainScreen(
-                navigateToMultivariateIntegers = { navController.navigate("multivariateIntegers") },
+                navigateToBooleans = { context.startActivity(Intent(context, BooleanActivity::class.java)) },
+                navigateToMultivariateStrings = { context.startActivity(Intent(context, StringsActivity::class.java)) },
+                navigateToMultivariateIntegers = { context.startActivity(Intent(context, NumbersActivity::class.java)) },
                 navigateToJSON = { navController.navigate("multivariateJSON") }
             )
-        }
-        composable("multivariateIntegers") {
-            MultivariateIntegers()
         }
         composable("multivariateJSON") {
             MultivariateJSON()
@@ -80,11 +81,12 @@ fun HarnessNavHost(
 
 @Composable
 fun MainScreen(
+    navigateToBooleans: NavigationHandler,
+    navigateToMultivariateStrings: NavigationHandler,
     navigateToMultivariateIntegers: NavigationHandler,
     navigateToJSON: NavigationHandler) {
 
     val usingHarnessSdk = remember { mutableStateOf(true) }
-    val context = LocalContext.current
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (topButtons, menuButtons, bottomButtons) = createRefs()
@@ -104,11 +106,11 @@ fun MainScreen(
             LinkButton(
                 label = "Booleans",
                 icon = Icons.Default.Rule,
-                onClick = { context.startActivity(Intent(context, BooleanActivity::class.java)) })
+                onClick = navigateToBooleans)
             LinkButton(
                 label = "Multi-variate Strings",
                 icon = Icons.Default.FormatQuote,
-                onClick = { context.startActivity(Intent(context, StringsActivity::class.java)) })
+                onClick = navigateToMultivariateStrings)
             LinkButton(
                 label = "Multi-variate Integers",
                 icon = Icons.Default.Numbers,
@@ -144,6 +146,17 @@ fun TopButtons(state: MutableState<Boolean>, modifier: Modifier) {
             Icon(Icons.Default.Settings, "Settings")
         }
     }
+}
+
+
+@Composable
+fun Booleans() {
+
+}
+
+@Composable
+fun MultivariateStrings() {
+    Text("Multivariate Strings")
 }
 
 @Composable

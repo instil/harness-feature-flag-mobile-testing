@@ -18,4 +18,5 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_boolean">BooleanActivity</string>
     <string name="title_activity_strings">StringsActivity</string>
+    <string name="title_activity_numbers">NumbersActivity</string>
 </resources>

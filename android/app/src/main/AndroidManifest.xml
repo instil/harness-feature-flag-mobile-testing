@@ -36,8 +36,13 @@
             android:name="io.harness.stringflags.StringsActivity"
             android:exported="false"
             android:label="@string/title_activity_strings"
-            android:theme="@style/Theme.Harness">
-        </activity>
+            android:theme="@style/Theme.Harness" />
+
+        <activity
+            android:name="io.harness.numberflags.NumbersActivity"
+            android:exported="false"
+            android:label="@string/title_activity_numbers"
+            android:theme="@style/Theme.Harness"/>
     </application>
 
 </manifest>

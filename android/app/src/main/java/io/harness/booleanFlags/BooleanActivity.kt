@@ -49,7 +49,7 @@ class BooleanActivity : ComponentActivity() {
                     val booleanFiveState = viewModel.booleanFive.observeAsState(false)
 
                     Column(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize().alpha(if (isLoadingState.value) 0f else 1f),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly) {
                         BooleanRow(label = "Boolean One", state = booleanOneState)

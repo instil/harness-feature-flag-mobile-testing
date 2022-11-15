@@ -13,6 +13,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
 import io.harness.ui.theme.HarnessTheme
 
@@ -30,15 +32,25 @@ class NumbersActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val isLoading = viewModel.isLoading.observeAsState(true)
                     val numberState = viewModel.number.observeAsState(0)
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = "${numberState.value}!",
-                            style = MaterialTheme.typography.h1)
+                        if (isLoading.value) {
+                            Text(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                text = "Loading...",
+                                fontSize = 28.sp,
+                                fontWeight = FontWeight.Bold)
+                        } else {
+                            Text(
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                text = "${numberState.value}!",
+                                style = MaterialTheme.typography.h1
+                            )
+                        }
                     }
                 }
             }

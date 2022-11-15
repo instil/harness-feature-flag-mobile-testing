@@ -20,16 +20,21 @@ class NumbersViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository
 ): ViewModel() {
 
+    private val _isLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> = _isLoading
+
     private val _number = MutableLiveData(-1)
     val number: LiveData<Int> = _number
 
     fun loadNumberFeatureFlags() {
+        _isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             val numberKey = settingsRepository.get(NUMBER_PREF, "number")
             featureFlagService.numberVariation(numberKey) {
                 Log.d(TAG, "Number ($numberKey) evaluation: $it")
                 _number.postValue(it.toInt())
             }
+            _isLoading.postValue(false)
         }
     }
 

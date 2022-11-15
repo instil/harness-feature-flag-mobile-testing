@@ -13,6 +13,7 @@ import io.harness.settings.SettingsRepository.Companion.SDK_KEY_PREF
 import io.harness.settings.SettingsRepository.Companion.TARGET_ID_PREF
 import io.harness.settings.SettingsRepository.Companion.TARGET_NAME_PREF
 import io.harness.settings.SettingsRepository.Companion.TEST_STRING_PREF
+import io.harness.settings.SettingsRepository.Companion.WEB_VIEW_URL_PREF
 import javax.inject.Inject
 
 @HiltViewModel
@@ -89,6 +90,14 @@ class SettingsViewModel @Inject constructor(
     fun updateTestString(newValue: String) {
         repository.set(TEST_STRING_PREF, newValue)
         _testString.value = newValue
+    }
+
+    private val _webviewUrl = MutableLiveData(repository.get(WEB_VIEW_URL_PREF, ""))
+    val webviewUrl: LiveData<String> = _webviewUrl
+
+    fun updateWebViewUrl(newValue: String) {
+        repository.set(WEB_VIEW_URL_PREF, newValue)
+        _webviewUrl.value = newValue
     }
 
 }

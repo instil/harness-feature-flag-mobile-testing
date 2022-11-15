@@ -121,12 +121,20 @@ class SettingsActivity : ComponentActivity() {
     @Composable
     fun StringSection() {
         val testStringState = viewModel.testString.observeAsState("")
+        val webviewUrlState = viewModel.webviewUrl.observeAsState("")
+
         Section("Strings") {
             StringSetting(
                 label = "Test String",
-                placeholder = "Test string",
+                placeholder = "Basic test string",
                 state = testStringState,
                 onValueChange = { viewModel.updateTestString(it) }
+            )
+            StringSetting (
+                label = "Web URL",
+                placeholder = "URL for web view test",
+                state = webviewUrlState,
+                onValueChange = { viewModel.updateWebViewUrl(it) }
             )
         }
     }

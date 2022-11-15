@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
@@ -12,10 +13,12 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
+import com.google.accompanist.web.WebView
+import com.google.accompanist.web.rememberWebViewState
 import dagger.hilt.android.AndroidEntryPoint
 import io.harness.ui.theme.HarnessTheme
 
@@ -43,41 +46,53 @@ class StringsActivity : ComponentActivity() {
         super.onResume()
         viewModel.loadStringFeatureFlags()
     }
-}
 
-private data class TabInfo(val title: String, val icon: ImageVector)
+    private data class TabInfo(val title: String, val icon: ImageVector)
 
-@Composable
-fun SectionTabs() {
-    var state by remember { mutableStateOf(0) }
-    val tabs = listOf(
-        TabInfo("Test", Icons.Default.Settings),
-        TabInfo("Video", Icons.Default.Videocam),
-        TabInfo("Web", Icons.Default.Language)
-    )
-    Column {
-        TabRow(selectedTabIndex = state) {
-            tabs.forEachIndexed { index, tab ->
-                Tab(
-                    text = { Text(tab.title) },
-                    icon = { tab.icon },
-                    selected = state == index,
-                    onClick = { state = index }
-                )
+    @Composable
+    fun SectionTabs() {
+        var state by remember { mutableStateOf(0) }
+        val testStringState = viewModel.testString.observeAsState("")
+        val youtubeUrlState = viewModel.youtubeUrl.observeAsState("")
+        val webviewUrlState = rememberWebViewState(url = viewModel.webViewUrl.value ?: "" )
+
+        val tabs = listOf(
+            TabInfo("Test", Icons.Default.Settings),
+            TabInfo("Video", Icons.Default.Videocam),
+            TabInfo("Web", Icons.Default.Language)
+        )
+        Column {
+            TabRow(selectedTabIndex = state) {
+                tabs.forEachIndexed { index, tab ->
+                    Tab(
+                        text = { Text(tab.title) },
+                        icon = { tab.icon },
+                        selected = state == index,
+                        onClick = { state = index }
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                when (state) {
+                    0 -> {
+                        Text(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            text = testStringState.value,
+                            style = MaterialTheme.typography.body1,
+
+                            )
+                    }
+                    1 -> {
+
+                    }
+                    2 -> {
+                        WebView(state = webviewUrlState)
+                    }
+                }
             }
         }
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = "Text tab ${state + 1} selected",
-            style = MaterialTheme.typography.body1
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview2() {
-    HarnessTheme {
-        SectionTabs()
     }
 }

@@ -1,4 +1,4 @@
-package io.harness.booleanFlags
+package io.harness.booleanflags
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

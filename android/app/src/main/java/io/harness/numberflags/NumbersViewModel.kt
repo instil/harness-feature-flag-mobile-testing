@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.harness.FeatureFlagService
-import io.harness.booleanFlags.BooleanViewModel
 import io.harness.settings.SettingsRepository
 import io.harness.settings.SettingsRepository.Companion.NUMBER_PREF
 import kotlinx.coroutines.Dispatchers

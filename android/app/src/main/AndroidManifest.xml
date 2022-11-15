@@ -27,7 +27,7 @@
             android:parentActivityName="io.harness.MainActivity"
             android:theme="@style/Theme.Harness" />
         <activity
-            android:name="io.harness.booleanFlags.BooleanActivity"
+            android:name="io.harness.booleanflags.BooleanActivity"
             android:exported="false"
             android:label="@string/title_activity_boolean"
             android:parentActivityName="io.harness.MainActivity"

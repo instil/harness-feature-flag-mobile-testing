@@ -16,6 +16,7 @@
             android:theme="@style/Theme.Harness">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,12 +25,17 @@
             android:exported="false"
             android:label="@string/title_activity_settings"
             android:parentActivityName="io.harness.MainActivity"
-            android:theme="@style/Theme.Harness"/>
+            android:theme="@style/Theme.Harness" />
         <activity
             android:name="io.harness.booleanFlags.BooleanActivity"
             android:exported="false"
             android:label="@string/title_activity_boolean"
             android:parentActivityName="io.harness.MainActivity"
+            android:theme="@style/Theme.Harness" />
+        <activity
+            android:name="io.harness.stringflags.StringsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_strings"
             android:theme="@style/Theme.Harness">
         </activity>
     </application>

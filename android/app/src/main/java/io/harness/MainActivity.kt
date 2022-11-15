@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.harness.booleanFlags.BooleanActivity
 import io.harness.settings.SettingsActivity
+import io.harness.stringflags.StringsActivity
 import io.harness.ui.components.LinkButton
 import io.harness.ui.components.NavigationHandler
 import io.harness.ui.theme.HarnessTheme
@@ -117,7 +118,7 @@ fun MainScreen(
             LinkButton(
                 label = "Multi-variate Strings",
                 icon = Icons.Default.FormatQuote,
-                onClick = navigateToMultivariateStrings)
+                onClick = { context.startActivity(Intent(context, StringsActivity::class.java)) })
             LinkButton(
                 label = "Multi-variate Integers",
                 icon = Icons.Default.Numbers,

@@ -38,7 +38,8 @@ class SettingsActivity : ComponentActivity() {
                         modifier = Modifier.padding(36.dp)
                     ) {
                         SdkSection()
-                        KeySection()
+                        BooleanSection()
+                        StringSection()
                     }
                 }
             }
@@ -77,48 +78,61 @@ class SettingsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun KeySection() {
+    fun BooleanSection() {
         val booleanOneState = viewModel.booleanOne.observeAsState("")
         val booleanTwoState = viewModel.booleanTwo.observeAsState("")
         val booleanThreeState = viewModel.booleanThree.observeAsState("")
         val booleanFourState = viewModel.booleanFour.observeAsState("")
         val booleanFiveState = viewModel.booleanFive.observeAsState("")
-        Section(title = "Flags") {
+        Section(title = "Booleans") {
             StringSetting(
                 label = "Boolean One",
-                placeholder = "Boolean tester falg one",
+                placeholder = "Boolean tester flag one",
                 state = booleanOneState,
-                onValueChange = {viewModel.updateBooleanOne(it)}
+                onValueChange = { viewModel.updateBooleanOne(it) }
             )
             StringSetting(
                 label = "Boolean Two",
                 placeholder = "Boolean tester flag two",
                 state = booleanTwoState,
-                onValueChange = {viewModel.updateBooleanTwo(it)}
+                onValueChange = { viewModel.updateBooleanTwo(it) }
             )
             StringSetting(
                 label = "Boolean Three",
                 placeholder = "Boolean tester flag three",
                 state = booleanThreeState,
-                onValueChange = {viewModel.updateBooleanThree(it)}
+                onValueChange = { viewModel.updateBooleanThree(it) }
             )
             StringSetting(
                 label = "Boolean Four",
                 placeholder = "Boolean tester flag four",
                 state = booleanFourState,
-                onValueChange = {viewModel.updateBooleanFour(it)}
+                onValueChange = { viewModel.updateBooleanFour(it) }
             )
             StringSetting(
                 label = "Boolean Five",
                 placeholder = "Boolean tester flag five",
                 state = booleanFiveState,
-                onValueChange = {viewModel.updateBooleanFive(it)}
+                onValueChange = { viewModel.updateBooleanFive(it) }
             )
         }
     }
 
     @Composable
-    fun Section(title: String, content: @Composable (()->Unit)) {
+    fun StringSection() {
+        val testStringState = viewModel.testString.observeAsState("")
+        Section("Strings") {
+            StringSetting(
+                label = "Test String",
+                placeholder = "Test string",
+                state = testStringState,
+                onValueChange = { viewModel.updateTestString(it) }
+            )
+        }
+    }
+
+    @Composable
+    fun Section(title: String, content: @Composable (() -> Unit)) {
         Column {
             Text(text = title, fontSize = 24.sp)
             Divider(
@@ -131,13 +145,19 @@ class SettingsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun StringSetting(label: String, placeholder: String, state: State<String>, onValueChange:(String)->Unit) {
+    fun StringSetting(
+        label: String,
+        placeholder: String,
+        state: State<String>,
+        onValueChange: (String) -> Unit
+    ) {
         Column {
             TextField(
                 value = state.value,
                 label = { Text(text = label, fontWeight = FontWeight.Bold) },
                 placeholder = { Text(placeholder) },
-                onValueChange = onValueChange)
+                onValueChange = onValueChange
+            )
         }
     }
 }

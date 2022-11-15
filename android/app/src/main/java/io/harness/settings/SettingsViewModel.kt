@@ -74,6 +74,14 @@ class SettingsViewModel @Inject constructor(
         _booleanFive.value = newValue
     }
 
+    private val _testString = MutableLiveData(repository.get(TEST_STRING_PREF, ""))
+    val testString: LiveData<String> = _testString
+
+    fun updateTestString(newValue: String) {
+        repository.set(TEST_STRING_PREF, newValue)
+        _testString.value = newValue
+    }
+
     companion object {
         const val SDK_KEY_PREF = "HARNESS_SDK_KEY"
         const val TARGET_ID_PREF = "HARNESS_TARGET_ID"
@@ -83,6 +91,9 @@ class SettingsViewModel @Inject constructor(
         const val BOOLEAN_THREE_PREF = "BOOLEAN_TESTER_KEY_THREE"
         const val BOOLEAN_FOUR_PREF = "BOOLEAN_TESTER_KEY_FOUR"
         const val BOOLEAN_FIVE_PREF = "BOOLEAN_TESTER_KEY_FIVE"
+        const val TEST_STRING_PREF = "TEST_STRING"
+        const val YOUTUBE_URL_PREF = "YOUTUBE_URL"
+        const val WEB_VIEW_URL_PREF = "WEB_VIEW_URL"
     }
 
 }

@@ -1,13 +1,10 @@
 package io.harness.stringflags
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
@@ -18,6 +15,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +32,6 @@ class StringsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             HarnessTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -53,6 +52,7 @@ class StringsActivity : ComponentActivity() {
     @Composable
     fun SectionTabs() {
         var state by remember { mutableStateOf(0) }
+        val isLoadingState = viewModel.isLoading.observeAsState(true)
         val testStringState = viewModel.testString.observeAsState("")
         val youtubeUrlState = rememberWebViewState(url = "https://youtube.com/watch?v=${viewModel.youtubeUrl.value}")
         val webviewUrlState = rememberWebViewState(url = viewModel.webViewUrl.value ?: "" )
@@ -71,6 +71,15 @@ class StringsActivity : ComponentActivity() {
                         selected = state == index,
                         onClick = { state = index }
                     )
+                }
+            }
+            if (isLoadingState.value) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp), horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "Loading...", fontSize = 28.sp, fontWeight = FontWeight.Bold)
                 }
             }
             Column(

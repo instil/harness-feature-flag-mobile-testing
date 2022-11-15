@@ -11,12 +11,12 @@ class SharedPreferencesSettingsRepository @Inject constructor(@ApplicationContex
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     override fun get(key: String, default: String): String =
-        sharedPreferences.getString(key, default) ?: default
+        sharedPreferences.getString(key, default)?.trim() ?: default
 
     override fun set(key: String, value: String) {
         sharedPreferences
             .edit()
-            .putString(key, value)
+            .putString(key, value.trim())
             .apply()
     }
 }

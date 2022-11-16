@@ -1,7 +1,9 @@
 package io.harness
 
 import android.app.Application
+import android.content.Intent
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dagger.hilt.android.HiltAndroidApp
 import io.harness.cfsdk.CfClient
 import io.harness.cfsdk.cloud.core.model.Evaluation
@@ -29,6 +31,7 @@ class HarnessApplication : Application() {
                         StatusEvent.EVENT_TYPE.EVALUATION_CHANGE -> {
                             val evaluation = result.extractPayload<Evaluation>()
                             Log.d("HARNESS APP", "Evaluation has changed: ${evaluation.flag} is now ${evaluation.value}")
+                            broadcastEvaluationChange(evaluation)
                         }
                         StatusEvent.EVENT_TYPE.EVALUATION_REMOVE -> {
                             val evaluation = result.extractPayload<Evaluation>()
@@ -50,6 +53,46 @@ class HarnessApplication : Application() {
     override fun onTerminate() {
         super.onTerminate()
         featureFlagService.destroy()
+    }
+
+    private fun broadcastEvaluationChange(ev: Evaluation) {
+        Log.d(TAG, "Broadcasting evaluation update for ${ev.flag}")
+        Intent().also { intent ->
+            intent.putExtra(EXTRA_EVALUATION_FLAG, ev.flag)
+            when (ev.kind) {
+                "boolean" -> {
+                    intent.action = ACTION_BOOLEAN_UPDATE
+                    intent.putExtra(EXTRA_EVALUATION_VALUE, (ev.value as String).toBoolean())
+                }
+                "string" -> {
+                    intent.action = ACTION_STRING_UPDATE
+                    intent.putExtra(EXTRA_EVALUATION_VALUE, ev.value as String)
+                }
+                "int" -> {
+                    intent.action = ACTION_INT_UPDATE
+                    try {
+                        intent.putExtra(EXTRA_EVALUATION_VALUE, (ev.value as String).toInt())
+                    } catch (e: java.lang.NumberFormatException) {
+                        intent.putExtra(EXTRA_EVALUATION_VALUE, -1)
+                    }
+                }
+                "json" -> {
+                    intent.action = ACTION_JSON_UPDATE
+                    intent.putExtra(EXTRA_EVALUATION_VALUE, ev.value as String)
+                }
+            }
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        }
+    }
+
+    companion object {
+        const val TAG = "HarnessApplication"
+        const val ACTION_BOOLEAN_UPDATE = "io.harness.ACTION_BOOLEAN_UPDATE"
+        const val ACTION_STRING_UPDATE = "io.harness.ACTION_STRING_UPDATE"
+        const val ACTION_INT_UPDATE = "io.harness.ACTION_NUMBER_UPDATE"
+        const val ACTION_JSON_UPDATE = "io.harness.ACTION_JSON_UPDATE"
+        const val EXTRA_EVALUATION_FLAG = "io.harness.EXTRA_EVALUATION_FLAG"
+        const val EXTRA_EVALUATION_VALUE = "io.harness.EXTRA_EVALUATION_VALUE"
     }
 
 }

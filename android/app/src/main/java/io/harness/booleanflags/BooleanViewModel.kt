@@ -85,6 +85,16 @@ class BooleanViewModel @Inject constructor(
         }
     }
 
+    fun updateFlag(flag: String, value: Boolean) {
+        when (flag) {
+            settingsRepository.get(BOOLEAN_ONE_PREF, "boolean_one") -> _booleanOne.postValue(value)
+            settingsRepository.get(BOOLEAN_TWO_PREF, "boolean_two") -> _booleanTwo.postValue(value)
+            settingsRepository.get(BOOLEAN_THREE_PREF, "boolean_three") -> _booleanThree.postValue(value)
+            settingsRepository.get(BOOLEAN_FOUR_PREF, "boolean_four") -> _booleanFour.postValue(value)
+            settingsRepository.get(BOOLEAN_FIVE_PREF, "boolean_five") -> _booleanFive.postValue(value)
+        }
+    }
+
     companion object {
         const val TAG = "BooleanViewModel"
         const val EXPECTED_RESPONSES = 5

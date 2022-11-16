@@ -1,5 +1,9 @@
 package io.harness.booleanflags
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,10 +11,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Switch
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,15 +19,22 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dagger.hilt.android.AndroidEntryPoint
+import io.harness.HarnessApplication
 import io.harness.ui.theme.HarnessTheme
 
 @AndroidEntryPoint
 class BooleanActivity : ComponentActivity() {
     private val viewModel: BooleanViewModel by viewModels()
 
+    private val updateBroadcastReceiver = UpdateBroadcastReceiver()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        registerReceiver()
 
         setContent {
             HarnessTheme {
@@ -66,5 +74,31 @@ class BooleanActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.loadBooleanFeatureFlags()
+        registerReceiver()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver()
+    }
+
+    private fun registerReceiver() {
+        val filter = IntentFilter(HarnessApplication.ACTION_BOOLEAN_UPDATE)
+        LocalBroadcastManager.getInstance(this).registerReceiver(updateBroadcastReceiver, filter)
+    }
+
+    private fun unregisterReceiver() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(updateBroadcastReceiver)
+    }
+
+    private inner class UpdateBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val flag = intent.getStringExtra(HarnessApplication.EXTRA_EVALUATION_FLAG) ?: ""
+            val value = intent.getBooleanExtra(HarnessApplication.EXTRA_EVALUATION_VALUE, false)
+            if (flag.isNotEmpty()) {
+                viewModel.updateFlag(flag, value)
+            }
+        }
+
     }
 }

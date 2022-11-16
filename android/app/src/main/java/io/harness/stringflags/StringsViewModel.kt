@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.harness.services.FeatureFlagService
 import io.harness.settings.SettingsRepository
-import io.harness.settings.SettingsRepository.Companion.TEST_STRING_PREF
-import io.harness.settings.SettingsRepository.Companion.WEB_VIEW_URL_PREF
-import io.harness.settings.SettingsRepository.Companion.YOUTUBE_URL_PREF
+import io.harness.settings.SettingsRepository.Companion.SETTING_STRING_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_WEBVIEW_URL_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_YOUTUBE_URL_FLAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,21 +41,21 @@ class StringsViewModel @Inject constructor(
 
     fun loadStringFeatureFlags() {
         viewModelScope.launch(Dispatchers.IO) {
-            val testStringKey = settingsRepository.get(TEST_STRING_PREF, "test_string")
+            val testStringKey = settingsRepository.get(SETTING_STRING_FLAG, "test_string")
             featureFlagService.stringVariation(testStringKey) {
                 Log.d(TAG, "TextString evaluation: $it")
                 _testString.postValue(it)
                 receivedResponses++
             }
 
-            val youtubeVideoKey = settingsRepository.get(YOUTUBE_URL_PREF, "youtube_video")
+            val youtubeVideoKey = settingsRepository.get(SETTING_YOUTUBE_URL_FLAG, "youtube_video")
             featureFlagService.stringVariation(youtubeVideoKey) {
                 Log.d(TAG, "YouTubeUrl evaluation: $it")
                 _youtubeUrl.postValue(it)
                 receivedResponses++
             }
 
-            val webviewUrlKey = settingsRepository.get(WEB_VIEW_URL_PREF, "webview_url")
+            val webviewUrlKey = settingsRepository.get(SETTING_WEBVIEW_URL_FLAG, "webview_url")
             featureFlagService.stringVariation(webviewUrlKey) {
                 Log.d(TAG, "WebViewUrl evaluation: $it")
                 _webViewUrl.postValue(it)

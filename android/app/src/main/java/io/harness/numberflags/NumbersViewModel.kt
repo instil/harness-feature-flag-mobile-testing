@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.harness.services.FeatureFlagService
 import io.harness.settings.SettingsRepository
-import io.harness.settings.SettingsRepository.Companion.NUMBER_PREF
+import io.harness.settings.SettingsRepository.Companion.SETTING_NUMBER_FLAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +28,7 @@ class NumbersViewModel @Inject constructor(
     fun loadNumberFeatureFlags() {
         _isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val numberKey = settingsRepository.get(NUMBER_PREF, "number")
+            val numberKey = settingsRepository.get(SETTING_NUMBER_FLAG, "number")
             featureFlagService.numberVariation(numberKey) {
                 Log.d(TAG, "Number ($numberKey) evaluation: $it")
                 _number.postValue(it.toInt())

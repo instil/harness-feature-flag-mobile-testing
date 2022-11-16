@@ -12,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +40,7 @@ class SettingsActivity : ComponentActivity() {
                             .padding(36.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
+                        GeneralSection()
                         SdkSection()
                         BooleanSection()
                         StringSection()
@@ -46,6 +48,20 @@ class SettingsActivity : ComponentActivity() {
                         JsonSection()
                     }
                 }
+            }
+        }
+    }
+
+    @Composable
+    private fun GeneralSection() {
+        val refreshUI = viewModel.refreshUI.observeAsState(false)
+
+        Section(title = "General") {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Refresh UI automatically?")
+                Switch(
+                    checked = refreshUI.value,
+                    onCheckedChange = { viewModel.updateRefreshUI(it) })
             }
         }
     }

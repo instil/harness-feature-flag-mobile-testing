@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.harness.services.FeatureFlagService
 import io.harness.settings.SettingsRepository
-import io.harness.settings.SettingsRepository.Companion.JSON_PREF
+import io.harness.settings.SettingsRepository.Companion.SETTING_JSON_FLAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class JsonViewModel @Inject constructor(
 
     fun loadJsonFeatureFlags() {
         viewModelScope.launch(Dispatchers.IO) {
-            val jsonKey = settingsRepository.get(JSON_PREF, "")
+            val jsonKey = settingsRepository.get(SETTING_JSON_FLAG, "")
             _isLoading.postValue(true)
             featureFlagService.jsonVariation(jsonKey) {
                 Log.d(TAG, "Json ($jsonKey) evaluation: $it")

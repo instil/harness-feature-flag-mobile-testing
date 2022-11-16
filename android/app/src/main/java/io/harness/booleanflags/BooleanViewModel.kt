@@ -8,11 +8,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.harness.services.FeatureFlagService
 import io.harness.settings.SettingsRepository
-import io.harness.settings.SettingsRepository.Companion.BOOLEAN_FIVE_PREF
-import io.harness.settings.SettingsRepository.Companion.BOOLEAN_FOUR_PREF
-import io.harness.settings.SettingsRepository.Companion.BOOLEAN_ONE_PREF
-import io.harness.settings.SettingsRepository.Companion.BOOLEAN_THREE_PREF
-import io.harness.settings.SettingsRepository.Companion.BOOLEAN_TWO_PREF
+import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_FIVE_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_FOUR_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_ONE_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_THREE_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_TWO_FLAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,35 +48,35 @@ class BooleanViewModel @Inject constructor(
 
     fun loadBooleanFeatureFlags() {
         viewModelScope.launch(Dispatchers.IO) {
-            val booleanOneKey = settingsRepository.get(BOOLEAN_ONE_PREF, "boolean_one")
+            val booleanOneKey = settingsRepository.get(SETTING_BOOLEAN_ONE_FLAG, "boolean_one")
             featureFlagService.boolVariation(booleanOneKey) {
                 Log.d(TAG, "Boolean 1 ($booleanOneKey) evaluation: $it")
                 _booleanOne.postValue(it)
                 receivedResponses++
             }
 
-            val booleanTwoKey = settingsRepository.get(BOOLEAN_TWO_PREF, "boolean_two")
+            val booleanTwoKey = settingsRepository.get(SETTING_BOOLEAN_TWO_FLAG, "boolean_two")
             featureFlagService.boolVariation(booleanTwoKey) {
                 Log.d(TAG, "Boolean 2 ($booleanTwoKey) evaluation: $it")
                 _booleanTwo.postValue(it)
                 receivedResponses++
             }
 
-            val booleanThreeKey = settingsRepository.get(BOOLEAN_THREE_PREF, "boolean_three")
+            val booleanThreeKey = settingsRepository.get(SETTING_BOOLEAN_THREE_FLAG, "boolean_three")
             featureFlagService.boolVariation(booleanThreeKey) {
                 Log.d(TAG, "Boolean 3 ($booleanThreeKey) evaluation: $it")
                 _booleanThree.postValue(it)
                 receivedResponses++
             }
 
-            val booleanFourKey = settingsRepository.get(BOOLEAN_FOUR_PREF, "boolean_four")
+            val booleanFourKey = settingsRepository.get(SETTING_BOOLEAN_FOUR_FLAG, "boolean_four")
             featureFlagService.boolVariation(booleanFourKey) {
                 Log.d(TAG, "Boolean 4 ($booleanFourKey) evaluation: $it")
                 _booleanFour.postValue(it)
                 receivedResponses++
             }
 
-            val booleanFiveKey = settingsRepository.get(BOOLEAN_FIVE_PREF, "boolean_five")
+            val booleanFiveKey = settingsRepository.get(SETTING_BOOLEAN_FIVE_FLAG, "boolean_five")
             featureFlagService.boolVariation(booleanFiveKey) {
                 Log.d(TAG, "Boolean 5 ($booleanFiveKey) evaluation: $it")
                 _booleanFive.postValue(it)
@@ -87,11 +87,11 @@ class BooleanViewModel @Inject constructor(
 
     fun updateFlag(flag: String, value: Boolean) {
         when (flag) {
-            settingsRepository.get(BOOLEAN_ONE_PREF, "boolean_one") -> _booleanOne.postValue(value)
-            settingsRepository.get(BOOLEAN_TWO_PREF, "boolean_two") -> _booleanTwo.postValue(value)
-            settingsRepository.get(BOOLEAN_THREE_PREF, "boolean_three") -> _booleanThree.postValue(value)
-            settingsRepository.get(BOOLEAN_FOUR_PREF, "boolean_four") -> _booleanFour.postValue(value)
-            settingsRepository.get(BOOLEAN_FIVE_PREF, "boolean_five") -> _booleanFive.postValue(value)
+            settingsRepository.get(SETTING_BOOLEAN_ONE_FLAG, "boolean_one") -> _booleanOne.postValue(value)
+            settingsRepository.get(SETTING_BOOLEAN_TWO_FLAG, "boolean_two") -> _booleanTwo.postValue(value)
+            settingsRepository.get(SETTING_BOOLEAN_THREE_FLAG, "boolean_three") -> _booleanThree.postValue(value)
+            settingsRepository.get(SETTING_BOOLEAN_FOUR_FLAG, "boolean_four") -> _booleanFour.postValue(value)
+            settingsRepository.get(SETTING_BOOLEAN_FIVE_FLAG, "boolean_five") -> _booleanFive.postValue(value)
         }
     }
 

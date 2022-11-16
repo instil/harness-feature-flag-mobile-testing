@@ -52,11 +52,11 @@ class BooleanActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize().alpha(if (isLoadingState.value) 0f else 1f),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly) {
-                        BooleanRow(label = "Boolean One", state = booleanOneState)
-                        BooleanRow(label = "Boolean Two", state = booleanTwoState)
-                        BooleanRow(label = "Boolean Three", state = booleanThreeState)
-                        BooleanRow(label = "Boolean Four", state = booleanFourState)
-                        BooleanRow(label = "Boolean Five", state = booleanFiveState)
+                        Text(text = "Boolean One", fontSize = 24.sp, modifier = Modifier.alpha(if (booleanOneState.value) 1f else 0f))
+                        Text(text = "Boolean Two", fontSize = 24.sp, modifier = Modifier.alpha(if (booleanTwoState.value) 1f else 0f))
+                        Text(text = "Boolean Three", fontSize = 24.sp, modifier = Modifier.alpha(if (booleanThreeState.value) 1f else 0f))
+                        Text(text = "Boolean Four", fontSize = 24.sp, modifier = Modifier.alpha(if (booleanFourState.value) 1f else 0f))
+                        Text(text = "Boolean Five", fontSize = 24.sp, modifier = Modifier.alpha(if (booleanFiveState.value) 1f else 0f))
                     }
                 }
             }
@@ -66,17 +66,5 @@ class BooleanActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.loadBooleanFeatureFlags()
-    }
-}
-
-@Composable
-fun BooleanRow(label: String, state: State<Boolean>) {
-    Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-        Text(text = label, fontSize = 24.sp)
-        Switch(
-            checked = state.value,
-            onCheckedChange = {},
-            enabled = false
-        )
     }
 }

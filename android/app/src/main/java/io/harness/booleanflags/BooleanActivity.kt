@@ -25,13 +25,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.harness.HarnessActivity
 import io.harness.HarnessApplication
 import io.harness.HarnessApplication.Companion.ACTION_BOOLEAN_UPDATE
+import io.harness.HarnessApplication.Companion.EXTRA_EVALUATION_FLAG
+import io.harness.HarnessApplication.Companion.EXTRA_EVALUATION_VALUE
 import io.harness.settings.SettingsRepository
 import io.harness.settings.SettingsRepository.Companion.SETTING_REFRESH_UI
 import io.harness.ui.theme.HarnessTheme
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BooleanActivity  : HarnessActivity() {
+class BooleanActivity : HarnessActivity<Boolean>() {
     private val viewModel: BooleanViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,15 +113,7 @@ class BooleanActivity  : HarnessActivity() {
     }
 
     override fun getBroadcastFilter() = IntentFilter(ACTION_BOOLEAN_UPDATE)
-
-    override fun getBroadcastReceiver() = object: BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val flag = intent.getStringExtra(HarnessApplication.EXTRA_EVALUATION_FLAG) ?: ""
-            val value = intent.getBooleanExtra(HarnessApplication.EXTRA_EVALUATION_VALUE, false)
-            if (flag.isNotEmpty()) {
-                viewModel.updateFlag(flag, value)
-            }
-        }
-    }
+    override fun extractValue(intent: Intent) = intent.getBooleanExtra(EXTRA_EVALUATION_VALUE, false)
+    override fun onEvaluationUpdate(flag: String, value: Boolean) = viewModel.updateFlag(flag, value)
 
 }

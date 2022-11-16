@@ -1,7 +1,10 @@
 package io.harness.numberflags
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
@@ -16,10 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
+import io.harness.HarnessActivity
+import io.harness.HarnessApplication
+import io.harness.HarnessApplication.Companion.ACTION_INT_UPDATE
 import io.harness.ui.theme.HarnessTheme
 
 @AndroidEntryPoint
-class NumbersActivity : ComponentActivity() {
+class NumbersActivity : HarnessActivity<Int>() {
 
     private val viewModel: NumbersViewModel by viewModels()
 
@@ -61,4 +67,8 @@ class NumbersActivity : ComponentActivity() {
         super.onResume()
         viewModel.loadNumberFeatureFlags()
     }
+
+    override fun getBroadcastFilter() = IntentFilter(ACTION_INT_UPDATE)
+    override fun extractValue(intent: Intent) = intent.getIntExtra(HarnessApplication.EXTRA_EVALUATION_VALUE, -1)
+    override fun onEvaluationUpdate(flag: String, value: Int) = viewModel.updateFlag(flag, value)
 }

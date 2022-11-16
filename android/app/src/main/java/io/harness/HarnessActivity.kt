@@ -1,6 +1,8 @@
 package io.harness
 
 import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,7 +11,7 @@ import io.harness.settings.SettingsRepository
 import io.harness.settings.SettingsRepository.Companion.SETTING_REFRESH_UI
 import javax.inject.Inject
 
-abstract class HarnessActivity: ComponentActivity() {
+abstract class HarnessActivity<T>: ComponentActivity() {
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
@@ -36,6 +38,17 @@ abstract class HarnessActivity: ComponentActivity() {
         }
     }
 
-    abstract fun getBroadcastReceiver(): BroadcastReceiver
+    private fun getBroadcastReceiver() = object: BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val flag = intent.getStringExtra(HarnessApplication.EXTRA_EVALUATION_FLAG) ?: ""
+            val value = extractValue(intent)
+            if (flag.isNotEmpty()) {
+                onEvaluationUpdate(flag, value)
+            }
+        }
+    }
+
     abstract fun getBroadcastFilter(): IntentFilter
+    abstract fun extractValue(intent: Intent): T
+    abstract fun onEvaluationUpdate(flag: String, value: T)
 }

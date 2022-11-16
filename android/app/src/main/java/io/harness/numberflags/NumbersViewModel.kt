@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.harness.services.FeatureFlagService
 import io.harness.settings.SettingsRepository
 import io.harness.settings.SettingsRepository.Companion.SETTING_NUMBER_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_STRING_FLAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,6 +35,12 @@ class NumbersViewModel @Inject constructor(
                 _number.postValue(it.toInt())
             }
             _isLoading.postValue(false)
+        }
+    }
+
+    fun updateFlag(flag: String, value: Int) {
+        when (flag) {
+            settingsRepository.get(SETTING_NUMBER_FLAG, "number") -> _number.postValue(value)
         }
     }
 

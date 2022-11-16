@@ -64,6 +64,14 @@ class StringsViewModel @Inject constructor(
         }
     }
 
+    fun updateFlag(flag: String, value: String) {
+        when (flag) {
+            settingsRepository.get(SETTING_STRING_FLAG, "string_flag") -> _testString.postValue(value)
+            settingsRepository.get(SETTING_YOUTUBE_URL_FLAG, "youtube_url") -> _youtubeUrl.postValue(value)
+            settingsRepository.get(SETTING_WEBVIEW_URL_FLAG, "webview_url") -> _webViewUrl.postValue(value)
+        }
+    }
+
     companion object {
         const val TAG = "StringsViewModel"
         const val EXPECTED_RESPONSES = 3

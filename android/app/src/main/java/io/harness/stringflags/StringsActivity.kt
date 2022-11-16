@@ -1,7 +1,10 @@
 package io.harness.stringflags
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
@@ -22,10 +25,13 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
 import dagger.hilt.android.AndroidEntryPoint
+import io.harness.HarnessActivity
+import io.harness.HarnessApplication
+import io.harness.HarnessApplication.Companion.ACTION_STRING_UPDATE
 import io.harness.ui.theme.HarnessTheme
 
 @AndroidEntryPoint
-class StringsActivity : ComponentActivity() {
+class StringsActivity : HarnessActivity() {
 
     private val viewModel: StringsViewModel by viewModels()
 
@@ -107,6 +113,18 @@ class StringsActivity : ComponentActivity() {
                         WebView(state = webviewUrlState)
                     }
                 }
+            }
+        }
+    }
+
+    override fun getBroadcastFilter() = IntentFilter(ACTION_STRING_UPDATE)
+
+    override fun getBroadcastReceiver() = object: BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val flag = intent.getStringExtra(HarnessApplication.EXTRA_EVALUATION_FLAG) ?: ""
+            val value = intent.getStringExtra(HarnessApplication.EXTRA_EVALUATION_VALUE) ?: ""
+            if (flag.isNotEmpty()) {
+                viewModel.updateFlag(flag, value)
             }
         }
     }

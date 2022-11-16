@@ -1,5 +1,7 @@
 package io.harness.jsonflags
 
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,10 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
+import io.harness.HarnessActivity
+import io.harness.HarnessApplication.Companion.ACTION_JSON_UPDATE
+import io.harness.HarnessApplication.Companion.EXTRA_EVALUATION_VALUE
 import io.harness.ui.theme.HarnessTheme
 
 @AndroidEntryPoint
-class JsonActivity : ComponentActivity() {
+class JsonActivity : HarnessActivity<String>() {
 
     private val viewModel: JsonViewModel by viewModels()
 
@@ -60,4 +65,8 @@ class JsonActivity : ComponentActivity() {
         super.onResume()
         viewModel.loadJsonFeatureFlags()
     }
+
+    override fun getBroadcastFilter() = IntentFilter(ACTION_JSON_UPDATE)
+    override fun extractValue(intent: Intent) = intent.getStringExtra(EXTRA_EVALUATION_VALUE) ?: ""
+    override fun onEvaluationUpdate(flag: String, value: String) = viewModel.updateFlag(flag, value)
 }

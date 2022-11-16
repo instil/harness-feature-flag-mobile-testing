@@ -37,6 +37,15 @@ class JsonViewModel @Inject constructor(
         }
     }
 
+    fun updateFlag(flag: String, value: String) {
+        when (flag) {
+            settingsRepository.get(SETTING_JSON_FLAG, "json") -> {
+                val jsonValue = value.drop(1).dropLast(1).replace("\\", "")
+                _json.postValue(jsonValue)
+            }
+        }
+    }
+
     companion object {
         const val TAG = "JsonViewModel"
     }

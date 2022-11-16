@@ -1,4 +1,4 @@
-package io.harness
+package io.harness.services
 
 typealias JSONString = String
 typealias FeatureFlagCallback<T> = (T)->Unit

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.harness.FeatureFlagService
+import io.harness.services.FeatureFlagService
 import io.harness.settings.SettingsRepository
 import io.harness.settings.SettingsRepository.Companion.TEST_STRING_PREF
 import io.harness.settings.SettingsRepository.Companion.WEB_VIEW_URL_PREF

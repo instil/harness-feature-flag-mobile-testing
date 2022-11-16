@@ -9,6 +9,8 @@ import io.harness.cfsdk.CfClient
 import io.harness.cfsdk.cloud.core.model.Evaluation
 import io.harness.cfsdk.cloud.oksse.model.StatusEvent
 import io.harness.services.FeatureFlagService
+import io.harness.settings.SettingsRepository
+import io.harness.settings.SettingsRepository.Companion.SETTING_REFRESH_UI
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,6 +20,9 @@ class HarnessApplication : Application() {
 
     @Inject
     lateinit var featureFlagService: FeatureFlagService
+
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
 
     override fun onCreate() {
         super.onCreate()
@@ -31,7 +36,9 @@ class HarnessApplication : Application() {
                         StatusEvent.EVENT_TYPE.EVALUATION_CHANGE -> {
                             val evaluation = result.extractPayload<Evaluation>()
                             Log.d("HARNESS APP", "Evaluation has changed: ${evaluation.flag} is now ${evaluation.value}")
-                            broadcastEvaluationChange(evaluation)
+                            if (settingsRepository.get(SETTING_REFRESH_UI, "false").toBoolean()) {
+                                broadcastEvaluationChange(evaluation)
+                            }
                         }
                         StatusEvent.EVENT_TYPE.EVALUATION_REMOVE -> {
                             val evaluation = result.extractPayload<Evaluation>()

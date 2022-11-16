@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.harness.SwappableService
 import io.harness.services.FeatureFlagService
 import io.harness.settings.SettingsRepository
 import io.harness.settings.SettingsRepository.Companion.SETTING_NUMBER_FLAG
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NumbersViewModel @Inject constructor(
-    private val featureFlagService: FeatureFlagService,
+    @SwappableService private val featureFlagService: FeatureFlagService,
     private val settingsRepository: SettingsRepository
 ): ViewModel() {
 

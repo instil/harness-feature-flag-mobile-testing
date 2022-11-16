@@ -19,6 +19,7 @@ import javax.inject.Inject
 class HarnessApplication : Application() {
 
     @Inject
+    @SwappableService
     lateinit var featureFlagService: FeatureFlagService
 
     @Inject

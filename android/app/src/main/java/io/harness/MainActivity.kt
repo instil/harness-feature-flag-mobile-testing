@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.harness.booleanflags.BooleanActivity
+import io.harness.jsonflags.JsonActivity
 import io.harness.numberflags.NumbersActivity
 import io.harness.settings.SettingsActivity
 import io.harness.stringflags.StringsActivity
@@ -69,11 +70,8 @@ fun HarnessNavHost(
                 navigateToBooleans = { context.startActivity(Intent(context, BooleanActivity::class.java)) },
                 navigateToMultivariateStrings = { context.startActivity(Intent(context, StringsActivity::class.java)) },
                 navigateToMultivariateIntegers = { context.startActivity(Intent(context, NumbersActivity::class.java)) },
-                navigateToJSON = { navController.navigate("multivariateJSON") }
+                navigateToJSON = { context.startActivity(Intent(context, JsonActivity::class.java)) }
             )
-        }
-        composable("multivariateJSON") {
-            MultivariateJSON()
         }
     }
 }

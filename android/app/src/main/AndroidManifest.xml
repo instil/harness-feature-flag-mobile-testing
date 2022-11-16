@@ -37,11 +37,15 @@
             android:exported="false"
             android:label="@string/title_activity_strings"
             android:theme="@style/Theme.Harness" />
-
         <activity
             android:name="io.harness.numberflags.NumbersActivity"
             android:exported="false"
             android:label="@string/title_activity_numbers"
+            android:theme="@style/Theme.Harness" />
+        <activity
+            android:name="io.harness.jsonflags.JsonActivity"
+            android:exported="false"
+            android:label="@string/title_activity_json"
             android:theme="@style/Theme.Harness"/>
     </application>
 

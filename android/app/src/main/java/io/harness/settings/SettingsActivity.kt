@@ -43,6 +43,7 @@ class SettingsActivity : ComponentActivity() {
                         BooleanSection()
                         StringSection()
                         NumberSection()
+                        JsonSection()
                     }
                 }
             }
@@ -159,6 +160,20 @@ class SettingsActivity : ComponentActivity() {
                 placeholder = "Simple multivariate number flag",
                 state = numberState,
                 onValueChange = { viewModel.updateNumber(it) })
+        }
+    }
+    
+    @Composable
+    private fun JsonSection() {
+        val jsonState = viewModel.json.observeAsState("")
+        
+        Section("Json flags") {
+            StringSetting(
+                label = "Json",
+                placeholder = "Simple multivariate json flag",
+                state = jsonState,
+                onValueChange = { viewModel.updateJson(it) }
+            )
         }
     }
 

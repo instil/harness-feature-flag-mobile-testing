@@ -9,6 +9,7 @@ import io.harness.settings.SettingsRepository.Companion.BOOLEAN_FOUR_PREF
 import io.harness.settings.SettingsRepository.Companion.BOOLEAN_ONE_PREF
 import io.harness.settings.SettingsRepository.Companion.BOOLEAN_THREE_PREF
 import io.harness.settings.SettingsRepository.Companion.BOOLEAN_TWO_PREF
+import io.harness.settings.SettingsRepository.Companion.JSON_PREF
 import io.harness.settings.SettingsRepository.Companion.NUMBER_PREF
 import io.harness.settings.SettingsRepository.Companion.SDK_KEY_PREF
 import io.harness.settings.SettingsRepository.Companion.TARGET_ID_PREF
@@ -116,6 +117,14 @@ class SettingsViewModel @Inject constructor(
     fun updateNumber(newValue: String) {
         repository.set(NUMBER_PREF, newValue)
         _number.value = newValue
+    }
+
+    private val _json = MutableLiveData(repository.get(JSON_PREF, ""))
+    val json: LiveData<String> = _json
+
+    fun updateJson(newValue: String) {
+        repository.set(JSON_PREF, newValue)
+        _json.value = newValue
     }
 
 }

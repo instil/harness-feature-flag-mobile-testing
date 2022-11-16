@@ -18,6 +18,7 @@ interface SettingsRepository {
         const val YOUTUBE_URL_PREF = "YOUTUBE_URL"
         const val WEB_VIEW_URL_PREF = "WEB_VIEW_URL"
         const val NUMBER_PREF = "NUMBER"
+        const val JSON_PREF = "JSON"
     }
 
 }

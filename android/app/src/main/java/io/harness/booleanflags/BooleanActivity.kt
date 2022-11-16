@@ -22,19 +22,17 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dagger.hilt.android.AndroidEntryPoint
+import io.harness.HarnessActivity
 import io.harness.HarnessApplication
+import io.harness.HarnessApplication.Companion.ACTION_BOOLEAN_UPDATE
 import io.harness.settings.SettingsRepository
 import io.harness.settings.SettingsRepository.Companion.SETTING_REFRESH_UI
 import io.harness.ui.theme.HarnessTheme
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BooleanActivity  : ComponentActivity() {
-    @Inject
-    lateinit var settingsRepository: SettingsRepository
+class BooleanActivity  : HarnessActivity() {
     private val viewModel: BooleanViewModel by viewModels()
-    private var refreshUI = false
-    private val updateBroadcastReceiver = UpdateBroadcastReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,35 +103,16 @@ class BooleanActivity  : ComponentActivity() {
                 }
             }
         }
-
-        refreshUI = settingsRepository.get(SETTING_REFRESH_UI, "false").toBoolean()
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.loadBooleanFeatureFlags()
-        if (refreshUI) {
-            registerReceiver()
-        }
     }
 
-    override fun onPause() {
-        super.onPause()
-        if (refreshUI) {
-            unregisterReceiver()
-        }
-    }
+    override fun getBroadcastFilter() = IntentFilter(ACTION_BOOLEAN_UPDATE)
 
-    private fun registerReceiver() {
-        val filter = IntentFilter(HarnessApplication.ACTION_BOOLEAN_UPDATE)
-        LocalBroadcastManager.getInstance(this).registerReceiver(updateBroadcastReceiver, filter)
-    }
-
-    private fun unregisterReceiver() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(updateBroadcastReceiver)
-    }
-
-    private inner class UpdateBroadcastReceiver : BroadcastReceiver() {
+    override fun getBroadcastReceiver() = object: BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val flag = intent.getStringExtra(HarnessApplication.EXTRA_EVALUATION_FLAG) ?: ""
             val value = intent.getBooleanExtra(HarnessApplication.EXTRA_EVALUATION_VALUE, false)
@@ -141,6 +120,6 @@ class BooleanActivity  : ComponentActivity() {
                 viewModel.updateFlag(flag, value)
             }
         }
-
     }
+
 }

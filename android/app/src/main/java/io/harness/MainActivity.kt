@@ -12,10 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,65 +37,47 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val navigation = object: Navigation {
+            override fun navigateToBooleans() {
+                startActivity(Intent(this@MainActivity, BooleanActivity::class.java))
+            }
+            override fun navigateToStrings() {
+                startActivity(Intent(this@MainActivity, StringsActivity::class.java))
+            }
+            override fun navigateToNumbers() {
+                startActivity(Intent(this@MainActivity, NumbersActivity::class.java))
+            }
+            override fun navigateToJson() {
+                startActivity(Intent(this@MainActivity, JsonActivity::class.java))
+            }
+        }
+
         setContent {
             HarnessTheme {
-                MainLayout()
+                val serviceState = viewModel.useRealService.observeAsState(initial = true)
+                MainScreen(navigation, serviceState) { newServiceState -> viewModel.updateUseRealService(newServiceState) }
             }
         }
     }
+}
 
-    @Composable
-    fun MainLayout() {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-        ) {
-            val context = LocalContext.current
-            MainScreen(
-                navigateToBooleans = {
-                    context.startActivity(
-                        Intent(
-                            context,
-                            BooleanActivity::class.java
-                        )
-                    )
-                },
-                navigateToMultivariateStrings = {
-                    context.startActivity(
-                        Intent(
-                            context,
-                            StringsActivity::class.java
-                        )
-                    )
-                },
-                navigateToMultivariateIntegers = {
-                    context.startActivity(
-                        Intent(
-                            context,
-                            NumbersActivity::class.java
-                        )
-                    )
-                },
-                navigateToJSON = {
-                    context.startActivity(
-                        Intent(
-                            context,
-                            JsonActivity::class.java
-                        )
-                    )
-                })
-        }
-    }
+interface Navigation {
+    fun navigateToBooleans()
+    fun navigateToStrings()
+    fun navigateToNumbers()
+    fun navigateToJson()
+}
 
-    @Composable
-    fun MainScreen(
-        navigateToBooleans: NavigationHandler,
-        navigateToMultivariateStrings: NavigationHandler,
-        navigateToMultivariateIntegers: NavigationHandler,
-        navigateToJSON: NavigationHandler
+@Composable
+fun MainScreen(
+    navigation: Navigation,
+    serviceState: State<Boolean>,
+    updateServiceState: (Boolean) -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
     ) {
-        val usingHarnessSdk = viewModel.useRealService.observeAsState(true)
-
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (topButtons, menuButtons, bottomButtons) = createRefs()
             val context = LocalContext.current
@@ -112,8 +92,8 @@ class MainActivity : ComponentActivity() {
             ) {
                 Text("Using Harness SDK")
                 Switch(
-                    checked = usingHarnessSdk.value,
-                    onCheckedChange = { viewModel.updateUseRealService(it) })
+                    checked = serviceState.value,
+                    onCheckedChange = { updateServiceState(it) })
                 IconButton(
                     onClick = {
                         context.startActivity(
@@ -139,22 +119,22 @@ class MainActivity : ComponentActivity() {
                 LinkButton(
                     label = "Booleans",
                     icon = Icons.Default.Rule,
-                    onClick = navigateToBooleans
+                    onClick = { navigation.navigateToBooleans() }
                 )
                 LinkButton(
                     label = "Multi-variate Strings",
                     icon = Icons.Default.FormatQuote,
-                    onClick = navigateToMultivariateStrings
+                    onClick = { navigation.navigateToStrings() }
                 )
                 LinkButton(
                     label = "Multi-variate Integers",
                     icon = Icons.Default.Numbers,
-                    onClick = navigateToMultivariateIntegers
+                    onClick = { navigation.navigateToNumbers() }
                 )
                 LinkButton(
                     label = "Multi-variate JSON",
                     icon = Icons.Default.Description,
-                    onClick = navigateToJSON
+                    onClick = { navigation.navigateToJson() }
                 )
             }
 

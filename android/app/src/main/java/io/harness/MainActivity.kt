@@ -17,6 +17,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -92,6 +93,7 @@ fun MainScreen(
             ) {
                 Text("Using Harness SDK")
                 Switch(
+                    modifier = Modifier.testTag("useSdk"),
                     checked = serviceState.value,
                     onCheckedChange = { updateServiceState(it) })
                 IconButton(
@@ -119,21 +121,25 @@ fun MainScreen(
                 LinkButton(
                     label = "Booleans",
                     icon = Icons.Default.Rule,
+                    tag = "booleans",
                     onClick = { navigation.navigateToBooleans() }
                 )
                 LinkButton(
                     label = "Multi-variate Strings",
                     icon = Icons.Default.FormatQuote,
+                    tag = "strings",
                     onClick = { navigation.navigateToStrings() }
                 )
                 LinkButton(
                     label = "Multi-variate Integers",
                     icon = Icons.Default.Numbers,
+                    tag = "numbers",
                     onClick = { navigation.navigateToNumbers() }
                 )
                 LinkButton(
                     label = "Multi-variate JSON",
                     icon = Icons.Default.Description,
+                    tag = "json",
                     onClick = { navigation.navigateToJson() }
                 )
             }

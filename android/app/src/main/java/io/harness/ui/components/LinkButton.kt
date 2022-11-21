@@ -9,6 +9,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -16,8 +17,8 @@ import androidx.compose.ui.unit.sp
 typealias NavigationHandler = () -> Unit
 
 @Composable
-fun LinkButton(label: String, icon: ImageVector, fontSize: TextUnit = 24.sp, onClick: NavigationHandler) {
-    TextButton(onClick = onClick, Modifier.padding(24.dp)) {
+fun LinkButton(label: String, icon: ImageVector, fontSize: TextUnit = 24.sp, tag: String = "", onClick: NavigationHandler) {
+    TextButton(onClick = onClick, Modifier.padding(24.dp).testTag(tag)) {
         Icon(icon, contentDescription = label)
         Spacer(Modifier.width(12.dp))
         Text(text = label, fontSize = fontSize)

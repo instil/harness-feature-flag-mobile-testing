@@ -105,6 +105,7 @@ class SettingsActivity : ComponentActivity() {
         val booleanFourState = viewModel.booleanFour.observeAsState("")
         val booleanFiveState = viewModel.booleanFive.observeAsState("")
         val realWorldState = viewModel.realWorld.observeAsState("")
+        val flaggedState = viewModel.flagged.observeAsState("")
         Section(title = "Boolean flags") {
             StringSetting(
                 label = "Boolean One",
@@ -141,6 +142,12 @@ class SettingsActivity : ComponentActivity() {
                 placeholder = "Real world boolean flag",
                 state = realWorldState,
                 onValueChange = { viewModel.updateRealWorld(it) }
+            )
+            StringSetting(
+                label = "Flagged",
+                placeholder = "Flagged boolean flag",
+                state = flaggedState,
+                onValueChange = { viewModel.updateFlagged(it) }
             )
         }
     }

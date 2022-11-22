@@ -14,6 +14,7 @@ import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_FOUR_FLA
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_ONE_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_THREE_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_TWO_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_FLAGGED_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_REALWORLD_FLAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,6 +51,9 @@ class BooleanViewModel @Inject constructor(
 
     private val _realWorld = MutableLiveData(false)
     val realWorld: LiveData<Boolean> = _realWorld
+
+    private val _flagged = MutableLiveData(false)
+    val flagged: LiveData<Boolean> = _flagged
 
     fun loadBooleanFeatureFlags() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -94,6 +98,13 @@ class BooleanViewModel @Inject constructor(
                 _realWorld.postValue(it)
                 receivedResponses++
             }
+
+            val flaggedKey = settingsRepository.get(SETTING_FLAGGED_FLAG, "flagged")
+            featureFlagService.boolVariation(flaggedKey) {
+                Log.d(TAG, "Flagged ($flaggedKey) evaluation: $it")
+                _flagged.postValue(it)
+                receivedResponses++
+            }
         }
     }
 
@@ -105,12 +116,13 @@ class BooleanViewModel @Inject constructor(
             settingsRepository.get(SETTING_BOOLEAN_FOUR_FLAG, "boolean_four") -> _booleanFour.postValue(value)
             settingsRepository.get(SETTING_BOOLEAN_FIVE_FLAG, "boolean_five") -> _booleanFive.postValue(value)
             settingsRepository.get(SETTING_REALWORLD_FLAG, "realworld") -> _realWorld.postValue(value)
+            settingsRepository.get(SETTING_FLAGGED_FLAG, "flagged") -> _flagged.postValue(value)
         }
     }
 
     companion object {
         const val TAG = "BooleanViewModel"
-        const val EXPECTED_RESPONSES = 6
+        const val EXPECTED_RESPONSES = 7
     }
 
 }

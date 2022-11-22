@@ -6,9 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -23,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
 import io.harness.HarnessActivity
@@ -53,13 +53,14 @@ class BooleanActivity : HarnessActivity<Boolean>() {
                     val bState4 = viewModel.booleanFour.observeAsState(false)
                     val bState5 = viewModel.booleanFive.observeAsState(false)
                     val rwState = viewModel.realWorld.observeAsState(false)
+                    val fState = viewModel.flagged.observeAsState(false)
 
                     SectionTabs(
                         loadingState = loadingState,
                         tabs = listOf(
                             TabConfig("Test", Icons.Default.Science) { TesterView(bState1, bState2, bState3, bState4, bState5) },
                             TabConfig("Real world", Icons.Default.Public) { RealWorldView(rwState) },
-                            TabConfig("Flagged", Icons.Default.Flag) { FlaggedView() }
+                            TabConfig("Flagged", Icons.Default.Flag) { FlaggedView(fState) }
                         )
                     )
                 }
@@ -124,6 +125,14 @@ fun RealWorldView(state: State<Boolean>) {
 }
 
 @Composable
-fun FlaggedView() {
-
+fun FlaggedView(state: State<Boolean>) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (state.value) 1f else 0f)
+            .padding(24.dp),
+        text = "If you are seeing this, then the associated feature flag is true!",
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.h4
+    )
 }

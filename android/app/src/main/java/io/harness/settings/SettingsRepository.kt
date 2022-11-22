@@ -17,6 +17,7 @@ interface SettingsRepository {
         const val SETTING_BOOLEAN_FOUR_FLAG = "BOOLEAN_TESTER_KEY_FOUR"
         const val SETTING_BOOLEAN_FIVE_FLAG = "BOOLEAN_TESTER_KEY_FIVE"
         const val SETTING_REALWORLD_FLAG = "REALWORLD"
+        const val SETTING_FLAGGED_FLAG = "FLAGGED"
         const val SETTING_STRING_FLAG = "TEST_STRING"
         const val SETTING_YOUTUBE_URL_FLAG = "YOUTUBE_URL"
         const val SETTING_WEBVIEW_URL_FLAG = "WEB_VIEW_URL"

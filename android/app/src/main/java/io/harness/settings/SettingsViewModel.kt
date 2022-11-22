@@ -9,6 +9,7 @@ import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_FOUR_FLA
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_ONE_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_THREE_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_TWO_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_FLAGGED_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_JSON_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_NUMBER_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_REALWORLD_FLAG
@@ -105,6 +106,15 @@ class SettingsViewModel @Inject constructor(
         repository.set(SETTING_REALWORLD_FLAG, newValue)
         _realWorld.value = newValue
     }
+
+    private val _flagged = MutableLiveData(repository.get(SETTING_FLAGGED_FLAG, ""))
+    val flagged: LiveData<String> = _flagged
+
+    fun updateFlagged(newValue: String) {
+        repository.set(SETTING_FLAGGED_FLAG, newValue)
+        _flagged.value = newValue
+    }
+
 
     private val _testString = MutableLiveData(repository.get(SETTING_STRING_FLAG, ""))
     val testString: LiveData<String> = _testString

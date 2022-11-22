@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -14,14 +15,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Videocam
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.WebViewState
 import com.google.accompanist.web.rememberWebViewState
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.harness.HarnessActivity
 import io.harness.HarnessApplication.Companion.ACTION_STRING_UPDATE
@@ -45,14 +51,15 @@ class StringsActivity : HarnessActivity<String>() {
                 ) {
                     val loadingState = viewModel.isLoading.observeAsState(true)
                     val testStringState = viewModel.testString.observeAsState("")
-                    val youtubeUrlState = rememberWebViewState(url = "https://youtube.com/watch?v=${viewModel.youtubeUrl.value}")
-                    val webviewUrlState = rememberWebViewState(url = viewModel.webViewUrl.value ?: "" )
+                    val youtubeUrlState = viewModel.youtubeUrl.observeAsState("")
+                    val webviewUrlState = viewModel.webViewUrl.observeAsState("")
+
                     SectionTabs (
                         loadingState = loadingState,
                         tabs = listOf(
-                            TabConfig("Test", Icons.Default.Settings) { TestView(testStringState) },
-                            TabConfig("Video", Icons.Default.Videocam) { VideoView(youtubeUrlState) },
-                            TabConfig("Web", Icons.Default.Language) { WebView(webviewUrlState) }
+                            TabConfig("Test", Icons.Default.Settings) { TestStringView(testStringState) },
+                            TabConfig("Video", Icons.Default.Videocam) { VideoStringView(lifecycle, youtubeUrlState) },
+                            TabConfig("Web", Icons.Default.Language) { WebStringView(webviewUrlState) }
                         )
                     )
                 }
@@ -71,7 +78,7 @@ class StringsActivity : HarnessActivity<String>() {
 }
 
 @Composable
-fun TestView(testStringState: State<String>) {
+fun TestStringView(testStringState: State<String>) {
     Text(
         modifier = Modifier.fillMaxWidth(),
         text = testStringState.value,
@@ -81,17 +88,36 @@ fun TestView(testStringState: State<String>) {
 }
 
 @Composable
-fun VideoView(youtubeUrlState: WebViewState) {
-    WebView(state = youtubeUrlState,
-        onCreated = { webview ->
-            webview.settings.apply {
-                javaScriptEnabled = true
-                domStorageEnabled = true
+fun VideoStringView(lifecycle: Lifecycle, urlState: State<String>) {
+    val context = LocalContext.current
+    key(urlState.value) {
+        val youtubePlayer = remember {
+            YouTubePlayerView(context).apply {
+                lifecycle.addObserver(this)
+                enableAutomaticInitialization = false
+                initialize(object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        youTubePlayer.cueVideo(urlState.value, 0f)
+                    }
+                })
             }
-        })
+        }
+        AndroidView(
+            {
+                youtubePlayer
+            }, modifier = Modifier
+                .fillMaxSize()
+                .wrapContentHeight()
+        )
+    }
 }
 
 @Composable
-fun WebView(webviewUrlState: WebViewState) {
-    WebView(state = webviewUrlState)
+fun WebStringView(state: State<String>) {
+    val urlState = rememberWebViewState(url = state.value)
+    WebView(state = urlState, onCreated = {webview ->
+        webview.settings.apply {
+            javaScriptEnabled = true
+        }
+    })
 }

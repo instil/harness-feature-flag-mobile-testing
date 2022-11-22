@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -29,7 +28,6 @@ import io.harness.numberflags.NumbersActivity
 import io.harness.settings.SettingsActivity
 import io.harness.stringflags.StringsActivity
 import io.harness.ui.components.LinkButton
-import io.harness.ui.components.NavigationHandler
 import io.harness.ui.theme.HarnessTheme
 
 @AndroidEntryPoint
@@ -55,8 +53,13 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             HarnessTheme {
-                val serviceState = viewModel.useRealService.observeAsState(initial = true)
-                MainScreen(navigation, serviceState) { newServiceState -> viewModel.updateUseRealService(newServiceState) }
+                val sdkState = viewModel.useRealService.observeAsState(initial = true)
+                MainScreen(
+                    navigation,
+                    sdkState,
+                    suspendApp = {finish()},
+                    quitApp = {finishAndRemoveTask()}
+                ) { newSdkState -> viewModel.updateUseRealService(newSdkState) }
             }
         }
     }
@@ -73,7 +76,9 @@ interface Navigation {
 fun MainScreen(
     navigation: Navigation,
     serviceState: State<Boolean>,
-    updateServiceState: (Boolean) -> Unit
+    suspendApp: ()->Unit = {},
+    quitApp: ()->Unit = {},
+    updateServiceState: (Boolean) -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -153,7 +158,12 @@ fun MainScreen(
                     label = "Suspend App",
                     icon = Icons.Default.Bedtime,
                     fontSize = 18.sp
-                ) {}
+                ) { suspendApp() }
+                LinkButton(
+                    label = "Close App",
+                    icon = Icons.Default.Warning,
+                    fontSize = 18.sp
+                ) { quitApp() }
             }
         }
     }

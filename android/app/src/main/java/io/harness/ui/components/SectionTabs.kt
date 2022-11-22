@@ -1,9 +1,6 @@
 package io.harness.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -35,7 +32,8 @@ fun SectionTabs(tabs: List<TabConfig>, loadingState: State<Boolean> = mutableSta
                     modifier = Modifier.fillMaxWidth(),
                     text = "Loading...",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.h4)
+                    style = MaterialTheme.typography.h4
+                )
             } else {
                 tabs[chosenState].content()
             }

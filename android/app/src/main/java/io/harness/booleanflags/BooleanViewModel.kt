@@ -14,6 +14,7 @@ import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_FOUR_FLA
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_ONE_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_THREE_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_TWO_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_REALWORLD_FLAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,6 +47,9 @@ class BooleanViewModel @Inject constructor(
 
     private val _booleanFive = MutableLiveData(false)
     val booleanFive: LiveData<Boolean> = _booleanFive
+
+    private val _realWorld = MutableLiveData(false)
+    val realWorld: LiveData<Boolean> = _realWorld
 
     fun loadBooleanFeatureFlags() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -83,6 +87,13 @@ class BooleanViewModel @Inject constructor(
                 _booleanFive.postValue(it)
                 receivedResponses++
             }
+
+            val realworldKey = settingsRepository.get(SETTING_REALWORLD_FLAG, "realworld")
+            featureFlagService.boolVariation(realworldKey) {
+                Log.d(TAG, "Realworld ($realworldKey) evaluation: $it")
+                _realWorld.postValue(it)
+                receivedResponses++
+            }
         }
     }
 
@@ -93,12 +104,13 @@ class BooleanViewModel @Inject constructor(
             settingsRepository.get(SETTING_BOOLEAN_THREE_FLAG, "boolean_three") -> _booleanThree.postValue(value)
             settingsRepository.get(SETTING_BOOLEAN_FOUR_FLAG, "boolean_four") -> _booleanFour.postValue(value)
             settingsRepository.get(SETTING_BOOLEAN_FIVE_FLAG, "boolean_five") -> _booleanFive.postValue(value)
+            settingsRepository.get(SETTING_REALWORLD_FLAG, "realworld") -> _realWorld.postValue(value)
         }
     }
 
     companion object {
         const val TAG = "BooleanViewModel"
-        const val EXPECTED_RESPONSES = 5
+        const val EXPECTED_RESPONSES = 6
     }
 
 }

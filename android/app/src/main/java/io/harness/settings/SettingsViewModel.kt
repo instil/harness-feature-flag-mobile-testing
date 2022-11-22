@@ -11,6 +11,7 @@ import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_THREE_FL
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_TWO_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_JSON_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_NUMBER_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_REALWORLD_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_REFRESH_UI
 import io.harness.settings.SettingsRepository.Companion.SETTING_SDK_KEY
 import io.harness.settings.SettingsRepository.Companion.SETTING_TARGET_ID
@@ -95,6 +96,14 @@ class SettingsViewModel @Inject constructor(
     fun updateBooleanFive(newValue: String) {
         repository.set(SETTING_BOOLEAN_FIVE_FLAG, newValue)
         _booleanFive.value = newValue
+    }
+
+    private val _realWorld = MutableLiveData(repository.get(SETTING_REALWORLD_FLAG, ""))
+    val realWorld: LiveData<String> = _realWorld
+
+    fun updateRealWorld(newValue: String) {
+        repository.set(SETTING_REALWORLD_FLAG, newValue)
+        _realWorld.value = newValue
     }
 
     private val _testString = MutableLiveData(repository.get(SETTING_STRING_FLAG, ""))

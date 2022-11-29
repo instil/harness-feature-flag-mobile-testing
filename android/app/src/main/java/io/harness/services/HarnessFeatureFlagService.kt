@@ -75,7 +75,7 @@ class HarnessFeatureFlagService @Inject constructor(
             StatusEvent.EVENT_TYPE.EVALUATION_CHANGE -> {
                 val evaluation = statusEvent.extractPayload<Evaluation>()
                 Log.d("HARNESS APP", "Evaluation has changed: ${evaluation.flag} is now ${evaluation.value}")
-                if (settingsRepository.get(SettingsRepository.SETTING_REFRESH_UI, "false").toBoolean()) {
+                if (settingsRepository.get(SETTING_ENABLE_STREAMING, "").toBoolean()) {
                     broadcastEvaluationChange(evaluation)
                 }
             }

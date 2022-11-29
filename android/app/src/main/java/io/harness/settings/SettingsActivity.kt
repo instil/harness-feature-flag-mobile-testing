@@ -43,7 +43,6 @@ class SettingsActivity : ComponentActivity() {
                             .padding(36.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        GeneralSection()
                         SdkSection()
                         BooleanSection()
                         StringSection()
@@ -52,19 +51,6 @@ class SettingsActivity : ComponentActivity() {
                     }
                 }
             }
-        }
-    }
-
-    @Composable
-    private fun GeneralSection() {
-        val refreshUI = viewModel.refreshUI.observeAsState(false)
-
-        Section(title = "General") {
-            BooleanSetting(
-                label = "Refresh UI automatically?",
-                checked = refreshUI.value,
-                onChange = { viewModel.updateRefreshUI(it) }
-            )
         }
     }
 

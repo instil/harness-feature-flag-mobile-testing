@@ -8,7 +8,6 @@ interface SettingsRepository {
 
     companion object {
         const val SETTING_USE_REAL_SERVICE = "USE_REAL_SERVICE"
-        const val SETTING_REFRESH_UI = "REFRESH_UI"
         const val SETTING_SDK_KEY = "HARNESS_SDK_KEY"
         const val SETTING_TARGET_ID = "HARNESS_TARGET_ID"
         const val SETTING_ENABLE_STREAMING = "ENABLE_STREAMING"

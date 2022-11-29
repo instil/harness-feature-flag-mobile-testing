@@ -8,24 +8,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.harness.settings.SettingsRepository
-import io.harness.settings.SettingsRepository.Companion.SETTING_REFRESH_UI
+import io.harness.settings.SettingsRepository.Companion.SETTING_ENABLE_STREAMING
 import javax.inject.Inject
 
 abstract class HarnessActivity<T>: ComponentActivity() {
 
     @Inject
     lateinit var settingsRepository: SettingsRepository
-    private var refreshUI = false
+    private var streamingEnabled = false
     private val updateBroadcastReceiver = getBroadcastReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        refreshUI = settingsRepository.get(SETTING_REFRESH_UI, "false").toBoolean()
+        streamingEnabled = settingsRepository.get(SETTING_ENABLE_STREAMING, "false").toBoolean()
     }
 
     override fun onResume() {
         super.onResume()
-        if (refreshUI) {
+        if (streamingEnabled) {
             val filter = getBroadcastFilter()
             LocalBroadcastManager.getInstance(this).registerReceiver(updateBroadcastReceiver, filter)
         }
@@ -33,7 +33,7 @@ abstract class HarnessActivity<T>: ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (refreshUI) {
+        if (streamingEnabled) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(updateBroadcastReceiver)
         }
     }

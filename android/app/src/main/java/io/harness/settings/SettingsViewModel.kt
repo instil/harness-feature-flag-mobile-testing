@@ -14,10 +14,9 @@ import io.harness.settings.SettingsRepository.Companion.SETTING_FLAGGED_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_JSON_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_NUMBER_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_REALWORLD_FLAG
-import io.harness.settings.SettingsRepository.Companion.SETTING_REFRESH_UI
 import io.harness.settings.SettingsRepository.Companion.SETTING_SDK_KEY
-import io.harness.settings.SettingsRepository.Companion.SETTING_TARGET_ID
 import io.harness.settings.SettingsRepository.Companion.SETTING_STRING_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_TARGET_ID
 import io.harness.settings.SettingsRepository.Companion.SETTING_WEBVIEW_URL_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_YOUTUBE_URL_FLAG
 import javax.inject.Inject
@@ -27,13 +26,6 @@ class SettingsViewModel @Inject constructor(
     private val repository: SettingsRepository) : ViewModel() {
 
     private fun save(setting: String, value: Any) = repository.set(setting, value.toString())
-
-    private val _refreshUI = MutableLiveData(repository.get(SETTING_REFRESH_UI, "").toBoolean())
-    val refreshUI: LiveData<Boolean> = _refreshUI
-    fun updateRefreshUI(newValue: Boolean) {
-        _refreshUI.value = newValue
-        save(SETTING_REFRESH_UI, newValue)
-    }
 
     private val _sdkKey = MutableLiveData(repository.get(SETTING_SDK_KEY, ""))
     val sdkKey: LiveData<String> = _sdkKey

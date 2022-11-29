@@ -72,6 +72,7 @@ class SettingsActivity : ComponentActivity() {
     private fun SdkSection() {
         val sdkKeyState = viewModel.sdkKey.observeAsState("")
         val targetIdState = viewModel.targetId.observeAsState("")
+        val enableStreamingState = viewModel.enableStreaming.observeAsState(true)
 
         Section(title = "Harness SDK") {
             StringSetting(
@@ -88,6 +89,10 @@ class SettingsActivity : ComponentActivity() {
                 onValueChange = { viewModel.updateTargetId(it) },
                 onDone = { viewModel.updateTargetId(it, persist = true) }
             )
+            BooleanSetting(
+                label = "Enable streaming?",
+                checked = enableStreamingState.value,
+                onChange = { viewModel.updateEnableStreaming(it) })
         }
     }
 
@@ -260,9 +265,7 @@ class SettingsActivity : ComponentActivity() {
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(text = label)
-            Switch(
-                checked = checked,
-                onCheckedChange = onChange)
+            Switch(checked = checked, onCheckedChange = onChange)
         }
     }
 }

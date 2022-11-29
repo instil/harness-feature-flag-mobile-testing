@@ -9,6 +9,7 @@ import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_FOUR_FLA
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_ONE_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_THREE_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_BOOLEAN_TWO_FLAG
+import io.harness.settings.SettingsRepository.Companion.SETTING_ENABLE_STREAMING
 import io.harness.settings.SettingsRepository.Companion.SETTING_FLAGGED_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_JSON_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_NUMBER_FLAG
@@ -46,6 +47,13 @@ class SettingsViewModel @Inject constructor(
     fun updateTargetId(newValue: String, persist: Boolean = false) {
         _targetId.value = newValue
         if (persist) save(SETTING_TARGET_ID, newValue)
+    }
+
+    private val _enableStreaming = MutableLiveData(repository.get(SETTING_ENABLE_STREAMING, "").toBoolean())
+    val enableStreaming: LiveData<Boolean> = _enableStreaming
+    fun updateEnableStreaming(newValue: Boolean) {
+        _enableStreaming.value = newValue
+        save(SETTING_ENABLE_STREAMING, newValue)
     }
 
     private val _booleanOne = MutableLiveData(repository.get(SETTING_BOOLEAN_ONE_FLAG, ""))

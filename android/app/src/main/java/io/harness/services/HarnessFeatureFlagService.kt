@@ -13,6 +13,7 @@ import io.harness.cfsdk.cloud.model.Target
 import io.harness.cfsdk.cloud.oksse.EventsListener
 import io.harness.cfsdk.cloud.oksse.model.StatusEvent
 import io.harness.settings.SettingsRepository
+import io.harness.settings.SettingsRepository.Companion.SETTING_ENABLE_STREAMING
 import io.harness.settings.SettingsRepository.Companion.SETTING_SDK_KEY
 import io.harness.settings.SettingsRepository.Companion.SETTING_TARGET_ID
 import org.json.JSONObject
@@ -25,9 +26,10 @@ class HarnessFeatureFlagService @Inject constructor(
     override fun load(callback: () -> Unit) {
         val sdkKey = settingsRepository.get(SETTING_SDK_KEY, "")
         val targetId = settingsRepository.get(SETTING_TARGET_ID, "")
+        val enableStreaming = settingsRepository.get(SETTING_ENABLE_STREAMING, "").toBoolean()
 
         val config = CfConfiguration.builder()
-            .enableStream(true)
+            .enableStream(enableStreaming)
             .build()
 
         val target = Target().identifier(targetId)

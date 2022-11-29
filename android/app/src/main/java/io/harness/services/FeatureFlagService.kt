@@ -6,7 +6,7 @@ typealias FeatureFlagCallback<T> = (T)->Unit
 interface FeatureFlagService {
 
     fun load(callback: ()->Unit)
-    fun destroy()
+    fun destroy(callback: ()->Unit = {})
 
     fun boolVariation(evaluationId: String, callback: FeatureFlagCallback<Boolean>)
     fun stringVariation(evaluationId: String, callback: FeatureFlagCallback<String>)

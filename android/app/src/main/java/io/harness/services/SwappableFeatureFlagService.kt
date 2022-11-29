@@ -12,13 +12,19 @@ class SwappableFeatureFlagService @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) : FeatureFlagService {
     override fun load(callback: () -> Unit) {
-        harnessFeatureFlagService.load(callback)
-        mockFeatureFlagService.load {}
+        if (useRealService) {
+            harnessFeatureFlagService.load(callback)
+        } else {
+            mockFeatureFlagService.load {}
+        }
     }
 
-    override fun destroy() {
-        harnessFeatureFlagService.destroy()
-        mockFeatureFlagService.destroy()
+    override fun destroy(callback: () -> Unit) {
+        if (useRealService) {
+            harnessFeatureFlagService.destroy(callback)
+        } else {
+            mockFeatureFlagService.destroy(callback)
+        }
     }
 
     override fun boolVariation(evaluationId: String, callback: FeatureFlagCallback<Boolean>) =

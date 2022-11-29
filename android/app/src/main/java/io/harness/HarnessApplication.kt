@@ -4,8 +4,10 @@ import android.app.Application
 import android.util.Log
 import dagger.hilt.android.HiltAndroidApp
 import io.harness.services.FeatureFlagService
+import io.harness.settings.SettingChangeListener
 import io.harness.settings.SettingsRepository
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,20 +21,52 @@ class HarnessApplication : Application() {
     @Inject
     lateinit var settingsRepository: SettingsRepository
 
+    private val featureFlagServiceScope = CoroutineScope(Dispatchers.IO)
+
     override fun onCreate() {
         super.onCreate()
-        MainScope().launch {
-            featureFlagService.load {
-                Log.d("HARNESS APP", "Feature flag service has finished loading")
-            }
+        settingsRepository.registerListener(
+            SettingsRepository.SETTING_TARGET_ID,
+            SettingsRepository.SETTING_TARGET_NAME,
+            listener = object: SettingChangeListener {
+                override fun onSettingChange(newValue: String) {
+                    Log.d(TAG, "The target id or name has changed. Reloading the feature flag service.")
+                    reloadFlagService()
+                }
+            })
+        loadFlagService {
+            Log.d(TAG, "Flag service has been loaded")
         }
     }
 
     override fun onTerminate() {
         super.onTerminate()
-        featureFlagService.destroy()
+        unloadFlagService {
+            Log.d(TAG, "Flag service has been destroyed")
+        }
     }
 
+    private fun loadFlagService(callback: ()->Unit) {
+        featureFlagServiceScope.launch {
+            featureFlagService.load(callback)
+        }
+    }
+
+    private fun unloadFlagService(callback: ()->Unit) {
+        featureFlagServiceScope.launch {
+            featureFlagService.destroy(callback)
+        }
+    }
+
+    private fun reloadFlagService() {
+        Log.d(TAG, "Reloading flag service...")
+        unloadFlagService {
+            Log.d(TAG, "Stopped flag service to reload")
+            loadFlagService {
+                Log.d(TAG, "Flag service has been reloaded")
+            }
+        }
+    }
 
 
     companion object {

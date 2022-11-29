@@ -1,6 +1,7 @@
 package io.harness.settings
 
 import android.content.Context
+import android.util.Log
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -10,6 +11,8 @@ class SharedPreferencesSettingsRepository @Inject constructor(@ApplicationContex
 
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
+    private val listeners = mutableMapOf<String, MutableList<SettingChangeListener>>()
+
     override fun get(key: String, default: String): String =
         sharedPreferences.getString(key, default)?.trim() ?: default
 
@@ -18,5 +21,25 @@ class SharedPreferencesSettingsRepository @Inject constructor(@ApplicationContex
             .edit()
             .putString(key, value.trim())
             .apply()
+        notifyListeners(key, value)
+    }
+
+    override fun registerListener(vararg keys: String, listener: SettingChangeListener) {
+        for (key in keys) {
+            if (listeners.containsKey(key)) {
+                listeners[key]?.add(listener)
+            } else {
+                listeners[key] = mutableListOf(listener)
+            }
+        }
+    }
+
+    private fun notifyListeners(key: String, value: String) {
+        Log.d(TAG, "Notifying listeners to change of setting: $key")
+        listeners[key]?.forEach { it.onSettingChange(value) }
+    }
+
+    companion object {
+        private const val TAG = "SettingsRepository"
     }
 }

@@ -11,12 +11,14 @@ import io.harness.services.SwappableFeatureFlagService
 import io.harness.settings.SettingsRepository
 import io.harness.settings.SharedPreferencesSettingsRepository
 import javax.inject.Qualifier
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class HarnessModule {
 
     @Binds
+    @Singleton
     abstract fun bindsSettingsRepository(sp: SharedPreferencesSettingsRepository): SettingsRepository
 
     @HarnessService

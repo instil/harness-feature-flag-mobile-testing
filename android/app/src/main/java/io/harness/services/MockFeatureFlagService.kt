@@ -5,7 +5,7 @@ import javax.inject.Inject
 class MockFeatureFlagService @Inject constructor() : FeatureFlagService {
     override fun load(callback: () -> Unit) = callback()
 
-    override fun destroy() {}
+    override fun destroy(callback: () -> Unit) = callback()
 
     override fun boolVariation(evaluationId: String, callback: FeatureFlagCallback<Boolean>) = callback(true)
 

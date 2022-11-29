@@ -28,29 +28,24 @@ class HarnessFeatureFlagService @Inject constructor(
         val targetId = settingsRepository.get(SETTING_TARGET_ID, "")
         val targetName = settingsRepository.get(SETTING_TARGET_NAME, "")
 
-        Log.d("FLAG SERVICE", "targetId: $targetId, targetName: $targetName")
-
         val config = CfConfiguration.builder()
             .enableStream(true)
             .build()
 
         val target = Target().identifier(targetId).name(targetName)
 
-        CfClient.getInstance().initialize(
-            context,
-            sdkKey,
-            config,
-            target
-        )
+        CfClient.getInstance().initialize(context, sdkKey, config, target)
 
         registerEventListener()
 
         callback()
     }
 
-    override fun destroy() {
+    override fun destroy(callback: () -> Unit) {
         unregisterEventListener()
         CfClient.getInstance().destroy()
+
+        callback()
     }
 
     override fun boolVariation(evaluationId: String, callback: FeatureFlagCallback<Boolean>) {

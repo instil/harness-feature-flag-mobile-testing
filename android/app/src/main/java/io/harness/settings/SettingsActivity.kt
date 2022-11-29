@@ -79,24 +79,24 @@ class SettingsActivity : ComponentActivity() {
             StringSetting(
                 label = "SDK Key",
                 placeholder = "Provide your Harness SDK key",
-                state = sdkKeyState
-            ) {
-                viewModel.updateSDKKey(it)
-            }
+                state = sdkKeyState,
+                onValueChange = { viewModel.updateSDKKey(it) },
+                onDone = { viewModel.updateSDKKey(it, persist = true) }
+            )
             StringSetting(
                 label = "Target ID",
                 placeholder = "Provide a target ID.",
-                state = targetIdState
-            ) {
-                viewModel.updateTargetId(it)
-            }
+                state = targetIdState,
+                onValueChange = { viewModel.updateTargetId(it) },
+                onDone = { viewModel.updateTargetId(it, persist = true) }
+            )
             StringSetting(
                 label = "Target Name",
                 placeholder = "Provide a target name.",
-                state = targetNameState
-            ) {
-                viewModel.updateTargetName(it)
-            }
+                state = targetNameState,
+                onValueChange = { viewModel.updateTargetName(it) },
+                onDone = { viewModel.updateTargetName(it, persist = true) }
+            )
         }
     }
 
@@ -114,43 +114,50 @@ class SettingsActivity : ComponentActivity() {
                 label = "Boolean One",
                 placeholder = "Boolean tester flag one",
                 state = booleanOneState,
-                onValueChange = { viewModel.updateBooleanOne(it) }
+                onValueChange = { viewModel.updateBooleanOne(it) },
+                onDone = { viewModel.updateBooleanOne(it, persist = true) }
             )
             StringSetting(
                 label = "Boolean Two",
                 placeholder = "Boolean tester flag two",
                 state = booleanTwoState,
-                onValueChange = { viewModel.updateBooleanTwo(it) }
+                onValueChange = { viewModel.updateBooleanTwo(it) },
+                onDone = { viewModel.updateBooleanTwo(it, persist = true) }
             )
             StringSetting(
                 label = "Boolean Three",
                 placeholder = "Boolean tester flag three",
                 state = booleanThreeState,
-                onValueChange = { viewModel.updateBooleanThree(it) }
+                onValueChange = { viewModel.updateBooleanThree(it) },
+                onDone = { viewModel.updateBooleanFour(it, persist = true) }
             )
             StringSetting(
                 label = "Boolean Four",
                 placeholder = "Boolean tester flag four",
                 state = booleanFourState,
-                onValueChange = { viewModel.updateBooleanFour(it) }
+                onValueChange = { viewModel.updateBooleanFour(it) },
+                onDone = { viewModel.updateBooleanFour(it, persist = true) }
             )
             StringSetting(
                 label = "Boolean Five",
                 placeholder = "Boolean tester flag five",
                 state = booleanFiveState,
-                onValueChange = { viewModel.updateBooleanFive(it) }
+                onValueChange = { viewModel.updateBooleanFive(it) },
+                onDone = { viewModel.updateBooleanFive(it, persist = true) }
             )
             StringSetting(
                 label = "Real World",
                 placeholder = "Real world boolean flag",
                 state = realWorldState,
-                onValueChange = { viewModel.updateRealWorld(it) }
+                onValueChange = { viewModel.updateRealWorld(it) },
+                onDone = { viewModel.updateRealWorld(it, persist = true) }
             )
             StringSetting(
                 label = "Flagged",
                 placeholder = "Flagged boolean flag",
                 state = flaggedState,
-                onValueChange = { viewModel.updateFlagged(it) }
+                onValueChange = { viewModel.updateFlagged(it) },
+                onDone = { viewModel.updateFlagged(it, persist = true) }
             )
         }
     }
@@ -166,19 +173,22 @@ class SettingsActivity : ComponentActivity() {
                 label = "Test String",
                 placeholder = "Basic test string",
                 state = testStringState,
-                onValueChange = { viewModel.updateTestString(it) }
+                onValueChange = { viewModel.updateTestString(it) },
+                onDone = { viewModel.updateTestString(it, persist = true) }
             )
             StringSetting (
                 label = "Youtube Video",
                 placeholder = "Id for Youtube video",
                 state = youtubeUrlState,
-                onValueChange = { viewModel. updateYoutubeUrl(it) }
+                onValueChange = { viewModel.updateYoutubeUrl(it) },
+                onDone = { viewModel.updateYoutubeUrl(it, persist = true) }
             )
             StringSetting (
                 label = "Web URL",
                 placeholder = "URL for web view test",
                 state = webviewUrlState,
-                onValueChange = { viewModel.updateWebViewUrl(it) }
+                onValueChange = { viewModel.updateWebViewUrl(it) },
+                onDone = { viewModel.updateWebViewUrl(it, persist = true) }
             )
         }
     }
@@ -192,7 +202,9 @@ class SettingsActivity : ComponentActivity() {
                 label = "Number",
                 placeholder = "Simple multivariate number flag",
                 state = numberState,
-                onValueChange = { viewModel.updateNumber(it) })
+                onValueChange = { viewModel.updateNumber(it) },
+                onDone = { viewModel.updateNumber(it, persist = true) }
+            )
         }
     }
     
@@ -205,7 +217,8 @@ class SettingsActivity : ComponentActivity() {
                 label = "Json",
                 placeholder = "Simple multivariate json flag",
                 state = jsonState,
-                onValueChange = { viewModel.updateJson(it) }
+                onValueChange = { viewModel.updateJson(it) },
+                onDone = { viewModel.updateJson(it, persist = true) }
             )
         }
     }
@@ -228,7 +241,8 @@ class SettingsActivity : ComponentActivity() {
         label: String,
         placeholder: String,
         state: State<String>,
-        onValueChange: (String) -> Unit
+        onValueChange: (String) -> Unit,
+        onDone: (String) -> Unit
     ) {
         Column {
             val focusRequester = LocalFocusManager.current
@@ -237,9 +251,12 @@ class SettingsActivity : ComponentActivity() {
                 value = state.value,
                 label = { Text(text = label, fontWeight = FontWeight.Bold) },
                 placeholder = { Text(placeholder) },
+                onValueChange = onValueChange,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { focusRequester.clearFocus() }),
-                onValueChange = onValueChange
+                keyboardActions = KeyboardActions(onDone = {
+                    focusRequester.clearFocus()
+                    onDone(state.value)
+                })
             )
         }
     }

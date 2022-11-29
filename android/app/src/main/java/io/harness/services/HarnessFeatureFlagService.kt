@@ -15,7 +15,6 @@ import io.harness.cfsdk.cloud.oksse.model.StatusEvent
 import io.harness.settings.SettingsRepository
 import io.harness.settings.SettingsRepository.Companion.SETTING_SDK_KEY
 import io.harness.settings.SettingsRepository.Companion.SETTING_TARGET_ID
-import io.harness.settings.SettingsRepository.Companion.SETTING_TARGET_NAME
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -26,13 +25,12 @@ class HarnessFeatureFlagService @Inject constructor(
     override fun load(callback: () -> Unit) {
         val sdkKey = settingsRepository.get(SETTING_SDK_KEY, "")
         val targetId = settingsRepository.get(SETTING_TARGET_ID, "")
-        val targetName = settingsRepository.get(SETTING_TARGET_NAME, "")
 
         val config = CfConfiguration.builder()
             .enableStream(true)
             .build()
 
-        val target = Target().identifier(targetId).name(targetName)
+        val target = Target().identifier(targetId)
 
         CfClient.getInstance().initialize(context, sdkKey, config, target)
 

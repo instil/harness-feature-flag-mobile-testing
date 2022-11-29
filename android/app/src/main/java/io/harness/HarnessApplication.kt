@@ -27,10 +27,9 @@ class HarnessApplication : Application() {
         super.onCreate()
         settingsRepository.registerListener(
             SettingsRepository.SETTING_TARGET_ID,
-            SettingsRepository.SETTING_TARGET_NAME,
             listener = object: SettingChangeListener {
                 override fun onSettingChange(newValue: String) {
-                    Log.d(TAG, "The target id or name has changed. Reloading the feature flag service.")
+                    Log.d(TAG, "The target id has changed. Reloading the feature flag service.")
                     reloadFlagService()
                 }
             })

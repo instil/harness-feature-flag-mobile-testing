@@ -16,7 +16,6 @@ import io.harness.settings.SettingsRepository.Companion.SETTING_REALWORLD_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_REFRESH_UI
 import io.harness.settings.SettingsRepository.Companion.SETTING_SDK_KEY
 import io.harness.settings.SettingsRepository.Companion.SETTING_TARGET_ID
-import io.harness.settings.SettingsRepository.Companion.SETTING_TARGET_NAME
 import io.harness.settings.SettingsRepository.Companion.SETTING_STRING_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_WEBVIEW_URL_FLAG
 import io.harness.settings.SettingsRepository.Companion.SETTING_YOUTUBE_URL_FLAG
@@ -47,13 +46,6 @@ class SettingsViewModel @Inject constructor(
     fun updateTargetId(newValue: String, persist: Boolean = false) {
         _targetId.value = newValue
         if (persist) save(SETTING_TARGET_ID, newValue)
-    }
-
-    private val _targetName = MutableLiveData(repository.get(SETTING_TARGET_NAME, ""))
-    val targetName: LiveData<String> = _targetName
-    fun updateTargetName(newValue: String, persist: Boolean = false) {
-        _targetName.value = newValue
-        if (persist) save(SETTING_TARGET_NAME, newValue)
     }
 
     private val _booleanOne = MutableLiveData(repository.get(SETTING_BOOLEAN_ONE_FLAG, ""))

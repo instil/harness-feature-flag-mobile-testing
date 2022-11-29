@@ -73,7 +73,6 @@ class SettingsActivity : ComponentActivity() {
     private fun SdkSection() {
         val sdkKeyState = viewModel.sdkKey.observeAsState("")
         val targetIdState = viewModel.targetId.observeAsState("")
-        val targetNameState = viewModel.targetName.observeAsState("")
 
         Section(title = "Harness SDK") {
             StringSetting(
@@ -89,13 +88,6 @@ class SettingsActivity : ComponentActivity() {
                 state = targetIdState,
                 onValueChange = { viewModel.updateTargetId(it) },
                 onDone = { viewModel.updateTargetId(it, persist = true) }
-            )
-            StringSetting(
-                label = "Target Name",
-                placeholder = "Provide a target name.",
-                state = targetNameState,
-                onValueChange = { viewModel.updateTargetName(it) },
-                onDone = { viewModel.updateTargetName(it, persist = true) }
             )
         }
     }

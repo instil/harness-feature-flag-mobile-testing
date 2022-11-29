@@ -11,7 +11,6 @@ interface SettingsRepository {
         const val SETTING_REFRESH_UI = "REFRESH_UI"
         const val SETTING_SDK_KEY = "HARNESS_SDK_KEY"
         const val SETTING_TARGET_ID = "HARNESS_TARGET_ID"
-        const val SETTING_TARGET_NAME = "HARNESS_TARGET_NAME"
         const val SETTING_BOOLEAN_ONE_FLAG = "BOOLEAN_TESTER_KEY_ONE"
         const val SETTING_BOOLEAN_TWO_FLAG = "BOOLEAN_TESTER_KEY_TWO"
         const val SETTING_BOOLEAN_THREE_FLAG = "BOOLEAN_TESTER_KEY_THREE"

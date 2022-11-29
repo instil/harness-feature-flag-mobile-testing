@@ -111,7 +111,7 @@ class SettingsActivity : ComponentActivity() {
                 placeholder = "Boolean tester flag three",
                 state = booleanThreeState,
                 onValueChange = { viewModel.updateBooleanThree(it) },
-                onDone = { viewModel.updateBooleanFour(it, persist = true) }
+                onDone = { viewModel.updateBooleanThree(it, persist = true) }
             )
             StringSetting(
                 label = "Boolean Four",

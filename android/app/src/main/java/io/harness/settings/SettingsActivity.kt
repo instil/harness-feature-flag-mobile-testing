@@ -60,12 +60,11 @@ class SettingsActivity : ComponentActivity() {
         val refreshUI = viewModel.refreshUI.observeAsState(false)
 
         Section(title = "General") {
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Refresh UI automatically?")
-                Switch(
-                    checked = refreshUI.value,
-                    onCheckedChange = { viewModel.updateRefreshUI(it) })
-            }
+            BooleanSetting(
+                label = "Refresh UI automatically?",
+                checked = refreshUI.value,
+                onChange = { viewModel.updateRefreshUI(it) }
+            )
         }
     }
 
@@ -250,6 +249,20 @@ class SettingsActivity : ComponentActivity() {
                     onDone(state.value)
                 })
             )
+        }
+    }
+
+    @Composable
+    private fun BooleanSetting(
+        label: String,
+        checked: Boolean,
+        onChange: (Boolean)->Unit
+    ) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(text = label)
+            Switch(
+                checked = checked,
+                onCheckedChange = onChange)
         }
     }
 }

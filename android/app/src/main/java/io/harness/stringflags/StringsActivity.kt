@@ -115,9 +115,12 @@ fun VideoStringView(lifecycle: Lifecycle, urlState: State<String>) {
 @Composable
 fun WebStringView(state: State<String>) {
     val urlState = rememberWebViewState(url = state.value)
-    WebView(state = urlState, onCreated = {webview ->
-        webview.settings.apply {
-            javaScriptEnabled = true
-        }
-    })
+    WebView(
+        state = urlState,
+        captureBackPresses = false,
+        onCreated = {webview ->
+            webview.settings.apply {
+                javaScriptEnabled = true
+            }
+        })
 }

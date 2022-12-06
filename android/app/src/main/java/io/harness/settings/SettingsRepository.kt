@@ -4,7 +4,7 @@ interface SettingsRepository {
 
     fun get (key: String, default: String): String
     fun set(key: String, value: String)
-    fun registerListener(vararg keys: String, listener: SettingChangeListener)
+    fun registerListener(vararg keys: String, listener: (String) -> Unit)
 
     companion object {
         const val SETTING_USE_REAL_SERVICE = "USE_REAL_SERVICE"
@@ -25,8 +25,4 @@ interface SettingsRepository {
         const val SETTING_JSON_FLAG = "JSON"
     }
 
-}
-
-interface SettingChangeListener {
-    fun onSettingChange(newValue: String)
 }

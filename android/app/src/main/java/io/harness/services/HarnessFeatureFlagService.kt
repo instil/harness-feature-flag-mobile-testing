@@ -102,7 +102,7 @@ class HarnessFeatureFlagService @Inject constructor(
     }
 
     private fun broadcastEvaluationChange(ev: Evaluation) {
-        Log.d(HarnessApplication.TAG, "Broadcasting evaluation update for ${ev.flag}")
+        Log.d(TAG, "Broadcasting evaluation update for ${ev.flag}")
         Intent().also { intent ->
             intent.putExtra(HarnessApplication.EXTRA_EVALUATION_FLAG, ev.flag)
             when (ev.kind) {
@@ -129,5 +129,9 @@ class HarnessFeatureFlagService @Inject constructor(
             }
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
         }
+    }
+
+    companion object {
+        const val TAG = "HarnessFlagService"
     }
 }

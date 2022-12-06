@@ -2,6 +2,7 @@ package io.harness
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -22,36 +23,50 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.harness.booleanflags.BooleanActivity
 import io.harness.jsonflags.JsonActivity
 import io.harness.numberflags.NumbersActivity
+import io.harness.services.FeatureFlagService
 import io.harness.settings.SettingsActivity
+import io.harness.settings.SettingsRepository
 import io.harness.stringflags.StringsActivity
 import io.harness.ui.components.LinkButton
 import io.harness.ui.theme.HarnessTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    @SwappableService
+    lateinit var featureFlagService: FeatureFlagService
+
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
+
     private val viewModel: MainViewModel by viewModels()
+
+    private val navigation = object: Navigation {
+        override fun navigateToBooleans() {
+            startActivity(Intent(this@MainActivity, BooleanActivity::class.java))
+        }
+        override fun navigateToStrings() {
+            startActivity(Intent(this@MainActivity, StringsActivity::class.java))
+        }
+        override fun navigateToNumbers() {
+            startActivity(Intent(this@MainActivity, NumbersActivity::class.java))
+        }
+        override fun navigateToJson() {
+            startActivity(Intent(this@MainActivity, JsonActivity::class.java))
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val navigation = object: Navigation {
-            override fun navigateToBooleans() {
-                startActivity(Intent(this@MainActivity, BooleanActivity::class.java))
-            }
-            override fun navigateToStrings() {
-                startActivity(Intent(this@MainActivity, StringsActivity::class.java))
-            }
-            override fun navigateToNumbers() {
-                startActivity(Intent(this@MainActivity, NumbersActivity::class.java))
-            }
-            override fun navigateToJson() {
-                startActivity(Intent(this@MainActivity, JsonActivity::class.java))
-            }
-        }
-
         setContent {
             HarnessTheme {
                 val sdkState = viewModel.useRealService.observeAsState(initial = true)
@@ -63,6 +78,37 @@ class MainActivity : ComponentActivity() {
                 ) { newSdkState -> viewModel.updateUseRealService(newSdkState) }
             }
         }
+        loadFlagService { Log.d(TAG, "Flag service has been loaded.") }
+        settingsRepository.registerListener(
+            SettingsRepository.SETTING_TARGET_ID,
+            SettingsRepository.SETTING_ENABLE_STREAMING) { reloadFlagService()}
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unloadFlagService { Log.d(TAG, "Flag service has been unloaded.") }
+    }
+
+    private fun loadFlagService(callback: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) { featureFlagService.load(callback) }
+    }
+
+    private fun unloadFlagService(callback: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) { featureFlagService.destroy(callback) }
+    }
+
+    private fun reloadFlagService() {
+        Log.d(TAG, "Reloading flag service ...")
+        unloadFlagService {
+            Log.d(TAG, "Stopped flag service, ready to restart ...")
+            loadFlagService {
+                Log.d(TAG, "Flag service has been restarted.")
+            }
+        }
+    }
+
+    companion object {
+        const val TAG = "MainActivity"
     }
 }
 

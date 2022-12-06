@@ -6,6 +6,8 @@ import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+typealias SettingChangeListener = (String)->Unit
+
 class SharedPreferencesSettingsRepository @Inject constructor(@ApplicationContext context: Context) :
     SettingsRepository {
 
@@ -24,7 +26,7 @@ class SharedPreferencesSettingsRepository @Inject constructor(@ApplicationContex
         notifyListeners(key, value)
     }
 
-    override fun registerListener(vararg keys: String, listener: SettingChangeListener) {
+    override fun registerListener(vararg keys: String, listener: (String) -> Unit) {
         for (key in keys) {
             if (listeners.containsKey(key)) {
                 listeners[key]?.add(listener)
@@ -36,7 +38,7 @@ class SharedPreferencesSettingsRepository @Inject constructor(@ApplicationContex
 
     private fun notifyListeners(key: String, value: String) {
         Log.d(TAG, "Notifying listeners to change of setting: $key")
-        listeners[key]?.forEach { it.onSettingChange(value) }
+        listeners[key]?.forEach { it(value) }
     }
 
     companion object {

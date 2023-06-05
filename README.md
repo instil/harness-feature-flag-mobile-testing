@@ -53,3 +53,24 @@ If running xcpretty on a CI system, you may want to exit with same status code a
 `xcodebuild test -project apple/Harness.xcodeproj -scheme HarnessUITests -destination 'platform=iOS Simulator,name=iPhone 14' | xcpretty --report junit && exit ${PIPESTATUS[0]}`
 
 The output of xcpretty can be found in `build/reports/tests.html` or `build/reports/junit.xml` depending on which report was chosen.
+
+## Android
+
+The Android app is built using:
+
+- [Harness Android feature flag SDK](https://github.com/harness/ff-android-client-sdk)
+- [Kotlin](https://kotlinlang.org/)
+- [Jetpack Compose](https://developer.android.com/jetpack/compose)
+- [Hilt](https://dagger.dev/hilt/)
+
+## Building the app
+
+The app is provided as a standard Android Studio project. Simply open thw `android/` directory in Android Studio.
+
+There is no configuration file for the Android app. Instead, settings can be changed by running the app and clicking on the settings icon at the top of the main screen. This is where you will enter your Harness SDK key, configure target id, and set the feature flag names to be used in the app.
+
+The app has no special build requirements.
+
+## Running the automated test suite
+
+_WORK IN PROGRESS_
